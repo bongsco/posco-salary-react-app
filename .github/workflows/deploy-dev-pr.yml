@@ -1,4 +1,4 @@
-name: Deploy Development Web App to CloudFront & S3
+name: Deploy Web App (Dev)
 
 on:
   pull_request:
@@ -12,6 +12,8 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
+    permissions:
+      deployments: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -43,3 +45,7 @@ jobs:
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DEV_DISRIBUTION_ID }} --paths "/pr-${{ github.event.pull_request.number }}/*"
+
+      - name: Add Deployment URL to Actions Summary
+        run: |
+          echo "::notice::🚀 Deployment Successful! Preview URL: ${{vars.AWS_CLOUDFRONT_DEV_URL}}/pr-${{ github.event.pull_request.number }}/index.html"
