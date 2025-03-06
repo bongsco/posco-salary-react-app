@@ -28,7 +28,7 @@ jobs:
         run: npm --force ci
 
       - name: Build React App
-        run: npm run storybook:build
+        run: npm run build-storybook
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
