@@ -31,7 +31,7 @@ jobs:
         run: npm run build-storybook
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_FRONTEND_DEPLOYER_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_FRONTEND_DEPLOYER_SECRET_ACCESS_KEY }}
