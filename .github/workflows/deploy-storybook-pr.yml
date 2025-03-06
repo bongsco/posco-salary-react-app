@@ -45,4 +45,5 @@ jobs:
           aws s3 sync --region ap-northeast-2 storybook-static s3://${{ vars.AWS_S3_STORYBOOK_BUCKET_NAME }}/pr-${PR_NUMBER}/ --delete
 
       - name: Invalidate CloudFront Cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_STORYBOOK_DISRIBUTION_ID }} --paths "/pr-${{ github.event.pull_request.number }}/*"
+        run: PR_NUMBER=${{ github.event.pull_request.number }}
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_STORYBOOK_DISRIBUTION_ID }} --paths "/pr-${PR_NUMBER}/*"
