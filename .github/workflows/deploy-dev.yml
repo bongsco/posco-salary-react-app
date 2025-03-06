@@ -1,4 +1,4 @@
-name: Deploy Development Web App to CloudFront & S3
+name: Deploy Development Web App
 
 on:
   push:
