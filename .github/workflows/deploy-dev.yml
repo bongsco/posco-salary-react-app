@@ -12,8 +12,6 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
-    outputs:
-      preview-url: ${{ vars.AWS_CLOUDFRONT_DEV_URL }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3

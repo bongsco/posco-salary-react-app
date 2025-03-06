@@ -12,8 +12,6 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
-    outputs:
-      preview-url: ${{ vars.AWS_CLOUDFRONT_DEV_URL }}/pr-${{ github.event.pull_request.number }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -41,9 +39,8 @@ jobs:
         env:
           aws-access-key-id: ${{ secrets.AWS_FRONTEND_DEPLOYER_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_FRONTEND_DEPLOYER_SECRET_ACCESS_KEY }}
-        run: PR_NUMBER=${{ github.event.pull_request.number }}
-          aws s3 sync --region ap-northeast-2 build s3://${{ vars.AWS_S3_DEV_BUCKET_NAME }}/pr-${PR_NUMBER}/ --delete
+          aws-s3-bucket-name: ${{ vars.AWS_S3_DEV_BUCKET_NAME }}
+        run: aws s3 sync --region ap-northeast-2 build s3://${aws-s3-bucket-name}/pr-${{ github.event.pull_request.number }}/ --delete
 
       - name: Invalidate CloudFront Cache
-        run: PR_NUMBER=${{github.event.pull_request.number}}
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DEV_DISRIBUTION_ID }} --paths "/pr-${PR_NUMBER}/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DEV_DISRIBUTION_ID }} --paths "/pr-${{ github.event.pull_request.number }}/*"
