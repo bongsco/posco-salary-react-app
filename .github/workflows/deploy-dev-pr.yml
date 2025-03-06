@@ -1,4 +1,4 @@
-name: Deploy Development Web App
+name: Deploy Web App (Dev)
 
 on:
   pull_request:

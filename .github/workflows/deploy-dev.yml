@@ -1,4 +1,4 @@
-name: Deploy Development Web App
+name: Deploy Web App (Dev)
 
 on:
   push:
@@ -43,3 +43,7 @@ jobs:
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DEV_DISRIBUTION_ID }} --paths "/*"
+
+      - name: Add Deployment URL to Actions Summary
+        run: |
+          echo "::notice::🚀 Deployment Successful! Preview URL: ${{vars.AWS_CLOUDFRONT_DEV_URL}}"
