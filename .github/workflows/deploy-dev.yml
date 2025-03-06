@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   deploy:
@@ -15,6 +12,8 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
+    outputs:
+      preview-url: ${{ vars.AWS_CLOUDFRONT_DEV_URL }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -37,11 +36,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_FRONTEND_DEPLOYER_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_FRONTEND_DEPLOYER_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2 # Seoul
+
       - name: Deploy to S3
         env:
           aws-access-key-id: ${{ secrets.AWS_FRONTEND_DEPLOYER_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_FRONTEND_DEPLOYER_SECRET_ACCESS_KEY }}
-        run: aws s3 sync --region ap-northeast-2 build s3://bongsco-s3-web-app-dev --delete
+        run: aws s3 sync --region ap-northeast-2 build s3://${{ vars.AWS_S3_DEV_BUCKET_NAME }} --delete
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DEV_DISRIBUTION_ID }} --paths "/*"
