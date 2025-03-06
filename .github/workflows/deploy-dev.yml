@@ -1,7 +1,7 @@
 name: Deploy Development Web App to CloudFront & S3
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
 
