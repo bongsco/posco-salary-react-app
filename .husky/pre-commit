@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "Running pre-commit lint... (.husky/pre-commit)"
 if npx lint-staged; then
 echo "✅ Passed ESLint test."
