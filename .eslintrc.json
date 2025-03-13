@@ -29,6 +29,12 @@
   },
   "rules": {
     "no-restricted-exports": "off",
-    "react/require-default-props": "warn"
+    "react/require-default-props": "warn",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
   }
 }
