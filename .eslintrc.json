@@ -20,13 +20,23 @@
       "alias": {
         "map": [
           ["#components", "./src/components"],
-          ["#pages", "./src/pages"]
+          ["#pages", "./src/pages"],
+          ["#styles", "./src/styles"],
+          ["#utils", "./src/utils"],
+          ["#assets", "./src/assets"]
         ],
         "extensions": [".js", ".jsx", ".css"]
       }
     }
   },
   "rules": {
-    "no-restricted-exports": "off"
+    "no-restricted-exports": "off",
+    "react/require-default-props": "warn",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
   }
 }
