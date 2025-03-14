@@ -15,16 +15,17 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@storybook/addon-actions": "^8.6.4",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.2.0",
     "@testing-library/user-event": "13.5.0",
     "css-loader": "7.1.2",
+    "prop-types": "15.8.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "2.1.4",
-    "prop-types": "15.8.1"
+    "web-vitals": "2.1.4"
   },
   "browserslist": {
     "production": [
@@ -40,7 +41,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "npm lint:fix --fix"
+      "npm run lint:fix"
     ]
   },
   "devDependencies": {
