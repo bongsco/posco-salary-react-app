@@ -1,0 +1,90 @@
+:root {
+  --color-primary: #c2e6ff;
+  --color-warning: #ff325f;
+  --color-ok: #a1fd28;
+  --color-font: #9e9e9e;
+  --color-focus: #40afff;
+  --font-family: 'SUIT';
+}
+
+.input-box-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  font-family: var(--font-family);
+}
+
+.input-box {
+  width: 225px;
+  height: 30px;
+  font-size: 14px;
+  font-family: var(--font-family);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  outline: none;
+  background-color: white;
+  padding-left: 8px;
+  transition:
+    border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.input-box::placeholder {
+  color: var(--color-font);
+  font-weight: 400;
+}
+
+.primary {
+  border-color: var(--color-primary);
+}
+
+.input-box.primary:focus {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 2px rgba(64, 175, 255, 0.5);
+}
+
+.input-box.primary:focus ~ .input-box-label.primary {
+  color: #40afff;
+}
+
+.warning {
+  border-color: var(--color-warning);
+}
+
+.ok {
+  border-color: var(--color-ok);
+}
+
+.focused {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 5px rgba(64, 175, 255, 0.5);
+}
+
+.input-box-label {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.input-box-label.primary {
+  color: var(--color-focus);
+}
+
+.input-box-label.warning {
+  color: var(--color-warning);
+}
+
+.input-box-label.ok {
+  color: var(--color-ok);
+}
