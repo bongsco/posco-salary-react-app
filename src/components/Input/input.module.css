@@ -1,11 +1,4 @@
-:root {
-  --color-primary: #c2e6ff;
-  --color-warning: #ff325f;
-  --color-ok: #a1fd28;
-  --color-font: #9e9e9e;
-  --color-focus: #40afff;
-  --font-family: 'SUIT';
-}
+@import '../../styles/global.css';
 
 .input-box-container {
   display: flex;
@@ -18,13 +11,12 @@
 .input-box {
   width: 225px;
   height: 30px;
-  font-size: 14px;
-  font-family: var(--font-family);
+  font: var(--font-caption-1r-pc);
   border-width: 1px;
   border-style: solid;
   border-radius: 5px;
   outline: none;
-  background-color: white;
+  background-color: var(--color-background-general);
   padding-left: 8px;
   transition:
     border-color 0.2s ease-in-out,
@@ -32,39 +24,38 @@
 }
 
 .input-box::placeholder {
-  color: var(--color-font);
-  font-weight: 400;
+  color: var(--color-grayscale-5);
+  font: var(--font-caption-1r-pc);
 }
 
-.primary {
-  border-color: var(--color-primary);
+.input-box.primary {
+  border-color: var(--color-primary-lighter);
 }
 
 .input-box.primary:focus {
-  border-color: var(--color-focus);
-  box-shadow: 0 0 2px rgba(64, 175, 255, 0.5);
+  color: var(--color-primary-main);
+  border-color: var(--color-primary-main);
+  box-shadow: 0 0 8px 3px rgba(64, 175, 255, 0.1);
 }
 
-.input-box.primary:focus ~ .input-box-label.primary {
-  color: #40afff;
+.input-box.error {
+  border-color: var(--color-system-caution);
 }
 
-.warning {
-  border-color: var(--color-warning);
+.input-box.error:focus {
+  color: var(--color-system-caution);
 }
 
-.ok {
-  border-color: var(--color-ok);
+.input-box.ok {
+  border-color: var(--color-system-ok);
 }
 
-.focused {
-  border-color: var(--color-focus);
-  box-shadow: 0 0 5px rgba(64, 175, 255, 0.5);
+.input-box.ok:focus {
+  color: var(--color-system-ok);
 }
 
 .input-box-label {
-  font-size: 14px;
-  font-weight: 400;
+  font-size: var(--font-caption-1r-pc);
   opacity: 0;
   visibility: hidden;
   transition:
@@ -78,13 +69,13 @@
 }
 
 .input-box-label.primary {
-  color: var(--color-focus);
+  color: var(--color-primary-main);
 }
 
-.input-box-label.warning {
-  color: var(--color-warning);
+.input-box-label.error {
+  color: var(--color-system-caution);
 }
 
 .input-box-label.ok {
-  color: var(--color-ok);
+  color: var(--color-system-ok);
 }
