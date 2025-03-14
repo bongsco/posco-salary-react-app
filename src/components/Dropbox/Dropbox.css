@@ -1,0 +1,101 @@
+@import url('../../styles/global.css');
+
+* {
+  box-sizing: border-box;
+  font-family: 'SUIT';
+}
+
+.dropbox-area {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+  width: fit-content;
+  height: auto;
+}
+
+.dropbox-area.error .dropbox,
+.dropbox-area.error .select-items-list {
+  border-color: var(--color-system-caution);
+}
+
+.dropbox-area.error .message {
+  color: var(--color-system-caution);
+}
+
+.dropbox {
+  border: 1px solid var(--color-primary-lighter);
+  border-radius: 5px;
+  padding: 7.25px 8px;
+  width: fit-content;
+  height: auto;
+  color: var(--color-grayscale-5);
+  background-color: var(--color-background-general);
+  box-sizing: border-box;
+}
+
+/* select-selected 관련 css */
+.select-selected {
+  width: 209px;
+  height: auto;
+  background-color: var(--color-background-general);
+  font: var(--font-caption-1r-pc);
+  position: relative;
+}
+
+.select-selected:after {
+  content: '';
+  width: 20px;
+  height: 12px;
+  background-image: url('../../assets/dropdownbutton.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: absolute;
+  right: 0px;
+  /* 중앙 정렬 */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.select-selected.selected-option {
+  color: var(--color-grayscale-black);
+}
+
+/* message 관련 css */
+.message {
+  width: 100%;
+  margin-top: 2px;
+  padding-left: 3px;
+  color: var(--color-primary-darker);
+  font: var(--font-caption-1r-pc);
+  left: 0px;
+}
+
+/* select-items-list 관련 css*/
+.select-items-list {
+  border: 1px solid var(--color-primary-lighter);
+  border-radius: 5px;
+  padding: 6px;
+  width: 225px;
+  height: auto;
+  background-color: var(--color-background-general);
+  gap: 2px;
+  position: relative;
+  max-height: 200px;
+  overflow: auto;
+}
+
+/* select-item 관련 css */
+.select-item {
+  padding: 6px;
+  background-color: var(--color-background-general);
+  color: var(--color-grayscale-black);
+  font: var(--font-caption-1r-pc);
+  border-radius: 4px;
+}
+
+.select-item:hover {
+  background-color: var(--color-primary-main);
+  color: var(--color-grayscale-white);
+}
