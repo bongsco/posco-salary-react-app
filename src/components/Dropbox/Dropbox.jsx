@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types'; // PropTypes import
-import './Dropbox.css';
+import styles from './dropbox.module.css';
 
 export default function Dropbox({ options, error, message }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,11 +18,11 @@ export default function Dropbox({ options, error, message }) {
   };
 
   return (
-    <div className={`dropbox-area ${error ? 'error' : ''} `}>
-      <div className="dropbox">
+    <div className={`${styles['dropbox-area']} ${error ? styles.error : ''}`}>
+      <div className={styles.dropbox}>
         <div
-          className={`select-selected ${
-            options.includes(selectedValue) ? 'selected-option' : ''
+          className={`${styles['select-selected']} ${
+            options.includes(selectedValue) ? styles['selected-option'] : ''
           }`}
           onClick={toggleDropdown}
           role="button"
@@ -36,12 +36,12 @@ export default function Dropbox({ options, error, message }) {
           {selectedValue}
         </div>
       </div>
-      {!isOpen && message && <div className="message">{message}</div>}
+      {!isOpen && message && <div className={styles.message}>{message}</div>}
       {isOpen && (
-        <div className="select-items-list">
+        <div className={styles['select-items-list']}>
           {options.map((option) => (
             <div
-              className="select-item"
+              className={styles['select-item']}
               key={option}
               role="button"
               tabIndex={0}
