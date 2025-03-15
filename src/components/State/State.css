@@ -8,9 +8,7 @@
   width: 60px;
   height: auto;
   border-radius: 8px;
-  font-weight: bold;
   color: white;
-  box-sizing: border-box;
   font: var(--font-caption-3r-pc);
 }
 

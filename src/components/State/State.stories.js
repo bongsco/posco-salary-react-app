@@ -7,18 +7,18 @@ export default {
 
 export const Complete = {
   args: {
-    status: '완료',
+    status: 'complete',
   },
 };
 
 export const Working = {
   args: {
-    status: '작업중',
+    status: 'working',
   },
 };
 
 export const Warning = {
   args: {
-    status: '조치필요',
+    status: 'warning',
   },
 };

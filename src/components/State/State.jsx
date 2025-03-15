@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'; // PropTypes import
 import './State.css';
 
 const statusMap = {
-  완료: { text: '완료', className: 'state-label complete' },
-  작업중: { text: '작업중', className: 'state-label working' },
-  조치필요: { text: '조치 필요', className: 'state-label warning' },
+  complete: { text: '완료', className: 'state-label complete' },
+  working: { text: '작업중', className: 'state-label working' },
+  warning: { text: '조치 필요', className: 'state-label warning' },
 };
 
 export default function State({ status }) {
@@ -15,9 +15,9 @@ export default function State({ status }) {
 }
 
 State.propTypes = {
-  status: PropTypes.oneOf(['완료', '작업중', '조치필요']),
+  status: PropTypes.oneOf(['complete', 'working', 'warning']),
 };
 
 State.defaultProps = {
-  status: '조치필요',
+  status: 'warning',
 };
