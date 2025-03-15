@@ -1,0 +1,28 @@
+@import url('../../styles/global.css');
+
+.state-label {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-primary-lighter);
+  width: 60px;
+  height: auto;
+  border-radius: 8px;
+  color: white;
+  font: var(--font-caption-3r-pc);
+}
+
+.state-label.complete {
+  border-color: #65d953;
+  color: #65d953;
+}
+
+.state-label.working {
+  border-color: var(--color-system-warning);
+  color: var(--color-system-warning);
+}
+
+.state-label.warning {
+  border-color: var(--color-system-caution);
+  color: var(--color-system-caution);
+}
