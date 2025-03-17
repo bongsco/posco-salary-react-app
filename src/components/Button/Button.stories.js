@@ -12,10 +12,10 @@ export default {
       },
     },
     label: { control: 'text' },
-    showIcon: { control: 'boolean' },
     customSize: { control: 'object' },
     onClick: { action: 'clicked' },
   },
+  tags: ['autodocs'],
 };
 
 export const Primary = {
@@ -23,7 +23,6 @@ export const Primary = {
     variant: 'primary',
     size: 'large',
     label: '엑셀다운로드',
-    showIcon: true,
   },
 };
 
@@ -32,7 +31,6 @@ export const Secondary = {
     variant: 'secondary',
     size: 'large',
     label: '엑셀다운로드',
-    showIcon: true,
   },
 };
 
@@ -41,7 +39,6 @@ export const CustomSize = {
     variant: 'primary',
     size: 'custom',
     label: '선택',
-    showIcon: true,
     customSize: { width: '117px', height: '26px' },
   },
 };

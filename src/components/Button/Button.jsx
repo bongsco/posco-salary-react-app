@@ -2,13 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './button.module.css';
 
-import { ReactComponent as ArrowRightIcon } from '../../assets/icons/arrow-right.svg';
-
 function Button({
   variant = 'primary',
   size = 'large',
   label,
-  showIcon = true,
   customSize,
   onClick,
 }) {
@@ -24,7 +21,6 @@ function Button({
       }
     >
       {label}
-      {showIcon && <ArrowRightIcon className={styles[variant].icon} />}
     </button>
   );
 }
@@ -33,7 +29,6 @@ Button.propTypes = {
   variant: PropTypes.oneOf(['primary', 'secondary']),
   size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'custom']),
   label: PropTypes.string.isRequired,
-  showIcon: PropTypes.bool,
   customSize: PropTypes.shape({
     width: PropTypes.string,
     height: PropTypes.string,
@@ -44,7 +39,6 @@ Button.propTypes = {
 Button.defaultProps = {
   variant: 'primary',
   size: 'large',
-  showIcon: true,
   customSize: null,
   onClick: undefined,
 };

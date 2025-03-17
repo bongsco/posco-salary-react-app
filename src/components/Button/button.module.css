@@ -9,7 +9,7 @@ custom : 임의로 사이즈 설정 가능
 */
 
 .button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
@@ -78,22 +78,4 @@ custom : 임의로 사이즈 설정 가능
   background-color: var(--color-grayscale-3);
   border-color: var(--color-primary-dark);
   color: var(--color-primary-dark);
-}
-
-.icon {
-  width: 16px;
-  height: 16px;
-  transition: fill 0.2s ease-in-out;
-}
-
-.button.primary .icon {
-  fill: var(--color-grayscale-white);
-}
-
-.button.secondary .icon {
-  fill: var(--color-primary-main);
-}
-
-.button.secondary:active .icon {
-  fill: var(--color-primary-dark);
 }
