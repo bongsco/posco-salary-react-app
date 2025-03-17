@@ -2,7 +2,7 @@
 
 .navbar {
   align-items: center;
-  background-color: #ffffff;
+  background-color: var(--color-grayscale-white);
   display: flex;
   justify-content: center;
   height: 60px;
@@ -46,8 +46,8 @@
 }
 
 .title {
-  color: #111928;
-  font: var(--font-subtitle-2b-pc);
+  color: var(--color-grayscale-black);
+  font: 800 20px var(--font-family);
   width: fit-content;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .link {
-  color: #111928;
+  color: var(--color-grayscale-black);
   font: var(--font-body-2b-pc);
   cursor: pointer;
 }
@@ -71,7 +71,7 @@
 .ctaButton {
   background: none;
   border: none;
-  color: #111928;
+  color: var(--color-grayscale-black);
   font: var(--font-caption-1b-pc);
   cursor: pointer;
   padding: 6px 12px;
