@@ -1,42 +1,28 @@
-import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './switch.module.css';
 
 export default function Switch({ currentOn, onChanged }) {
-  const [isOn, setIsOn] = useState(currentOn);
-
-  useEffect(() => {
-    setIsOn(currentOn);
-  }, [currentOn]);
-
   const toggleHandler = () => {
-    setIsOn(!isOn);
-    onChanged(!isOn);
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      toggleHandler();
-    }
+    onChanged(!currentOn);
   };
 
   return (
-    <div
+    <button
+      type="button"
       role="switch"
-      aria-label="Toggle Container"
-      aria-checked={isOn}
+      aria-label="Toggle Switch Container"
+      aria-checked={currentOn}
       tabIndex="0"
       onClick={toggleHandler}
-      onKeyDown={handleKeyDown}
-      className={styles.toggleContainer}
+      className={styles['toggle-switch']}
     >
       <div
-        className={`${styles['toggle-container']} ${isOn ? styles['toggle--checked'] : ''}`}
+        className={`${styles['toggle-container']} ${currentOn ? styles['toggle-checked'] : ''}`}
       />
       <div
-        className={`${styles['toggle-circle']} ${isOn ? styles['toggle--checked'] : ''}`}
+        className={`${styles['toggle-circle']} ${currentOn ? styles['toggle-checked'] : ''}`}
       />
-    </div>
+    </button>
   );
 }
 
