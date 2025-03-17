@@ -5,6 +5,7 @@
   flex-direction: row; /* ✅ 요소를 가로 정렬 */
   align-items: center; /* ✅ 요소들을 수직 중앙 정렬 */
   background-color: var(--neutral-10);
+  font: var(--font-caption-1r-pc);
   border-radius: 8px;
   height: 44px;
   padding: 8px;
