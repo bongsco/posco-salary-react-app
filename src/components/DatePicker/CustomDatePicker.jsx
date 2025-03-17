@@ -14,7 +14,7 @@ function CustomDatePicker({ disabled, saved }) {
       selected={date}
       onChange={(d) => !disabled && setDate(d)}
       calendarClassName={styles.calendar}
-      dateFormat="yyyy/MM/dd"
+      dateFormat="yyyy-MM-dd"
       disabled={disabled}
       className={`react-datepicker__view-calendar-icon input ${
         saved ? 'saved' : 'unsaved'

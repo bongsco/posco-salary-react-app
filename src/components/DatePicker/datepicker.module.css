@@ -8,6 +8,7 @@
   padding: 8px;
   border-radius: 8px;
   font: var(--font-body-1r-pc);
+  box-shadow: var(--shadow);
 }
 
 :global(.react-datepicker__navigation) {
