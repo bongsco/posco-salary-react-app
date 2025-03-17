@@ -1,0 +1,84 @@
+@import url("../../styles/global.css");
+
+.navbar {
+  align-items: center;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  height: 60px;
+  width: 100%;
+  min-width: 700px;
+  padding: 24px 40px;
+  position: relative;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1440px;
+  gap: 38px;
+}
+
+.icon {
+  height: 19px;
+  width: 29px;
+  position: relative;
+  cursor: pointer;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0 0;
+}
+
+.logoImage {
+  height: 27px;
+  width: 83px;
+}
+
+.title {
+  color: #111928;
+  font: var(--font-subtitle-2b-pc);
+  width: fit-content;
+}
+
+.navLinks {
+  display: flex;
+  flex-grow: 1;
+  gap: 32px;
+}
+
+.link {
+  color: #111928;
+  font: var(--font-body-2b-pc);
+  cursor: pointer;
+}
+
+.ctaContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.ctaButton {
+  background: none;
+  border: none;
+  color: #111928;
+  font: var(--font-caption-1b-pc);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.ctaButton:hover {
+  background: var(--neutral-20);
+}
