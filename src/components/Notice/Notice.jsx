@@ -9,22 +9,20 @@ function Notice({ title, message, onClose }) {
 
   return (
     <div className={styles.noticeContainer}>
-      <div className={styles.noticeContent}>
-        <div className={styles.noticeHeader}>
-          <strong className={styles.title}>{title}</strong>
-          <button
-            type="button"
-            className={styles.closeButton}
-            onClick={() => {
-              setIsVisible(false);
-              if (onClose) onClose();
-            }}
-          >
-            X
-          </button>
-        </div>
-        <p className={styles.message}>{message}</p>
+      <div className={styles.noticeHeader}>
+        <strong className={styles.title}>{title}</strong>
+        <button
+          type="button"
+          className={styles.closeButton}
+          onClick={() => {
+            setIsVisible(false);
+            if (onClose) onClose();
+          }}
+        >
+          X
+        </button>
       </div>
+      <p className={styles.message}>{message}</p>
     </div>
   );
 }
