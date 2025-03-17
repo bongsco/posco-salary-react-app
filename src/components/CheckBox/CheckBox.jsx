@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './check-box.module.css';
 
-export default function CheckBox({ checked }) {
-  const [isChecked, setIsChecked] = useState(checked);
-
-  const handleChange = () => setIsChecked(!isChecked);
-
+export default function CheckBox({ checked, onClick }) {
   return (
-    <div
-      className={`${styles.checkbox} ${isChecked ? styles.checked : ''}`}
-      role="button"
-      tabIndex={0}
-      onClick={handleChange}
-      aria-label="Toggle checkbox"
+    <button
+      type="button"
+      className={`${styles.checkbox} ${checked ? styles.checked : ''}`}
+      onClick={onClick}
+      aria-label="checkBox"
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
-          handleChange();
+          onClick();
         }
       }}
     />
@@ -25,6 +19,7 @@ export default function CheckBox({ checked }) {
 
 CheckBox.propTypes = {
   checked: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
 };
 
 CheckBox.defaultProps = {

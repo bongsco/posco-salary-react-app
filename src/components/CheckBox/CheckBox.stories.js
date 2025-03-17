@@ -1,8 +1,9 @@
 import CheckBox from './CheckBox';
 
 export default {
-  title: 'Components/CheckBox',
+  title: 'UI/CheckBox',
   component: CheckBox,
+  tags: ['autodocs'],
   argTypes: {
     checked: { control: 'boolean' },
   },
