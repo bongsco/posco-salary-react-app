@@ -1,11 +1,16 @@
 .paginationContainer {
-  display: flex; /* ✅ 요소들을 가로로 배치 */
-  align-items: center; /* ✅ 세로 중앙 정렬 */
-  gap: 20px; /* ✅ 요소 사이 간격 */
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.buttonContainer{
-  display: flex; /* ✅ 요소들을 가로로 배치 */
-  align-items: center; /* ✅ 세로 중앙 정렬 */
-  gap: 8px; /* ✅ 요소 사이 간격 */
+.buttonContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.inputSelectContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
