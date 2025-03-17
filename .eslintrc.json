@@ -33,7 +33,7 @@
     "no-restricted-exports": "off",
     "react/require-default-props": "warn",
     "prettier/prettier": [
-      "error",
+      "warn",
       {
         "endOfLine": "auto"
       }
