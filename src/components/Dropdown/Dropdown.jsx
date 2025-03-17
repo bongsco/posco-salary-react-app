@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types'; // PropTypes import
-import styles from './dropbox.module.css';
+import styles from './dropdown.module.css';
 
-export default function Dropbox({ options, error, message }) {
+export default function Dropdown({
+  options,
+  error,
+  message,
+  placeHolder,
+  currentValue,
+  onChanged,
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('Place Holder');
+  const [selectedValue, setSelectedValue] = useState(currentValue);
+
+  useEffect(() => {
+    setSelectedValue(currentValue);
+  }, [currentValue]);
+
+  useEffect(() => {
+    if (!options.includes(selectedValue)) {
+      onChanged(null);
+    }
+  }, [selectedValue, options, onChanged]);
 
   // 드롭다운 메뉴 열기/닫기
   const toggleDropdown = () => {
@@ -15,11 +32,12 @@ export default function Dropbox({ options, error, message }) {
   const handleOptionClick = (option) => {
     setSelectedValue(option);
     setIsOpen(false);
+    onChanged(option);
   };
 
   return (
-    <div className={`${styles['dropbox-area']} ${error ? styles.error : ''}`}>
-      <div className={styles.dropbox}>
+    <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
+      <div className={styles.dropdown}>
         <div
           className={`${styles['select-selected']} ${
             options.includes(selectedValue) ? styles['selected-option'] : ''
@@ -33,7 +51,7 @@ export default function Dropbox({ options, error, message }) {
             }
           }}
         >
-          {selectedValue}
+          {options.includes(selectedValue) ? selectedValue : placeHolder}
         </div>
       </div>
       {!isOpen && message && <div className={styles.message}>{message}</div>}
@@ -61,13 +79,15 @@ export default function Dropbox({ options, error, message }) {
   );
 }
 
-// PropTypes 정의
-Dropbox.propTypes = {
-  options: PropTypes.arrayOf().isRequired, // options는 문자열 배열이어야 함
-  error: PropTypes.bool.isRequired, // error는 boolean 값이어야 함
+Dropdown.propTypes = {
+  options: PropTypes.arrayOf().isRequired,
+  error: PropTypes.bool.isRequired,
   message: PropTypes.string,
+  placeHolder: PropTypes.string.isRequired,
+  currentValue: PropTypes.string.isRequired,
+  onChanged: PropTypes.func.isRequired,
 };
 
-Dropbox.defaultProps = {
+Dropdown.defaultProps = {
   message: '',
 };

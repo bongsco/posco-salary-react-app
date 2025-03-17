@@ -1,18 +1,17 @@
-import Dropbox from './Dropbox';
+import Dropdown from './Dropdown';
 
 export default {
-  title: 'Components/Dropbox',
-  component: Dropbox,
-  argTypes: {
-    options: { control: 'array' },
-    error: { control: 'boolean' },
-  },
+  title: 'Components/Dropdown',
+  component: Dropdown,
 };
 
 export const Default = {
   args: {
     options: ['정기연봉조정', 'BaseUp', '승진자연봉조정'], // options 배열 전달
     error: false,
+    currentValue: null,
+    placeHolder: 'Dropdown 메뉴',
+    onChanged: () => {},
   },
 };
 
@@ -29,6 +28,9 @@ export const WithErrorNoMessage = {
       '승진자연봉조정',
     ],
     error: true,
+    currentValue: null,
+    placeHolder: 'Dropdown 메뉴',
+    onChanged: () => {},
   },
 };
 
@@ -46,6 +48,9 @@ export const WithMessageNoError = {
     ],
     error: false,
     message: '안내 메시지',
+    currentValue: null,
+    placeHolder: 'Dropdown 메뉴',
+    onChanged: () => {},
   },
 };
 
@@ -63,5 +68,8 @@ export const WithMessageAndError = {
     ],
     error: true,
     message: '오류 메시지',
+    currentValue: null,
+    placeHolder: 'Dropdown 메뉴',
+    onChanged: () => {},
   },
 };

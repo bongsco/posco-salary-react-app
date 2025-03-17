@@ -1,6 +1,6 @@
 @import url('../../styles/global.css');
 
-.dropbox-area {
+.dropdown-area {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -9,16 +9,16 @@
   position: relative;
 }
 
-.dropbox-area.error .dropbox,
-.dropbox-area.error .select-items-list {
+.dropdown-area.error .dropdown,
+.dropdown-area.error .select-items-list {
   border-color: var(--color-system-caution);
 }
 
-.dropbox-area.error .message {
+.dropdown-area.error .message {
   color: var(--color-system-caution);
 }
 
-.dropbox {
+.dropdown {
   border: 1px solid var(--color-primary-lighter);
   border-radius: 5px;
   padding: 7.25px 8px;
@@ -81,6 +81,7 @@
   /* Scroll 기능 추가 */
   max-height: 200px;
   overflow: auto;
+  z-index: 100;
 }
 
 /* select-item 관련 css */
