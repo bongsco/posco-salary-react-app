@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types';
 import styles from './navbar.module.css';
 import MenuTab from './icons/MenuTab';
 import Logo from './icons/Logo';
 
-export default function NavBar() {
-  const navItems = [
-    { label: '로그인', href: '/login' },
-    { label: '계정 등록', href: '/register' },
-  ];
+export default function NavBar({ navItems }) {
+  // const navItems = [
+  //   { label: '로그인', href: '/login' },
+  //   { label: '계정 등록', href: '/register' },
+  // ];
 
   return (
     <div className={styles.navbar}>
@@ -25,8 +26,8 @@ export default function NavBar() {
 
         <div className={styles.frame}>
           {navItems.map((item) => (
-            <a key={item.href} href={item.href} className={styles.ctaButton}>
-              <div className={styles.text}>{item.label}</div>
+            <a key={item.href} href={item.href} className={styles.text}>
+              {item.label}
             </a>
           ))}
         </div>
@@ -34,3 +35,19 @@ export default function NavBar() {
     </div>
   );
 }
+
+NavBar.propTypes = {
+  navItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      href: PropTypes.string,
+    }),
+  ),
+};
+
+NavBar.defaultProps = {
+  navItems: [
+    { label: '로그인', href: '/login' },
+    { label: '계정 등록', href: '/register' },
+  ],
+};

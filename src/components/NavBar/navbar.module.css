@@ -3,7 +3,6 @@
 .navbar {
   align-items: center;
   background-color: #ffffff;
-  border-bottom: 1px solid var(--backgroundblock);
   display: flex;
   flex-direction: column;
   gap: 0px;
@@ -32,10 +31,9 @@
 }
 
 .icon {
-  height: 19px;
-  margin-left: -1px;
+  height: 17px;
   position: relative;
-  width: 29px;
+  width: 27px;
 }
 
 .logo {
@@ -64,12 +62,6 @@
   position: relative;
 }
 
-.posco {
-  height: 27.15px;
-  position: relative;
-  width: 83px;
-}
-
 .title {
   color: #111928;
   font-family: var(--font-family);
@@ -81,16 +73,6 @@
   width: fit-content;
 }
 
-.ctaButton {
-  all: unset;
-  align-items: center;
-  display: inline-flex;
-  flex: 0 0 auto;
-  gap: 20px;
-  position: relative;
-  text-decoration: none; /* ✅ 밑줄 제거 */
-}
-
 .text {
   color: #111928;
   font: var(--font-caption-1b-pc);
@@ -99,4 +81,8 @@
   position: relative;
   white-space: nowrap;
   width: fit-content;
+  text-decoration: none;
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
 }
