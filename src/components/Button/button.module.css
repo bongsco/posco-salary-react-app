@@ -1,0 +1,81 @@
+@import '../../styles/global.css';
+
+/*
+xsmall : 저장 / 취소 (payband 페이지)
+small : 이전단계 / 다음단계 (아래 페이지 넘김 버튼)
+medium : 표 내부의 버튼 (보상 지급률 페이지 *표에 맞는 사이즈는 custom으로 설정 가능*)
+large : 엑셀다운로드 / 새 연봉 조정 등록 (메인 페이지)
+custom : 임의로 사이즈 설정 가능
+*/
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 5px;
+  font: var(--font-caption-1b-pc);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.button.xsmall {
+  width: 49px;
+  height: 34px;
+  border-radius: 8px;
+  font: var(--font-body-3-pc);
+}
+
+.button.small {
+  width: 77px;
+  height: 33px;
+  font: var(--font-body-3-pc);
+}
+
+.button.medium {
+  width: 117px;
+  height: 26px;
+}
+
+.button.large {
+  width: 124px;
+  height: 26px;
+  font: var(--font-body-3-pc);
+  box-shadow: var(--shadow);
+}
+
+.button.primary {
+  background-color: var(--color-primary-main);
+  color: var(--color-grayscale-white);
+  border: none;
+}
+
+.button.primary:hover {
+  background-color: var(--color-primary-dark);
+  color: var(--color-grayscale-white);
+}
+
+.button.primary:active {
+  background-color: var(--color-primary-dark);
+  border: 0.5px solid var(--color-primary-darker);
+  color: var(--color-grayscale-white);
+}
+
+.button.secondary {
+  background-color: var(--color-grayscale-white);
+  border: 1px solid var(--color-primary-main);
+  color: var(--color-primary-main);
+}
+
+.button.secondary:hover {
+  background-color: var(--color-primary-lightest);
+  border-color: var(--color-primary-main);
+  color: var(--color-primary-main);
+}
+
+.button.secondary:active {
+  background-color: var(--color-grayscale-3);
+  border-color: var(--color-primary-dark);
+  color: var(--color-primary-dark);
+}
