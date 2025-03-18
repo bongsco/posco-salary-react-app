@@ -1,24 +1,37 @@
-import PropTypes from 'prop-types';
-import styles from './table.module.css';
-import TableRow from './TableRow';
+import '../../styles/table.css';
 
-export default function Table({ array }) {
+export default function Table() {
   return (
-    <div>
-      <div className={`${styles.table}`}>
-        <div>
-          <TableRow row={array[0]} isHead />
-        </div>
-        <div>
-          {array.slice(1).map((item) => (
-            <TableRow key={`${item[0].id}`} row={item} />
-          ))}
-        </div>
-      </div>
-    </div>
+    <table className="table">
+      <thead>
+        <tr className="table_row">
+          <td className="table_element table_header">1</td>
+          <td className="table_element table_header">2</td>
+          <td className="table_element table_header">3</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr className="table_row">
+          <td className="table_element table_body">4</td>
+          <td className="table_element table_body">5</td>
+          <td className="table_element table_body">6</td>
+        </tr>
+        <tr className="table_row">
+          <td className="table_element table_body">7</td>
+          <td className="table_element table_body">8</td>
+          <td className="table_element table_body">9</td>
+        </tr>
+        <tr className="table_row">
+          <td className="table_element table_body">10</td>
+          <td className="table_element table_body">11</td>
+          <td className="table_element table_body">12</td>
+        </tr>
+        <tr className="table_row">
+          <td className="table_element table_body">13</td>
+          <td className="table_element table_body">14</td>
+          <td className="table_element table_body">15</td>
+        </tr>
+      </tbody>
+    </table>
   );
 }
-
-Table.propTypes = {
-  array: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
