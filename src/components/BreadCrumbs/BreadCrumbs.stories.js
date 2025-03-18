@@ -14,10 +14,6 @@ export default {
 
 export const Default = {
   args: {
-    items: [
-      { label: '연봉조정등록' },
-      { label: '기준설정' },
-      { label: 'Payband설정' },
-    ],
+    items: ['연봉조정등록', '기준설정', 'Payband설정'],
   },
 };

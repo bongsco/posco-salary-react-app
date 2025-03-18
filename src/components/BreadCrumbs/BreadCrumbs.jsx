@@ -6,16 +6,15 @@ export default function BreadCrumbs({ items }) {
   return (
     <div className={styles.breadcrumbs}>
       <ul className={styles.breadcrumbList}>
-        {items.map((item, index) => (
-          <li key={item.label} className={styles.breadcrumbItem}>
+        {items.map((label, index) => (
+          <li key={label} className={styles.breadcrumbItem}>
             <span
               className={`${styles.name} ${
                 index === items.length - 1 ? styles.active : ''
               }`}
             >
-              {item.label}
+              {label}
             </span>
-            {/* ✅ 마지막 아이템이 아니면 chevron-right 아이콘 추가 */}
             {index < items.length - 1 && (
               <Chevron className={styles.chevronRight} />
             )}
@@ -27,11 +26,7 @@ export default function BreadCrumbs({ items }) {
 }
 
 BreadCrumbs.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired, // ✅ `id` 제거하고 `label`만 필수값으로 설정
-    }),
-  ),
+  items: PropTypes.arrayOf(PropTypes.string), // ✅ `string[]` 형태로 변경
 };
 
 BreadCrumbs.defaultProps = {
