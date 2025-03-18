@@ -22,13 +22,13 @@ export default function NavBar({ navItems, toggleSidebar }) {
             </div>
           </div>
 
-          <div className={styles.frame}>
+          <nav className={styles.frame}>
             {navItems.map((item) => (
               <a key={item.href} href={item.href} className={styles.text}>
                 {item.label}
               </a>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
     </header>
