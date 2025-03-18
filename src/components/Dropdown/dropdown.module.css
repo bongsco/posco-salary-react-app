@@ -80,6 +80,7 @@
   border-radius: 5px;
   padding: 6px 4px;
   width: fit-content;
+  min-width: 213px;
   height: auto;
   background-color: var(--color-background-general);
   gap: 2px;
@@ -100,7 +101,7 @@
 /* select-item 관련 css */
 .select-item {
   border: 0;
-  width: fit-content;
+  width: 100%;
   height: 22px;
   padding: 0px 6px;
   background-color: var(--color-background-general);
@@ -108,7 +109,7 @@
   font: var(--font-caption-1r-pc);
   border-radius: 4px;
   text-align: left;
-  min-width: 213px;
+  white-space: nowrap;
 }
 
 .select-item:hover {
