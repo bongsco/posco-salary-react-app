@@ -6,7 +6,7 @@
   flex-direction: column;
   background-color: var(--color-system-caution);
   color: var(--color-background-general);
-  padding: 28px 20px;
+  padding: 20px 28px;
   border-radius: 10px;
   width: 544px;
   min-height: 82px;
