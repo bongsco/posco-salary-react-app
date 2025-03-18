@@ -13,12 +13,9 @@ function CustomDatePicker({ disabled, saved }) {
       toggleCalendarOnIconClick={!disabled}
       selected={date}
       onChange={(d) => !disabled && setDate(d)}
-      calendarClassName={styles.calendar}
       dateFormat="yyyy-MM-dd"
       disabled={disabled}
-      className={`react-datepicker__view-calendar-icon input ${
-        saved ? 'saved' : 'unsaved'
-      }`} // ✅ saved 여부에 따라 클래스 변경
+      className={`${styles.input} ${saved ? styles.saved : styles.unsaved}`}
     />
   );
 }

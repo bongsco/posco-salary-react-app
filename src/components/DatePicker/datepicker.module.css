@@ -96,19 +96,18 @@
   height: 32px;
   font-size: var(--font-caption-1r-pc);
   color: var(--color-grayscale-5);
-  border: 1px solid var(--color-primary-lighter); /* 기본 테두리 */
   border-radius: 5px;
   padding: 8px;
   transition: border 0.3s ease;
 }
 
 /* ✅ saved 상태일 때 기존 테두리 유지 */
-:global(.react-datepicker__view-calendar-icon input.saved) {
+.saved {
   border: 1px solid var(--color-primary-lighter);
 }
 
-/* ✅ saved가 아닐 때 초록색 테두리 */
-:global(.react-datepicker__view-calendar-icon input.unsaved) {
+/* ✅ unsaved 상태일 때 초록색 테두리 */
+.unsaved {
   border: 1px solid var(--color-system-ok);
 }
 

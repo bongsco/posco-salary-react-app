@@ -1,8 +1,9 @@
 import CustomDatePicker from './CustomDatePicker';
 
 export default {
-  title: 'Example/DatePicker',
+  title: 'UI/DatePicker',
   component: CustomDatePicker,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
