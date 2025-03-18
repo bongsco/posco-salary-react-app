@@ -1,6 +1,6 @@
 @import url('./global.css');
 
-.table {
+table {
   width: 100%;
   border: none;
   border-collapse: collapse;
@@ -9,24 +9,24 @@
   font: var(--font-caption-2r-pc);
 }
 
-.table_header {
+thead td {
   background-color: var(--color-primary-lightest);
   color: var(--color-primary-darker);
 }
 
-.table_header:hover {
+thead td:hover {
   background-color: var(--color-primary-lighter);
 }
 
-.table_body {
+tbody td {
   background-color: var(--color-background-general);
 }
 
-.table_body:hover {
+tbody td:hover {
   background-color: var(--color-grayscale-1);
 }
 
-.table_element {
+td {
   width: 100%;
   padding: 13.5px 12px;
   text-align: center;
@@ -35,7 +35,7 @@
   align-items: center; /* 세로 방향으로 중앙 정렬 */
 }
 
-.table_row {
+tr {
   display: flex;
   justify-content: space-between;
 }
