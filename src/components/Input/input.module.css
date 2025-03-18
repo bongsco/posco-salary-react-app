@@ -3,6 +3,9 @@
 .input-box-container {
   display: flex;
   flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+  justify-content: flex-start;
   align-items: flex-start;
   gap: 6px;
   font: var(--font-caption-1r-pc);
@@ -26,11 +29,11 @@
   color: var(--color-grayscale-5);
 }
 
-.input-box.primary {
+.input-box.default {
   border-color: var(--color-primary-lighter);
 }
 
-.input-box.primary.focused {
+.input-box.default:focus {
   border-color: var(--color-primary-main);
   box-shadow: 0 0 8px 3px rgba(64, 175, 255, 0.1);
 }
@@ -56,7 +59,7 @@
   visibility: visible;
 }
 
-.input-box-label.primary {
+.input-box-label.default {
   color: var(--color-primary-main);
 }
 
@@ -65,5 +68,5 @@
 }
 
 .input-box-label.ok {
-  color: var(--color-system-ok);
+  color: var(--color-system-dark);
 }
