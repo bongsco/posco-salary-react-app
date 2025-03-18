@@ -1,45 +1,40 @@
+import { fn } from '@storybook/test';
 import CustomDatePicker from './CustomDatePicker';
 
 export default {
-  title: 'UI/DatePicker',
+  title: 'UI/CustomDatePicker',
   component: CustomDatePicker,
-  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
+  tags: ['autodocs'],
   argTypes: {
-    selectedDate: { control: 'date' },
-    disabled: { control: 'boolean' },
-    saved: { control: 'boolean' }, // ✅ saved 옵션 추가
+    isActive: { control: 'boolean' },
+    isSaved: { control: 'boolean' },
   },
-  args: {
-    selectedDate: new Date(),
-    disabled: false,
-    saved: false, // 기본값 false
-  },
+  args: { onChange: fn() }, // ✅ Storybook에서 onChange 이벤트 추적 가능
 };
 
-// 기본 스토리
+// ✅ 기본 스토리
 export const Default = {
   args: {
-    selectedDate: new Date(),
-    saved: false, // 기본값 false
+    isActive: false,
+    isSaved: false,
   },
 };
 
-// 비활성화된 상태
+// ✅ 저장된 상태 (isSaved = true)
+export const SavedState = {
+  args: {
+    isActive: false,
+    isSaved: true,
+  },
+};
+
+// ✅ 비활성화된 상태 (isActive = true)
 export const Disabled = {
   args: {
-    selectedDate: new Date(),
-    disabled: true,
-    saved: false,
-  },
-};
-
-// ✅ 저장된 상태 (새로운 스토리)
-export const Saved = {
-  args: {
-    selectedDate: new Date(),
-    saved: true, // 저장된 상태
+    isActive: true,
+    isSaved: false,
   },
 };
