@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Switch from './Switch';
 
 export default {
@@ -6,15 +5,17 @@ export default {
   component: Switch,
   tags: ['autodocs'],
   argTypes: {
-    currentOn: { control: 'boolean' },
+    initialOn: { control: 'boolean' },
   },
 };
 
-function Template() {
-  const [current, setCurrent] = useState(false);
-  return (
-    <Switch currentOn={current} onChanged={() => setCurrent((prev) => !prev)} />
-  );
-}
-
-export const Default = Template.bind();
+const data = { toggle1: false };
+export const Default = {
+  args: {
+    initialOn: data.toggle1,
+    onClick: (value) => {
+      data.toggle1 = value;
+      console.log(`새로운 값: ${value}`);
+    },
+  },
+};

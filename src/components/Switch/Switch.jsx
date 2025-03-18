@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import styles from './switch.module.css';
 
-export default function Switch({ currentOn, onChanged }) {
+export default function Switch({ initialOn, onClick }) {
+  const [isOn, setIsOn] = useState(initialOn);
+
   const toggleHandler = () => {
-    onChanged(!currentOn);
+    onClick(!isOn);
+    setIsOn(!isOn);
   };
 
   return (
@@ -11,22 +15,22 @@ export default function Switch({ currentOn, onChanged }) {
       type="button"
       role="switch"
       aria-label="Toggle Switch Container"
-      aria-checked={currentOn}
+      aria-checked={isOn}
       tabIndex="0"
       onClick={toggleHandler}
       className={styles['toggle-switch']}
     >
       <div
-        className={`${styles['toggle-container']} ${currentOn ? styles['toggle-checked'] : ''}`}
+        className={`${styles['toggle-container']} ${isOn ? styles['toggle-checked'] : ''}`}
       />
       <div
-        className={`${styles['toggle-circle']} ${currentOn ? styles['toggle-checked'] : ''}`}
+        className={`${styles['toggle-circle']} ${isOn ? styles['toggle-checked'] : ''}`}
       />
     </button>
   );
 }
 
 Switch.propTypes = {
-  currentOn: PropTypes.bool.isRequired,
-  onChanged: PropTypes.func.isRequired,
+  initialOn: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
