@@ -4,11 +4,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './datepicker.module.css'; // CSS Modules import
 
-function CustomDatePicker({ isActive, isSaved, onChange }) {
+function CustomDatePicker({ isDisabled, isSaved, onChange }) {
   const [date, setDate] = useState(new Date());
 
   const handleDateChange = (d) => {
-    if (!isActive) {
+    if (!isDisabled) {
       setDate(d);
       onChange(d);
     }
@@ -17,24 +17,24 @@ function CustomDatePicker({ isActive, isSaved, onChange }) {
   return (
     <DatePicker
       showIcon
-      toggleCalendarOnIconClick={!isActive}
+      toggleCalendarOnIconClick={!isDisabled}
       selected={date}
-      onChange={(d) => !isActive && handleDateChange(d)}
+      onChange={(d) => !isDisabled && handleDateChange(d)}
       dateFormat="yyyy-MM-dd"
-      disabled={isActive}
+      disabled={isDisabled}
       className={`${styles.input} ${isSaved ? styles.saved : styles.unsaved}`}
     />
   );
 }
 
 CustomDatePicker.propTypes = {
-  isActive: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   isSaved: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
 CustomDatePicker.defaultProps = {
-  isActive: false,
+  isDisabled: false,
   isSaved: false,
   onChange: () => {},
 };

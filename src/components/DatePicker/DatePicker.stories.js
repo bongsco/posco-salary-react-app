@@ -9,7 +9,7 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
-    isActive: { control: 'boolean' },
+    isDisabled: { control: 'boolean' },
     isSaved: { control: 'boolean' },
   },
   args: { onChange: fn() }, // ✅ Storybook에서 onChange 이벤트 추적 가능
@@ -18,7 +18,7 @@ export default {
 // ✅ 기본 스토리
 export const Default = {
   args: {
-    isActive: false,
+    isDisabled: false,
     isSaved: false,
   },
 };
@@ -26,7 +26,7 @@ export const Default = {
 // ✅ 저장된 상태 (isSaved = true)
 export const SavedState = {
   args: {
-    isActive: false,
+    isDisabled: false,
     isSaved: true,
   },
 };
@@ -34,7 +34,7 @@ export const SavedState = {
 // ✅ 비활성화된 상태 (isActive = true)
 export const Disabled = {
   args: {
-    isActive: true,
-    isSaved: false,
+    isDisabled: true,
+    isSaved: true,
   },
 };
