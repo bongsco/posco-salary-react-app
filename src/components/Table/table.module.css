@@ -1,0 +1,41 @@
+@import url('../../styles/global.css');
+
+.table {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  align-items: center;
+  justify-content: center;
+  font: var(--font-caption-2r-pc);
+}
+
+.table_header {
+  background-color: var(--color-primary-lightest);
+  color: var(--color-primary-darker);
+}
+
+.table_header:hover {
+  background-color: var(--color-primary-lighter);
+}
+
+.table_body {
+  background-color: var(--color-background-general);
+}
+
+.table_body:hover {
+  background-color: var(--color-grayscale-1);
+}
+
+.table_element {
+  width: 100%;
+  padding: 13.5px 12px;
+  text-align: center;
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 가로 방향으로 중앙 정렬 */
+  align-items: center; /* 세로 방향으로 중앙 정렬 */
+}
+
+.table_row {
+  display: flex;
+  justify-content: space-between;
+}
