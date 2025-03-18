@@ -1,3 +1,4 @@
+import { fn } from '@storybook/test';
 import NavBar from './NavBar';
 
 export default {
@@ -12,6 +13,7 @@ export default {
       { label: '로그인', href: '/login' },
       { label: '계정 등록', href: '/register' },
     ], // 기본 네비게이션 아이템
+    toggleSidebar: fn(), // ✅ `fn()`을 사용하여 사이드바 토글 이벤트 추적
   },
 };
 
@@ -22,6 +24,7 @@ export const Default = {
       { label: '로그인', href: '/login' },
       { label: '계정 등록', href: '/register' },
     ],
+    toggleSidebar: fn(), // ✅ Storybook에서 이벤트 추적
   },
 };
 
@@ -33,5 +36,6 @@ export const CustomNavBar = {
       { label: '서비스', href: '/services' },
       { label: '문의', href: '/contact' },
     ],
+    toggleSidebar: fn(), // ✅ Storybook에서 이벤트 추적
   },
 };
