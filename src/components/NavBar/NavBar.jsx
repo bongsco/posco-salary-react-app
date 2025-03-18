@@ -4,11 +4,6 @@ import MenuTab from './icons/MenuTab';
 import Logo from './icons/Logo';
 
 export default function NavBar({ navItems }) {
-  // const navItems = [
-  //   { label: '로그인', href: '/login' },
-  //   { label: '계정 등록', href: '/register' },
-  // ];
-
   return (
     <div className={styles.navbar}>
       <div className={styles.navContainer}>
