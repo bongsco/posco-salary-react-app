@@ -1,0 +1,51 @@
+.breadcrumbs,
+.breadcrumbs * {
+  box-sizing: border-box;
+  height: 16px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.breadcrumbList {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumbItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.name {
+  color: var(--color-grayscale-6);
+  text-align: left;
+  font: var(--font-caption-1r-pc);
+  position: relative;
+}
+
+.chevronRight {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  font-size: 16px;
+  color: var(--neutral-70, #757575);
+}
+
+.active {
+  color: var(--color-grayscale-black);
+  font-weight: 600;
+}
