@@ -4,7 +4,7 @@ import Chevron from './icons/Chevron';
 
 export default function BreadCrumbs({ items }) {
   return (
-    <nav className={styles.breadcrumbs}>
+    <div className={styles.breadcrumbs}>
       <ul className={styles.breadcrumbList}>
         {items.map((item, index) => (
           <li key={item.label} className={styles.breadcrumbItem}>
@@ -22,7 +22,7 @@ export default function BreadCrumbs({ items }) {
           </li>
         ))}
       </ul>
-    </nav>
+    </div>
   );
 }
 
