@@ -6,7 +6,7 @@ export default {
   component: Dropdown,
   tags: ['autodocs'],
   args: {
-    onClick: fn(),
+    onChange: fn(),
   },
 };
 
@@ -28,7 +28,6 @@ export const Default = {
       '한상진',
     ],
     error: false,
-    initialIndex: 0,
     placeHolder: 'Dropdown 메뉴',
   },
 };

@@ -7,19 +7,19 @@ export default function Dropdown({
   error,
   message,
   placeHolder,
-  initialIndex,
-  onClick,
+  onChange,
 }) {
+  const uniqueOptions = new Set(options);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(initialIndex);
+  const [selectedValue, setSelectedValue] = useState(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (index) => {
-    onClick(index + 1);
-    setSelectedIndex(index + 1);
+  const handleOptionClick = (option) => {
+    onChange(option);
+    setSelectedValue(option);
     setIsOpen(false);
   };
 
@@ -28,33 +28,21 @@ export default function Dropdown({
       <div className={styles.dropdown}>
         <button
           type="button"
-          className={`${styles['select-selected']} ${selectedIndex !== 0 ? styles['selected-option'] : ''}`}
+          className={`${styles['select-selected']} ${selectedValue === null ? '' : styles['selected-option']}`}
           onClick={toggleDropdown}
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              toggleDropdown();
-            }
-          }}
         >
-          {selectedIndex === 0 ? placeHolder : options[selectedIndex - 1]}
+          {selectedValue === null ? placeHolder : selectedValue}
         </button>
       </div>
       {!isOpen && message && <div className={styles.message}>{message}</div>}
       {isOpen && (
         <div className={styles['select-items-list']}>
-          {options.map((option, index) => (
+          {Array.from(uniqueOptions).map((option) => (
             <button
               type="button"
               className={styles['select-item']}
               key={option}
-              tabIndex={0}
-              onClick={() => handleOptionClick(index)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleOptionClick(index);
-                }
-              }}
+              onClick={() => handleOptionClick(option)}
             >
               {option}
             </button>
@@ -70,8 +58,7 @@ Dropdown.propTypes = {
   error: PropTypes.bool.isRequired,
   message: PropTypes.string,
   placeHolder: PropTypes.string.isRequired,
-  initialIndex: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 Dropdown.defaultProps = {

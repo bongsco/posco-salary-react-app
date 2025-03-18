@@ -46,7 +46,7 @@
   content: '';
   width: 20px;
   height: 12px;
-  background-image: url('../../assets/dropdownbutton.svg');
+  background-image: url('./dropdownbutton.svg');
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
