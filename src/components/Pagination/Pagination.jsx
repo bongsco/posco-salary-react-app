@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
 import Button from './Button/Button';
-import InputPage from './InputPage/InputPage';
-import SelectPage from './SelectPage/SelectPage';
+import PageInput from './PageInput/PageInput';
+import PageSelect from './PageSelect/PageSelect';
 import styles from './pagination.module.css';
 
-export default function Pagination({ currentPage, onPageChange }) {
+export default function Pagination({
+  currentPage,
+  onPageChange,
+  rowsPerPage,
+  onRowsPerPageChange,
+}) {
   const totalPage = 10; // ✅ 전체 페이지 수
 
   // ✅ 페이지 변경 핸들러 (버튼 클릭 시 실행)
@@ -31,16 +36,15 @@ export default function Pagination({ currentPage, onPageChange }) {
         />
       </div>
 
-      {/* ✅ InputPage와 SelectPage는 항상 표시됨 */}
       <div className={styles.inputSelectContainer}>
-        <InputPage
+        <PageInput
           currentPage={currentPage}
           onPageChange={(e) => handlePageChange(Number(e.target.value))}
           totalPage={totalPage}
         />
-        <SelectPage
-          currentPage={currentPage}
-          onPageChange={(e) => handlePageChange(Number(e.target.value))}
+        <PageSelect
+          rowsPerPage={rowsPerPage} // ✅ 한 페이지에 표시할 행 개수 전달
+          onRowsPerPageChange={onRowsPerPageChange} // ✅ 부모에서 행 개수 변경 가능하도록 Prop 전달
         />
       </div>
     </div>
@@ -48,10 +52,13 @@ export default function Pagination({ currentPage, onPageChange }) {
 }
 
 Pagination.propTypes = {
-  currentPage: PropTypes.number, // ✅ 현재 페이지는 필수 값
+  currentPage: PropTypes.number, // ✅ 현재 페이지 필수
   onPageChange: PropTypes.func.isRequired, // ✅ 페이지 변경 핸들러 필수
+  rowsPerPage: PropTypes.number, // ✅ 한 페이지에 표시할 행 개수 필수
+  onRowsPerPageChange: PropTypes.func.isRequired, // ✅ 행 개수 변경 핸들러 필수
 };
 
 Pagination.defaultProps = {
   currentPage: 1,
+  rowsPerPage: 10, // ✅ 기본값: 10개 행 표시
 };

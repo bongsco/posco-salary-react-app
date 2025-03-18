@@ -1,4 +1,4 @@
-import SelectPage from './SelectPage';
+import SelectPage from './PageSelect';
 
 export default {
   title: 'UI/Pagination/SelectPage',

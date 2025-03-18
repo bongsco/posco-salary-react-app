@@ -1,8 +1,8 @@
-import InputPage from './InputPage';
+import PageInput from './PageInput';
 
 export default {
   title: 'UI/Pagination/InputPage',
-  component: InputPage,
+  component: PageInput,
   argTypes: {
     currentPage: { control: 'number' }, // 페이지 입력을 숫자로 조정 가능
     onPageChange: { action: 'changed' }, // 입력 값 변경 감지

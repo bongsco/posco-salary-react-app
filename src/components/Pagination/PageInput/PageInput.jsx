@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import styles from './input-page.module.css';
+import styles from './page-input.module.css';
 
-export default function InputPage({ currentPage, onPageChange, totalPage }) {
+export default function PageInput({ currentPage, onPageChange, totalPage }) {
   return (
     <div className={styles.input}>
       <div>페이지</div>
@@ -11,13 +11,13 @@ export default function InputPage({ currentPage, onPageChange, totalPage }) {
   );
 }
 
-InputPage.propTypes = {
+PageInput.propTypes = {
   currentPage: PropTypes.number,
   onPageChange: PropTypes.func,
   totalPage: PropTypes.number,
 };
 
-InputPage.defaultProps = {
+PageInput.defaultProps = {
   currentPage: 1,
   onPageChange: () => {},
   totalPage: 10,
