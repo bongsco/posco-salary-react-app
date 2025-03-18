@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types'; // PropTypes import
 import styles from './dropdown.module.css';
 
@@ -7,43 +7,40 @@ export default function Dropdown({
   error,
   message,
   placeHolder,
-  currentValue,
+  currentIndex,
   onChanged,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(currentValue);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
-    setSelectedValue(currentValue);
-  }, [currentValue]);
+    setSelectedIndex(currentIndex);
+  }, [currentIndex]);
 
   useEffect(() => {
-    if (!options.includes(selectedValue)) {
-      onChanged(null);
+    if (selectedIndex !== currentIndex) {
+      onChanged(selectedIndex);
     }
-  }, [selectedValue, options, onChanged]);
+  }, [selectedIndex, currentIndex, onChanged]);
 
   // 드롭다운 메뉴 열기/닫기
   const toggleDropdown = () => {
-    setIsOpen((prevState) => !prevState);
+    setIsOpen(!isOpen);
   };
 
-  // 사용자가 선택한 값을 SelectValue로 설정
-  const handleOptionClick = (option) => {
-    setSelectedValue(option);
+  // 사용자가 선택한 값을 SelectIndex로 설정
+  const handleOptionClick = (index) => {
+    setSelectedIndex(index + 1);
     setIsOpen(false);
-    onChanged(option);
   };
 
   return (
     <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
       <div className={styles.dropdown}>
-        <div
-          className={`${styles['select-selected']} ${
-            options.includes(selectedValue) ? styles['selected-option'] : ''
-          }`}
+        <button
+          type="button"
+          className={`${styles['select-selected']} ${selectedIndex !== 0 ? styles['selected-option'] : ''}`}
           onClick={toggleDropdown}
-          role="button"
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
@@ -51,27 +48,27 @@ export default function Dropdown({
             }
           }}
         >
-          {options.includes(selectedValue) ? selectedValue : placeHolder}
-        </div>
+          {selectedIndex === 0 ? placeHolder : options[selectedIndex - 1]}
+        </button>
       </div>
       {!isOpen && message && <div className={styles.message}>{message}</div>}
       {isOpen && (
         <div className={styles['select-items-list']}>
-          {options.map((option) => (
-            <div
+          {options.map((option, index) => (
+            <button
+              type="button"
               className={styles['select-item']}
               key={option}
-              role="button"
               tabIndex={0}
-              onClick={() => handleOptionClick(option)}
+              onClick={() => handleOptionClick(index)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  handleOptionClick(option);
+                  handleOptionClick(index);
                 }
               }}
             >
               {option}
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -80,11 +77,11 @@ export default function Dropdown({
 }
 
 Dropdown.propTypes = {
-  options: PropTypes.arrayOf().isRequired,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
   error: PropTypes.bool.isRequired,
   message: PropTypes.string,
   placeHolder: PropTypes.string.isRequired,
-  currentValue: PropTypes.string.isRequired,
+  currentIndex: PropTypes.number.isRequired,
   onChanged: PropTypes.func.isRequired,
 };
 
