@@ -7,6 +7,7 @@ table {
   align-items: center;
   justify-content: center;
   font: var(--font-caption-2r-pc);
+  box-shadow: var(--shadow);
 }
 
 thead td {
@@ -38,4 +39,8 @@ td {
 tr {
   display: flex;
   justify-content: space-between;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--color-grayscale-1);
 }
