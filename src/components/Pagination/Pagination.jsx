@@ -4,30 +4,13 @@ import InputPage from './InputPage/InputPage';
 import SelectPage from './SelectPage/SelectPage';
 import styles from './pagination.module.css';
 
-export default function Pagination({ currentPage, onPageChange, template }) {
+export default function Pagination({ currentPage, onPageChange }) {
   const totalPage = 10; // ✅ 전체 페이지 수
 
   // ✅ 페이지 변경 핸들러 (버튼 클릭 시 실행)
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPage) {
-      onPageChange(newPage);
-    }
-  };
-
-  // ✅ template에 따라 이전/다음 버튼 동작 변경
-  const handlePrev = () => {
-    if (template === 'input') {
-      handlePageChange(currentPage - 1);
-    } else if (template === 'select') {
-      handlePageChange(currentPage - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (template === 'input') {
-      handlePageChange(currentPage + 1);
-    } else if (template === 'select') {
-      handlePageChange(currentPage + 1);
+      onPageChange(newPage); // 부모 컴포넌트에서 currentPage 업데이트
     }
   };
 
@@ -36,13 +19,13 @@ export default function Pagination({ currentPage, onPageChange, template }) {
       {/* ✅ 이전 / 다음 버튼 */}
       <div className={styles.buttonContainer}>
         <Button
-          onClick={handlePrev}
+          onClick={() => handlePageChange(currentPage - 1)}
           type="sub"
           text="이전"
           disabled={currentPage === 1}
         />
         <Button
-          onClick={handleNext}
+          onClick={() => handlePageChange(currentPage + 1)}
           text="다음"
           disabled={currentPage === totalPage}
         />
@@ -65,13 +48,10 @@ export default function Pagination({ currentPage, onPageChange, template }) {
 }
 
 Pagination.propTypes = {
-  currentPage: PropTypes.number,
-  onPageChange: PropTypes.func,
-  template: PropTypes.oneOf(['input', 'select']), // ✅ 템플릿 선택 가능
+  currentPage: PropTypes.number, // ✅ 현재 페이지는 필수 값
+  onPageChange: PropTypes.func.isRequired, // ✅ 페이지 변경 핸들러 필수
 };
 
 Pagination.defaultProps = {
   currentPage: 1,
-  onPageChange: () => {},
-  template: 'input', // 기본값: input 사용
 };

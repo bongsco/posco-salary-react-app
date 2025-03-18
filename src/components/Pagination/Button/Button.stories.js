@@ -1,7 +1,7 @@
 import Button from './Button';
 
 export default {
-  title: 'Components/Pagination/Button',
+  title: 'UI/Pagination/Button',
   component: Button,
   argTypes: {
     text: { control: 'text' }, // 버튼 텍스트 변경 가능

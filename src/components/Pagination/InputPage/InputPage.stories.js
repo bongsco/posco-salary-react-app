@@ -1,7 +1,7 @@
 import InputPage from './InputPage';
 
 export default {
-  title: 'Components/Pagination/InputPage',
+  title: 'UI/Pagination/InputPage',
   component: InputPage,
   argTypes: {
     currentPage: { control: 'number' }, // 페이지 입력을 숫자로 조정 가능

@@ -1,27 +1,21 @@
 import Pagination from './Pagination';
 
 export default {
-  title: 'Components/Pagination',
+  title: 'UI/Pagination',
   component: Pagination,
+  tags: ['autodocs'],
   argTypes: {
-    currentPage: { control: { type: 'number', min: 1, max: 10 } },
-    onPageChange: { action: 'changed' },
-    template: {
-      control: { type: 'select', options: ['input', 'select'] }, // ✅ 템플릿 선택 가능
-    },
+    currentPage: { control: { type: 'number', min: 1, max: 10 } }, // ✅ 현재 페이지 조정 가능
+    onPageChange: { action: 'changed' }, // ✅ Storybook 액션 로깅
   },
   args: {
-    currentPage: 1,
-    template: 'input',
+    currentPage: 1, // 기본값
   },
 };
 
-// ✅ 기본 템플릿 (Input + Select 포함)
+// ✅ 기본 Pagination 스토리
 export const Default = {
-  args: { template: 'input' },
-};
-
-// ✅ Select 템플릿 (Input + Select 포함, 동작 변경)
-export const SelectTemplate = {
-  args: { template: 'select' },
+  args: {
+    currentPage: 1,
+  },
 };
