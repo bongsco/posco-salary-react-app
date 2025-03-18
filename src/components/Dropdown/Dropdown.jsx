@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types'; // PropTypes import
 import styles from './dropdown.module.css';
 
@@ -7,29 +7,18 @@ export default function Dropdown({
   error,
   message,
   placeHolder,
-  currentIndex,
-  onChanged,
+  initialIndex,
+  onClick,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
-  useEffect(() => {
-    setSelectedIndex(currentIndex);
-  }, [currentIndex]);
-
-  useEffect(() => {
-    if (selectedIndex !== currentIndex) {
-      onChanged(selectedIndex);
-    }
-  }, [selectedIndex, currentIndex, onChanged]);
-
-  // 드롭다운 메뉴 열기/닫기
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  // 사용자가 선택한 값을 SelectIndex로 설정
   const handleOptionClick = (index) => {
+    onClick(index + 1);
     setSelectedIndex(index + 1);
     setIsOpen(false);
   };
@@ -81,8 +70,8 @@ Dropdown.propTypes = {
   error: PropTypes.bool.isRequired,
   message: PropTypes.string,
   placeHolder: PropTypes.string.isRequired,
-  currentIndex: PropTypes.number.isRequired,
-  onChanged: PropTypes.func.isRequired,
+  initialIndex: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 Dropdown.defaultProps = {
