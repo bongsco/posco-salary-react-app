@@ -5,14 +5,11 @@ import styles from './sidebar.module.css';
 import { icons } from '#components/SideBar/Icon';
 
 /**
- * TODO: Replace `isActive` with `useLocation` check
- *
  * @param {Object} props
  * @param {Array<{
  *   elementType: 'item';
  *   text: string;
  *   href: string;
- *   isActive: boolean;
  *   icon: keyof icons
  * } | {
  *   elementType: 'category';
@@ -20,7 +17,6 @@ import { icons } from '#components/SideBar/Icon';
  *   subItems: Array<{
  *     text: string;
  *     href: string;
- *     isActive: boolean;
  *   }>;
  *   icon: keyof icons
  * }>} props.data
@@ -56,14 +52,12 @@ SideBar.propTypes = {
     PropTypes.shape({
       itemType: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
-      isActive: PropTypes.bool,
       href: PropTypes.string,
       icon: PropTypes.oneOf(Object.keys(icons)),
       subItems: PropTypes.arrayOf(
         PropTypes.shape({
           text: PropTypes.string,
           href: PropTypes.string,
-          isActive: PropTypes.bool,
         }),
       ),
     }),

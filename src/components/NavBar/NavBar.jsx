@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styles from './navbar.module.css';
 import MenuTab from './icons/MenuTab';
 import Logo from './icons/Logo';
@@ -13,9 +14,9 @@ export default function NavBar({ navItems, toggleSidebar }) {
 
             <div className={styles.logo}>
               <div className={styles.logoWrapper}>
-                <a href="/" className={styles.logoLink}>
+                <Link to="/" className={styles.logoLink}>
                   <Logo />
-                </a>
+                </Link>
               </div>
 
               <div className={styles.title}>연봉관리시스템</div>
@@ -24,9 +25,9 @@ export default function NavBar({ navItems, toggleSidebar }) {
 
           <nav className={styles.frame}>
             {navItems.map((item) => (
-              <a key={item.href} href={item.href} className={styles.text}>
+              <Link key={item.href} href={item.href} className={styles.text}>
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>

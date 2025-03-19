@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './item.module.css';
 import Icon from '#components/SideBar/Icon';
 
-function Item({ icon, text, href, isActive }) {
+function Item({ icon, text, href }) {
+  const location = useLocation();
+
   return (
-    <a
-      href={href}
-      className={`${styles.item} ${isActive ? styles.active : styles.inactive}`}
+    <Link
+      to={href}
+      className={`${styles.item} ${location.pathname === href ? styles.active : styles.inactive}`}
     >
       <Icon icon={icon} />
       <div className={styles.caption}>{text}</div>
-    </a>
+    </Link>
   );
 }
 
@@ -19,7 +22,6 @@ Item.propTypes = {
   icon: PropTypes.oneOf(['home', 'person', 'card']).isRequired,
   text: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
-  isActive: PropTypes.bool.isRequired,
 };
 
 export default Item;

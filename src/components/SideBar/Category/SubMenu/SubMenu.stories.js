@@ -22,22 +22,18 @@ export const Primary = {
       {
         text: '옵션1',
         href: '/href/1',
-        isActive: true,
       },
       {
         text: 'Option2',
         href: '/href/2',
-        isActive: false,
       },
       {
         text: '옵션3',
         href: '/href/3',
-        isActive: false,
       },
       {
         text: '옵션4',
         href: '/href/4',
-        isActive: false,
       },
     ],
   },
