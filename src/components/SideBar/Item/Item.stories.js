@@ -11,7 +11,6 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
-    isActive: { control: 'boolean' },
     icon: {
       control: {
         type: 'select',
@@ -26,6 +25,5 @@ export const Primary = {
   args: {
     icon: 'home',
     text: 'Caption Here',
-    isActive: false,
   },
 };

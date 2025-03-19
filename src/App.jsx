@@ -57,6 +57,12 @@ function Layout() {
               text: '계산식 관리',
               href: '/formula',
             },
+            {
+              elementType: 'item',
+              icon: 'gear',
+              text: '테스트',
+              href: '/test',
+            },
           ]}
         />
         <div className="AppContent">

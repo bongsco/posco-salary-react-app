@@ -10,3 +10,7 @@
   stroke: currentColor;
   color: inherit;
 }
+
+.gear path {
+  fill: currentColor;
+}

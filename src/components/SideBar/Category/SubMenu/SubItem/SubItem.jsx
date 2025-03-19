@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './subitem.module.css';
 
 /**
- * TODO: Replace `isActive` with `useLocation` check
- *
  * @param {{
  *   href: string;
  *   text: string;
- *   isActive: boolean;
  * }} props
  * @returns {React.JSX.Element}
  */
-export default function SubItem({ href, text, isActive }) {
+export default function SubItem({ href, text }) {
+  const location = useLocation();
+
   return (
-    <a
-      href={href}
-      className={`${styles.subitem} ${isActive ? styles.active : styles.inactive}`}
+    <Link
+      to={href}
+      className={`${styles.subitem} ${location.pathname === href ? styles.active : styles.inactive}`}
     >
       <svg
         width="10"
@@ -28,12 +28,11 @@ export default function SubItem({ href, text, isActive }) {
       </svg>
 
       <div className="text">{text}</div>
-    </a>
+    </Link>
   );
 }
 
 SubItem.propTypes = {
   href: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
-  isActive: PropTypes.bool.isRequired,
 };

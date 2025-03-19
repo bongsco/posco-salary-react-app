@@ -26,22 +26,18 @@ export default {
       {
         text: '서브아이템1',
         href: '/category/sub/1',
-        isActive: true,
       },
       {
         text: '서브아이템2',
         href: '/category/sub/2',
-        isActive: false,
       },
       {
         text: '서브아이템3',
         href: '/category/sub/3',
-        isActive: false,
       },
       {
         text: '서브아이템4',
         href: '/category/sub/4',
-        isActive: false,
       },
     ],
   },

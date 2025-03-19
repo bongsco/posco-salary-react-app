@@ -13,7 +13,6 @@ import SubMenu from './SubMenu/SubMenu';
  *   subItems: Array<{
  *     text: string;
  *     href: string;
- *     isActive: boolean;
  *   }>;
  * }} props
  * @returns

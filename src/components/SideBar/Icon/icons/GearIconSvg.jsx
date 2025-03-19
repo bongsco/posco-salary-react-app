@@ -4,7 +4,7 @@ import styles from './svg.module.css';
 export default function GearIconSvg() {
   return (
     <svg
-      className={styles.icon}
+      className={`${styles.icon} ${styles.gear}`}
       width="800px"
       height="800px"
       viewBox="0 0 24 24"
