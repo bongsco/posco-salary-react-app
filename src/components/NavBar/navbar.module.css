@@ -10,6 +10,7 @@
   justify-content: center;
   padding: 24px 40px;
   position: relative;
+  border-bottom: 1px solid var(--color-background-block);
 }
 
 .navContainer {
@@ -36,10 +37,11 @@
   width: 27px;
 }
 
-
 .icon:hover {
   cursor: pointer;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
   opacity: 0.8; /* ✅ hover 시 투명도 조절 */
   transform: scale(1.1); /* ✅ hover 시 크기 조절 */
 }
@@ -55,10 +57,10 @@
 .logoImage {
   height: 27px;
   width: 83px;
-  fill:#00588a;
-  fill-opacity:1;
-  fill-rule:nonzero;
-  stroke:none;
+  fill: #00588a;
+  fill-opacity: 1;
+  fill-rule: nonzero;
+  stroke: none;
 }
 
 .logoWrapper {
@@ -66,7 +68,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   justify-content: center;
-  padding: 8px 0 0 ;
+  padding: 8px 0 0;
   position: relative;
 }
 

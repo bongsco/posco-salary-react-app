@@ -20,5 +20,5 @@ export default function CategoryChevron({ side }) {
 }
 
 CategoryChevron.propTypes = {
-  side: PropTypes.oneOf('up', 'down').isRequired,
+  side: PropTypes.oneOf(['up', 'down']).isRequired,
 };

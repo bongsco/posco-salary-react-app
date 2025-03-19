@@ -7,7 +7,10 @@ export default function MenuTab({ onClick }) {
       className={styles.icon}
       viewBox="0 0 29 20"
       fill="none"
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

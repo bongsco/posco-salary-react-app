@@ -8,6 +8,7 @@
   gap: 8px;
 
   background-color: var(--color-background-general);
+  border-right: 1px solid var(--color-background-block);
 
   width: 234px;
   height: 100%;

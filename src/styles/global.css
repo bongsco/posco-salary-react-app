@@ -4,13 +4,6 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
 :root {
   --color-primary-lightest: #e9f6ff;
   --color-primary-lighter: #c2e6ff;
