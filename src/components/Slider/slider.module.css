@@ -11,6 +11,7 @@
 }
 
 .slider_value {
+  width: 5%;
   font: var(--font-caption-2b-pc);
   color: var(--color-primary-darker);
 }
