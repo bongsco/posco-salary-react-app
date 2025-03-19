@@ -5,8 +5,8 @@ export default {
   component: LabeledSwitch,
   argTypes: {
     label: { control: 'text' },
-    checked: { control: 'boolean' },
-    committed: { control: 'boolean' },
+    isChecked: { control: 'boolean' },
+    isCommitted: { control: 'boolean' },
     onClick: { action: 'clicked' },
   },
   tags: ['autodocs'],
@@ -15,31 +15,31 @@ export default {
 export const NotCheckedNotCommitted = {
   args: {
     label: 'Value',
-    checked: false,
-    committed: false,
+    isChecked: false,
+    isCommitted: false,
   },
 };
 
 export const CheckedCommitted = {
   args: {
     label: 'Value',
-    checked: true,
-    committed: true,
+    isChecked: true,
+    isCommitted: true,
   },
 };
 
 export const CheckedNotCommitted = {
   args: {
     label: 'Value',
-    checked: true,
-    committed: false,
+    isChecked: true,
+    isCommitted: false,
   },
 };
 
 export const NotCheckedCommitted = {
   args: {
     label: 'Value',
-    checked: false,
-    committed: true,
+    isChecked: false,
+    isCommitted: true,
   },
 };
