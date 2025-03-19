@@ -1,0 +1,101 @@
+.step {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: max-content;
+  max-width: 100%;
+  min-width: 115px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  gap: 6px;
+  text-align: center;
+  color: var(--color-grayscale-6);
+}
+
+.title {
+  font: var(--font-subtitle-2b-pc);
+  color: inherit;
+}
+
+.icon {
+  width: 27px;
+  height: 27px;
+}
+
+.complete {
+  color: var(--color-primary-dark);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 6px;
+  width: 100%;
+  padding: 0px;
+}
+
+.item {
+  font: var(--font-caption-1b-pc);
+  display: flex;
+  align-items: center;
+  gap: 6.5px;
+  width: auto;
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.itemText {
+  font: var(--font-caption-1b-pc);
+}
+
+.complete .itemText {
+  color: var(--color-grayscale-black);
+}
+
+.working .itemText {
+  color: var(--color-primary-main);
+}
+
+.undone .itemText {
+  color: var(--color-grayscale-6);
+}
+
+.bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.complete .bullet {
+  background: var(--color-primary-darker);
+}
+
+.working .bullet {
+  background-color: var(--color-primary-main);
+}
+
+.undone .bullet {
+  background: var(--color-grayscale-3);
+}
+
+.date {
+  font: var(--font-caption-3l-pc);
+}
+
+.complete .date {
+  color: var(--color-grayscale-6);
+}
+
+.working .date {
+  color: var(--color-primary-main);
+}
