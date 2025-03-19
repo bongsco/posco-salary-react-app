@@ -26,3 +26,9 @@ export const CardIcon = {
     icon: 'card',
   },
 };
+
+export const GearIcon = {
+  args: {
+    icon: 'gear',
+  },
+};

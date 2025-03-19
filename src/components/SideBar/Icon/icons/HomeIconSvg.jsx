@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './svg.module.css';
 
-export default function CardIconSvg() {
+export default function HomeIconSvg() {
   return (
     <svg
       className={styles.icon}

@@ -1,20 +1,21 @@
 @import url('../../../styles/global.css');
 
 .item {
+  text-decoration: none;
+  font: var(--font-caption-1r-pc);
+
   display: flex;
   flex-direction: row;
   justify-content: baseline;
   align-items: center;
   gap: 12px;
 
-  width: 163px;
+  width: 202px;
   height: 32px;
   padding: 0 12px 0 12px;
 
   border-radius: 8px;
   border: 0;
-
-  font: var(--font-caption-1r-pc);
 }
 
 .active {

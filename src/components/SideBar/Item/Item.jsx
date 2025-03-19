@@ -3,23 +3,22 @@ import PropTypes from 'prop-types';
 import styles from './item.module.css';
 import Icon from '#components/SideBar/Icon';
 
-function Item({ icon, caption, onClick, isActive }) {
+function Item({ icon, text, href, isActive }) {
   return (
-    <button
-      type="button"
+    <a
+      href={href}
       className={`${styles.item} ${isActive ? styles.active : styles.inactive}`}
-      onClick={(e) => onClick(e)}
     >
       <Icon icon={icon} />
-      <div className={styles.caption}>{caption}</div>
-    </button>
+      <div className={styles.caption}>{text}</div>
+    </a>
   );
 }
 
 Item.propTypes = {
-  icon: PropTypes.string.isRequired,
-  caption: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  icon: PropTypes.oneOf(['home', 'person', 'card']).isRequired,
+  text: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
 };
 

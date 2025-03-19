@@ -1,6 +1,7 @@
 import { fn } from '@storybook/test';
 
 import Item from './Item';
+import { icons } from '#components/SideBar/Icon';
 
 export default {
   title: 'Layout/SideBar/Item',
@@ -14,8 +15,8 @@ export default {
     icon: {
       control: {
         type: 'select',
-        options: ['home', 'person', 'card'],
       },
+      options: Object.keys(icons),
     },
   },
   args: { onClick: fn() },
@@ -24,7 +25,7 @@ export default {
 export const Primary = {
   args: {
     icon: 'home',
-    caption: 'Caption Here',
+    text: 'Caption Here',
     isActive: false,
   },
 };
