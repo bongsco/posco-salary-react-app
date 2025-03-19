@@ -1,0 +1,9 @@
+.chevron path {
+  stroke: currentColor;
+  color: inherit;
+  stroke-width: 0px;
+}
+
+.upside-down {
+  transform: rotate(180deg) scaleX(-1);
+}
