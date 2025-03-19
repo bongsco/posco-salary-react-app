@@ -1,0 +1,73 @@
+@import '../../styles/global.css';
+
+.input-box-container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+  font: var(--font-caption-1r-pc);
+}
+
+.input-box {
+  width: 225px;
+  height: 30px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  outline: none;
+  background-color: var(--color-background-general);
+  padding-left: 8px;
+  transition:
+    border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.input-box::placeholder {
+  color: var(--color-grayscale-5);
+}
+
+.input-box.default {
+  border-color: var(--color-primary-lighter);
+}
+
+.input-box.default:focus {
+  border-color: var(--color-primary-main);
+  box-shadow: 0 0 8px 3px rgba(64, 175, 255, 0.1);
+}
+
+.input-box.error {
+  border-color: var(--color-system-caution);
+}
+
+.input-box.ok {
+  border-color: var(--color-system-ok);
+}
+
+.input-box-label {
+  padding-left: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.input-box-label.default {
+  color: var(--color-primary-main);
+}
+
+.input-box-label.error {
+  color: var(--color-system-caution);
+}
+
+.input-box-label.ok {
+  color: var(--color-system-dark);
+}

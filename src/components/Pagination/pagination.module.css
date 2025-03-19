@@ -1,0 +1,16 @@
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.inputSelectContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
