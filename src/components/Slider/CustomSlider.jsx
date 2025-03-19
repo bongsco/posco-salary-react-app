@@ -5,15 +5,16 @@ import PropTypes from 'prop-types';
 import styles from './slider.module.css';
 
 export default function CustomSlider({
-  defaultRange,
-  min,
-  max,
+  initialMin,
+  initialMax,
+  minLowerBound,
+  maxUpperBound,
   step,
   onChange,
 }) {
-  const [range, setRange] = useState(defaultRange);
+  const [range, setRange] = useState([initialMin, initialMax]);
   const handleSliderChange = (value) => {
-    onChange(value);
+    onChange(value[0], value[1]);
     setRange(value);
   };
 
@@ -21,8 +22,8 @@ export default function CustomSlider({
     <div className={`${styles.slider_container}`}>
       <div className={`${styles.slider_value}`}>{range[0]}</div>
       <RangeSlider
-        min={min}
-        max={max}
+        min={minLowerBound}
+        max={maxUpperBound}
         step={step}
         value={range}
         onInput={(value) => handleSliderChange(value)}
@@ -34,9 +35,10 @@ export default function CustomSlider({
 }
 
 CustomSlider.propTypes = {
-  defaultRange: PropTypes.arrayOf(PropTypes.number).isRequired,
-  min: PropTypes.number.isRequired,
-  max: PropTypes.number.isRequired,
+  initialMin: PropTypes.number.isRequired,
+  initialMax: PropTypes.number.isRequired,
+  minLowerBound: PropTypes.number.isRequired,
+  maxUpperBound: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
 };

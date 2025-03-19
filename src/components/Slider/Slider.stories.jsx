@@ -12,9 +12,10 @@ export default {
 
 export const Default = {
   args: {
-    defaultRange: [10, 30],
-    min: 0,
-    max: 100,
+    initialMin: 10,
+    initialMax: 90,
+    minLowerBound: 0,
+    maxUpperBound: 100,
     step: 1,
   },
 };
