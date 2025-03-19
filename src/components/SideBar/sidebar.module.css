@@ -1,0 +1,16 @@
+@import url('../../styles/global.css');
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+
+  background-color: var(--color-background-general);
+  border-right: 1px solid var(--color-background-block);
+
+  width: 234px;
+  height: 100%;
+  padding: 16px;
+}

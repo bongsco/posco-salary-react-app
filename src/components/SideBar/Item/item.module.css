@@ -1,0 +1,39 @@
+@import url('../../../styles/global.css');
+
+.item {
+  text-decoration: none;
+  font: var(--font-caption-1r-pc);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: baseline;
+  align-items: center;
+  gap: 12px;
+
+  width: 202px;
+  height: 32px;
+  padding: 0 12px 0 12px;
+
+  border-radius: 8px;
+  border: 0;
+}
+
+.active {
+  background-color: var(--color-primary-main);
+  color: var(--color-grayscale-white);
+}
+
+.inactive {
+  background-color: var(--color-background-general);
+  color: var(--color-primary-darkest);
+}
+
+.inactive:hover {
+  background-color: var(--color-primary-lightest);
+}
+
+.caption {
+  font: var(--font-caption-2r-pc);
+  flex-grow: 1;
+  text-align: left;
+}

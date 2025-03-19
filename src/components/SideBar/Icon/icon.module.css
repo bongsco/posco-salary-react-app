@@ -1,0 +1,12 @@
+@import url('../../../styles/global.css');
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  aspect-ratio: 1;
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
