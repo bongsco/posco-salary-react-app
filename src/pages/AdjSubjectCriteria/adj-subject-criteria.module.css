@@ -1,0 +1,71 @@
+@import url("../../styles/global.css");
+
+.contentWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.title{
+  font: var(--font-title-pc);
+}
+.content{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.subTitle{
+  font: var(--font-subtitle-1r-pc);
+}
+
+.selectDay{
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.description{
+  font: var(--font-caption-1r-pc);
+}
+
+.inputDays{
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.selectSwtich{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.buttonWrapper{
+  padding: 0px 472px 0px 472px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.button{
+  flex-shrink: 0 !important;
+}

@@ -4,6 +4,7 @@ import './App.css';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import SideBar from '#components/SideBar';
+import AdjSubjectCriteria from '#pages/AdjSubjectCriteria/AdjSubjectCriteria';
 
 function Layout() {
   return (
@@ -83,6 +84,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<TestOutlet />} />
+        </Route>
+        <Route path="/" element={<Layout />}>
+          <Route path="/subject/criteria" element={<AdjSubjectCriteria />} />
         </Route>
       </Routes>
     </BrowserRouter>
