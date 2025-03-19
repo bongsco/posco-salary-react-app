@@ -1,7 +1,7 @@
 import Stepper from './Stepper';
 
 export default {
-  title: 'Components/Stepper',
+  title: 'Business/Stepper',
   component: Stepper,
 };
 

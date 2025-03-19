@@ -14,10 +14,12 @@
   width: auto;
   gap: 6px;
   text-align: center;
+  color: var(--color-grayscale-6);
 }
 
 .title {
   font: var(--font-subtitle-2b-pc);
+  color: inherit;
 }
 
 .icon {
@@ -25,7 +27,7 @@
   height: 27px;
 }
 
-.icon .complete {
+.complete {
   color: var(--color-primary-dark);
 }
 
