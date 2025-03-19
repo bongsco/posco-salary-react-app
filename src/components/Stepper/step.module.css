@@ -1,9 +1,10 @@
 .step {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: flex-start;
+  width: max-content;
+  max-width: 100%;
+  min-width: 115px;
 }
 
 .titleContainer {
@@ -34,7 +35,7 @@
   align-items: left;
   gap: 6px;
   width: 100%;
-  padding: 0;
+  padding: 0px;
 }
 
 .item {
@@ -55,15 +56,15 @@
   font: var(--font-caption-1b-pc);
 }
 
-.complete {
+.complete .itemText {
   color: var(--color-grayscale-black);
 }
 
-.working {
+.working .itemText {
   color: var(--color-primary-main);
 }
 
-.undone {
+.undone .itemText {
   color: var(--color-grayscale-6);
 }
 

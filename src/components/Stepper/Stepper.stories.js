@@ -38,11 +38,17 @@ export const Primary = {
         title: '사전 작업',
         isComplete: false,
         items: [
-          { id: 'item2-1', text: '대상자 편성', state: 'undone' },
+          {
+            id: 'item2-1',
+            text: '대상자 편성',
+            state: 'undone',
+            date: '2023-03-03 00:00:00',
+          },
           {
             id: 'item2-2',
             text: '고성과조직 가산 대상 여부 설정',
             state: 'undone',
+            date: '2023-03-03 00:00:00',
           },
         ],
       },
@@ -51,8 +57,18 @@ export const Primary = {
         title: '본 연봉 조정',
         isComplete: false,
         items: [
-          { id: 'item3-1', text: 'Payband 적용', state: 'undone' },
-          { id: 'item3-2', text: '조정 결과 미리보기', state: 'undone' },
+          {
+            id: 'item3-1',
+            text: 'Payband 적용',
+            state: 'undone',
+            date: '2023-03-03 00:00:00',
+          },
+          {
+            id: 'item3-2',
+            text: '조정 결과 미리보기',
+            state: 'undone',
+            date: '2023-03-03 00:00:00',
+          },
         ],
       },
     ],
@@ -85,7 +101,14 @@ export const Secondary = {
         id: 'step2',
         title: '본 연봉 조정',
         isComplete: false,
-        items: [{ id: 'item2-1', text: '조정 결과 확인', state: 'undone' }],
+        items: [
+          {
+            id: 'item2-1',
+            text: '조정 결과 확인',
+            state: 'undone',
+            date: '2023-03-03 00:00:00',
+          },
+        ],
       },
     ],
   },
@@ -111,13 +134,27 @@ export const Third = {
         id: 'step2',
         title: '사전 작업',
         isComplete: false,
-        items: [{ id: 'item2-1', text: '대상자 편성', state: 'undone' }],
+        items: [
+          {
+            id: 'item2-1',
+            text: '대상자 편성',
+            state: 'undone',
+            date: '2023-03-03 00:00:00',
+          },
+        ],
       },
       {
         id: 'step3',
         title: '본 연봉 조정',
         isComplete: false,
-        items: [{ id: 'item3-1', text: '조정 결과 확인', state: 'undone' }],
+        items: [
+          {
+            id: 'item3-1',
+            text: '조정 결과 확인',
+            state: 'undone',
+            date: '2023-03-03 00:00:00',
+          },
+        ],
       },
     ],
   },

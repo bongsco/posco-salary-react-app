@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import React from 'react'; // 🔹 React.Fragment 사용을 위해 추가
 import Step from './Step';
 import styles from './stepper.module.css';
 
@@ -6,7 +7,8 @@ export default function Stepper({ steps }) {
   return (
     <div className={styles.stepper}>
       {steps.map((step, index) => (
-        <div key={step.id} className={styles.stepWrapper}>
+        <React.Fragment key={step.id}>
+          {' '}
           <div className={styles.stepContainer}>
             <Step
               title={step.title}
@@ -14,13 +16,12 @@ export default function Stepper({ steps }) {
               items={step.items}
             />
           </div>
-
           {index < steps.length - 1 && (
             <div className={styles.between}>
               <hr className={styles.hr} />
             </div>
           )}
-        </div>
+        </React.Fragment>
       ))}
     </div>
   );
