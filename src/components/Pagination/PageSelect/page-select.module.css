@@ -1,0 +1,14 @@
+@import url('../../../styles/global.css');
+
+.select{
+    width: 54px;
+    height: 32px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    text-align: center;
+    font: var(--font-caption-1r-pc);
+    color: var(--color-grayscale-7);
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
