@@ -79,7 +79,7 @@ function TestOutlet() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="app">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<TestOutlet />} />
