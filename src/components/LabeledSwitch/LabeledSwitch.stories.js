@@ -1,3 +1,4 @@
+import { fn } from '@storybook/test';
 import LabeledSwitch from './LabeledSwitch';
 
 export default {
@@ -5,9 +6,7 @@ export default {
   component: LabeledSwitch,
   argTypes: {
     label: { control: 'text' },
-    isChecked: { control: 'boolean' },
     isCommitted: { control: 'boolean' },
-    onClick: { action: 'clicked' },
   },
   tags: ['autodocs'],
 };
@@ -15,31 +14,31 @@ export default {
 export const NotCheckedNotCommitted = {
   args: {
     label: 'Value',
-    isChecked: false,
     isCommitted: false,
+    onClick: fn(),
   },
 };
 
 export const CheckedCommitted = {
   args: {
     label: 'Value',
-    isChecked: true,
     isCommitted: true,
+    onClick: fn(),
   },
 };
 
 export const CheckedNotCommitted = {
   args: {
     label: 'Value',
-    isChecked: true,
     isCommitted: false,
+    onClick: fn(),
   },
 };
 
 export const NotCheckedCommitted = {
   args: {
     label: 'Value',
-    isChecked: false,
     isCommitted: true,
+    onClick: fn(),
   },
 };
