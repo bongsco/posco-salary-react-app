@@ -1,4 +1,3 @@
-import BreadCrumbs from '#components/BreadCrumbs/BreadCrumbs';
 import CheckBox from '#components/CheckBox/CheckBox';
 import Button from '#components/Button/Button';
 import PaybandTable from './PaybandTable';
@@ -41,7 +40,6 @@ export default function PaybandConfigPage() {
 
   return (
     <div className={`${styles.page}`}>
-      <BreadCrumbs items={['연봉조정등록', '기준 설정', 'Payband 설정']} />
       <div className={`${styles.title}`}>
         <div>Payband 설정</div>
         <div className={`${styles.buttonGroup}`}>

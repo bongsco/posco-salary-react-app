@@ -40,11 +40,11 @@ export default function PaybandTable({ item, onChange }) {
       >
         <div className={`${styles.table_cell}`}>
           <Input
-            placeholder={payband.lowerBound}
+            initialValue={payband.lowerBound}
             onChange={(newValue) => {
               const updatedPayband = {
                 ...payband,
-                lowerBound: Number(newValue),
+                lowerBound: Number(newValue.target.value),
                 modified:
                   !payband.modified.includes('전체') &&
                   !payband.modified.includes('하한')
@@ -61,11 +61,11 @@ export default function PaybandTable({ item, onChange }) {
       >
         <div className={`${styles.table_cell}`}>
           <Input
-            placeholder={payband.upperBound}
+            initialValue={payband.upperBound}
             onChange={(newValue) => {
               const updatedPayband = {
                 ...payband,
-                upperBound: Number(newValue),
+                upperBound: Number(newValue.target.value),
                 modified:
                   !payband.modified.includes('전체') &&
                   !payband.modified.includes('상한')
