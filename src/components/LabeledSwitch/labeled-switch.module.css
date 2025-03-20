@@ -1,0 +1,43 @@
+@import url("../../styles/global.css");
+
+.button {
+  background: var(--color-background-general);
+  border-radius: 50px;
+  border-style: solid;
+  border-color: var(--color-grayscale-4);
+  border-width: 1px;
+  padding: 8px 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font: var(--font-body-2b-pc);
+}
+
+/* Variant styles */
+.checkedTrue.committedTrue {
+  border-color: var(--color-primary-main);
+  color: var(--color-primary-main);
+}
+
+.checkedTrue.committedFalse {
+  border-color: var(--color-system-ok);
+  color: var(--color-primary-main);
+}
+
+
+.checkedFalse.committedTrue {
+  border-color: var(--color-grayscale-4);
+  color: var(--color-grayscale-4);
+}
+
+.checkedFalse.committedFalse {
+  border-color: var(--color-system-caution);
+  color: var(--color-grayscale-4);
+}
+
