@@ -1,18 +1,25 @@
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './input.module.css';
 
 function Input({
   id,
   mode = 'default',
-  placeholder = '',
+  placeholder = 'Placholder 플레이스홀더',
   label,
-  value,
+  value: initialValue,
   customWidth,
   customHeight,
   onFocus,
   onBlur,
   onChange,
 }) {
+  const [value, setValue] = useState(initialValue);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
   return (
     <div
       className={styles['input-box-container']}
@@ -24,7 +31,10 @@ function Input({
         value={value}
         className={`${styles['input-box']} ${styles[mode]}`}
         placeholder={placeholder}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         style={{ width: customWidth, height: customHeight }}
