@@ -36,7 +36,7 @@ function Layout() {
               subItems: [
                 {
                   text: '등록',
-                  href: '/adjust/register',
+                  href: '/criteria',
                 },
                 {
                   text: '조회',
@@ -82,9 +82,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<TestOutlet />} />
-        </Route>
-        <Route path="/" element={<Layout />}>
-          <Route path="/subject/criteria" element={<AdjSubjectCriteria />} />
+          <Route path="/criteria" element={<AdjSubjectCriteria />} />
         </Route>
       </Routes>
     </BrowserRouter>
