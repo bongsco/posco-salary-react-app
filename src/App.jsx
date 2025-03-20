@@ -4,6 +4,7 @@ import './App.css';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import SideBar from '#components/SideBar';
+import PaybandConfigPage from '#pages/PaybandConfig';
 
 function Layout() {
   return (
@@ -83,6 +84,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<TestOutlet />} />
+          <Route path="/payband-config" element={<PaybandConfigPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
