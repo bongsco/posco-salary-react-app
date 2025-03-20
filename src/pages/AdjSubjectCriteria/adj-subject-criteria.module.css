@@ -9,10 +9,31 @@
   flex: 1;
   width: 100%;
 }
+.titleWrapper{
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  height: 60px;
+  position: relative;
+}
 
 .title{
   font: var(--font-title-pc);
 }
+
+.savedWrapper{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+
 .content{
   display: flex;
   flex-direction: column;
