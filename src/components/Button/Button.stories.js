@@ -8,7 +8,7 @@ export default {
     size: {
       control: {
         type: 'select',
-        options: ['xsmall', 'small', 'medium', 'large', 'custom'],
+        options: ['xsmall', 'small', 'medium', 'large', 'round', 'custom'],
       },
     },
     label: { control: 'text' },
