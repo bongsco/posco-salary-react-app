@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import PropTypes from 'prop-types';
@@ -12,24 +12,32 @@ export default function CustomSlider({
   step,
   onChange,
 }) {
-  const [range, setRange] = useState([initialMin, initialMax]);
+  const [min, setMin] = useState(initialMin);
+  const [max, setMax] = useState(initialMax);
+
+  useEffect(() => {
+    setMin(initialMin);
+    setMax(initialMax);
+  }, [initialMin, initialMax]);
+
   const handleSliderChange = (value) => {
     onChange(value[0], value[1]);
-    setRange(value);
+    setMin(() => value[0]);
+    setMax(() => value[1]);
   };
 
   return (
     <div className={`${styles.slider_container}`}>
-      <div className={`${styles.slider_value}`}>{range[0]}</div>
+      <div className={`${styles.slider_value}`}>{min}</div>
       <RangeSlider
         min={minLowerBound}
         max={maxUpperBound}
         step={step}
-        value={range}
+        value={[min, max]}
         onInput={(value) => handleSliderChange(value)}
         rangeSlideDisabled
       />
-      <div className={`${styles.slider_value}`}>{range[1]}</div>
+      <div className={`${styles.slider_value}`}>{max}</div>
     </div>
   );
 }

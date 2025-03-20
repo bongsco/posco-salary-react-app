@@ -6,7 +6,7 @@
   padding: 0 8px;
   justify-content: space-between;
   align-items: center;
-  max-width: 514px;
+  min-width: 514px;
   gap: 8px;
 }
 
