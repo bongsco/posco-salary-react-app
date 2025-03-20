@@ -70,7 +70,7 @@
   flex: 1;
 }
 
-.selectSwtich{
+.selectSwitch{
   display: flex;
   flex-direction: column;
   gap: 16px;

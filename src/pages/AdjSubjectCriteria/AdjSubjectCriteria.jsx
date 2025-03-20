@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import CustomDatePicker from '#components/DatePicker/CustomDatePicker';
 import BreadCrumbs from '#components/BreadCrumbs';
 import styles from './adj-subject-criteria.module.css';
+import DateSelection from './DateSelection';
+import GradeSelection from './GradeSelection';
 import Button from '#components/Button';
-import LabeledSwitch from '#components/LabeledSwitch';
+import PaymentSelection from './PaymentSelection';
 
 export default function AdjSubjectCriteria() {
   const items = ['연봉조정', '등록'];
@@ -198,206 +199,23 @@ export default function AdjSubjectCriteria() {
           </div>
         )}
       </div>
-
       <div className={styles.content}>
-        <div className={styles.selectDay}>
-          <div className={styles.subTitle}>기준일자</div>
-          <div className={styles.description}>
-            다음 날짜부터의 근속일을 기반으로 연봉을 조정합니다.
-          </div>
-          <CustomDatePicker
-            value={dateValues.baseDate}
-            isSaved={isFormCommitted}
-            onChange={(date) => handleDateChange('baseDate', date)}
-          />
-        </div>
-        <div className={styles.selectDay}>
-          <div className={styles.subTitle}>입사일자 기준 대상제외일자</div>
-          <div className={styles.description}>
-            다음 기간 내에 입사한 직원은 조정 대상에서 제외합니다.
-          </div>
-          <div className={styles.inputDays}>
-            <CustomDatePicker
-              value={dateValues.expStartDate}
-              isSaved={isFormCommitted}
-              onChange={(date) => handleDateChange('expStartDate', date)}
-            />
-            <div>~</div>
-            <CustomDatePicker
-              value={dateValues.expEndDate}
-              isSaved={isFormCommitted}
-              onChange={(date) => handleDateChange('expEndDate', date)}
-            />
-          </div>
-        </div>
-        <div className={styles.selectSwtich}>
-          <div className={styles.subTitle}>급여기준</div>
-          <div className={styles.buttons}>
-            <LabeledSwitch
-              key="전체"
-              label="전체"
-              isChecked={payments['전체']} // ✅ 부모 상태로 관리
-              isCommitted={isFormCommitted}
-              onClick={handleSwitchChange}
-              isCheckedInitially={payments['전체']}
-            />
-
-            {Object.keys(payments)
-              .filter((label) => label !== '전체') // ✅ "전체" 제외
-              .map((label) => (
-                <LabeledSwitch
-                  key={label}
-                  label={label}
-                  isChecked={payments[label]}
-                  isCommitted={isFormCommitted}
-                  onClick={handleSwitchChange}
-                  isCheckedInitially={payments[label]}
-                />
-              ))}
-          </div>
-        </div>
-        <div className={styles.selectSwtich}>
-          <div className={styles.subTitle}>직급</div>
-          <div className={styles.gradeWrapper}>
-            {/* ✅ 전체 선택 버튼 */}
-            <LabeledSwitch
-              key="전체"
-              label="전체"
-              isChecked={Object.values(grades)
-                .flat()
-                .every((v) => v)}
-              isCommitted={isFormCommitted}
-              onClick={selectAll}
-            />
-
-            <div className={styles.frame2}>
-              {/* ✅ 기존 div 구조 유지하면서 동적으로 LabeledSwitch 생성 */}
-              <div className={styles.frame2}>
-                <div className={styles.frame3}>
-                  {Object.keys(grades.allLeft).map((label) => (
-                    <LabeledSwitch
-                      key={label}
-                      label={label}
-                      isChecked={grades.allLeft[label]}
-                      isCommitted={isFormCommitted}
-                      onClick={(tmp, isChecked) =>
-                        handleSwitchChange3('allLeft', tmp, isChecked)
-                      }
-                      isCheckedInitially={grades.allLeft[label]}
-                    />
-                  ))}
-                </div>
-
-                <div className={styles.frame3}>
-                  <div className={styles.buttons}>
-                    {Object.keys(grades.P).map((label) => (
-                      <LabeledSwitch
-                        key={label}
-                        label={label}
-                        isChecked={grades.P[label]}
-                        isCommitted={isFormCommitted}
-                        onClick={(tmp, isChecked) =>
-                          handleSwitchChange3('P', tmp, isChecked)
-                        }
-                        isCheckedInitially={grades.P[label]}
-                      />
-                    ))}
-                  </div>
-                  <div className={styles.buttons2}>
-                    {Object.keys(grades.R).map((label) => (
-                      <LabeledSwitch
-                        key={label}
-                        label={label}
-                        isChecked={grades.R[label]}
-                        isCommitted={isFormCommitted}
-                        onClick={(tmp, isChecked) =>
-                          handleSwitchChange3('R', tmp, isChecked)
-                        }
-                        isCheckedInitially={grades.R[label]}
-                      />
-                    ))}
-                  </div>
-                  <div className={styles.buttons2}>
-                    {Object.keys(grades.A).map((label) => (
-                      <LabeledSwitch
-                        key={label}
-                        label={label}
-                        isChecked={grades.A[label]}
-                        isCommitted={isFormCommitted}
-                        onClick={(tmp, isChecked) =>
-                          handleSwitchChange3('A', tmp, isChecked)
-                        }
-                        isCheckedInitially={grades.A[label]}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.frame2}>
-                <div className={styles.frame3}>
-                  {Object.keys(grades.allRight).map((label) => (
-                    <LabeledSwitch
-                      key={label}
-                      label={label}
-                      isChecked={grades.allRight[label]}
-                      isCommitted={isFormCommitted}
-                      onClick={(tmp, isChecked) =>
-                        handleSwitchChange3('allRight', tmp, isChecked)
-                      }
-                      isCheckedInitially={grades.allRight[label]}
-                    />
-                  ))}
-                </div>
-
-                <div className={styles.frame3}>
-                  <div className={styles.buttons2}>
-                    {Object.keys(grades.O).map((label) => (
-                      <LabeledSwitch
-                        key={label}
-                        label={label}
-                        isChecked={grades.O[label]}
-                        isCommitted={isFormCommitted}
-                        onClick={(tmp, isChecked) =>
-                          handleSwitchChange3('O', tmp, isChecked)
-                        }
-                        isCheckedInitially={grades.O[label]}
-                      />
-                    ))}
-                  </div>
-                  <div className={styles.buttons2}>
-                    {Object.keys(grades.D).map((label) => (
-                      <LabeledSwitch
-                        key={label}
-                        label={label}
-                        isChecked={grades.D[label]}
-                        isCommitted={isFormCommitted}
-                        onClick={(tmp, isChecked) =>
-                          handleSwitchChange3('D', tmp, isChecked)
-                        }
-                        isCheckedInitially={grades.D[label]}
-                      />
-                    ))}
-                  </div>
-                  <div className={styles.buttons2}>
-                    {Object.keys(grades.G).map((label) => (
-                      <LabeledSwitch
-                        key={label}
-                        label={label}
-                        isChecked={grades.G[label]}
-                        isCommitted={isFormCommitted}
-                        onClick={(tmp, isChecked) =>
-                          handleSwitchChange3('G', tmp, isChecked)
-                        }
-                        isCheckedInitially={grades.G[label]}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <DateSelection
+          dateValues={dateValues}
+          onChange={handleDateChange}
+          isSaved={isFormCommitted}
+        />
+        <PaymentSelection
+          payments={payments}
+          onSwitchChange={handleSwitchChange}
+          isCommitted={isFormCommitted}
+        />
+        <GradeSelection
+          grades={grades}
+          onSwitchChange={handleSwitchChange3}
+          selectAll={selectAll}
+          isCommitted={isFormCommitted}
+        />
       </div>
       <div className={styles.separator} />
       <div className={styles.buttonWrapper}>
