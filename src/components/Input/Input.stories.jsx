@@ -11,11 +11,8 @@ export default {
     placeholder: { control: 'text' },
     label: { control: 'text' },
     value: { control: 'text' },
-    customSize: {
-      control: 'object',
-      description: 'Custom size for input',
-      defaultValue: { width: '225px', height: '30px' },
-    },
+    customWidth: { control: 'text' },
+    customHeight: { control: 'text' },
   },
   args: {
     onFocus: fn(),
@@ -31,7 +28,8 @@ export const Default = {
     placeholder: '플레이스 홀더 PlaceHolder',
     label: '여기에 입력 관련 메시지를 입력하세요.',
     value: '',
-    customSize: { width: '225px', height: '30px' },
+    customWidth: '225px',
+    customHeight: '30px',
   },
 };
 
@@ -42,7 +40,8 @@ export const Error = {
     placeholder: '플레이스 홀더 PlaceHolder',
     label: '여기에 입력 오류와 관련된 메시지를 입력해 주세요.',
     value: '',
-    customSize: { width: '225px', height: '30px' },
+    customWidth: '225px',
+    customHeight: '30px',
   },
 };
 
@@ -53,6 +52,7 @@ export const Ok = {
     placeholder: '플레이스 홀더 PlaceHolder',
     label: '여기에 메시지를 입력해 주세요.',
     value: '',
-    customSize: { width: '225px', height: '30px' },
+    customWidth: '225px',
+    customHeight: '30px',
   },
 };
