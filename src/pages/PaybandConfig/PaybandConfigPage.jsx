@@ -1,6 +1,6 @@
 import CheckBox from '#components/CheckBox/CheckBox';
 import Button from '#components/Button/Button';
-import PaybandTable from './PaybandTable';
+import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 
@@ -69,7 +69,7 @@ export default function PaybandConfigPage() {
         </thead>
         <tbody>
           {payband.map((item, index) => (
-            <PaybandTable
+            <PaybandTableRow
               key={item.id}
               item={item}
               onChange={(modifiedItem) => {

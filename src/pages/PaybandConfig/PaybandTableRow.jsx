@@ -1,0 +1,110 @@
+import { useState } from 'react';
+import PropTypes, { string } from 'prop-types';
+import CheckBox from '#components/CheckBox/CheckBox';
+import styles from './payband-config-page.module.css';
+import '../../styles/table.css';
+
+import Input from '#components/Input/Input';
+import CustomSlider from '#components/Slider/CustomSlider';
+
+export default function PaybandTableRow({ item, onChange }) {
+  const [payband, setPayband] = useState(item);
+
+  const handleChange = ({ lower, upper, addModified } = {}) => {
+    const updatedPayband = {
+      ...payband,
+      lowerBound: lower !== undefined ? lower : payband.lowerBound,
+      upperBound: upper !== undefined ? upper : payband.upperBound,
+      modified:
+        addModified !== undefined &&
+        !payband.modified.includes('전체') &&
+        !payband.modified.includes(addModified)
+          ? [...payband.modified, addModified]
+          : payband.modified,
+    };
+
+    setPayband(({ id, grade }) => ({
+      id,
+      grade,
+      upperBound: updatedPayband.upperBound,
+      lowerBound: updatedPayband.lowerBound,
+      modified: updatedPayband.modified,
+    }));
+    onChange(updatedPayband);
+  };
+
+  return (
+    <tr>
+      <td
+        className={`${payband.modified.includes('전체') ? styles.modified_cell : ''}`}
+      >
+        <div className={`${styles.table_cell}`}>
+          <CheckBox />
+        </div>
+      </td>
+      <td
+        className={`${payband.modified.includes('전체') ? styles.modified_cell : ''}`}
+      >
+        {payband.grade}
+      </td>
+      <td
+        className={`${payband.modified.includes('전체') || payband.modified.includes('하한') ? styles.modified_cell : ''}`}
+      >
+        <div className={`${styles.table_cell}`}>
+          <Input
+            initialValue={payband.lowerBound}
+            onChange={(newValue) => {
+              handleChange({
+                lower: Number(newValue.target.value),
+                addModified: '하한',
+              });
+            }}
+          />
+        </div>
+      </td>
+      <td
+        className={`${payband.modified.includes('전체') || payband.modified.includes('상한') ? styles.modified_cell : ''}`}
+      >
+        <div className={`${styles.table_cell}`}>
+          <Input
+            initialValue={payband.upperBound}
+            onChange={(newValue) => {
+              handleChange({
+                upper: Number(newValue.target.value),
+                addModified: '상한',
+              });
+            }}
+          />
+        </div>
+      </td>
+      <td
+        className={`${payband.modified.includes('전체') ? styles.modified_cell : ''}`}
+      >
+        <CustomSlider
+          initialMin={payband.lowerBound}
+          initialMax={payband.upperBound}
+          minLowerBound={0}
+          maxUpperBound={200}
+          step={10}
+          onChange={(min, max) => {
+            handleChange({
+              lower: min,
+              upper: max,
+              addModified: min !== payband.lowerBound ? '하한' : '상한',
+            });
+          }}
+        />
+      </td>
+    </tr>
+  );
+}
+
+PaybandTableRow.propTypes = {
+  item: PropTypes.shape({
+    grade: PropTypes.string.isRequired,
+    upperBound: PropTypes.number.isRequired,
+    lowerBound: PropTypes.number.isRequired,
+    modified: PropTypes.arrayOf(string).isRequired,
+  }).isRequired,
+  onChange: PropTypes.func.isRequired,
+};
