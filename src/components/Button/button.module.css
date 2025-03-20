@@ -41,8 +41,16 @@ custom : 임의로 사이즈 설정 가능
 .button.large {
   width: 124px;
   height: 26px;
-  font: var(--font-body-3-pc);
+  font: var(--font-caption-3r-pc);
   box-shadow: var(--shadow);
+}
+
+.button.round {
+  width: fit-content;
+  height: 26px;
+  padding: 0px 8px;
+  border-radius: 50px;
+  font: var(--font-caption-3r-pc);
 }
 
 .button.primary {
