@@ -1,0 +1,86 @@
+@import url('../../styles/global.css');
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.main-title {
+  width: 206px;
+  height: auto;
+  font: var(--font-title-pc);
+}
+
+.timeline {
+  width: 100%;
+  height: 201px;
+}
+
+.salary-adjustment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.salary-adjustment-area {
+  gap: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.salary-adjustment-table {
+  width: 100%;
+}
+
+.column-year {
+  width: 8%;
+}
+
+.column-month {
+  width: 4%;
+}
+
+.column-adj-type {
+  width: 18%;
+}
+.column-status {
+  width: 8%;
+}
+.column-interface {
+  width: 16%;
+}
+
+.column-date {
+  width: 14%;
+}
+
+.column-creator {
+  width: 8%;
+}
+
+.column-work-step {
+  width: auto; /* 가변 크기 */
+  min-width: 150px; /* 최소 크기 */
+  max-width: 40%; /* 최대 크기 설정 가능 */
+  white-space: normal; /* 자동 줄 바꿈 허용 */
+}
+
+.filter-sort-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-group {
+  display: flex;
+  gap: 4px;
+}
+
+.right-group {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-button {
+  border-radius: 5px;
+}

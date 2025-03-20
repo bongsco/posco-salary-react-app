@@ -1,7 +1,10 @@
+import React from 'react';
+
 import './App.css';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import SideBar from '#components/SideBar';
+import MainPage from './pages/Main';
 
 function Layout() {
   return (
@@ -72,7 +75,7 @@ function Layout() {
 }
 
 function TestOutlet() {
-  return <div>This Outlet is for the Test</div>;
+  return <MainPage />;
 }
 
 function App() {
