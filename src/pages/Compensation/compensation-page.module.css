@@ -1,0 +1,44 @@
+@import '../../styles/global.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font: var(--font-title-pc);
+  margin: 0px;
+}
+
+.sectionTitle {
+  font: var(--font-subtitle-1b-pc);
+  margin: 0px;
+}
+
+.description {
+  font: var(--font-caption-1r-pc);
+  margin: 0px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inputLabel {
+  font: var(--font-caption-1b-pc);
+}
+
+.line {
+  width: 100%;
+  color: var(--color-background-block);
+  height: 1px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
