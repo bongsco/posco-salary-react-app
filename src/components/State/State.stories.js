@@ -1,7 +1,7 @@
 import State from './State';
 
 export default {
-  title: 'Components/State',
+  title: 'UI/State',
   component: State,
 };
 
