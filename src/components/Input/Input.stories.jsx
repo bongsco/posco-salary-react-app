@@ -1,4 +1,3 @@
-import { fn } from '@storybook/test';
 import Input from './Input';
 
 export default {
@@ -6,37 +5,41 @@ export default {
   component: Input,
   tags: ['autodocs'],
   argTypes: {
-    mode: { control: { type: 'select', options: ['primary', 'error', 'ok'] } },
+    id: { control: 'text' },
+    mode: { control: { type: 'select', options: ['default', 'error', 'ok'] } },
     placeholder: { control: 'text' },
-    label: 'text',
+    label: { control: 'text' },
+    customWidth: { control: 'number' },
+    customHeight: { control: 'number' },
+    onChange: { action: 'changed' },
+    initialValue: { control: 'text' },
   },
   args: {
-    onFocus: fn(),
-    onBlur: fn(),
-    onChange: fn(),
+    id: 'input',
+    initialValue: 'initialValue 초기값',
+    customWidth: 225,
+    customHeight: 30,
+    placeholder: 'Placeholder 플레이스홀더',
   },
 };
 
 export const Default = {
   args: {
     mode: 'default',
-    placeholder: '플레이스 홀더 PlaceHolder',
-    label: '여기에 입력 오류와 관련된 메시지를 입력해 주세요.',
+    label: '여기에 입력 관련 메시지를 입력하세요.',
   },
 };
 
 export const Error = {
   args: {
     mode: 'error',
-    placeholder: '플레이스 홀더 PlaceHolder',
-    label: '여기에 입력 오류와 관련된 메시지를 입력해 주세요.',
+    label: '여기에 입력 관련 메시지를 입력하세요.',
   },
 };
 
 export const Ok = {
   args: {
     mode: 'ok',
-    placeholder: '플레이스 홀더 PlaceHolder',
-    label: '여기에 메시지를 입력해 주세요.',
+    label: '여기에 입력 관련 메시지를 입력하세요.',
   },
 };
