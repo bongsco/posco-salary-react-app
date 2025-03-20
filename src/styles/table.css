@@ -1,11 +1,7 @@
 @import url('./global.css');
 
 table {
-  width: 100%;
-  border: none;
   border-collapse: collapse;
-  align-items: center;
-  justify-content: center;
   font: var(--font-caption-2r-pc);
   box-shadow: var(--shadow);
 }
@@ -28,17 +24,9 @@ tbody td:hover {
 }
 
 td {
-  width: 100%;
   padding: 13.5px 12px;
   text-align: center;
-  display: flex; /* Flexbox 사용 */
-  justify-content: center; /* 가로 방향으로 중앙 정렬 */
-  align-items: center; /* 세로 방향으로 중앙 정렬 */
-}
-
-tr {
-  display: flex;
-  justify-content: space-between;
+  vertical-align: middle;
 }
 
 tbody tr {
