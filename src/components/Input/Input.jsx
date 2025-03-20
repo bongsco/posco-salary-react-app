@@ -1,24 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './input.module.css';
 
 function Input({
   id,
   mode = 'default',
-  placeholder = 'Placholder 플레이스홀더',
+  placeholder = '',
   label,
-  value: initialValue,
+  initialValue,
   customWidth,
   customHeight,
-  onFocus,
-  onBlur,
   onChange,
 }) {
   const [value, setValue] = useState(initialValue);
-
-  useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
 
   return (
     <div
@@ -33,10 +27,8 @@ function Input({
         placeholder={placeholder}
         onChange={(e) => {
           setValue(e.target.value);
-          onChange(e.target.value);
+          onChange(e);
         }}
-        onFocus={onFocus}
-        onBlur={onBlur}
         style={{ width: customWidth, height: customHeight }}
       />
       {label ? (
@@ -54,12 +46,10 @@ Input.defaultProps = {
   id: '',
   mode: 'default',
   label: '',
-  value: '',
-  customWidth: '225px',
-  customHeight: '30px',
+  initialValue: '',
+  customWidth: 225,
+  customHeight: 30,
   placeholder: '',
-  onFocus: null,
-  onBlur: null,
 };
 
 Input.propTypes = {
@@ -67,11 +57,9 @@ Input.propTypes = {
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
-  customWidth: PropTypes.string,
-  customHeight: PropTypes.string,
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
+  initialValue: PropTypes.string,
+  customWidth: PropTypes.number,
+  customHeight: PropTypes.number,
   onChange: PropTypes.func.isRequired,
 };
 
