@@ -28,8 +28,8 @@
   --color-background-general: #ffffff;
   --color-background-block: #eeedec;
 
-  --color-data-incline: rgba(#a1fd28, 20%);
-  --color-data-decline: rgba(#ff325f, 20%);
+  --color-data-incline: rgba(161, 253, 40, 0.2);
+  --color-data-decline: rgba(255, 50, 95, 0.2);
 
   --color-system-caution: #ff325f;
   --color-system-warning: #ffbd2f;
