@@ -11,16 +11,27 @@ export default function PaymentSelection({
     <div className={styles.selectSwitch}>
       <div className={styles.subTitle}>급여기준</div>
       <div className={styles.buttons}>
-        {Object.keys(payments).map((label) => (
-          <LabeledSwitch
-            key={label}
-            label={label}
-            isChecked={payments[label]}
-            isCommitted={isCommitted}
-            onClick={onSwitchChange}
-            isCheckedInitially={payments[label]} // ✅ 초기 값 전달
-          />
-        ))}
+        <LabeledSwitch
+          key="전체"
+          label="전체"
+          isChecked={payments['전체']} // ✅ 부모 상태로 관리
+          isCommitted={isCommitted}
+          onClick={onSwitchChange}
+          isCheckedInitially={payments['전체']}
+        />
+
+        {Object.keys(payments)
+          .filter((label) => label !== '전체') // ✅ "전체" 제외
+          .map((label) => (
+            <LabeledSwitch
+              key={label}
+              label={label}
+              isChecked={payments[label]}
+              isCommitted={isCommitted}
+              onClick={onSwitchChange}
+              isCheckedInitially={payments[label]}
+            />
+          ))}
       </div>
     </div>
   );

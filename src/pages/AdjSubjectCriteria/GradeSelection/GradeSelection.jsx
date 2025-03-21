@@ -5,7 +5,6 @@ import styles from '../adj-subject-criteria.module.css';
 export default function GradeSelection({
   grades,
   onSwitchChange,
-  selectAll,
   isCommitted,
 }) {
   return (
@@ -14,17 +13,18 @@ export default function GradeSelection({
       <div className={styles.gradeWrapper}>
         {/* ✅ 전체 선택 버튼 */}
         <LabeledSwitch
-          key="전체"
           label="전체"
           isChecked={Object.values(grades)
             .flat()
             .every((v) => v)}
           isCommitted={isCommitted}
-          onClick={selectAll}
+          onClick={(tmp, isChecked) =>
+            onSwitchChange('전체', '전체', isChecked)
+          }
+          isCheckedInitially={grades.all['전체']}
         />
 
         <div className={styles.frame2}>
-          {/* ✅ 기존 div 구조 유지하면서 동적으로 LabeledSwitch 생성 */}
           <div className={styles.frame2}>
             <div className={styles.frame3}>
               {Object.keys(grades.allLeft).map((label) => (
@@ -184,7 +184,6 @@ export default function GradeSelection({
 GradeSelection.propTypes = {
   grades: PropTypes.objectOf(PropTypes.objectOf(PropTypes.bool)),
   onSwitchChange: PropTypes.func.isRequired,
-  selectAll: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool,
 };
 

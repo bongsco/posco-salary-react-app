@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BreadCrumbs from '#components/BreadCrumbs';
 import styles from './adj-subject-criteria.module.css';
 import DateSelection from './DateSelection';
@@ -30,6 +30,7 @@ export default function AdjSubjectCriteria() {
   };
   // ✅ 하나의 객체로 통합하여 기존 구조 유지
   const initialGrades = {
+    all: { 전체: false },
     allLeft: { P직군전체: false, R직군전체: false, A직군전체: false },
     allRight: { O직군전체: false, D직군전체: false, G직군전체: false },
     P: { P6: false, P5: false, P4: false, P3: false, P2: false, P1: false },
@@ -43,44 +44,6 @@ export default function AdjSubjectCriteria() {
   const [grades, setGrades] = useState(initialGrades);
   const [prevGrades, setPrevGrades] = useState({ ...initialGrades });
 
-  const handleSwitchChange3 = (category, label, isChecked) => {
-    setGrades((prev) => {
-      const updatedGrades = { ...prev };
-
-      if (
-        label === 'P직군전체' ||
-        label === 'A직군전체' ||
-        label === 'R직군전체' ||
-        label === 'O직군전체' ||
-        label === 'D직군전체' ||
-        label === 'G직군전체'
-      ) {
-        // ✅ 해당 직군 전체 값을 선택 또는 해제
-        const targetCategory = label[0]; // "P직군전체" -> "P"
-        updatedGrades[category][label] = isChecked; // ✅ 전체 버튼도 같이 변경
-        updatedGrades[targetCategory] = Object.fromEntries(
-          Object.keys(prev[targetCategory]).map((key) => [key, isChecked]),
-        );
-      } else {
-        // ✅ 개별 직급 토글
-        updatedGrades[category][label] = isChecked;
-
-        // ✅ 해당 직군의 전체 선택 여부 체크
-        const allChecked = Object.values(updatedGrades[category]).every(
-          (v) => v,
-        );
-        if (category in updatedGrades.allLeft)
-          updatedGrades.allLeft[`${category}직군전체`] = allChecked;
-        if (category in updatedGrades.allRight)
-          updatedGrades.allRight[`${category}직군전체`] = allChecked;
-      }
-
-      return updatedGrades;
-    });
-
-    setIsModified(true);
-  };
-
   // ✅ 현재 상태
   const [dateValues, setDateValues] = useState(initialDateValues);
   const [payments, setPayments] = useState(initialPayments);
@@ -92,27 +55,54 @@ export default function AdjSubjectCriteria() {
   const [previousPayments, setPreviousPayments] = useState({
     ...initialPayments,
   });
-  useEffect(() => {
-    if (!isModified) {
-      setPreviousDateValues({ ...dateValues });
-      setPreviousPayments({ ...payments });
-      setPrevGrades({ ...grades });
-    }
-  }, [isFormCommitted]);
 
-  const selectAll = () => {
-    // ✅ 현재 모든 값이 true이면 false로, 하나라도 false이면 true로 설정
-    const allChecked = Object.values(grades)
-      .flatMap((group) => Object.values(group))
-      .every((v) => v);
-
+  // ----------------------------------handle function----------------------------------
+  const handleSwitchGradeChange = (category, label, isChecked) => {
     setGrades((prev) => {
-      const updatedGrades = {};
-      Object.keys(prev).forEach((category) => {
-        updatedGrades[category] = Object.fromEntries(
-          Object.keys(prev[category]).map((key) => [key, !allChecked]), // ✅ 전체 상태 반전
-        );
-      });
+      const updatedGrades = { ...prev };
+      if (label === '전체') {
+        // ✅ "전체" 버튼 클릭 시 모든 값 토글
+        const allChecked = Object.values(grades)
+          .flatMap((group) => Object.values(group))
+          .every((v) => v);
+
+        Object.keys(prev).forEach((group) => {
+          updatedGrades[group] = Object.fromEntries(
+            Object.keys(prev[group]).map((key) => [key, !allChecked]),
+          );
+        });
+      } else if (
+        [
+          'P직군전체',
+          'A직군전체',
+          'R직군전체',
+          'O직군전체',
+          'D직군전체',
+          'G직군전체',
+        ].includes(label)
+      ) {
+        const targetCategory = label[0]; // 예: "P직군전체" → "P"
+
+        if (updatedGrades[targetCategory]) {
+          updatedGrades[targetCategory] = Object.fromEntries(
+            Object.keys(updatedGrades[targetCategory])
+              .filter((key) => !key.includes('직군전체')) // 전체 버튼 제외
+              .map((key) => [key, isChecked]),
+          );
+        }
+      } else {
+        updatedGrades[category][label] = isChecked;
+
+        // ✅ 해당 직군의 전체 선택 여부 체크
+        const allChecked = Object.keys(updatedGrades[category])
+          .filter((key) => !key.includes('직군전체')) // 전체 버튼 제외
+          .every((key) => updatedGrades[category][key]);
+
+        if (updatedGrades[category][`${category}직군전체`] !== undefined) {
+          updatedGrades[category][`${category}직군전체`] = allChecked;
+        }
+      }
+
       return updatedGrades;
     });
 
@@ -120,17 +110,34 @@ export default function AdjSubjectCriteria() {
   };
 
   // ✅ 스위치 변경 감지 (기존 값과 비교)
-  const handleSwitchChange = (label, isChecked) => {
-    console.log(`[급여] Switch changed: ${label} → ${isChecked}`);
-
+  const handleSwitchPaymentChange = (label, isChecked) => {
     setPayments((prev) => {
+      // "전체" 버튼이 눌렸을 경우 모든 값을 변경
+      if (label === '전체') {
+        const newValue = !prev['전체']; // 전체 버튼의 상태를 토글
+        const updatedPayments = Object.keys(prev).reduce((acc, key) => {
+          acc[key] = newValue;
+          return acc;
+        }, {});
+        return updatedPayments;
+      }
+
       // 기존 값과 비교하여 변경이 없으면 상태 업데이트 하지 않음
       if (prev[label] === isChecked) return prev;
 
-      return {
+      const updatedState = {
         ...prev,
         [label]: isChecked,
       };
+
+      // 전체 체크 상태를 개별 항목에 따라 동기화
+      const allChecked = Object.keys(updatedState).every(
+        (key) => key === '전체' || updatedState[key],
+      );
+
+      updatedState['전체'] = allChecked;
+
+      return updatedState;
     });
 
     setIsModified(true);
@@ -152,7 +159,6 @@ export default function AdjSubjectCriteria() {
   };
   // ✅ 저장 (변경된 값 유지 & 취소 버튼을 눌러도 복구되지 않도록 현재 값을 저장)
   const handleSave = () => {
-    console.log('Saving previous values...', dateValues, payments);
     setPreviousDateValues({ ...dateValues }); // ✅ 최신 값 저장
     setPreviousPayments({ ...payments });
     setPrevGrades({ ...grades });
@@ -162,13 +168,6 @@ export default function AdjSubjectCriteria() {
 
   // ✅ 취소 (이전 상태로 복원)
   const handleCancel = () => {
-    console.log(
-      'Restoring previous values...',
-      previousDateValues,
-      previousPayments,
-      prevGrades,
-    );
-
     setDateValues({ ...previousDateValues }); // ✅ 객체를 복사하여 원래 값 복원
     setPayments({ ...previousPayments });
     setGrades({ ...prevGrades });
@@ -205,15 +204,16 @@ export default function AdjSubjectCriteria() {
           onChange={handleDateChange}
           isSaved={isFormCommitted}
         />
+        {/* ✅ 급여기준 */}
         <PaymentSelection
           payments={payments}
-          onSwitchChange={handleSwitchChange}
+          onSwitchChange={handleSwitchPaymentChange}
           isCommitted={isFormCommitted}
         />
+        {/* ✅ 직급 */}
         <GradeSelection
           grades={grades}
-          onSwitchChange={handleSwitchChange3}
-          selectAll={selectAll}
+          onSwitchChange={handleSwitchGradeChange}
           isCommitted={isFormCommitted}
         />
       </div>
