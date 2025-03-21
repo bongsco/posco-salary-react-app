@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes, { string } from 'prop-types';
 import CheckBox from '#components/CheckBox/CheckBox';
 import Button from '#components/Button/Button';
@@ -10,6 +10,9 @@ import CustomSlider from '#components/Slider/CustomSlider';
 
 export default function PaybandTableRow({ item, onChange }) {
   const [payband, setPayband] = useState(item);
+  useEffect(() => {
+    setPayband(item);
+  }, [item]);
   const addError = (addModified, updatedPayband) => {
     return {
       ...updatedPayband,
@@ -82,9 +85,10 @@ export default function PaybandTableRow({ item, onChange }) {
           <div className={`${styles.table_cell}`}>
             <Button
               variant="secondary"
-              size="medium"
+              size="custom"
               label="선택"
               mode={payband.error.includes('버튼') ? 'error' : 'default'}
+              customSize={{ width: '60px', height: '26px' }}
             />
           </div>
         )}
@@ -102,6 +106,7 @@ export default function PaybandTableRow({ item, onChange }) {
                 addModified: '하한',
               });
             }}
+            customWidth={90}
           />
           <div>%</div>
         </div>
@@ -119,6 +124,7 @@ export default function PaybandTableRow({ item, onChange }) {
                 addModified: '상한',
               });
             }}
+            customWidth={90}
           />
           <div>%</div>
         </div>

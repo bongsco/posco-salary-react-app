@@ -1,3 +1,4 @@
+import { useReducer, useRef } from 'react';
 import CheckBox from '#components/CheckBox/CheckBox';
 import Button from '#components/Button/Button';
 import PaybandTableRow from './PaybandTableRow';
@@ -5,7 +6,8 @@ import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 
 export default function PaybandConfigPage() {
-  const payband = [
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+  const receivedPayband = useRef([
     {
       id: 1,
       grade: 'P3',
@@ -36,26 +38,51 @@ export default function PaybandConfigPage() {
       upperBound: 80,
       lowerBound: 10,
       modified: ['전체'],
-      error: ['버튼'],
+      error: [],
     },
-  ];
+  ]);
+  const payband = useRef(structuredClone(receivedPayband.current));
 
-  const changedPayband = [];
+  let changedPayband = [];
 
   return (
     <div className={`${styles.page}`}>
       <div className={`${styles.title}`}>
         <div>Payband 설정</div>
         <div className={`${styles.buttonGroup}`}>
-          <Button label="저장" size="xsmall" />
-          <Button label="취소" size="xsmall" variant="secondary" />
+          <Button
+            label="저장"
+            size="xsmall"
+            onClick={() => {
+              if (payband.current.every((pb) => pb.error.length === 0)) {
+                // changedPayband 백엔드 전송
+                payband.current = payband.current.map((pb) => ({
+                  ...pb,
+                  modified: [], // 수정된 항목만 새로 할당
+                }));
+                receivedPayband.current = structuredClone(payband.current);
+                changedPayband = [];
+                forceUpdate();
+              }
+            }}
+          />
+          <Button
+            label="취소"
+            size="xsmall"
+            variant="secondary"
+            onClick={() => {
+              forceUpdate();
+              payband.current = structuredClone(receivedPayband.current);
+              changedPayband = [];
+            }}
+          />
         </div>
       </div>
       <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
       <div className={`${styles.content}`}>
         직급별 연봉 조정 결과의 상한, 하한을 설정합니다.
       </div>
-      <table>
+      <table className={`${styles.table}`}>
         <thead>
           <tr>
             <td>
@@ -72,12 +99,12 @@ export default function PaybandConfigPage() {
           </tr>
         </thead>
         <tbody>
-          {payband.map((item, index) => (
+          {payband.current.map((item, index) => (
             <PaybandTableRow
               key={item.id}
               item={item}
               onChange={(modifiedItem) => {
-                payband[index] = modifiedItem;
+                payband.current[index] = modifiedItem;
                 const changedPaybandIndex = changedPayband.findIndex(
                   (pb) => pb.id === modifiedItem.id,
                 );

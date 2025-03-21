@@ -52,3 +52,7 @@
 .modified_cell {
   background-color: var(--color-data-incline);
 }
+
+.table {
+  width: 100%;
+}
