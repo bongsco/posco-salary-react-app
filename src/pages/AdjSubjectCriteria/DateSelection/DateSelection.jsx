@@ -2,7 +2,12 @@ import PropTypes from 'prop-types';
 import CustomDatePicker from '#components/DatePicker/CustomDatePicker';
 import styles from '../adj-subject-criteria.module.css';
 
-export default function DateSelection({ dateValues, onChange, isSaved }) {
+export default function DateSelection({
+  dateValues,
+  onChange,
+  isSaved,
+  hasError,
+}) {
   return (
     <div className={styles.selectDay}>
       <div className={styles.subTitle}>기준일자</div>
@@ -10,10 +15,11 @@ export default function DateSelection({ dateValues, onChange, isSaved }) {
         다음 날짜부터의 근속일을 기반으로 연봉을 조정합니다.
       </div>
       <CustomDatePicker
-        value={dateValues.baseDate}
+        selectedDate={dateValues.baseDate}
         isSaved={isSaved}
         onChange={(date) => onChange('baseDate', date)}
         eMessage="기준 일자를 선택해 주세요."
+        hasError={hasError}
       />
 
       <div className={styles.subTitle}>입사일자 기준 대상제외일자</div>
@@ -22,17 +28,19 @@ export default function DateSelection({ dateValues, onChange, isSaved }) {
       </div>
       <div className={styles.inputDays}>
         <CustomDatePicker
-          value={dateValues.expStartDate}
+          selectedDate={dateValues.expStartDate}
           isSaved={isSaved}
           onChange={(date) => onChange('expStartDate', date)}
           eMessage="시작일을 입력해 주세요."
+          hasError={hasError}
         />
         <div>~</div>
         <CustomDatePicker
-          value={dateValues.expEndDate}
+          selectedDate={dateValues.expEndDate}
           isSaved={isSaved}
           onChange={(date) => onChange('expEndDate', date)}
           eMessage="종료일을 입력해 주세요."
+          hasError={hasError}
         />
       </div>
     </div>
@@ -47,6 +55,7 @@ DateSelection.propTypes = {
   }),
   onChange: PropTypes.func.isRequired,
   isSaved: PropTypes.bool,
+  hasError: PropTypes.bool,
 };
 
 // ✅ 기본값 설정 (defaultProps)
@@ -57,4 +66,5 @@ DateSelection.defaultProps = {
     expEndDate: null,
   },
   isSaved: false,
+  hasError: false,
 };

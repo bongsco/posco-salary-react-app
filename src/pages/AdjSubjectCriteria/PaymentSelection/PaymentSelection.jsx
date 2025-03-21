@@ -6,10 +6,16 @@ export default function PaymentSelection({
   payments,
   onSwitchChange,
   isCommitted,
+  hasError,
 }) {
   return (
     <div className={styles.selectSwitch}>
       <div className={styles.subTitle}>급여기준</div>
+      {hasError && (
+        <div className={styles.errorMessage}>
+          한 가지 이상의 급여기준을 선택해 주세요.
+        </div>
+      )}
       <div className={styles.buttons}>
         <LabeledSwitch
           key="전체"
@@ -42,6 +48,7 @@ PaymentSelection.propTypes = {
   payments: PropTypes.objectOf(PropTypes.bool),
   onSwitchChange: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool,
+  hasError: PropTypes.bool,
 };
 
 // ✅ 기본값 설정 (defaultProps)
@@ -58,4 +65,5 @@ PaymentSelection.defaultProps = {
     임원: false,
   },
   isCommitted: false,
+  hasError: false,
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import BreadCrumbs from '#components/BreadCrumbs';
 import styles from './adj-subject-criteria.module.css';
 import DateSelection from './DateSelection';
@@ -9,7 +9,7 @@ import PaymentSelection from './PaymentSelection';
 export default function AdjSubjectCriteria() {
   const items = ['연봉조정', '등록'];
   const [isFormCommitted, setIsFormCommitted] = useState(false);
-  const [isModified, setIsModified] = useState(false);
+  // const [isModified, setIsModified] = useState(false);
 
   // ✅ 초기 상태 저장 (복구용)
   const initialDateValues = {
@@ -54,11 +54,64 @@ export default function AdjSubjectCriteria() {
     ...initialPayments,
   });
 
+  // ----------------------------------valid function----------------------------------
+  // useEffect(() => {
+  //   const isDateEqual =
+  //     JSON.stringify(dateValues) === JSON.stringify(previousDateValues);
+  //   const isPaymentsEqual =
+  //     JSON.stringify(payments) === JSON.stringify(previousPayments);
+  //   const isGradesEqual = JSON.stringify(grades) === JSON.stringify(prevGrades);
+
+  //   if (isDateEqual && isPaymentsEqual && isGradesEqual) {
+  //     setIsModified(false);
+  //   }
+  // }, [dateValues, payments, grades, isModified, isFormCommitted]);
+
+  const isModified = useMemo(() => {
+    const isDateEqual =
+      JSON.stringify(dateValues) === JSON.stringify(previousDateValues);
+    const isPaymentsEqual =
+      JSON.stringify(payments) === JSON.stringify(previousPayments);
+    const isGradesEqual = JSON.stringify(grades) === JSON.stringify(prevGrades);
+
+    return !(isDateEqual && isPaymentsEqual && isGradesEqual);
+  }, [
+    dateValues,
+    payments,
+    grades,
+    previousDateValues,
+    previousPayments,
+    prevGrades,
+  ]);
+
   useEffect(() => {
     if (!isModified) {
-      console.log('📦 Restored (after cancel):', payments, grades);
+      console.log('📦 Restored (after cancel):', payments, grades, dateValues);
     }
-  }, [payments, grades, isModified]);
+  }, [payments, grades, dateValues, isModified]);
+
+  const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
+
+  const validateForm = () => {
+    const hasDateError = Object.values(dateValues).some((v) => v === null);
+    const hasPaymentError = Object.values(payments).every((v) => v === false);
+    const allGradeValues = Object.values(grades)
+      .filter((group) => typeof group === 'object')
+      .flatMap((group) => Object.values(group));
+    const hasGradeError = allGradeValues.every((v) => v === false);
+
+    return {
+      hasDateError,
+      hasPaymentError,
+      hasGradeError,
+      isValid: !hasDateError && !hasPaymentError && !hasGradeError,
+    };
+  };
+
+  const formValidation = useMemo(
+    () => validateForm(),
+    [dateValues, payments, grades],
+  );
 
   // ----------------------------------handle function----------------------------------
   const handleSwitchGradeChange = (category, label, isChecked) => {
@@ -116,7 +169,7 @@ export default function AdjSubjectCriteria() {
       return updatedGrades;
     });
 
-    setIsModified(true);
+    // setIsModified(true);
   };
 
   // ✅ 스위치 변경 감지 (기존 값과 비교)
@@ -150,7 +203,7 @@ export default function AdjSubjectCriteria() {
       return updatedState;
     });
 
-    setIsModified(true);
+    // setIsModified(true);
   };
 
   // ✅ 날짜 변경 감지 (기존 값과 비교)
@@ -165,14 +218,18 @@ export default function AdjSubjectCriteria() {
       };
     });
 
-    setIsModified(true);
+    // setIsModified(true);
   };
   // ✅ 저장 (변경된 값 유지 & 취소 버튼을 눌러도 복구되지 않도록 현재 값을 저장)
   const handleSave = () => {
+    setHasTriedSubmit(true);
+
+    if (!formValidation.isValid) return;
+
     setPreviousDateValues({ ...dateValues }); // ✅ 최신 값 저장
     setPreviousPayments({ ...payments });
     setPrevGrades({ ...grades });
-    setIsModified(false);
+    // setIsModified(false);
     setIsFormCommitted(true);
   };
 
@@ -206,7 +263,7 @@ export default function AdjSubjectCriteria() {
     setDateValues({ ...previousDateValues });
     setPayments({ ...previousPayments });
     setGrades(restored);
-    setIsModified(false);
+    // setIsModified(false);
   };
 
   return (
@@ -214,7 +271,7 @@ export default function AdjSubjectCriteria() {
       <BreadCrumbs items={items} />
       <div className={styles.titleWrapper}>
         <div className={styles.title}>대상자 기준 설정</div>
-        {(isModified || isFormCommitted) && (
+        {isModified && (
           <div className={styles.savedWrapper}>
             <Button
               label="저장"
@@ -222,14 +279,12 @@ export default function AdjSubjectCriteria() {
               variant="primary"
               onClick={handleSave}
             />
-            {isModified && (
-              <Button
-                label="취소"
-                size="xsmall"
-                variant="secondary"
-                onClick={handleCancel}
-              />
-            )}
+            <Button
+              label="취소"
+              size="xsmall"
+              variant="secondary"
+              onClick={handleCancel}
+            />
           </div>
         )}
       </div>
@@ -238,18 +293,21 @@ export default function AdjSubjectCriteria() {
           dateValues={dateValues}
           onChange={handleDateChange}
           isSaved={isFormCommitted}
+          hasError={hasTriedSubmit && formValidation.hasDateError}
         />
         {/* ✅ 급여기준 */}
         <PaymentSelection
           payments={payments}
           onSwitchChange={handleSwitchPaymentChange}
           isCommitted={isFormCommitted}
+          hasError={hasTriedSubmit && formValidation.hasPaymentError}
         />
         {/* ✅ 직급 */}
         <GradeSelection
           grades={grades}
           onSwitchChange={handleSwitchGradeChange}
           isCommitted={isFormCommitted}
+          hasError={hasTriedSubmit && formValidation.hasGradeError}
         />
       </div>
       <div className={styles.separator} />

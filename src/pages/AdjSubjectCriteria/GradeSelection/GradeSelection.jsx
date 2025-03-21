@@ -6,10 +6,16 @@ export default function GradeSelection({
   grades,
   onSwitchChange,
   isCommitted,
+  hasError,
 }) {
   return (
     <div className={styles.selectSwitch}>
       <div className={styles.subTitle}>직급</div>
+      {hasError && (
+        <div className={styles.errorMessage}>
+          한 가지 이상의 직군을 선택해 주세요.
+        </div>
+      )}
       <div className={styles.gradeWrapper}>
         {/* ✅ 전체 선택 버튼 */}
         <LabeledSwitch
@@ -183,6 +189,7 @@ GradeSelection.propTypes = {
   grades: PropTypes.objectOf(PropTypes.objectOf(PropTypes.bool)),
   onSwitchChange: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool,
+  hasError: PropTypes.bool,
 };
 
 // ✅ 기본값 설정 (defaultProps)
@@ -198,4 +205,5 @@ GradeSelection.defaultProps = {
     G: { G3: false, G2: false, G1: false },
   },
   isCommitted: false,
+  hasError: false,
 };
