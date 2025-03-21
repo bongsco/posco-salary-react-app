@@ -38,3 +38,10 @@ export const Disabled = {
     isSaved: true,
   },
 };
+
+export const Error = {
+  args: {
+    isSaved: true,
+    hasError: true,
+  },
+};
