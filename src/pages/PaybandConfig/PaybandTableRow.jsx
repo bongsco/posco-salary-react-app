@@ -36,6 +36,8 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
         updatedModified = payband.modified.filter((m) => m !== addModified);
       } else if (addError === '상한' && upper === originItem.upperBound) {
         updatedModified = payband.modified.filter((m) => m !== addModified);
+      } else {
+        updatedModified = payband.modified;
       }
     } else {
       updatedModified = payband.modified;
