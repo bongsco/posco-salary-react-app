@@ -8,6 +8,7 @@ import '../../styles/table.css';
 
 export default function PaybandConfigPage() {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
+  const needSave = useRef(false);
   const receivedPayband = useRef([
     {
       id: 1,
@@ -50,34 +51,38 @@ export default function PaybandConfigPage() {
     <div className={`${styles.page}`}>
       <div className={`${styles.title}`}>
         <div>Payband 설정</div>
-        <div className={`${styles.buttonGroup}`}>
-          <Button
-            label="저장"
-            size="xsmall"
-            onClick={() => {
-              if (payband.current.every((pb) => pb.error.length === 0)) {
-                // changedPayband 백엔드 전송
-                payband.current = payband.current.map((pb) => ({
-                  ...pb,
-                  modified: [], // 수정된 항목만 새로 할당
-                }));
-                receivedPayband.current = structuredClone(payband.current);
-                changedPayband = [];
+        {needSave.current && (
+          <div className={`${styles.buttonGroup}`}>
+            <Button
+              label="저장"
+              size="xsmall"
+              onClick={() => {
+                if (payband.current.every((pb) => pb.error.length === 0)) {
+                  // changedPayband 백엔드 전송
+                  payband.current = payband.current.map((pb) => ({
+                    ...pb,
+                    modified: [], // 수정된 항목만 새로 할당
+                  }));
+                  receivedPayband.current = structuredClone(payband.current);
+                  changedPayband = [];
+                  forceUpdate();
+                  needSave.current = false;
+                }
+              }}
+            />
+            <Button
+              label="취소"
+              size="xsmall"
+              variant="secondary"
+              onClick={() => {
                 forceUpdate();
-              }
-            }}
-          />
-          <Button
-            label="취소"
-            size="xsmall"
-            variant="secondary"
-            onClick={() => {
-              forceUpdate();
-              payband.current = structuredClone(receivedPayband.current);
-              changedPayband = [];
-            }}
-          />
-        </div>
+                payband.current = structuredClone(receivedPayband.current);
+                changedPayband = [];
+                needSave.current = false;
+              }}
+            />
+          </div>
+        )}
       </div>
       <Stepper adjId={1} />
       <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
@@ -115,6 +120,10 @@ export default function PaybandConfigPage() {
                   changedPayband.push(modifiedItem);
                 } else {
                   changedPayband[changedPaybandIndex] = modifiedItem;
+                }
+                if (!needSave.current) {
+                  needSave.current = true;
+                  forceUpdate();
                 }
               }}
             />
