@@ -18,9 +18,7 @@ export default function GradeSelection({
             .flat()
             .every((v) => v)}
           isCommitted={isCommitted}
-          onClick={(tmp, isChecked) =>
-            onSwitchChange('전체', '전체', isChecked)
-          }
+          onClick={(tmp, isChecked) => onSwitchChange('all', '전체', isChecked)}
           isCheckedInitially={grades.all['전체']}
         />
 
@@ -34,7 +32,7 @@ export default function GradeSelection({
                   isChecked={grades.allLeft[label]}
                   isCommitted={isCommitted}
                   onClick={(tmp, isChecked) =>
-                    onSwitchChange('allLeft', tmp, isChecked)
+                    onSwitchChange('allLeft', label, isChecked)
                   }
                   isCheckedInitially={grades.allLeft[label]}
                 />

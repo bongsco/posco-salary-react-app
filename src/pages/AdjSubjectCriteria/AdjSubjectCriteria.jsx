@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BreadCrumbs from '#components/BreadCrumbs';
 import styles from './adj-subject-criteria.module.css';
 import DateSelection from './DateSelection';
@@ -54,6 +54,12 @@ export default function AdjSubjectCriteria() {
     ...initialPayments,
   });
 
+  useEffect(() => {
+    if (!isModified) {
+      console.log('📦 Restored (after cancel):', payments, grades);
+    }
+  }, [payments, grades, isModified]);
+
   // ----------------------------------handle function----------------------------------
   const handleSwitchGradeChange = (category, label, isChecked) => {
     setGrades((prev) => {
@@ -88,16 +94,22 @@ export default function AdjSubjectCriteria() {
               .map((key) => [key, isChecked]),
           );
         }
+        if (category === 'allLeft' || category === 'allRight') {
+          updatedGrades[category][label] = isChecked;
+        }
       } else {
         updatedGrades[category][label] = isChecked;
 
         // ✅ 해당 직군의 전체 선택 여부 체크
-        const allChecked = Object.keys(updatedGrades[category])
-          .filter((key) => !key.includes('직군전체')) // 전체 버튼 제외
-          .every((key) => updatedGrades[category][key]);
+        const allChecked = Object.keys(updatedGrades[category]).every(
+          (key) => updatedGrades[category][key],
+        );
 
-        if (updatedGrades[category][`${category}직군전체`] !== undefined) {
-          updatedGrades[category][`${category}직군전체`] = allChecked;
+        // ✅ 직군에 따라 allLeft or allRight 쪽 전체 버튼 상태 갱신
+        if (['P', 'R', 'A'].includes(category)) {
+          updatedGrades.allLeft[`${category}직군전체`] = allChecked;
+        } else if (['O', 'D', 'G'].includes(category)) {
+          updatedGrades.allRight[`${category}직군전체`] = allChecked;
         }
       }
 
@@ -164,11 +176,36 @@ export default function AdjSubjectCriteria() {
     setIsFormCommitted(true);
   };
 
-  // ✅ 취소 (이전 상태로 복원)
   const handleCancel = () => {
-    setDateValues({ ...previousDateValues }); // ✅ 객체를 복사하여 원래 값 복원
+    const restored = JSON.parse(JSON.stringify(prevGrades)); // 깊은 복사
+
+    const syncGroupAllSwitch = (groupKey, allKey) => {
+      const group = restored[groupKey];
+      const allChecked = Object.values(group).every((v) => v);
+
+      if (restored[allKey] && `${groupKey}직군전체` in restored[allKey]) {
+        restored[allKey][`${groupKey}직군전체`] = allChecked;
+      }
+    };
+
+    // ✅ 각 직군 전체 버튼 동기화
+    ['P', 'R', 'A'].forEach((g) => syncGroupAllSwitch(g, 'allLeft'));
+    ['O', 'D', 'G'].forEach((g) => syncGroupAllSwitch(g, 'allRight'));
+
+    // ✅ 전체 버튼 동기화
+    const allValues = Object.values(restored)
+      .filter((group) => typeof group === 'object')
+      .flatMap((group) => Object.values(group));
+
+    const isAllChecked = allValues.every((v) => v === true);
+    if (restored.all && '전체' in restored.all) {
+      restored.all.전체 = isAllChecked;
+    }
+
+    // ✅ 상태 복원
+    setDateValues({ ...previousDateValues });
     setPayments({ ...previousPayments });
-    setGrades({ ...prevGrades });
+    setGrades(restored);
     setIsModified(false);
   };
 
