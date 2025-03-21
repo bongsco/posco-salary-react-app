@@ -1,6 +1,7 @@
 import { useReducer, useRef } from 'react';
 import CheckBox from '#components/CheckBox/CheckBox';
 import Button from '#components/Button/Button';
+import Stepper from '#components/Stepper/Stepper';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
@@ -78,6 +79,7 @@ export default function PaybandConfigPage() {
           />
         </div>
       </div>
+      <Stepper adjId={1} />
       <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
       <div className={`${styles.content}`}>
         직급별 연봉 조정 결과의 상한, 하한을 설정합니다.
