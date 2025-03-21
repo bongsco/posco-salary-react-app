@@ -86,7 +86,7 @@ export default function AdjSubjectCriteria() {
 
   useEffect(() => {
     if (!isModified) {
-      console.log('📦 Restored (after cancel):', payments, grades, dateValues);
+      // console.log('📦 Restored (after cancel):', payments, grades, dateValues);
     }
   }, [payments, grades, dateValues, isModified]);
 
@@ -108,10 +108,7 @@ export default function AdjSubjectCriteria() {
     };
   };
 
-  const formValidation = useMemo(
-    () => validateForm(),
-    [dateValues, payments, grades],
-  );
+  const formValidation = validateForm();
 
   // ----------------------------------handle function----------------------------------
   const handleSwitchGradeChange = (category, label, isChecked) => {
