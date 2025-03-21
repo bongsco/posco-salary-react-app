@@ -12,6 +12,7 @@ export default {
     isDisabled: { control: 'boolean' },
     isSaved: { control: 'boolean' },
     hasError: { control: 'boolean' },
+    eMessage: { control: 'text' },
   },
   args: { onChange: fn() }, // ✅ Storybook에서 onChange 이벤트 추적 가능
 };
@@ -44,5 +45,6 @@ export const Error = {
   args: {
     isSaved: true,
     hasError: true,
+    eMessage: '날짜를 입력해주세요',
   },
 };

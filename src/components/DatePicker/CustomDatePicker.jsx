@@ -4,7 +4,13 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './datepicker.module.css'; // CSS Modules import
 
-function CustomDatePicker({ isDisabled, isSaved, onChange, hasError }) {
+function CustomDatePicker({
+  isDisabled,
+  isSaved,
+  onChange,
+  hasError,
+  eMessage,
+}) {
   const [date, setDate] = useState(new Date());
 
   const handleDateChange = (d) => {
@@ -31,9 +37,7 @@ function CustomDatePicker({ isDisabled, isSaved, onChange, hasError }) {
         disabled={isDisabled}
         className={inputClass}
       />
-      {hasError && (
-        <div className={styles.errorMessage}>날짜를 선택해주세요</div>
-      )}
+      {hasError && <div className={styles.errorMessage}>{eMessage}</div>}
     </div>
   );
 }
@@ -43,12 +47,14 @@ CustomDatePicker.propTypes = {
   isSaved: PropTypes.bool,
   onChange: PropTypes.func,
   hasError: PropTypes.bool,
+  eMessage: PropTypes.string,
 };
 
 CustomDatePicker.defaultProps = {
   isDisabled: false,
   isSaved: false,
   hasError: false,
+  eMessage: '날짜를 입력해주세요',
   onChange: () => {},
 };
 

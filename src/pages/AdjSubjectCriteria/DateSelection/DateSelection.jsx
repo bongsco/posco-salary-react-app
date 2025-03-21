@@ -13,6 +13,7 @@ export default function DateSelection({ dateValues, onChange, isSaved }) {
         value={dateValues.baseDate}
         isSaved={isSaved}
         onChange={(date) => onChange('baseDate', date)}
+        eMessage="기준 일자를 선택해 주세요."
       />
 
       <div className={styles.subTitle}>입사일자 기준 대상제외일자</div>
@@ -24,12 +25,14 @@ export default function DateSelection({ dateValues, onChange, isSaved }) {
           value={dateValues.expStartDate}
           isSaved={isSaved}
           onChange={(date) => onChange('expStartDate', date)}
+          eMessage="시작일을 입력해 주세요."
         />
         <div>~</div>
         <CustomDatePicker
           value={dateValues.expEndDate}
           isSaved={isSaved}
           onChange={(date) => onChange('expEndDate', date)}
+          eMessage="종료일을 입력해 주세요."
         />
       </div>
     </div>
