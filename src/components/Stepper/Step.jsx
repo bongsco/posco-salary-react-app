@@ -53,6 +53,7 @@ Step.propTypes = {
   ).isRequired,
 };
 
+// TODO: Track location to check working step
 function DetailStep({ text, state, date = null }) {
   return (
     <li className={`${styles.item} ${styles[state ? 'complete' : 'undone']}`}>
