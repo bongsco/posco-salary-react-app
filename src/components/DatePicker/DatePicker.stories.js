@@ -11,6 +11,7 @@ export default {
   argTypes: {
     isDisabled: { control: 'boolean' },
     isSaved: { control: 'boolean' },
+    hasError: { control: 'boolean' },
   },
   args: { onChange: fn() }, // ✅ Storybook에서 onChange 이벤트 추적 가능
 };
@@ -36,5 +37,12 @@ export const Disabled = {
   args: {
     isDisabled: true,
     isSaved: true,
+  },
+};
+
+export const Error = {
+  args: {
+    isSaved: true,
+    hasError: true,
   },
 };

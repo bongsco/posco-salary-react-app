@@ -1,34 +1,39 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './input.module.css';
 
 function Input({
+  id,
   mode = 'default',
   placeholder = '',
   label,
-  onFocus,
-  onBlur,
+  initialValue,
+  customWidth,
+  customHeight,
   onChange,
 }) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialValue);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   return (
-    <div className={styles['input-box-container']}>
+    <div
+      className={styles['input-box-container']}
+      style={{ width: customWidth, height: customHeight }}
+    >
       <input
+        id={id}
         type="text"
         value={value}
         className={`${styles['input-box']} ${styles[mode]}`}
         placeholder={placeholder}
         onChange={(e) => {
           setValue(e.target.value);
-          onChange(e.target.value);
+          onChange(e);
         }}
-        onFocus={(e) => {
-          if (onFocus) onFocus(e);
-        }}
-        onBlur={(e) => {
-          if (onBlur) onBlur(e);
-        }}
+        style={{ width: customWidth, height: customHeight }}
       />
       {label ? (
         <span
@@ -42,19 +47,23 @@ function Input({
 }
 
 Input.defaultProps = {
+  id: '',
   mode: 'default',
   label: '',
+  initialValue: '',
+  customWidth: 225,
+  customHeight: 30,
   placeholder: '',
-  onFocus: null,
-  onBlur: null,
 };
 
 Input.propTypes = {
+  id: PropTypes.string,
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
+  initialValue: PropTypes.string,
+  customWidth: PropTypes.number,
+  customHeight: PropTypes.number,
   onChange: PropTypes.func.isRequired,
 };
 

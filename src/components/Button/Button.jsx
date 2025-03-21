@@ -27,7 +27,14 @@ function Button({
 
 Button.propTypes = {
   variant: PropTypes.oneOf(['primary', 'secondary']),
-  size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'custom']),
+  size: PropTypes.oneOf([
+    'xsmall',
+    'small',
+    'medium',
+    'large',
+    'custom',
+    'round',
+  ]),
   label: PropTypes.string.isRequired,
   customSize: PropTypes.shape({
     width: PropTypes.string,

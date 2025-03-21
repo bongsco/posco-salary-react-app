@@ -44,14 +44,12 @@ export default function AdjSubjectCriteria() {
   const [grades, setGrades] = useState(initialGrades);
   const [prevGrades, setPrevGrades] = useState({ ...initialGrades });
 
-  // ✅ 현재 상태
   const [dateValues, setDateValues] = useState(initialDateValues);
-  const [payments, setPayments] = useState(initialPayments);
-
-  // ✅ 변경 전 상태 저장
   const [previousDateValues, setPreviousDateValues] = useState({
     ...initialDateValues,
   });
+
+  const [payments, setPayments] = useState(initialPayments);
   const [previousPayments, setPreviousPayments] = useState({
     ...initialPayments,
   });

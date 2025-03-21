@@ -28,8 +28,8 @@
   --color-background-general: #ffffff;
   --color-background-block: #eeedec;
 
-  --color-data-incline: rgba(#a1fd28, 20%);
-  --color-data-decline: rgba(#ff325f, 20%);
+  --color-data-incline: rgba(161, 253, 40, 0.2);
+  --color-data-decline: rgba(255, 50, 95, 0.2);
 
   --color-system-caution: #ff325f;
   --color-system-warning: #ffbd2f;
@@ -57,7 +57,9 @@
   --font-caption-1r-pc: 400 14px var(--font-family);
   --font-caption-2b-pc: 600 12px var(--font-family);
   --font-caption-2r-pc: 400 12px var(--font-family);
+  /* --font-caption-3b-pc를 의미 */
   --font-caption-3r-pc: 600 10px var(--font-family);
+  /* --font-caption-3r-pc를 의미 */
   --font-caption-3l-pc: 400 10px var(--font-family);
 
   --shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.1);
