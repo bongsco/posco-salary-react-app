@@ -32,7 +32,6 @@
 /* select-selected 관련 css */
 .select-selected {
   border: none;
-  width: 209px;
   height: auto;
   padding: 0px;
   color: var(--color-grayscale-5);
@@ -40,6 +39,12 @@
   font: var(--font-caption-1r-pc);
   position: relative;
   text-align: left;
+}
+.select-selected.small {
+  width: 120px;
+}
+.select-selected.large {
+  width: 197px;
 }
 
 .select-selected:after {
@@ -80,7 +85,6 @@
   border-radius: 5px;
   padding: 6px 4px;
   width: fit-content;
-  min-width: 213px;
   height: auto;
   background-color: var(--color-background-general);
   gap: 2px;
@@ -88,6 +92,14 @@
   max-height: 200px;
   overflow: auto;
   z-index: 100;
+}
+
+.select-items-list.small {
+  min-width: 136px;
+}
+
+.select-items-list.large {
+  min-width: 214px;
 }
 
 .select-items-list::-webkit-scrollbar {
