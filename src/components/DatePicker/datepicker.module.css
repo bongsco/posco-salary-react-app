@@ -111,6 +111,17 @@
   border: 1px solid var(--color-system-ok);
 }
 
+.error {
+  border-color: var(--color-system-caution);
+}
+
+/* ✅ 에러 메시지 스타일 */
+.errorMessage {
+  color: var(--color-system-caution);
+  font: var(--font-caption-1r-pc);
+  margin-top: 6px;
+}
+
 
 
 /* ✅ 아이콘 정렬 */
