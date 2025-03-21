@@ -22,7 +22,7 @@
   gap: 10px;
 }
 
-.salary-adjustment-area {
+.salary-adjustment-table-area {
   gap: 0px;
   display: flex;
   flex-direction: column;
@@ -34,11 +34,11 @@
 }
 
 .column-year {
-  width: 8%;
+  width: 7%;
 }
 
 .column-month {
-  width: 4%;
+  width: 3%;
 }
 
 .column-adj-type {
@@ -56,14 +56,14 @@
 }
 
 .column-creator {
-  width: 8%;
+  width: 7%;
 }
 
 .column-work-step {
-  width: auto; /* 가변 크기 */
-  min-width: 150px; /* 최소 크기 */
-  max-width: 40%; /* 최대 크기 설정 가능 */
-  white-space: normal; /* 자동 줄 바꿈 허용 */
+  width: auto;
+  min-width: 150px;
+  max-width: 40%;
+  white-space: normal;
 }
 
 .filter-sort-area {
@@ -83,4 +83,72 @@
 
 .filter-button {
   border-radius: 5px;
+}
+
+.empty-table-cell {
+  text-align: center;
+  vertical-align: middle;
+  height: 122px;
+}
+
+.empty-table-content {
+  display: inline-block;
+}
+
+.no-data-message {
+  font: var(--font-caption-3r-pc);
+  margin-bottom: 8px;
+}
+
+table.salary-adjustment-table tr {
+  border-bottom: 0px;
+}
+
+table.salary-adjustment-table
+  tbody
+  tr.table-body:hover
+  td:not(.selected-row td) {
+  background-color: var(--color-data-incline);
+  cursor: pointer;
+}
+
+table.salary-adjustment-table tbody tr.selected-row {
+  position: relative;
+}
+
+.button-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: right;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  background-color: rgb(0, 0, 0, 0.4);
+}
+
+.edit-button {
+  width: 24px;
+  height: 24px;
+  background-image: url('./editButton.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.delete-button {
+  width: 24px;
+  height: 24px;
+  background-image: url('./deleteButton.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
 }

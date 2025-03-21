@@ -3,16 +3,12 @@ import styles from './main-page.module.css';
 
 function FilterSort() {
   const filterButtonVariant = 'secondary';
-  const filterButtonSize = 'xsmall';
-  const filterButtonLabel = '필터 추가';
+  const filterButtonSize = 'round';
+  const filterButtonLabel = '필터 추가 +';
 
   const sortButtonVariant = 'secondary';
-  const sortButtonSize = 'custom';
-  const sortButtonLabel = '정렬: 연도, 월, 등록일';
-  const sortCustomSize = {
-    width: '140px',
-    height: '26px',
-  };
+  const sortButtonSize = 'round';
+  const sortButtonLabel = '정렬: 연도, 월, 등록일 ↓';
 
   const excelDownloadButtonVariant = 'secondary';
   const excelDownloadButtonSize = 'large';
@@ -34,11 +30,9 @@ function FilterSort() {
           variant={sortButtonVariant}
           size={sortButtonSize}
           label={sortButtonLabel}
-          customSize={sortCustomSize}
         />
       </div>
 
-      {/* 오른쪽 그룹 */}
       <div className={styles['right-group']}>
         <Button
           variant={excelDownloadButtonVariant}

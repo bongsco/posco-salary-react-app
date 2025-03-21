@@ -1,62 +1,19 @@
+import PropTypes from 'prop-types';
 import '../../styles/table.css';
+import { Fragment } from 'react';
 import State from '#components/State';
 import PageNation from '#components/Pagination';
 import styles from './main-page.module.css';
 
-function SalaryAdjustmentTable() {
-  const salaryAdjustmentData = [
-    {
-      year: 2023,
-      month: 1,
-      adj_type: 'BASE_UP',
-      order_number: 1,
-      interface_use: false,
-      work_step: '사전작업 > 고성과 가산 대상 여부 설정',
-      creation_timestamp: '2022-12-01',
-      creator: '한상진',
-    },
-    {
-      year: 2022,
-      month: 10,
-      adj_type: 'PROMOTED_SALARY_ADJUSTMENT',
-      order_number: 2,
-      interface_use: false,
-      work_step: '사전작업 > 대상자 편성',
-      creation_timestamp: '2022-09-01',
-      creator: '한상진',
-    },
-    {
-      year: 2022,
-      month: 5,
-      adj_type: 'PROMOTED_SALARY_ADJUSTMENT',
-      order_number: 1,
-      interface_use: false,
-      work_step: '완료',
-      creation_timestamp: '2022-04-01',
-      creator: '한상진',
-    },
-    {
-      year: 2022,
-      month: 3,
-      adj_type: 'ANNUAL_SALARY_ADJUSTMENT',
-      order_number: 2,
-      interface_use: true,
-      work_step: '완료',
-      creation_timestamp: '2022-02-01',
-      creator: '한상진',
-    },
-    {
-      year: 2022,
-      month: 1,
-      adj_type: 'ANNUAL_SALARY_ADJUSTMENT',
-      order_number: 1,
-      interface_use: true,
-      work_step: '완료',
-      creation_timestamp: '2021-12-01',
-      creator: '한상진',
-    },
-  ];
-
+function SalaryAdjustmentTable({
+  data,
+  currentPage,
+  setCurrentPage,
+  rowsPerPage,
+  setRowsPerPage,
+  clickedRow,
+  setClickedRow,
+}) {
   function getAdjustmentType(adjType) {
     if (adjType === 'ANNUAL_SALARY_ADJUSTMENT') {
       return '정기 연봉조정';
@@ -84,8 +41,21 @@ function SalaryAdjustmentTable() {
     return { status: 'warning', text: '미반영' };
   }
 
+  const handleRowClick = (creationTimestamp) => {
+    setClickedRow(clickedRow === creationTimestamp ? null : creationTimestamp);
+  };
+
+  const handleEditClick = (row) => {
+    console.log('Edit clicked for row:', row);
+    // 편집 버튼 클릭 시 필요한 로직을 여기에 구현합니다.
+  };
+
+  const handleDeleteClick = (row) => {
+    console.log('Delete clicked for row:', row);
+  };
+
   return (
-    <div className={styles['salary-adjustment-area']}>
+    <div className={styles['salary-adjustment-table-area']}>
       <table className={styles['salary-adjustment-table']}>
         <thead>
           <tr>
@@ -100,38 +70,90 @@ function SalaryAdjustmentTable() {
           </tr>
         </thead>
         <tbody>
-          {salaryAdjustmentData.map((row) => {
+          {data.map((row) => {
             const statusInfo = getStatus(row.work_step);
             const interfaceUse = getInterfaceUse(row.interface_use);
             return (
-              <tr key={row}>
-                <td className={styles['column-year']}>{row.year}</td>
-                <td className={styles['column-month']}>{row.month}</td>
-                <td className={styles['column-adj-type']}>
-                  {row.order_number}차 {getAdjustmentType(row.adj_type)}
-                </td>
-                <td className={styles['column-status']}>
-                  <State status={statusInfo.status} text={statusInfo.text} />
-                </td>
-                <td className={styles['column-interface']}>
-                  <State
-                    status={interfaceUse.status}
-                    text={interfaceUse.text}
-                  />
-                </td>
-                <td className={styles['column-work-step']}>{row.work_step}</td>
-                <td className={styles['column-date']}>
-                  {row.creation_timestamp}
-                </td>
-                <td className={styles['column-creator']}>{row.creator}</td>
-              </tr>
+              /* 나중에 key값은 조정차수ID로 변경 예정 */
+              <Fragment key={row.creation_timestamp}>
+                <tr
+                  onClick={() => handleRowClick(row.creation_timestamp)}
+                  key={row.creation_timestamp}
+                  className={`${styles['table-body']} ${
+                    clickedRow === row.creation_timestamp
+                      ? styles['selected-row']
+                      : ''
+                  }`}
+                >
+                  <td className={styles['column-year']}>{row.year}</td>
+                  <td className={styles['column-month']}>{row.month}</td>
+                  <td className={styles['column-adj-type']}>
+                    {row.order_number}차 {getAdjustmentType(row.adj_type)}
+                  </td>
+                  <td className={styles['column-status']}>
+                    <State status={statusInfo.status} text={statusInfo.text} />
+                  </td>
+                  <td className={styles['column-interface']}>
+                    <State
+                      status={interfaceUse.status}
+                      text={interfaceUse.text}
+                    />
+                  </td>
+                  <td className={styles['column-work-step']}>
+                    {row.work_step}
+                  </td>
+                  <td className={styles['column-date']}>
+                    {row.creation_timestamp}
+                  </td>
+                  <td className={styles['column-creator']}>{row.creator}</td>
+                  {clickedRow === row.creation_timestamp && (
+                    <div className={styles['button-container']}>
+                      <button
+                        type="button"
+                        onClick={() => handleEditClick(row)}
+                        className={styles['edit-button']}
+                        aria-label="편집"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteClick(row)}
+                        className={styles['delete-button']}
+                        aria-label="삭제"
+                      />
+                    </div>
+                  )}
+                </tr>
+                {clickedRow === row.creation_timestamp && (
+                  /* 나중에는 이 영역에 Stepper 추가 */
+                  <tr>
+                    <td colSpan="8">
+                      <div className={styles.timeline} />
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             );
           })}
         </tbody>
       </table>
-      <PageNation />
+      <PageNation
+        currentPage={currentPage}
+        rowsPerPage={rowsPerPage}
+        onPageChange={setCurrentPage}
+        onRowsPerPageChange={setRowsPerPage}
+      />
     </div>
   );
 }
+
+SalaryAdjustmentTable.propTypes = {
+  data: PropTypes.arrayOf().isRequired,
+  currentPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  setRowsPerPage: PropTypes.func.isRequired,
+  clickedRow: PropTypes.number.isRequired,
+  setClickedRow: PropTypes.func.isRequired,
+};
 
 export default SalaryAdjustmentTable;
