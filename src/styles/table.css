@@ -1,6 +1,7 @@
 @import url('./global.css');
 
 table {
+  width: 100%;
   border-collapse: collapse;
   font: var(--font-caption-2r-pc);
   box-shadow: var(--shadow);
@@ -31,4 +32,18 @@ td {
 
 tbody tr {
   border-bottom: 1px solid var(--color-grayscale-1);
+}
+
+tbody td.add_column {
+  background-color: var(--color-primary-lightest);
+  font: var(--font-title-pc);
+  color: var(--color-primary-main);
+  text-align: center;
+  vertical-align: middle;
+  padding: 2px 0;
+  line-height: 27px;
+}
+
+tbody td.add_column:hover {
+  background-color: var(--color-primary-lighter);
 }
