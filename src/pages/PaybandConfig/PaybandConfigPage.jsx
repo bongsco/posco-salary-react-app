@@ -105,6 +105,7 @@ export default function PaybandConfigPage() {
             <PaybandTableRow
               key={item.id}
               item={item}
+              originItem={receivedPayband.current[index]}
               onChange={(modifiedItem) => {
                 payband.current[index] = modifiedItem;
                 const changedPaybandIndex = changedPayband.findIndex(

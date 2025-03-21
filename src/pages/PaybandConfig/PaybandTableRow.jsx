@@ -8,7 +8,7 @@ import '../../styles/table.css';
 import Input from '#components/Input/Input';
 import CustomSlider from '#components/Slider/CustomSlider';
 
-export default function PaybandTableRow({ item, onChange }) {
+export default function PaybandTableRow({ item, originItem, onChange }) {
   const [payband, setPayband] = useState(item);
   useEffect(() => {
     setPayband(item);
@@ -28,16 +28,24 @@ export default function PaybandTableRow({ item, onChange }) {
     };
   };
   const handleChange = ({ lower, upper, addModified } = {}) => {
+    let updatedModified = [];
+    if (addModified !== undefined && !payband.modified.includes('전체')) {
+      if (!payband.modified.includes(addModified)) {
+        updatedModified = [...payband.modified, addModified];
+      } else if (addModified === '하한' && lower === originItem.lowerBound) {
+        updatedModified = payband.modified.filter((m) => m !== addModified);
+      } else if (addError === '상한' && upper === originItem.upperBound) {
+        updatedModified = payband.modified.filter((m) => m !== addModified);
+      }
+    } else {
+      updatedModified = payband.modified;
+    }
+
     let updatedPayband = {
       ...payband,
       lowerBound: lower !== undefined ? lower : payband.lowerBound,
       upperBound: upper !== undefined ? upper : payband.upperBound,
-      modified:
-        addModified !== undefined &&
-        !payband.modified.includes('전체') &&
-        !payband.modified.includes(addModified)
-          ? [...payband.modified, addModified]
-          : payband.modified,
+      modified: updatedModified,
     };
 
     if (
@@ -55,7 +63,6 @@ export default function PaybandTableRow({ item, onChange }) {
     } else {
       updatedPayband = removeError(addModified, updatedPayband);
     }
-
     setPayband(({ id, grade }) => ({
       id,
       grade,
@@ -153,6 +160,12 @@ export default function PaybandTableRow({ item, onChange }) {
 
 PaybandTableRow.propTypes = {
   item: PropTypes.shape({
+    grade: PropTypes.string.isRequired,
+    upperBound: PropTypes.number.isRequired,
+    lowerBound: PropTypes.number.isRequired,
+    modified: PropTypes.arrayOf(string).isRequired,
+  }).isRequired,
+  originItem: PropTypes.shape({
     grade: PropTypes.string.isRequired,
     upperBound: PropTypes.number.isRequired,
     lowerBound: PropTypes.number.isRequired,
