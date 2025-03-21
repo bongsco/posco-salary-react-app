@@ -8,11 +8,12 @@ function Button({
   label,
   customSize,
   onClick,
+  mode,
 }) {
   return (
     <button
       type="button"
-      className={`${styles.button} ${styles[variant]} ${styles[size]}`}
+      className={`${styles.button} ${styles[variant]} ${styles[size]} ${mode === 'error' ? styles.error : ''}`}
       onClick={onClick}
       style={
         size === 'custom'
@@ -41,6 +42,7 @@ Button.propTypes = {
     height: PropTypes.string,
   }),
   onClick: PropTypes.func,
+  mode: PropTypes.oneOf(['default', 'error']),
 };
 
 Button.defaultProps = {
@@ -48,6 +50,7 @@ Button.defaultProps = {
   size: 'large',
   customSize: null,
   onClick: undefined,
+  mode: 'default',
 };
 
 export default Button;

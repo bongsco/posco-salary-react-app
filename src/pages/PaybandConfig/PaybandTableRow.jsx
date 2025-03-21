@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes, { string } from 'prop-types';
 import CheckBox from '#components/CheckBox/CheckBox';
+import Button from '#components/Button/Button';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 
@@ -9,9 +10,22 @@ import CustomSlider from '#components/Slider/CustomSlider';
 
 export default function PaybandTableRow({ item, onChange }) {
   const [payband, setPayband] = useState(item);
-
+  const addError = (addModified, updatedPayband) => {
+    return {
+      ...updatedPayband,
+      error: updatedPayband.error.includes(addModified)
+        ? updatedPayband.error
+        : [...updatedPayband.error, addModified],
+    };
+  };
+  const removeError = (addModified, updatedPayband) => {
+    return {
+      ...updatedPayband,
+      error: updatedPayband.error.filter((e) => e !== addModified),
+    };
+  };
   const handleChange = ({ lower, upper, addModified } = {}) => {
-    const updatedPayband = {
+    let updatedPayband = {
       ...payband,
       lowerBound: lower !== undefined ? lower : payband.lowerBound,
       upperBound: upper !== undefined ? upper : payband.upperBound,
@@ -23,12 +37,29 @@ export default function PaybandTableRow({ item, onChange }) {
           : payband.modified,
     };
 
+    if (
+      addModified === '상한' &&
+      (upper === undefined || upper < 0 || upper > 200 || Number.isNaN(upper))
+    ) {
+      updatedPayband = addError(addModified, updatedPayband);
+    } else if (
+      addModified === '하한' &&
+      (lower === undefined || lower < 0 || lower > 200 || Number.isNaN(lower))
+    ) {
+      updatedPayband = addError(addModified, updatedPayband);
+    } else if (updatedPayband.lowerBound > updatedPayband.upperBound) {
+      updatedPayband = addError(addModified, updatedPayband);
+    } else {
+      updatedPayband = removeError(addModified, updatedPayband);
+    }
+
     setPayband(({ id, grade }) => ({
       id,
       grade,
       upperBound: updatedPayband.upperBound,
       lowerBound: updatedPayband.lowerBound,
       modified: updatedPayband.modified,
+      error: updatedPayband.error,
     }));
     onChange(updatedPayband);
   };
@@ -45,7 +76,18 @@ export default function PaybandTableRow({ item, onChange }) {
       <td
         className={`${payband.modified.includes('전체') ? styles.modified_cell : ''}`}
       >
-        {payband.grade}
+        {payband.grade !== undefined ? (
+          payband.grade
+        ) : (
+          <div className={`${styles.table_cell}`}>
+            <Button
+              variant="secondary"
+              size="medium"
+              label="선택"
+              mode={payband.error.includes('버튼') ? 'error' : 'default'}
+            />
+          </div>
+        )}
       </td>
       <td
         className={`${payband.modified.includes('전체') || payband.modified.includes('하한') ? styles.modified_cell : ''}`}
@@ -53,6 +95,7 @@ export default function PaybandTableRow({ item, onChange }) {
         <div className={`${styles.table_cell}`}>
           <Input
             initialValue={payband.lowerBound}
+            mode={payband.error.includes('하한') ? 'error' : 'default'}
             onChange={(newValue) => {
               handleChange({
                 lower: Number(newValue.target.value),
@@ -60,6 +103,7 @@ export default function PaybandTableRow({ item, onChange }) {
               });
             }}
           />
+          <div>%</div>
         </div>
       </td>
       <td
@@ -68,6 +112,7 @@ export default function PaybandTableRow({ item, onChange }) {
         <div className={`${styles.table_cell}`}>
           <Input
             initialValue={payband.upperBound}
+            mode={payband.error.includes('상한') ? 'error' : 'default'}
             onChange={(newValue) => {
               handleChange({
                 upper: Number(newValue.target.value),
@@ -75,6 +120,7 @@ export default function PaybandTableRow({ item, onChange }) {
               });
             }}
           />
+          <div>%</div>
         </div>
       </td>
       <td

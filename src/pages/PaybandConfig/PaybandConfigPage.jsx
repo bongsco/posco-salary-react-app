@@ -12,6 +12,7 @@ export default function PaybandConfigPage() {
       upperBound: 70,
       lowerBound: 30,
       modified: [],
+      error: [],
     },
     {
       id: 2,
@@ -19,6 +20,7 @@ export default function PaybandConfigPage() {
       upperBound: 170,
       lowerBound: 20,
       modified: [],
+      error: [],
     },
     {
       id: 3,
@@ -26,13 +28,15 @@ export default function PaybandConfigPage() {
       upperBound: 80,
       lowerBound: 10,
       modified: [],
+      error: [],
     },
     {
       id: 4,
-      grade: 'P2',
+      grade: undefined,
       upperBound: 80,
       lowerBound: 10,
       modified: ['전체'],
+      error: ['버튼'],
     },
   ];
 

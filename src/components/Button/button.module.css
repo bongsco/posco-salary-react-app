@@ -87,3 +87,7 @@ custom : 임의로 사이즈 설정 가능
   border-color: var(--color-primary-dark);
   color: var(--color-primary-dark);
 }
+
+.button.error {
+  border-color: var(--color-system-caution);
+}
