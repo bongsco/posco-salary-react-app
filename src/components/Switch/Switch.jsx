@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './switch.module.css';
 
 export default function Switch({ initialOn, onClick }) {
@@ -9,6 +9,10 @@ export default function Switch({ initialOn, onClick }) {
     onClick(!isOn);
     setIsOn(!isOn);
   };
+
+  useEffect(() => {
+    setIsOn(initialOn);
+  }, [initialOn]);
 
   return (
     <button
