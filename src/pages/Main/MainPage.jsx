@@ -4,7 +4,7 @@ import SalaryAdjustmentArea from './SalaryAdjustmentArea';
 function MainPage() {
   return (
     <div className={styles.content}>
-      <div className={styles['main-title']}>연봉 조정 목록</div>
+      <h1>연봉 조정 목록</h1>
       <SalaryAdjustmentArea />
     </div>
   );
