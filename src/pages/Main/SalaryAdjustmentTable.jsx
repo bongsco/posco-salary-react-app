@@ -3,6 +3,7 @@ import '../../styles/table.css';
 import { Fragment } from 'react';
 import State from '#components/State';
 import PageNation from '#components/Pagination';
+import Stepper from '#components/Stepper';
 import styles from './main-page.module.css';
 
 function SalaryAdjustmentTable({
@@ -107,27 +108,30 @@ function SalaryAdjustmentTable({
                   </td>
                   <td className={styles['column-creator']}>{row.creator}</td>
                   {clickedRow === row.creation_timestamp && (
-                    <div className={styles['button-container']}>
-                      <button
-                        type="button"
-                        onClick={() => handleEditClick(row)}
-                        className={styles['edit-button']}
-                        aria-label="편집"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteClick(row)}
-                        className={styles['delete-button']}
-                        aria-label="삭제"
-                      />
-                    </div>
+                    <td className={styles['button-cell']}>
+                      <div className={styles['button-container']}>
+                        <button
+                          type="button"
+                          onClick={() => handleEditClick(row)}
+                          className={styles['edit-button']}
+                          aria-label="편집"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteClick(row)}
+                          className={styles['delete-button']}
+                          aria-label="삭제"
+                        />
+                      </div>
+                    </td>
                   )}
                 </tr>
+
                 {clickedRow === row.creation_timestamp && (
                   /* 나중에는 이 영역에 Stepper 추가 */
                   <tr>
-                    <td colSpan="8">
-                      <div className={styles.timeline} />
+                    <td colSpan="8" className={styles.stepper}>
+                      <Stepper adjId={1} />
                     </td>
                   </tr>
                 )}
