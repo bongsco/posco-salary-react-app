@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#components/*": ["src/components/*/index.js"],
+      "#pages/*": ["./src/pages/*/index.js"],
+      "#styles/*": ["./src/styles/*"],
+      "#utils/*": ["./src/utils/*"],
+      "#assets/*": ["./src/assets/*"],
+      "#layouts/*": ["./src/layouts/*/index.js"],
+      "#contexts/*": ["./src/contexts/*"]
+    },
+    "module": "ESNext",
+    "target": "es6",
+    "moduleResolution": "node"
+  },
+  "include": ["./src/**/*"]
+}

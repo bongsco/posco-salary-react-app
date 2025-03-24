@@ -5,7 +5,7 @@ import styles from './stepper.module.css';
 import mockStepperApiResponse from './mockStepperApiResponse';
 
 const constants = {
-  CRITERIA: '본 연봉조정',
+  CRITERIA: '기준 설정',
   PRE: '사전 작업',
   MAIN: '본 연봉조정',
 };
@@ -56,7 +56,7 @@ export default function Stepper({ adjId }) {
             steps.CRITERIA.filter((detailStep) => detailStep.state === 'DONE')
               .length === steps.MAIN.length
           }
-          detailSteps={steps.CRITERIA}
+          detailSteps={steps.MAIN}
         />
       )}
     </div>
