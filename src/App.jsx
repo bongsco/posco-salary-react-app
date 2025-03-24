@@ -5,6 +5,7 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import PaybandConfigPage from '#pages/PaybandConfig';
 
 function App() {
   return (
@@ -70,16 +71,7 @@ function App() {
                       />
                     }
                   />
-                  <Route
-                    path="payband"
-                    element={
-                      <AdjustEditLayout
-                        prevStepPath="payment-rate"
-                        nextStepPath="../preparation/target"
-                        stepPaths={['기준 설정', 'Payband 설정']}
-                      />
-                    }
-                  />
+                  <Route path="payband" element={<PaybandConfigPage />} />
                 </Route>
                 <Route path="preparation">
                   <Route

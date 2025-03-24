@@ -1,6 +1,7 @@
 @import url('../../styles/global.css');
 
 .page {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;

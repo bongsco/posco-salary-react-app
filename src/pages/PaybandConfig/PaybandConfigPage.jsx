@@ -1,7 +1,6 @@
-import { useReducer, useRef } from 'react';
+import { useReducer, useRef, useState } from 'react';
+import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import CheckBox from '#components/CheckBox/CheckBox';
-import Button from '#components/Button/Button';
-import Stepper from '#components/Stepper/Stepper';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
@@ -43,102 +42,64 @@ export default function PaybandConfigPage() {
       error: [],
     },
   ]);
-  const payband = useRef(structuredClone(receivedPayband.current));
 
-  let changedPayband = [];
+  const [payband] = useState(structuredClone(receivedPayband.current));
+
+  const changedPayband = [];
 
   return (
-    <div className={`${styles.page}`}>
-      <div className={`${styles.title}`}>
-        <div>Payband 설정</div>
-        {needSave.current && (
-          <div className={`${styles.buttonGroup}`}>
-            <Button
-              label="저장"
-              size="xsmall"
-              onClick={() => {
-                if (payband.current.every((pb) => pb.error.length === 0)) {
-                  // changedPayband 백엔드 전송
-                  payband.current = payband.current.map((pb) => ({
-                    ...pb,
-                    modified: [], // 수정된 항목만 새로 할당
-                  }));
-                  receivedPayband.current = structuredClone(payband.current);
-                  changedPayband = [];
-                  forceUpdate();
-                  needSave.current = false;
-                }
-              }}
-            />
-            <Button
-              label="취소"
-              size="xsmall"
-              variant="secondary"
-              onClick={() => {
-                forceUpdate();
-                payband.current = structuredClone(receivedPayband.current);
-                changedPayband = [];
-                needSave.current = false;
-              }}
-            />
-          </div>
-        )}
-      </div>
-      <Stepper adjId={1} />
-      <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
-      <div className={`${styles.content}`}>
-        직급별 연봉 조정 결과의 상한, 하한을 설정합니다.
-      </div>
-      <table className={`${styles.table}`}>
-        <thead>
-          <tr>
-            <td>
-              <div className={`${styles.table_cell}`}>
-                <CheckBox />
-              </div>
-            </td>
-            <td>직급</td>
-            <td>하한</td>
-            <td>상한</td>
-            <td>
-              <div />
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {payband.current.map((item, index) => (
-            <PaybandTableRow
-              key={item.id}
-              item={item}
-              originItem={receivedPayband.current[index]}
-              onChange={(modifiedItem) => {
-                payband.current[index] = modifiedItem;
-                const changedPaybandIndex = changedPayband.findIndex(
-                  (pb) => pb.id === modifiedItem.id,
-                );
-                if (changedPaybandIndex === -1) {
-                  changedPayband.push(modifiedItem);
-                } else {
-                  changedPayband[changedPaybandIndex] = modifiedItem;
-                }
-                if (!needSave.current) {
-                  needSave.current = true;
-                  forceUpdate();
-                }
-              }}
-            />
-          ))}
-        </tbody>
-      </table>
-      <div>
-        <div className={`${styles.separator}`} />
-      </div>
-      <div className={`${styles.footer}`}>
-        <div className={`${styles.buttonGroup}`}>
-          <Button label="이전 단계" size="small" />
-          <Button label="다음 단계" size="small" />
+    <AdjustEditLayout
+      prevStepPath="payment-rate"
+      nextStepPath="../preparation/target"
+      stepPaths={['기준 설정', 'Payband 설정']}
+    >
+      <div className={`${styles.page}`}>
+        <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
+        <div className={`${styles.content}`}>
+          직급별 연봉 조정 결과의 상한, 하한을 설정합니다.
         </div>
+        <table className={`${styles.table}`}>
+          <thead>
+            <tr>
+              <td>
+                <div className={`${styles.table_cell}`}>
+                  <CheckBox />
+                </div>
+              </td>
+              <td>직급</td>
+              <td>하한</td>
+              <td>상한</td>
+              <td>
+                <div />
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            {payband.current.map((item, index) => (
+              <PaybandTableRow
+                key={item.id}
+                item={item}
+                originItem={receivedPayband.current[index]}
+                onChange={(modifiedItem) => {
+                  payband.current[index] = modifiedItem;
+                  const changedPaybandIndex = changedPayband.findIndex(
+                    (pb) => pb.id === modifiedItem.id,
+                  );
+                  if (changedPaybandIndex === -1) {
+                    changedPayband.push(modifiedItem);
+                  } else {
+                    changedPayband[changedPaybandIndex] = modifiedItem;
+                  }
+                  if (!needSave.current) {
+                    needSave.current = true;
+                    forceUpdate();
+                  }
+                }}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div>
+    </AdjustEditLayout>
   );
 }
