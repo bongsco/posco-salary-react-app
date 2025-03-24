@@ -1,0 +1,20 @@
+.stepperContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 40px;
+  width: 100%;
+}
+
+.navigator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  gap: 10px;
+}
+
+.navigator a {
+  text-decoration: none;
+}

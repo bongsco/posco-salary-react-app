@@ -78,11 +78,12 @@
     "webpack": "5.98.0"
   },
   "imports": {
-    "#/*": "./src/*",
     "#components/*": "./src/components/*",
     "#pages/*": "./src/pages/*",
     "#styles/*": "./src/styles/*",
     "#utils/*": "./src/utils/*",
-    "#assets/*": "./src/assets/*"
+    "#assets/*": "./src/assets/*",
+    "#layouts/*": "./src/layouts/*",
+    "#contexts/*": "./src/contexts/*"
   }
 }

@@ -1,15 +1,7 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import styles from './switch.module.css';
 
-export default function Switch({ initialOn, onClick }) {
-  const [isOn, setIsOn] = useState(initialOn);
-
-  const toggleHandler = () => {
-    onClick(!isOn);
-    setIsOn(!isOn);
-  };
-
+export default function Switch({ isOn, onClick }) {
   return (
     <button
       type="button"
@@ -17,7 +9,7 @@ export default function Switch({ initialOn, onClick }) {
       aria-label="Toggle Switch Container"
       aria-checked={isOn}
       tabIndex="0"
-      onClick={toggleHandler}
+      onClick={onClick}
       className={styles['toggle-switch']}
     >
       <div
@@ -31,6 +23,6 @@ export default function Switch({ initialOn, onClick }) {
 }
 
 Switch.propTypes = {
-  initialOn: PropTypes.bool.isRequired,
+  isOn: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };

@@ -1,0 +1,81 @@
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useAdjustContext } from '#contexts/AdjustContext';
+import Button from '#components/Button';
+import AppLayout from '#layouts/AppLayout';
+import Stepper from '#components/Stepper';
+import styles from './adjust-edit-layout.module.css';
+
+export default function AdjustEditLayout({
+  children,
+  prevStepPath = null,
+  nextStepPath = null,
+  stepPaths = [],
+  onCommit = () => {},
+  onRollback = () => {},
+  isCommited,
+}) {
+  const { adjust } = useAdjustContext();
+
+  return (
+    <AppLayout
+      title={
+        stepPaths.length > 0 ? stepPaths[stepPaths.length - 1] : adjust.title
+      }
+      breadCrumbs={['조정', '등록', adjust.title, ...stepPaths]}
+    >
+      <div className={styles.stepperContainer}>
+        <Stepper adjId={1} />
+      </div>
+      {children}
+      <hr />
+      <div className={styles.navigator}>
+        {!isCommited && (
+          <>
+            <Button
+              variant="secondary"
+              size="small"
+              label="저장"
+              onClick={onCommit}
+            />
+            <Button
+              variant="secondary"
+              size="small"
+              label="취소"
+              onClick={onRollback}
+            />
+          </>
+        )}
+        {prevStepPath && (
+          <Link to={`../${prevStepPath}`}>
+            <Button variant="primary" size="small" label="이전단계" />
+          </Link>
+        )}
+        {nextStepPath && (
+          <Link to={`../${nextStepPath}`}>
+            <Button variant="primary" size="small" label="다음단계" />
+          </Link>
+        )}
+      </div>
+    </AppLayout>
+  );
+}
+
+AdjustEditLayout.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  prevStepPath: PropTypes.string,
+  nextStepPath: PropTypes.string,
+  stepPaths: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onCommit: PropTypes.func,
+  onRollback: PropTypes.func,
+  isCommited: PropTypes.bool,
+};
+
+AdjustEditLayout.defaultProps = {
+  prevStepPath: null,
+  nextStepPath: null,
+  onCommit: () => {},
+  onRollback: () => {},
+  isCommited: true,
+};
