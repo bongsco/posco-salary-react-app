@@ -52,7 +52,11 @@ function App() {
               <Route path="test-edit" element={<TestEditPage />} />
               <Route path="annual">
                 <Route path="criteria">
-                  <Route path="target" element={<AdjSubjectCriteria />} />
+                  <Route
+                    path="target"
+                    element={<AdjSubjectCriteria />}
+                    nextStepPath="payment-rate"
+                  />
                   <Route
                     path="payment-rate"
                     element={
