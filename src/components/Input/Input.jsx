@@ -13,10 +13,15 @@ function Input({
   onChange,
 }) {
   const [value, setValue] = useState(initialValue);
+  const [currentMode, setCurrentMode] = useState(mode);
 
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
+
+  useEffect(() => {
+    setCurrentMode(mode);
+  }, [mode]);
 
   return (
     <div
@@ -27,7 +32,7 @@ function Input({
         id={id}
         type="text"
         value={value}
-        className={`${styles['input-box']} ${styles[mode]}`}
+        className={`${styles['input-box']} ${styles[currentMode]}`}
         placeholder={placeholder}
         onChange={(e) => {
           setValue(e.target.value);
@@ -37,7 +42,7 @@ function Input({
       />
       {label ? (
         <span
-          className={`${styles['input-box-label']} ${styles[mode]} ${styles.visible}`}
+          className={`${styles['input-box-label']} ${styles[currentMode]} ${styles.visible}`}
         >
           {label}
         </span>

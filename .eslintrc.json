@@ -23,7 +23,9 @@
           ["#pages", "./src/pages"],
           ["#styles", "./src/styles"],
           ["#utils", "./src/utils"],
-          ["#assets", "./src/assets"]
+          ["#assets", "./src/assets"],
+          ["#layouts", "./src/layouts"],
+          ["#contexts", "./src/contexts"]
         ],
         "extensions": [".js", ".jsx", ".css"]
       }
