@@ -59,36 +59,32 @@ function Template({
 Template.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
   placeholder: PropTypes.string,
-  label: PropTypes.string,
-  customWidth: PropTypes.number,
-  customHeight: PropTypes.number,
+  label: PropTypes.string.isRequired,
+  customWidth: PropTypes.number.isRequired,
+  customHeight: PropTypes.number.isRequired,
 };
 
 Template.defaultProps = {
-  placeholder: '',
-  label: '',
-  id: '',
   mode: 'default',
-  customWidth: 225,
-  customHeight: 30,
+  placeholder: '',
 };
 
-export const Default = Template.bind({});
+export const Default = Template.bind();
 Default.args = {
   mode: 'default',
   label: '여기에 입력 관련 메시지를 입력하세요.',
 };
 
-export const Error = Template.bind({});
+export const Error = Template.bind();
 Error.args = {
   mode: 'error',
   label: '여기에 입력 관련 메시지를 입력하세요.',
 };
 
-export const Ok = Template.bind({});
+export const Ok = Template.bind();
 Ok.args = {
   mode: 'ok',
   label: '여기에 입력 관련 메시지를 입력하세요.',
