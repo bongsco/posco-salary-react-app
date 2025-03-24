@@ -40,8 +40,10 @@ tbody td.add_column {
   color: var(--color-primary-main);
   text-align: center;
   vertical-align: middle;
-  padding: 2px 0;
-  line-height: 27px;
+  background-image: url('../stories/assets/addIcon.svg');
+  background-size: 23px 19px;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 tbody td.add_column:hover {

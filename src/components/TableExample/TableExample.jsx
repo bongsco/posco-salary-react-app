@@ -32,9 +32,7 @@ export default function TableExample() {
           <td>15</td>
         </tr>
         <tr>
-          <td className="add_column" colSpan="3">
-            +
-          </td>
+          <td className="add_column" colSpan="3" />
         </tr>
       </tbody>
     </table>
