@@ -1,12 +1,11 @@
-import styles from './main-page.module.css';
 import SalaryAdjustmentArea from './SalaryAdjustmentArea';
+import AppLayout from '#layouts/AppLayout';
 
 function MainPage() {
   return (
-    <div className={styles.content}>
-      <h1>연봉 조정 목록</h1>
+    <AppLayout title="연봉 조정 목록" breadCrumbs={['조정', '조회']}>
       <SalaryAdjustmentArea />
-    </div>
+    </AppLayout>
   );
 }
 

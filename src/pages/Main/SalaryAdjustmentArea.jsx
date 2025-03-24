@@ -119,11 +119,15 @@ function SalaryAdjustmentArea() {
 
   /* 받은 데이터가 없으면 NoDataTable 호출 */
   if (!tableData || tableData.length === 0) {
-    return <NoDataTable />;
+    return (
+      <div className={styles['salary-adjustment-area']}>
+        <NoDataTable />;
+      </div>
+    );
   }
 
   return (
-    <>
+    <div className={styles['salary-adjustment-area']}>
       <div className={styles.timeline} />
       <SalaryAdjustmentList
         data={tableData}
@@ -140,7 +144,7 @@ function SalaryAdjustmentArea() {
           setCurrentPage(changeCurrentPage);
         }}
       />
-    </>
+    </div>
   );
 }
 
