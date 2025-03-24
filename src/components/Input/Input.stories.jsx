@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { fn } from '@storybook/test';
 import Input from './Input';
 
 export default {
@@ -20,13 +21,13 @@ export default {
     customWidth: 225,
     customHeight: 30,
     placeholder: 'Placeholder 플레이스홀더',
+    onChange: fn(),
   },
 };
 
 function Template({
   value: initialValue,
   onChange,
-  id,
   mode,
   placeholder,
   label,
@@ -35,6 +36,10 @@ function Template({
 }) {
   const [value, setValue] = useState(initialValue);
 
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
   const handleChange = (e) => {
     setValue(e.target.value);
     onChange(e);
@@ -42,7 +47,7 @@ function Template({
 
   return (
     <Input
-      id={id}
+      id="id"
       mode={mode}
       placeholder={placeholder}
       label={label}
@@ -55,11 +60,10 @@ function Template({
 }
 
 Template.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
-  placeholder: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
   label: PropTypes.string,
   customWidth: PropTypes.number,
   customHeight: PropTypes.number,
@@ -67,11 +71,9 @@ Template.propTypes = {
 
 Template.defaultProps = {
   mode: 'default',
-  placeholder: 'placeholder 플레이스홀더',
   label: '여기에 입력 관련 메시지를 입력하세요.',
   customWidth: 225,
   customHeight: 30,
-  value: '초기값',
 };
 
 export const Default = Template.bind();

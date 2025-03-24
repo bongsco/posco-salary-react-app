@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styles from './input.module.css';
 
 function Input({
-  id = '',
+  id,
   mode = 'default',
   placeholder = '',
   label = '',
@@ -37,7 +37,6 @@ function Input({
 }
 
 Input.defaultProps = {
-  id: '',
   mode: 'default',
   label: '',
   value: '',
@@ -47,7 +46,7 @@ Input.defaultProps = {
 };
 
 Input.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
   label: PropTypes.string,
   placeholder: PropTypes.string,
