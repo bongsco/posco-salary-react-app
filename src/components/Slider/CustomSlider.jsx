@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import PropTypes from 'prop-types';
@@ -12,24 +11,18 @@ export default function CustomSlider({
   step,
   onChange,
 }) {
-  const [range, setRange] = useState([initialMin, initialMax]);
-  const handleSliderChange = (value) => {
-    onChange(value[0], value[1]);
-    setRange(value);
-  };
-
   return (
     <div className={`${styles.slider_container}`}>
-      <div className={`${styles.slider_value}`}>{range[0]}</div>
+      <div className={`${styles.slider_value}`}>{initialMin}</div>
       <RangeSlider
         min={minLowerBound}
         max={maxUpperBound}
         step={step}
-        value={range}
-        onInput={(value) => handleSliderChange(value)}
+        value={[initialMin, initialMax]}
+        onInput={(value) => onChange(value[0], value[1])}
         rangeSlideDisabled
       />
-      <div className={`${styles.slider_value}`}>{range[1]}</div>
+      <div className={`${styles.slider_value}`}>{initialMax}</div>
     </div>
   );
 }
