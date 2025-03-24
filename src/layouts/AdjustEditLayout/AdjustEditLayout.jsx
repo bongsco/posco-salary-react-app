@@ -20,7 +20,9 @@ export default function AdjustEditLayout({
 
   return (
     <AppLayout
-      title={adjust.title}
+      title={
+        stepPaths.length > 0 ? stepPaths[stepPaths.length - 1] : adjust.title
+      }
       breadCrumbs={['조정', '등록', adjust.title, ...stepPaths]}
     >
       <div className={styles.stepperContainer}>
