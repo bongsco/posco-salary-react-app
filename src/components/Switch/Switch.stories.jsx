@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Switch from './Switch';
 
 export default {
-  title: 'UI/Switch',
+  title: 'UI/Form/Switch',
   component: Switch,
   tags: ['autodocs'],
 };

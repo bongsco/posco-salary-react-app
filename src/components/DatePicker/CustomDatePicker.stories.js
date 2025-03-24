@@ -2,7 +2,7 @@ import { fn } from '@storybook/test';
 import CustomDatePicker from './CustomDatePicker';
 
 export default {
-  title: 'UI/CustomDatePicker',
+  title: 'UI/Form/CustomDatePicker',
   component: CustomDatePicker,
   parameters: {
     layout: 'centered',
