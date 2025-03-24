@@ -67,8 +67,8 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
     const updatedPayband = {
       ...item,
       grade: option,
+      error: item.error.filter((e) => e !== '직급'),
     };
-
     onChange(updatedPayband);
   };
 
@@ -118,7 +118,7 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
                 'R2',
                 'R3',
               ]}
-              error={false}
+              error={item.error.includes('직급')}
               placeHolder="선택"
               onChange={(option) => selectGrade(option)}
             />

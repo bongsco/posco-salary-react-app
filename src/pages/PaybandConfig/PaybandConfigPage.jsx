@@ -6,6 +6,7 @@ import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 
 export default function PaybandConfigPage() {
+  const [needSave, setNeedSave] = useState(false);
   const receivedPayband = useRef([
     {
       id: 1,
@@ -53,7 +54,28 @@ export default function PaybandConfigPage() {
       nextStepPath="../preparation/target"
       stepPaths={['기준 설정', 'Payband 설정']}
       onCommit={() => {
-        if (payband.every((pb) => pb.error.length === 0)) {
+        let hasUndefinedGrade = false;
+
+        setPayband((prev) => {
+          const updatedPayband = prev.map((pb) => {
+            const errors = [...pb.error];
+
+            if (pb.grade === undefined) {
+              if (!errors.includes('직급')) {
+                errors.push('직급');
+              }
+              hasUndefinedGrade = true;
+            }
+
+            return { ...pb, error: errors };
+          });
+
+          return updatedPayband;
+        });
+        if (
+          !hasUndefinedGrade &&
+          payband.every((pb) => pb.error.length === 0)
+        ) {
           // changedPayband 백엔드 전송
           setPayband((prev) => {
             const updatedPayband = prev.map((item) => ({
@@ -64,12 +86,15 @@ export default function PaybandConfigPage() {
             return updatedPayband;
           });
           changedPayband = [];
+          setNeedSave(false);
         }
       }}
       onRollback={() => {
         setPayband(structuredClone(receivedPayband.current));
         changedPayband = [];
+        setNeedSave(false);
       }}
+      isCommited={!needSave}
     >
       <div className={`${styles.page}`}>
         <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
@@ -111,6 +136,9 @@ export default function PaybandConfigPage() {
                       changedPayband.push(modifiedItem);
                     } else {
                       changedPayband[changedPaybandIndex] = modifiedItem;
+                    }
+                    if (!needSave) {
+                      setNeedSave(true);
                     }
                   }}
                 />
