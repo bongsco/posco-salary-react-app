@@ -137,6 +137,7 @@
   height: 40px;
   position: relative;
   overflow: hidden;
+  border: 0px;
 }
 
 .leftArrow{
@@ -144,6 +145,7 @@ background: var(--primary-dark, #237dbe);
 color: var( --color-grayscale-white);
 font: 700 20px var(--font-family);
 border-radius: 8px;
+border: 0px;
 display: flex;
 flex-direction: column;
 gap: 10px;

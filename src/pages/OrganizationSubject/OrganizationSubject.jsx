@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Pagination from '#components/Pagination';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './organization-subject.module.css';
@@ -6,6 +6,12 @@ import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 
 export default function OrganizationSubject() {
+  const [targetPage, setTargetPage] = useState(1);
+  const [untargetPage, setUntargetPage] = useState(1);
+
+  const [targetRowsPerPage, setTargetRowsPerPage] = useState(5);
+  const [untargetRowsPerPage, setUntargetRowsPerPage] = useState(5);
+
   const [targets, setTargets] = useState([
     { empId: 'pd0a001', name: '홍길동', hiredDate: '24.03.03', grade: 'A' },
     { empId: 'pd0a002', name: '홍길동', hiredDate: '24.03.03', grade: 'B' },
@@ -15,6 +21,11 @@ export default function OrganizationSubject() {
     { empId: 'pd0a006', name: '홍길동', hiredDate: '24.03.03', grade: 'D' },
     { empId: 'pd0a007', name: '홍길동', hiredDate: '24.03.03', grade: 'D' },
   ]);
+
+  const paginatedTargets = targets.slice(
+    (targetPage - 1) * targetRowsPerPage,
+    targetPage * targetRowsPerPage,
+  );
 
   const [untargets, setUntargets] = useState([
     { empId: 'gh0a001', name: '이도현', hiredDate: '24.03.03', grade: 'A' },
@@ -26,8 +37,30 @@ export default function OrganizationSubject() {
     { empId: 'gh0a007', name: '이도현', hiredDate: '24.03.03', grade: 'D' },
   ]);
 
+  const paginatedUnTargets = untargets.slice(
+    (untargetPage - 1) * untargetRowsPerPage,
+    untargetPage * untargetRowsPerPage,
+  );
+
   const [selectedTargetIds, setSelectedTargetIds] = useState([]);
   const [selectedUntargetIds, setSelectedUntargetIds] = useState([]);
+
+  const [allTargetsChecked, setAllTargetsChecked] = useState(false);
+  const [allUntargetsChecked, setAllUntargetsChecked] = useState(false);
+
+  useEffect(() => {
+    setAllTargetsChecked(
+      targets.length > 0 &&
+        targets.every((row) => selectedTargetIds.includes(row.empId)),
+    );
+  }, [selectedTargetIds, targets]);
+
+  useEffect(() => {
+    setAllUntargetsChecked(
+      untargets.length > 0 &&
+        untargets.every((row) => selectedUntargetIds.includes(row.empId)),
+    );
+  }, [selectedUntargetIds, untargets]);
 
   const toggleSelection = (id, isTarget = true) => {
     if (isTarget) {
@@ -93,7 +126,16 @@ export default function OrganizationSubject() {
                 <thead>
                   <tr>
                     <td>
-                      <CheckBox />
+                      <CheckBox
+                        isChecked={allTargetsChecked}
+                        onClick={() => {
+                          const next = !allTargetsChecked;
+                          setAllTargetsChecked(next);
+                          setSelectedTargetIds(
+                            next ? targets.map((r) => r.empId) : [],
+                          );
+                        }}
+                      />
                     </td>
                     <td>직번</td>
                     <td>성명</td>
@@ -102,7 +144,7 @@ export default function OrganizationSubject() {
                   </tr>
                 </thead>
                 <tbody>
-                  {targets.map((row) => (
+                  {paginatedTargets.map((row) => (
                     <tr key={row.empId}>
                       <td>
                         <CheckBox
@@ -121,7 +163,15 @@ export default function OrganizationSubject() {
             </div>
           </div>
           <div className={styles.paginationWrapper}>
-            <Pagination />
+            <Pagination
+              currentPage={targetPage}
+              onPageChange={setTargetPage}
+              rowsPerPage={targetRowsPerPage}
+              onRowsPerPageChange={(val) => {
+                setTargetRowsPerPage(val);
+                setTargetPage(1);
+              }}
+            />
           </div>
         </div>
         <div className={styles.controlWrapper}>
@@ -159,7 +209,16 @@ export default function OrganizationSubject() {
                 <thead>
                   <tr>
                     <td>
-                      <CheckBox />
+                      <CheckBox
+                        isChecked={allUntargetsChecked}
+                        onClick={() => {
+                          const next = !allUntargetsChecked;
+                          setAllUntargetsChecked(next);
+                          setSelectedUntargetIds(
+                            next ? untargets.map((r) => r.empId) : [],
+                          );
+                        }}
+                      />
                     </td>
                     <td>직번</td>
                     <td>성명</td>
@@ -168,7 +227,7 @@ export default function OrganizationSubject() {
                   </tr>
                 </thead>
                 <tbody>
-                  {untargets.map((row) => (
+                  {paginatedUnTargets.map((row) => (
                     <tr key={row.empId}>
                       <td>
                         <CheckBox
@@ -187,7 +246,15 @@ export default function OrganizationSubject() {
             </div>
           </div>
           <div className={styles.paginationWrapper}>
-            <Pagination />
+            <Pagination
+              currentPage={untargetPage}
+              onPageChange={setUntargetPage}
+              rowsPerPage={untargetRowsPerPage}
+              onRowsPerPageChange={(val) => {
+                setUntargetRowsPerPage(val);
+                setUntargetPage(1);
+              }}
+            />
           </div>
         </div>
       </div>
