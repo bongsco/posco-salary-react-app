@@ -5,6 +5,7 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import CompensationPage from '#pages/Compensation';
 
 function App() {
   return (
@@ -60,16 +61,7 @@ function App() {
                       />
                     }
                   />
-                  <Route
-                    path="payment-rate"
-                    element={
-                      <AdjustEditLayout
-                        prevStepPath="target"
-                        nextStepPath="payband"
-                        stepPaths={['기준 설정', '보상지급률 설정']}
-                      />
-                    }
-                  />
+                  <Route path="payment-rate" element={<CompensationPage />} />
                   <Route
                     path="payband"
                     element={
