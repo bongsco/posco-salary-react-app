@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import styles from './check-box.module.css';
 
-export default function CheckBox({ checked, onClick }) {
+export default function CheckBox({ isChecked, onClick }) {
   return (
     <button
       type="button"
-      className={`${styles.checkbox} ${checked ? styles.checked : ''}`}
+      className={`${styles.checkbox} ${isChecked ? styles.checked : ''}`}
       onClick={onClick}
       aria-label="checkBox"
       onKeyDown={(e) => {
@@ -18,10 +18,10 @@ export default function CheckBox({ checked, onClick }) {
 }
 
 CheckBox.propTypes = {
-  checked: PropTypes.bool,
+  isChecked: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
 };
 
 CheckBox.defaultProps = {
-  checked: false,
+  isChecked: false,
 };
