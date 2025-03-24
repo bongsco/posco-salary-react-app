@@ -48,3 +48,11 @@
   justify-content: center;
   align-items: center;
 }
+
+.subMenuContainer {
+  display: flex;
+}
+
+.close {
+  display: none;
+}

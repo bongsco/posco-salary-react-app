@@ -5,12 +5,13 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import RootLayout from '#layouts/RootLayout';
 
 function App() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
-        <Route path="/">
+        <Route path="/" element={<RootLayout />}>
           <Route
             path=""
             element={<AppLayout title="메인" breadCrumbs={['메인']} />}

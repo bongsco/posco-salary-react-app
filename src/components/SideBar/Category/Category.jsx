@@ -1,32 +1,17 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './category.module.css';
 import Icon, { icons } from '#components/SideBar/Icon';
 import CategoryChevron from './CategoryChevron';
-import SubMenu from './SubMenu/SubMenu';
+import SubMenu from '../SubMenu/SubMenu';
 
-/**
- * @param {{
- *   icon: keyof icons;
- *   text: string;
- *   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
- *   subItems: Array<{
- *     text: string;
- *     href: string;
- *   }>;
- * }} props
- * @returns
- */
-function Category({ icon, text, onClick, isOpenInitially, subItems }) {
-  const [isOpen, setIsOpen] = useState(isOpenInitially);
-
+function Category({ icon, text, onClick, isOpen, children }) {
   return (
     <div className={styles['category-area']}>
       <button
         className={styles.category}
         type="button"
         onClick={(e) => {
-          setIsOpen(!isOpen);
+          e.preventDefault();
           if (onClick) onClick(e);
         }}
       >
@@ -36,7 +21,11 @@ function Category({ icon, text, onClick, isOpenInitially, subItems }) {
           <CategoryChevron side={isOpen ? 'down' : 'up'} />
         </div>
       </button>
-      {isOpen ? <SubMenu subItems={subItems} /> : null}
+      <div
+        className={`${styles.subMenuContainer} ${isOpen ? '' : styles.close}`}
+      >
+        <SubMenu>{children}</SubMenu>
+      </div>
     </div>
   );
 }
@@ -45,8 +34,8 @@ Category.propTypes = {
   icon: PropTypes.oneOf(Object.keys(icons)).isRequired,
   text: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  isOpenInitially: PropTypes.bool.isRequired,
-  subItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 Category.defaultProps = {
