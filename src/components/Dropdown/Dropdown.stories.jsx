@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Dropdown from './Dropdown';
 
 export default {
-  title: 'UI/Dropdown',
+  title: 'UI/Form/Dropdown',
   component: Dropdown,
   tags: ['autodocs'],
   argTypes: {

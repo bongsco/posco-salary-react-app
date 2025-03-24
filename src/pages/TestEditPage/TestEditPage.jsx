@@ -7,7 +7,7 @@ export default function TestEditPage() {
     initialBool: false,
     bool: false,
     message: ``,
-    isCommited: true,
+    isCommitted: true,
   };
 
   const [form, dispatch] = useReducer((state, action) => {
@@ -20,21 +20,21 @@ export default function TestEditPage() {
             state.initialBool === !state.bool
               ? `마지막 저장한 값으로 변경: ${!state.bool}`
               : `수정 중: ${!state.bool}`,
-          isCommited: state.initialBool === !state.bool,
+          isCommitted: state.initialBool === !state.bool,
         };
       case 'commit':
         return {
           ...state,
           initialBool: state.bool,
           message: `저장됨: ${state.bool}`,
-          isCommited: true,
+          isCommitted: true,
         };
       case 'rollback':
         return {
           ...state,
           bool: state.initialBool,
           message: `롤백: ${state.initialBool}`,
-          isCommited: true,
+          isCommitted: true,
         };
       default:
         return { ...state };
@@ -50,11 +50,11 @@ export default function TestEditPage() {
       onRollback={() => {
         dispatch('rollback');
       }}
-      isCommited={form.isCommited}
+      isCommitted={form.isCommitted}
     >
       {form.message}
       <Switch
-        initialOn={form.bool}
+        isOn={form.bool}
         onClick={() => {
           dispatch('toggle');
         }}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CheckBox from './CheckBox';
 
 export default {
-  title: 'UI/CheckBox',
+  title: 'UI/Form/CheckBox',
   component: CheckBox,
   tags: ['autodocs'],
   argTypes: {
