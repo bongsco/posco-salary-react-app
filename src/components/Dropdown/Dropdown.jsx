@@ -4,7 +4,7 @@ import styles from './dropdown.module.css';
 export default function Dropdown({
   options,
   error,
-  message,
+  message = '',
   placeHolder,
   selectedValue,
   isOpen,

@@ -15,6 +15,7 @@ export default {
   },
   args: {
     onChange: fn(),
+    message: '',
   },
 };
 
@@ -68,9 +69,8 @@ Default.args = {
     '김서영',
     '이은재',
     '한상진',
-    '한상진',
   ],
   error: false,
   placeHolder: 'Dropdown 메뉴',
-  message: '메시지 입니다.',
+  message: '메시지입니다.',
 };
