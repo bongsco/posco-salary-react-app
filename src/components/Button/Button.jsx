@@ -12,7 +12,7 @@ function Button({
   return (
     <button
       type="button"
-      className={`${styles.button} ${styles[variant]} ${styles[size]}`}
+      className={`${styles.button} ${styles[variant]} ${size !== 'custom' ? styles[size] : ''}`}
       onClick={onClick}
       style={
         size === 'custom'
