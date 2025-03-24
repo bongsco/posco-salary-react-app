@@ -76,45 +76,48 @@ export default function PaybandConfigPage() {
         <div className={`${styles.content}`}>
           직급별 연봉 조정 결과의 상한, 하한을 설정합니다.
         </div>
-        <table className={`${styles.table}`}>
-          <thead>
-            <tr>
-              <td>
-                <div className={`${styles.table_cell}`}>
-                  <CheckBox />
-                </div>
-              </td>
-              <td>직급</td>
-              <td>하한</td>
-              <td>상한</td>
-              <td>
-                <div />
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            {payband.map((item, index) => (
-              <PaybandTableRow
-                key={item.id}
-                item={item}
-                originItem={receivedPayband.current[index]}
-                onChange={(modifiedItem) => {
-                  setPayband((prev) =>
-                    prev.map((pb, i) => (i === index ? modifiedItem : pb)),
-                  );
-                  const changedPaybandIndex = changedPayband.findIndex(
-                    (pb) => pb.id === modifiedItem.id,
-                  );
-                  if (changedPaybandIndex === -1) {
-                    changedPayband.push(modifiedItem);
-                  } else {
-                    changedPayband[changedPaybandIndex] = modifiedItem;
-                  }
-                }}
-              />
-            ))}
-          </tbody>
-        </table>
+        <div>
+          <div className={`${styles.unit_label}`}>단위: %</div>
+          <table className={`${styles.table}`}>
+            <thead>
+              <tr>
+                <td>
+                  <div className={`${styles.table_cell}`}>
+                    <CheckBox />
+                  </div>
+                </td>
+                <td>직급</td>
+                <td>하한</td>
+                <td>상한</td>
+                <td>
+                  <div />
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {payband.map((item, index) => (
+                <PaybandTableRow
+                  key={item.id}
+                  item={item}
+                  originItem={receivedPayband.current[index]}
+                  onChange={(modifiedItem) => {
+                    setPayband((prev) =>
+                      prev.map((pb, i) => (i === index ? modifiedItem : pb)),
+                    );
+                    const changedPaybandIndex = changedPayband.findIndex(
+                      (pb) => pb.id === modifiedItem.id,
+                    );
+                    if (changedPaybandIndex === -1) {
+                      changedPayband.push(modifiedItem);
+                    } else {
+                      changedPayband[changedPaybandIndex] = modifiedItem;
+                    }
+                  }}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </AdjustEditLayout>
   );

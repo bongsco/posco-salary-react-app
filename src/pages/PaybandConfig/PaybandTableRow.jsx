@@ -1,6 +1,6 @@
 import PropTypes, { string } from 'prop-types';
 import CheckBox from '#components/CheckBox/CheckBox';
-import Button from '#components/Button/Button';
+import Dropdown from '#components/Dropdown';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 
@@ -63,6 +63,15 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
     onChange(updatedPayband);
   };
 
+  const selectGrade = (option) => {
+    const updatedPayband = {
+      ...item,
+      grade: option,
+    };
+
+    onChange(updatedPayband);
+  };
+
   return (
     <tr>
       <td
@@ -75,16 +84,43 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
       <td
         className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
       >
-        {item.grade !== undefined ? (
+        {!item.modified.includes('전체') ? (
           item.grade
         ) : (
           <div className={`${styles.table_cell}`}>
-            <Button
-              variant="secondary"
-              size="custom"
-              label="선택"
-              mode={item.error.includes('버튼') ? 'error' : 'default'}
-              customSize={{ width: '60px', height: '26px' }}
+            <Dropdown
+              options={[
+                'A1',
+                'A2',
+                'A3',
+                'D1',
+                'D2',
+                'D3',
+                'E2',
+                'E3',
+                'E4',
+                'E5',
+                'E6',
+                'G1',
+                'G2',
+                'G3',
+                'O1',
+                'O2',
+                'O3',
+                'P1',
+                'P2',
+                'P3',
+                'P4',
+                'P5',
+                'P6',
+                'P7',
+                'R1',
+                'R2',
+                'R3',
+              ]}
+              error={false}
+              placeHolder="선택"
+              onChange={(option) => selectGrade(option)}
             />
           </div>
         )}
@@ -102,9 +138,7 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
                 addModified: '하한',
               });
             }}
-            customWidth={90}
           />
-          <div>%</div>
         </div>
       </td>
       <td
@@ -120,9 +154,7 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
                 addModified: '상한',
               });
             }}
-            customWidth={90}
           />
-          <div>%</div>
         </div>
       </td>
       <td
