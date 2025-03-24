@@ -1,31 +1,16 @@
-import { useEffect, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import PropTypes from 'prop-types';
 import styles from './slider.module.css';
 
 export default function CustomSlider({
-  initialMin,
-  initialMax,
+  min,
+  max,
   minLowerBound,
   maxUpperBound,
   step,
   onChange,
 }) {
-  const [min, setMin] = useState(initialMin);
-  const [max, setMax] = useState(initialMax);
-
-  useEffect(() => {
-    setMin(initialMin);
-    setMax(initialMax);
-  }, [initialMin, initialMax]);
-
-  const handleSliderChange = (value) => {
-    onChange(value[0], value[1]);
-    setMin(() => value[0]);
-    setMax(() => value[1]);
-  };
-
   return (
     <div className={`${styles.slider_container}`}>
       <div className={`${styles.slider_value}`}>{min}</div>
@@ -34,7 +19,7 @@ export default function CustomSlider({
         max={maxUpperBound}
         step={step}
         value={[min, max]}
-        onInput={(value) => handleSliderChange(value)}
+        onInput={(value) => onChange(value[0], value[1])}
         rangeSlideDisabled
       />
       <div className={`${styles.slider_value}`}>{max}</div>
@@ -43,8 +28,8 @@ export default function CustomSlider({
 }
 
 CustomSlider.propTypes = {
-  initialMin: PropTypes.number.isRequired,
-  initialMax: PropTypes.number.isRequired,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
   minLowerBound: PropTypes.number.isRequired,
   maxUpperBound: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,

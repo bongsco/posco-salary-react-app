@@ -1,6 +1,7 @@
 @import url('./global.css');
 
 table {
+  width: 100%;
   border-collapse: collapse;
   font: var(--font-caption-2r-pc);
   box-shadow: var(--shadow);
@@ -31,4 +32,28 @@ td {
 
 tbody tr {
   border-bottom: 1px solid var(--color-grayscale-1);
+}
+
+.button_td {
+  padding: 0;
+}
+
+.add_column {
+  display: block;
+  width: 100%;
+  height: 27px;
+  border: none;
+  background-color: var(--color-primary-lightest);
+  font: var(--font-title-pc);
+  color: var(--color-primary-main);
+  text-align: center;
+  background-image: url('../stories/assets/addIcon.svg');
+  background-size: 20px 16px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
+}
+
+.add_column:hover {
+  background-color: var(--color-primary-lighter);
 }
