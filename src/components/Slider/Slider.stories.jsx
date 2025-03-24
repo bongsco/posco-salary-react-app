@@ -13,8 +13,8 @@ function Template() {
 
   return (
     <CustomSlider
-      initialMin={min}
-      initialMax={max}
+      min={min}
+      max={max}
       minLowerBound={0}
       maxUpperBound={200}
       step={1}

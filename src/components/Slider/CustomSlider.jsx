@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import styles from './slider.module.css';
 
 export default function CustomSlider({
-  initialMin,
-  initialMax,
+  min,
+  max,
   minLowerBound,
   maxUpperBound,
   step,
@@ -13,23 +13,23 @@ export default function CustomSlider({
 }) {
   return (
     <div className={`${styles.slider_container}`}>
-      <div className={`${styles.slider_value}`}>{initialMin}</div>
+      <div className={`${styles.slider_value}`}>{min}</div>
       <RangeSlider
         min={minLowerBound}
         max={maxUpperBound}
         step={step}
-        value={[initialMin, initialMax]}
+        value={[min, max]}
         onInput={(value) => onChange(value[0], value[1])}
         rangeSlideDisabled
       />
-      <div className={`${styles.slider_value}`}>{initialMax}</div>
+      <div className={`${styles.slider_value}`}>{max}</div>
     </div>
   );
 }
 
 CustomSlider.propTypes = {
-  initialMin: PropTypes.number.isRequired,
-  initialMax: PropTypes.number.isRequired,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
   minLowerBound: PropTypes.number.isRequired,
   maxUpperBound: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
