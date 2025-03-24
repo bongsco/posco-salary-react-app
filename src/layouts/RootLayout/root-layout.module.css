@@ -29,3 +29,7 @@
   overflow-y: scroll;
   gap: 20px;
 }
+
+.close {
+  display: none;
+}
