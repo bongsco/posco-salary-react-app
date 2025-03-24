@@ -7,7 +7,6 @@ export default {
   component: Input,
   tags: ['autodocs'],
   argTypes: {
-    id: { control: 'text' },
     mode: { control: { type: 'select', options: ['default', 'error', 'ok'] } },
     placeholder: { control: 'text' },
     label: { control: 'text' },
@@ -17,7 +16,6 @@ export default {
     value: { control: 'text' },
   },
   args: {
-    id: 'input',
     value: 'value 초기값',
     customWidth: 225,
     customHeight: 30,
@@ -57,19 +55,23 @@ function Template({
 }
 
 Template.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
   placeholder: PropTypes.string,
-  label: PropTypes.string.isRequired,
-  customWidth: PropTypes.number.isRequired,
-  customHeight: PropTypes.number.isRequired,
+  label: PropTypes.string,
+  customWidth: PropTypes.number,
+  customHeight: PropTypes.number,
 };
 
 Template.defaultProps = {
   mode: 'default',
-  placeholder: '',
+  placeholder: 'placeholder 플레이스홀더',
+  label: '여기에 입력 관련 메시지를 입력하세요.',
+  customWidth: 225,
+  customHeight: 30,
+  value: '초기값',
 };
 
 export const Default = Template.bind();

@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import styles from './input.module.css';
 
 function Input({
-  id,
+  id = '',
   mode = 'default',
   placeholder = '',
-  label,
-  value,
-  customWidth,
-  customHeight,
+  label = '',
+  value = '',
+  customWidth = 225,
+  customHeight = 30,
   onChange,
 }) {
   return (
