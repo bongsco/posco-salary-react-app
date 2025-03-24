@@ -5,6 +5,7 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import OrganizationSubject from '#pages/OrganizationSubject';
 
 function App() {
   return (
@@ -82,16 +83,7 @@ function App() {
                   />
                 </Route>
                 <Route path="preparation">
-                  <Route
-                    path="target"
-                    element={
-                      <AdjustEditLayout
-                        prevStepPath="../criteria/payment-rate"
-                        nextStepPath="high-performance"
-                        stepPaths={['사전 작업', '대상자 편성']}
-                      />
-                    }
-                  />
+                  <Route path="target" element={<OrganizationSubject />} />
                   <Route
                     path="high-performance"
                     element={
