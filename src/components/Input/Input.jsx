@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './input.module.css';
 
@@ -7,22 +6,11 @@ function Input({
   mode = 'default',
   placeholder = '',
   label,
-  initialValue,
+  value,
   customWidth,
   customHeight,
   onChange,
 }) {
-  const [value, setValue] = useState(initialValue);
-  const [currentMode, setCurrentMode] = useState(mode);
-
-  useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  useEffect(() => {
-    setCurrentMode(mode);
-  }, [mode]);
-
   return (
     <div
       className={styles['input-box-container']}
@@ -32,17 +20,14 @@ function Input({
         id={id}
         type="text"
         value={value}
-        className={`${styles['input-box']} ${styles[currentMode]}`}
+        className={`${styles['input-box']} ${styles[mode]}`}
         placeholder={placeholder}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e);
-        }}
+        onChange={onChange}
         style={{ width: customWidth, height: customHeight }}
       />
       {label ? (
         <span
-          className={`${styles['input-box-label']} ${styles[currentMode]} ${styles.visible}`}
+          className={`${styles['input-box-label']} ${styles[mode]} ${styles.visible}`}
         >
           {label}
         </span>
@@ -55,7 +40,7 @@ Input.defaultProps = {
   id: '',
   mode: 'default',
   label: '',
-  initialValue: '',
+  value: '',
   customWidth: 225,
   customHeight: 30,
   placeholder: '',
@@ -66,7 +51,7 @@ Input.propTypes = {
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  initialValue: PropTypes.string,
+  value: PropTypes.string,
   customWidth: PropTypes.number,
   customHeight: PropTypes.number,
   onChange: PropTypes.func.isRequired,
