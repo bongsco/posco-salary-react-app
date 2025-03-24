@@ -11,8 +11,6 @@ export default function Dropdown({
   onChange,
   onClick,
 }) {
-  const uniqueOptions = new Set(options);
-
   return (
     <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
       <div className={styles.dropdown}>
@@ -27,7 +25,7 @@ export default function Dropdown({
       {!isOpen && message && <div className={styles.message}>{message}</div>}
       {isOpen && (
         <div className={styles['select-items-list']}>
-          {Array.from(uniqueOptions).map((option) => (
+          {options.map((option) => (
             <button
               type="button"
               className={styles['select-item']}
