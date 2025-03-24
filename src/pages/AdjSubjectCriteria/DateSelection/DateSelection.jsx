@@ -5,7 +5,7 @@ import styles from '../adj-subject-criteria.module.css';
 export default function DateSelection({
   dateValues,
   onChange,
-  isSaved,
+  committedStates,
   hasError,
 }) {
   return (
@@ -16,7 +16,7 @@ export default function DateSelection({
       </div>
       <CustomDatePicker
         selectedDate={dateValues.baseDate}
-        isSaved={isSaved}
+        isSaved={committedStates.baseDate}
         onChange={(date) => onChange('baseDate', date)}
         eMessage="기준 일자를 선택해 주세요."
         hasError={hasError}
@@ -29,7 +29,7 @@ export default function DateSelection({
       <div className={styles.inputDays}>
         <CustomDatePicker
           selectedDate={dateValues.expStartDate}
-          isSaved={isSaved}
+          isSaved={committedStates.expStartDate}
           onChange={(date) => onChange('expStartDate', date)}
           eMessage="시작일을 입력해 주세요."
           hasError={hasError}
@@ -37,7 +37,7 @@ export default function DateSelection({
         <div>~</div>
         <CustomDatePicker
           selectedDate={dateValues.expEndDate}
-          isSaved={isSaved}
+          isSaved={committedStates.expEndDate}
           onChange={(date) => onChange('expEndDate', date)}
           eMessage="종료일을 입력해 주세요."
           hasError={hasError}
@@ -54,7 +54,11 @@ DateSelection.propTypes = {
     expEndDate: PropTypes.instanceOf(Date),
   }),
   onChange: PropTypes.func.isRequired,
-  isSaved: PropTypes.bool,
+  committedStates: PropTypes.shape({
+    baseDate: PropTypes.bool,
+    expStartDate: PropTypes.bool,
+    expEndDate: PropTypes.bool,
+  }).isRequired,
   hasError: PropTypes.bool,
 };
 
@@ -65,6 +69,5 @@ DateSelection.defaultProps = {
     expStartDate: null,
     expEndDate: null,
   },
-  isSaved: false,
   hasError: false,
 };

@@ -1,17 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
-import BreadCrumbs from '#components/BreadCrumbs';
+import { useState, useMemo } from 'react';
 import styles from './adj-subject-criteria.module.css';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
-import Button from '#components/Button';
 import PaymentSelection from './PaymentSelection';
+import AdjustEditLayout from '#layouts/AdjustEditLayout';
 
 export default function AdjSubjectCriteria() {
-  const items = ['연봉조정', '등록'];
-  const [isFormCommitted, setIsFormCommitted] = useState(false);
-  // const [isModified, setIsModified] = useState(false);
-
-  // ✅ 초기 상태 저장 (복구용)
   const initialDateValues = {
     baseDate: null,
     expStartDate: null,
@@ -28,7 +22,6 @@ export default function AdjSubjectCriteria() {
     '임시직(일)': false,
     임원: false,
   };
-  // ✅ 하나의 객체로 통합하여 기존 구조 유지
   const initialGrades = {
     all: { 전체: false },
     allLeft: { P직군전체: false, R직군전체: false, A직군전체: false },
@@ -54,18 +47,19 @@ export default function AdjSubjectCriteria() {
     ...initialPayments,
   });
 
-  // ----------------------------------valid function----------------------------------
-  // useEffect(() => {
-  //   const isDateEqual =
-  //     JSON.stringify(dateValues) === JSON.stringify(previousDateValues);
-  //   const isPaymentsEqual =
-  //     JSON.stringify(payments) === JSON.stringify(previousPayments);
-  //   const isGradesEqual = JSON.stringify(grades) === JSON.stringify(prevGrades);
+  const [committedPayments, setCommittedPayments] = useState({
+    ...initialPayments,
+  });
+  const [committedGrades, setCommittedGrades] = useState(
+    JSON.parse(JSON.stringify(initialGrades)),
+  );
+  const [committedDates, setCommittedDates] = useState({
+    baseDate: false,
+    expStartDate: false,
+    expEndDate: false,
+  });
 
-  //   if (isDateEqual && isPaymentsEqual && isGradesEqual) {
-  //     setIsModified(false);
-  //   }
-  // }, [dateValues, payments, grades, isModified, isFormCommitted]);
+  const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
 
   const isModified = useMemo(() => {
     const isDateEqual =
@@ -73,7 +67,6 @@ export default function AdjSubjectCriteria() {
     const isPaymentsEqual =
       JSON.stringify(payments) === JSON.stringify(previousPayments);
     const isGradesEqual = JSON.stringify(grades) === JSON.stringify(prevGrades);
-
     return !(isDateEqual && isPaymentsEqual && isGradesEqual);
   }, [
     dateValues,
@@ -84,14 +77,6 @@ export default function AdjSubjectCriteria() {
     prevGrades,
   ]);
 
-  useEffect(() => {
-    if (!isModified) {
-      // console.log('📦 Restored (after cancel):', payments, grades, dateValues);
-    }
-  }, [payments, grades, dateValues, isModified]);
-
-  const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
-
   const validateForm = () => {
     const hasDateError = Object.values(dateValues).some((v) => v === null);
     const hasPaymentError = Object.values(payments).every((v) => v === false);
@@ -99,7 +84,6 @@ export default function AdjSubjectCriteria() {
       .filter((group) => typeof group === 'object')
       .flatMap((group) => Object.values(group));
     const hasGradeError = allGradeValues.every((v) => v === false);
-
     return {
       hasDateError,
       hasPaymentError,
@@ -110,16 +94,13 @@ export default function AdjSubjectCriteria() {
 
   const formValidation = validateForm();
 
-  // ----------------------------------handle function----------------------------------
   const handleSwitchGradeChange = (category, label, isChecked) => {
     setGrades((prev) => {
       const updatedGrades = { ...prev };
       if (label === '전체') {
-        // ✅ "전체" 버튼 클릭 시 모든 값 토글
         const allChecked = Object.values(grades)
           .flatMap((group) => Object.values(group))
           .every((v) => v);
-
         Object.keys(prev).forEach((group) => {
           updatedGrades[group] = Object.fromEntries(
             Object.keys(prev[group]).map((key) => [key, !allChecked]),
@@ -135,12 +116,11 @@ export default function AdjSubjectCriteria() {
           'G직군전체',
         ].includes(label)
       ) {
-        const targetCategory = label[0]; // 예: "P직군전체" → "P"
-
+        const targetCategory = label[0];
         if (updatedGrades[targetCategory]) {
           updatedGrades[targetCategory] = Object.fromEntries(
             Object.keys(updatedGrades[targetCategory])
-              .filter((key) => !key.includes('직군전체')) // 전체 버튼 제외
+              .filter((key) => !key.includes('직군전체'))
               .map((key) => [key, isChecked]),
           );
         }
@@ -149,169 +129,145 @@ export default function AdjSubjectCriteria() {
         }
       } else {
         updatedGrades[category][label] = isChecked;
-
-        // ✅ 해당 직군의 전체 선택 여부 체크
         const allChecked = Object.keys(updatedGrades[category]).every(
           (key) => updatedGrades[category][key],
         );
-
-        // ✅ 직군에 따라 allLeft or allRight 쪽 전체 버튼 상태 갱신
         if (['P', 'R', 'A'].includes(category)) {
           updatedGrades.allLeft[`${category}직군전체`] = allChecked;
         } else if (['O', 'D', 'G'].includes(category)) {
           updatedGrades.allRight[`${category}직군전체`] = allChecked;
         }
       }
-
       return updatedGrades;
     });
-
-    // setIsModified(true);
+    setCommittedGrades((prev) => {
+      const updated = { ...prev };
+      if (updated[category]) {
+        updated[category][label] = false;
+      }
+      return updated;
+    });
   };
 
-  // ✅ 스위치 변경 감지 (기존 값과 비교)
   const handleSwitchPaymentChange = (label, isChecked) => {
     setPayments((prev) => {
-      // "전체" 버튼이 눌렸을 경우 모든 값을 변경
       if (label === '전체') {
-        const newValue = !prev['전체']; // 전체 버튼의 상태를 토글
-        const updatedPayments = Object.keys(prev).reduce((acc, key) => {
-          acc[key] = newValue;
-          return acc;
-        }, {});
-        return updatedPayments;
+        const newValue = !prev['전체'];
+        const updated = Object.fromEntries(
+          Object.keys(prev).map((k) => [k, newValue]),
+        );
+        return updated;
       }
-
-      // 기존 값과 비교하여 변경이 없으면 상태 업데이트 하지 않음
       if (prev[label] === isChecked) return prev;
-
-      const updatedState = {
-        ...prev,
-        [label]: isChecked,
-      };
-
-      // 전체 체크 상태를 개별 항목에 따라 동기화
-      const allChecked = Object.keys(updatedState).every(
-        (key) => key === '전체' || updatedState[key],
-      );
-
-      updatedState['전체'] = allChecked;
-
-      return updatedState;
+      const updated = { ...prev, [label]: isChecked };
+      updated['전체'] = Object.entries(updated)
+        .filter(([k]) => k !== '전체')
+        .every(([, v]) => v);
+      return updated;
     });
-
-    // setIsModified(true);
+    setCommittedPayments((prev) => ({
+      ...prev,
+      [label]: false,
+    }));
   };
 
-  // ✅ 날짜 변경 감지 (기존 값과 비교)
   const handleDateChange = (key, date) => {
     setDateValues((prev) => {
-      // 기존 값과 비교하여 변경이 없으면 상태 업데이트 하지 않음
       if (prev[key] === date) return prev;
-
-      return {
-        ...prev,
-        [key]: date,
-      };
+      return { ...prev, [key]: date };
     });
-
-    // setIsModified(true);
+    setCommittedDates((prev) => ({
+      ...prev,
+      [key]: false,
+    }));
   };
-  // ✅ 저장 (변경된 값 유지 & 취소 버튼을 눌러도 복구되지 않도록 현재 값을 저장)
+
   const handleSave = () => {
     setHasTriedSubmit(true);
-
     if (!formValidation.isValid) return;
-
-    setPreviousDateValues({ ...dateValues }); // ✅ 최신 값 저장
+    setPreviousDateValues({ ...dateValues });
     setPreviousPayments({ ...payments });
     setPrevGrades({ ...grades });
-    // setIsModified(false);
-    setIsFormCommitted(true);
+    setCommittedPayments(
+      Object.fromEntries(Object.keys(payments).map((k) => [k, true])),
+    );
+    // ✅ grades: 모든 항목을 true로 설정
+    const committedGradesAllTrue = {};
+    Object.keys(grades).forEach((groupKey) => {
+      committedGradesAllTrue[groupKey] = {};
+      Object.keys(grades[groupKey]).forEach((label) => {
+        committedGradesAllTrue[groupKey][label] = true;
+      });
+    });
+    setCommittedGrades(committedGradesAllTrue);
+    setCommittedDates({
+      baseDate: true,
+      expStartDate: true,
+      expEndDate: true,
+    });
   };
 
   const handleCancel = () => {
-    const restored = JSON.parse(JSON.stringify(prevGrades)); // 깊은 복사
-
+    const restored = JSON.parse(JSON.stringify(prevGrades));
     const syncGroupAllSwitch = (groupKey, allKey) => {
       const group = restored[groupKey];
       const allChecked = Object.values(group).every((v) => v);
-
       if (restored[allKey] && `${groupKey}직군전체` in restored[allKey]) {
         restored[allKey][`${groupKey}직군전체`] = allChecked;
       }
     };
-
-    // ✅ 각 직군 전체 버튼 동기화
     ['P', 'R', 'A'].forEach((g) => syncGroupAllSwitch(g, 'allLeft'));
     ['O', 'D', 'G'].forEach((g) => syncGroupAllSwitch(g, 'allRight'));
-
-    // ✅ 전체 버튼 동기화
     const allValues = Object.values(restored)
       .filter((group) => typeof group === 'object')
       .flatMap((group) => Object.values(group));
-
     const isAllChecked = allValues.every((v) => v === true);
     if (restored.all && '전체' in restored.all) {
       restored.all.전체 = isAllChecked;
     }
-
-    // ✅ 상태 복원
     setDateValues({ ...previousDateValues });
     setPayments({ ...previousPayments });
     setGrades(restored);
-    // setIsModified(false);
+    setCommittedPayments(
+      Object.fromEntries(Object.keys(previousPayments).map((k) => [k, true])),
+    );
+    setCommittedGrades(JSON.parse(JSON.stringify(prevGrades)));
+    setCommittedDates({
+      baseDate: true,
+      expStartDate: true,
+      expEndDate: true,
+    });
   };
 
   return (
-    <div className={styles.contentWrapper}>
-      <BreadCrumbs items={items} />
-      <div className={styles.titleWrapper}>
-        <div className={styles.title}>대상자 기준 설정</div>
-        {isModified && (
-          <div className={styles.savedWrapper}>
-            <Button
-              label="저장"
-              size="xsmall"
-              variant="primary"
-              onClick={handleSave}
-            />
-            <Button
-              label="취소"
-              size="xsmall"
-              variant="secondary"
-              onClick={handleCancel}
-            />
-          </div>
-        )}
+    <AdjustEditLayout
+      stepPaths={['기준 설정', '대상자 기준 설정']}
+      onCommit={handleSave}
+      onRollback={handleCancel}
+      isCommited={isModified === false}
+    >
+      <div className={styles.contentWrapper}>
+        <div className={styles.content}>
+          <DateSelection
+            dateValues={dateValues}
+            onChange={handleDateChange}
+            committedStates={committedDates}
+            hasError={hasTriedSubmit && formValidation.hasDateError}
+          />
+          <PaymentSelection
+            payments={payments}
+            onSwitchChange={handleSwitchPaymentChange}
+            committedStates={committedPayments}
+            hasError={hasTriedSubmit && formValidation.hasPaymentError}
+          />
+          <GradeSelection
+            grades={grades}
+            onSwitchChange={handleSwitchGradeChange}
+            committedStates={committedGrades}
+            hasError={hasTriedSubmit && formValidation.hasGradeError}
+          />
+        </div>
       </div>
-      <div className={styles.content}>
-        <DateSelection
-          dateValues={dateValues}
-          onChange={handleDateChange}
-          isSaved={isFormCommitted}
-          hasError={hasTriedSubmit && formValidation.hasDateError}
-        />
-        {/* ✅ 급여기준 */}
-        <PaymentSelection
-          payments={payments}
-          onSwitchChange={handleSwitchPaymentChange}
-          isCommitted={isFormCommitted}
-          hasError={hasTriedSubmit && formValidation.hasPaymentError}
-        />
-        {/* ✅ 직급 */}
-        <GradeSelection
-          grades={grades}
-          onSwitchChange={handleSwitchGradeChange}
-          isCommitted={isFormCommitted}
-          hasError={hasTriedSubmit && formValidation.hasGradeError}
-        />
-      </div>
-      <div className={styles.separator} />
-      <div className={styles.buttonWrapper}>
-        <Button className={styles.button} label="이전 단계" size="small" />
-        <Button className={styles.button} label="다음 단계" size="small" />
-      </div>
-    </div>
+    </AdjustEditLayout>
   );
 }

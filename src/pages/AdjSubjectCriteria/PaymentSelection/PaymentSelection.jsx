@@ -5,7 +5,7 @@ import styles from '../adj-subject-criteria.module.css';
 export default function PaymentSelection({
   payments,
   onSwitchChange,
-  isCommitted,
+  committedStates,
   hasError,
 }) {
   return (
@@ -21,7 +21,7 @@ export default function PaymentSelection({
           key="전체"
           label="전체"
           isChecked={payments['전체']} // ✅ 부모 상태로 관리
-          isCommitted={isCommitted}
+          isCommitted={committedStates['전체']}
           onClick={onSwitchChange}
           isCheckedInitially={payments['전체']}
         />
@@ -33,7 +33,7 @@ export default function PaymentSelection({
               key={label}
               label={label}
               isChecked={payments[label]}
-              isCommitted={isCommitted}
+              isCommitted={committedStates[label]}
               onClick={onSwitchChange}
               isCheckedInitially={payments[label]}
             />
@@ -47,7 +47,7 @@ export default function PaymentSelection({
 PaymentSelection.propTypes = {
   payments: PropTypes.objectOf(PropTypes.bool),
   onSwitchChange: PropTypes.func.isRequired,
-  isCommitted: PropTypes.bool,
+  committedStates: PropTypes.objectOf(PropTypes.bool).isRequired,
   hasError: PropTypes.bool,
 };
 
@@ -64,6 +64,5 @@ PaymentSelection.defaultProps = {
     '임시직(일)': false,
     임원: false,
   },
-  isCommitted: false,
   hasError: false,
 };

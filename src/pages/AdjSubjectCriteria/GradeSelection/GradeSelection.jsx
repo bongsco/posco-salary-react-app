@@ -5,7 +5,7 @@ import styles from '../adj-subject-criteria.module.css';
 export default function GradeSelection({
   grades,
   onSwitchChange,
-  isCommitted,
+  committedStates,
   hasError,
 }) {
   return (
@@ -23,7 +23,7 @@ export default function GradeSelection({
           isChecked={Object.values(grades)
             .flat()
             .every((v) => v)}
-          isCommitted={isCommitted}
+          isCommitted={committedStates.all['전체']}
           onClick={(tmp, isChecked) => onSwitchChange('all', '전체', isChecked)}
           isCheckedInitially={grades.all['전체']}
         />
@@ -36,7 +36,7 @@ export default function GradeSelection({
                   key={label}
                   label={label}
                   isChecked={grades.allLeft[label]}
-                  isCommitted={isCommitted}
+                  isCommitted={committedStates.allLeft[label]}
                   onClick={(tmp, isChecked) =>
                     onSwitchChange('allLeft', label, isChecked)
                   }
@@ -52,7 +52,7 @@ export default function GradeSelection({
                     key={label}
                     label={label}
                     isChecked={grades.P[label]}
-                    isCommitted={isCommitted}
+                    isCommitted={committedStates.P[label]}
                     onClick={(tmp, isChecked) =>
                       onSwitchChange('P', tmp, isChecked)
                     }
@@ -66,7 +66,7 @@ export default function GradeSelection({
                     key={label}
                     label={label}
                     isChecked={grades.R[label]}
-                    isCommitted={isCommitted}
+                    isCommitted={committedStates.R[label]}
                     onClick={(tmp, isChecked) =>
                       onSwitchChange('R', tmp, isChecked)
                     }
@@ -80,7 +80,7 @@ export default function GradeSelection({
                     key={label}
                     label={label}
                     isChecked={grades.A[label]}
-                    isCommitted={isCommitted}
+                    isCommitted={committedStates.A[label]}
                     onClick={(tmp, isChecked) =>
                       onSwitchChange('A', tmp, isChecked)
                     }
@@ -98,7 +98,7 @@ export default function GradeSelection({
                   key={label}
                   label={label}
                   isChecked={grades.allRight[label]}
-                  isCommitted={isCommitted}
+                  isCommitted={committedStates.allRight[label]}
                   onClick={(tmp, isChecked) =>
                     onSwitchChange('allRight', tmp, isChecked)
                   }
@@ -114,7 +114,7 @@ export default function GradeSelection({
                     key={label}
                     label={label}
                     isChecked={grades.O[label]}
-                    isCommitted={isCommitted}
+                    isCommitted={committedStates.O[label]}
                     onClick={(tmp, isChecked) =>
                       onSwitchChange('O', tmp, isChecked)
                     }
@@ -128,7 +128,7 @@ export default function GradeSelection({
                     key={label}
                     label={label}
                     isChecked={grades.D[label]}
-                    isCommitted={isCommitted}
+                    isCommitted={committedStates.D[label]}
                     onClick={(tmp, isChecked) =>
                       onSwitchChange('D', tmp, isChecked)
                     }
@@ -142,7 +142,7 @@ export default function GradeSelection({
                     key={label}
                     label={label}
                     isChecked={grades.G[label]}
-                    isCommitted={isCommitted}
+                    isCommitted={committedStates.G[label]}
                     onClick={(tmp, isChecked) =>
                       onSwitchChange('G', tmp, isChecked)
                     }
@@ -154,33 +154,6 @@ export default function GradeSelection({
           </div>
         </div>
       </div>
-      {/* <div className={styles.gradeWrapper}>
-        <LabeledSwitch
-          key="전체"
-          label="전체"
-          isChecked={Object.values(grades)
-            .flat()
-            .every((v) => v)}
-          isCommitted={isCommitted}
-          onClick={selectAll}
-        />
-
-        {Object.entries(grades).map(([category, items]) => (
-          <div key={category} className={styles.gradeGroup}>
-            {Object.entries(items).map(([label, value]) => (
-              <LabeledSwitch
-                key={label}
-                label={label}
-                isChecked={value}
-                isCommitted={isCommitted}
-                onClick={(tmp, isChecked) =>
-                  onSwitchChange(category, tmp, isChecked)
-                }
-              />
-            ))}
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 }
@@ -188,8 +161,18 @@ export default function GradeSelection({
 GradeSelection.propTypes = {
   grades: PropTypes.objectOf(PropTypes.objectOf(PropTypes.bool)),
   onSwitchChange: PropTypes.func.isRequired,
-  isCommitted: PropTypes.bool,
   hasError: PropTypes.bool,
+  committedStates: PropTypes.shape({
+    all: PropTypes.objectOf(PropTypes.bool),
+    allLeft: PropTypes.objectOf(PropTypes.bool),
+    allRight: PropTypes.objectOf(PropTypes.bool),
+    P: PropTypes.objectOf(PropTypes.bool),
+    R: PropTypes.objectOf(PropTypes.bool),
+    A: PropTypes.objectOf(PropTypes.bool),
+    O: PropTypes.objectOf(PropTypes.bool),
+    D: PropTypes.objectOf(PropTypes.bool),
+    G: PropTypes.objectOf(PropTypes.bool),
+  }).isRequired,
 };
 
 // ✅ 기본값 설정 (defaultProps)
@@ -204,6 +187,5 @@ GradeSelection.defaultProps = {
     D: { D3: false, D2: false, D1: false },
     G: { G3: false, G2: false, G1: false },
   },
-  isCommitted: false,
   hasError: false,
 };
