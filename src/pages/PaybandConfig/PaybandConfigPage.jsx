@@ -1,4 +1,4 @@
-import { useReducer, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import CheckBox from '#components/CheckBox/CheckBox';
 import PaybandTableRow from './PaybandTableRow';
@@ -6,8 +6,6 @@ import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 
 export default function PaybandConfigPage() {
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
-  const needSave = useRef(false);
   const receivedPayband = useRef([
     {
       id: 1,
@@ -43,15 +41,35 @@ export default function PaybandConfigPage() {
     },
   ]);
 
-  const [payband] = useState(structuredClone(receivedPayband.current));
+  const [payband, setPayband] = useState(
+    structuredClone(receivedPayband.current),
+  );
 
-  const changedPayband = [];
+  let changedPayband = [];
 
   return (
     <AdjustEditLayout
       prevStepPath="payment-rate"
       nextStepPath="../preparation/target"
       stepPaths={['기준 설정', 'Payband 설정']}
+      onCommit={() => {
+        if (payband.every((pb) => pb.error.length === 0)) {
+          // changedPayband 백엔드 전송
+          setPayband((prev) => {
+            const updatedPayband = prev.map((item) => ({
+              ...item,
+              modified: [],
+            }));
+            receivedPayband.current = structuredClone(updatedPayband);
+            return updatedPayband;
+          });
+          changedPayband = [];
+        }
+      }}
+      onRollback={() => {
+        setPayband(structuredClone(receivedPayband.current));
+        changedPayband = [];
+      }}
     >
       <div className={`${styles.page}`}>
         <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
@@ -75,13 +93,15 @@ export default function PaybandConfigPage() {
             </tr>
           </thead>
           <tbody>
-            {payband.current.map((item, index) => (
+            {payband.map((item, index) => (
               <PaybandTableRow
                 key={item.id}
                 item={item}
                 originItem={receivedPayband.current[index]}
                 onChange={(modifiedItem) => {
-                  payband.current[index] = modifiedItem;
+                  setPayband((prev) =>
+                    prev.map((pb, i) => (i === index ? modifiedItem : pb)),
+                  );
                   const changedPaybandIndex = changedPayband.findIndex(
                     (pb) => pb.id === modifiedItem.id,
                   );
@@ -89,10 +109,6 @@ export default function PaybandConfigPage() {
                     changedPayband.push(modifiedItem);
                   } else {
                     changedPayband[changedPaybandIndex] = modifiedItem;
-                  }
-                  if (!needSave.current) {
-                    needSave.current = true;
-                    forceUpdate();
                   }
                 }}
               />

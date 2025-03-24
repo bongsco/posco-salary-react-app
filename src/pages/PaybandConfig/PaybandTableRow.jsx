@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import PropTypes, { string } from 'prop-types';
 import CheckBox from '#components/CheckBox/CheckBox';
 import Button from '#components/Button/Button';
@@ -9,10 +8,6 @@ import Input from '#components/Input/Input';
 import CustomSlider from '#components/Slider/CustomSlider';
 
 export default function PaybandTableRow({ item, originItem, onChange }) {
-  const [payband, setPayband] = useState(item);
-  useEffect(() => {
-    setPayband(item);
-  }, [item]);
   const addError = (addModified, updatedPayband) => {
     return {
       ...updatedPayband,
@@ -29,24 +24,24 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
   };
   const handleChange = ({ lower, upper, addModified } = {}) => {
     let updatedModified = [];
-    if (addModified !== undefined && !payband.modified.includes('전체')) {
-      if (!payband.modified.includes(addModified)) {
-        updatedModified = [...payband.modified, addModified];
+    if (addModified !== undefined && !item.modified.includes('전체')) {
+      if (!item.modified.includes(addModified)) {
+        updatedModified = [...item.modified, addModified];
       } else if (addModified === '하한' && lower === originItem.lowerBound) {
-        updatedModified = payband.modified.filter((m) => m !== addModified);
+        updatedModified = item.modified.filter((m) => m !== addModified);
       } else if (addError === '상한' && upper === originItem.upperBound) {
-        updatedModified = payband.modified.filter((m) => m !== addModified);
+        updatedModified = item.modified.filter((m) => m !== addModified);
       } else {
-        updatedModified = payband.modified;
+        updatedModified = item.modified;
       }
     } else {
-      updatedModified = payband.modified;
+      updatedModified = item.modified;
     }
 
     let updatedPayband = {
-      ...payband,
-      lowerBound: lower !== undefined ? lower : payband.lowerBound,
-      upperBound: upper !== undefined ? upper : payband.upperBound,
+      ...item,
+      lowerBound: lower !== undefined ? lower : item.lowerBound,
+      upperBound: upper !== undefined ? upper : item.upperBound,
       modified: updatedModified,
     };
 
@@ -65,50 +60,42 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
     } else {
       updatedPayband = removeError(addModified, updatedPayband);
     }
-    setPayband(({ id, grade }) => ({
-      id,
-      grade,
-      upperBound: updatedPayband.upperBound,
-      lowerBound: updatedPayband.lowerBound,
-      modified: updatedPayband.modified,
-      error: updatedPayband.error,
-    }));
     onChange(updatedPayband);
   };
 
   return (
     <tr>
       <td
-        className={`${payband.modified.includes('전체') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
       >
         <div className={`${styles.table_cell}`}>
           <CheckBox />
         </div>
       </td>
       <td
-        className={`${payband.modified.includes('전체') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
       >
-        {payband.grade !== undefined ? (
-          payband.grade
+        {item.grade !== undefined ? (
+          item.grade
         ) : (
           <div className={`${styles.table_cell}`}>
             <Button
               variant="secondary"
               size="custom"
               label="선택"
-              mode={payband.error.includes('버튼') ? 'error' : 'default'}
+              mode={item.error.includes('버튼') ? 'error' : 'default'}
               customSize={{ width: '60px', height: '26px' }}
             />
           </div>
         )}
       </td>
       <td
-        className={`${payband.modified.includes('전체') || payband.modified.includes('하한') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') || item.modified.includes('하한') ? styles.modified_cell : ''}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
-            initialValue={payband.lowerBound}
-            mode={payband.error.includes('하한') ? 'error' : 'default'}
+            initialValue={item.lowerBound}
+            mode={item.error.includes('하한') ? 'error' : 'default'}
             onChange={(newValue) => {
               handleChange({
                 lower: Number(newValue.target.value),
@@ -121,12 +108,12 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
         </div>
       </td>
       <td
-        className={`${payband.modified.includes('전체') || payband.modified.includes('상한') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') || item.modified.includes('상한') ? styles.modified_cell : ''}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
-            initialValue={payband.upperBound}
-            mode={payband.error.includes('상한') ? 'error' : 'default'}
+            initialValue={item.upperBound}
+            mode={item.error.includes('상한') ? 'error' : 'default'}
             onChange={(newValue) => {
               handleChange({
                 upper: Number(newValue.target.value),
@@ -139,11 +126,11 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
         </div>
       </td>
       <td
-        className={`${payband.modified.includes('전체') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
       >
         <CustomSlider
-          initialMin={payband.lowerBound}
-          initialMax={payband.upperBound}
+          initialMin={item.lowerBound}
+          initialMax={item.upperBound}
           minLowerBound={0}
           maxUpperBound={200}
           step={10}
@@ -151,7 +138,7 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
             handleChange({
               lower: min,
               upper: max,
-              addModified: min !== payband.lowerBound ? '하한' : '상한',
+              addModified: min !== item.lowerBound ? '하한' : '상한',
             });
           }}
         />
@@ -166,12 +153,14 @@ PaybandTableRow.propTypes = {
     upperBound: PropTypes.number.isRequired,
     lowerBound: PropTypes.number.isRequired,
     modified: PropTypes.arrayOf(string).isRequired,
+    error: PropTypes.arrayOf(string).isRequired,
   }).isRequired,
   originItem: PropTypes.shape({
     grade: PropTypes.string.isRequired,
     upperBound: PropTypes.number.isRequired,
     lowerBound: PropTypes.number.isRequired,
     modified: PropTypes.arrayOf(string).isRequired,
+    error: PropTypes.arrayOf(string).isRequired,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
 };
