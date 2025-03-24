@@ -11,7 +11,6 @@ export default function LabeledSwitch({
   const [isChecked, setIsChecked] = useState(isCheckedInitially); // ✅ 내부에서 상태 관리
 
   useEffect(() => {
-    console.log('isChanged');
     setIsChecked(isCheckedInitially);
   }, [isCheckedInitially]);
 
