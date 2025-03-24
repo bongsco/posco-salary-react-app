@@ -5,6 +5,7 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import HighOrganizationPage from '#pages/HighOrganization';
 
 function App() {
   return (
@@ -94,16 +95,7 @@ function App() {
                   />
                   <Route
                     path="high-performance"
-                    element={
-                      <AdjustEditLayout
-                        prevStepPath="target"
-                        nextStepPath="../main/payband"
-                        stepPaths={[
-                          '사전 작업',
-                          '고성과조직 가산 대상 여부 설정',
-                        ]}
-                      />
-                    }
+                    element={<HighOrganizationPage />}
                   />
                 </Route>
                 <Route path="main">
