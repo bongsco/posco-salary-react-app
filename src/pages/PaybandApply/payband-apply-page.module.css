@@ -1,0 +1,58 @@
+@import url('../../styles/global.css');
+
+.payband-apply-area {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payband-apply-area-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.payband-apply-table-area {
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.payband-apply-table {
+  width: 100%;
+}
+
+.check-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.switch-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  gap: 6px;
+}
+
+.switch-text {
+  width: 40px;
+  font: var(--font-caption-2r-pc);
+  text-align: right;
+}
+
+.switch-text.target {
+  color: var(--color-primary-dark);
+}
+
+.switch-text.non-target {
+  color: var(--color-primary-darkest);
+}
+
+.table-row {
+  width: 100%;
+  height: auto;
+}

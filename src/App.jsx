@@ -5,6 +5,7 @@ import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import RootLayout from '#layouts/RootLayout';
+import PaybandApplyPage from '#pages/PaybandApply';
 
 function App() {
   return (
@@ -107,16 +108,7 @@ function App() {
                   />
                 </Route>
                 <Route path="main">
-                  <Route
-                    path="payband"
-                    element={
-                      <AdjustEditLayout
-                        prevStepPath="../preparation/high-performance"
-                        nextStepPath="result"
-                        stepPaths={['본 연봉조정', 'Payband 적용']}
-                      />
-                    }
-                  />
+                  <Route path="payband" element={<PaybandApplyPage />} />
                   <Route
                     path="result"
                     element={
