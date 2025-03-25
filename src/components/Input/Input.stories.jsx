@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import Input from './Input';
 
 export default {
-  title: 'UI/Input',
+  title: 'UI/Form/Input',
   component: Input,
   tags: ['autodocs'],
   argTypes: {
