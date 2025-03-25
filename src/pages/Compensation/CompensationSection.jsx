@@ -13,6 +13,7 @@ export default function CompensationSection({
   originalTableData,
   onTableChange,
   valueKey,
+  onAddGradeRow,
 }) {
   return (
     <div className={styles.section}>
@@ -42,6 +43,7 @@ export default function CompensationSection({
         originalData={originalTableData}
         onChange={onTableChange}
         valueKey={valueKey}
+        onAddGradeRow={onAddGradeRow}
       />
     </div>
   );
@@ -71,4 +73,5 @@ CompensationSection.propTypes = {
   ).isRequired,
   onTableChange: PropTypes.func.isRequired,
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
+  onAddGradeRow: PropTypes.func.isRequired,
 };

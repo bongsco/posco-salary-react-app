@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import Input from '#components/Input';
 import CheckBox from '#components/CheckBox';
+import Dropdown from '#components/Dropdown';
 import styles from './compensation-page.module.css';
 
 export default function CompensationTableRow({
@@ -13,9 +15,21 @@ export default function CompensationTableRow({
   valueKey,
   setHasTypeError,
 }) {
+  const [selectedGrade, setSelectedGrade] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   let rowHasTypeError = false;
 
-  const isNumberLike = (str) => /^[\d.]+%?$/.test(str.trim());
+  const isNewRow = grade.startsWith('NEW');
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleDropdownSelect = (value) => {
+    setSelectedGrade(value);
+    setIsDropdownOpen(false);
+  };
 
   return (
     <tr>
@@ -24,20 +38,38 @@ export default function CompensationTableRow({
           <CheckBox isChecked={checked} onClick={onCheck} />
         </div>
       </td>
-      <td>{grade}</td>
+      <td>
+        {isNewRow ? (
+          <Dropdown
+            className={styles.table_cell}
+            placeHolder="선택"
+            options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
+            selectedValue={selectedGrade}
+            isOpen={isDropdownOpen}
+            onClick={handleDropdownToggle}
+            onChange={handleDropdownSelect}
+          />
+        ) : (
+          grade
+        )}
+      </td>
       {Object.entries(ranks).map(([rank, values]) => {
         const currentValue = values[valueKey];
         const originalValue = originalRanks?.[rank]?.[valueKey] ?? '';
         const isChanged = currentValue !== originalValue;
-        const isTypeDifferent =
-          isNumberLike(currentValue) !== isNumberLike(originalValue);
+
+        const isEmpty = currentValue.trim() === '';
+        const isInvalidNumber = !/^-?\d*(\.\d+)?%?$/.test(currentValue.trim());
+        const isTypeDifferent = isEmpty || isInvalidNumber;
 
         if (isTypeDifferent) rowHasTypeError = true;
 
         return (
           <td
             key={`${grade}-${rank}`}
-            className={isChanged ? styles.changedCell : styles.inputCell}
+            className={
+              isNewRow || isChanged ? styles.changedCell : styles.inputCell
+            }
           >
             <div className={styles.table_cell}>
               <Input

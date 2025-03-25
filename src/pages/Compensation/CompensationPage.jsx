@@ -97,6 +97,29 @@ function reducer(state, action) {
       };
     }
 
+    // 행추가 하기
+    case 'addGradeRow': {
+      const { grade } = action.payload;
+
+      const newRanks = {
+        S: { value1: '', value2: '' },
+        A: { value1: '', value2: '' },
+        BPlus: { value1: '', value2: '' },
+        B: { value1: '', value2: '' },
+        C: { value1: '', value2: '' },
+        D: { value1: '', value2: '' },
+      };
+
+      return {
+        ...state,
+        rankRate: {
+          ...state.rankRate,
+          [grade]: newRanks,
+        },
+        isCommitted: false,
+      };
+    }
+
     // 알 수 없는 액션이면 기존 상태 그대로 반환
     default:
       return state;
@@ -143,6 +166,16 @@ export default function CompensationPage() {
     }));
   };
 
+  // 행추가 핸들러
+  const handleAddGradeRow = () => {
+    dispatch({
+      type: 'addGradeRow',
+      payload: {
+        grade: `NEW${Object.keys(state.rankRate).length + 1}`,
+      },
+    });
+  };
+
   return (
     <AdjustEditLayout
       prevStepPath="target"
@@ -166,6 +199,7 @@ export default function CompensationPage() {
           originalTableData={state.backup?.rankRate}
           onTableChange={handleInputChange}
           valueKey="value1"
+          onAddGradeRow={handleAddGradeRow}
         />
 
         {/* 2. 경영성과금 지급률 */}
@@ -181,6 +215,7 @@ export default function CompensationPage() {
           originalTableData={state.backup?.rankRate}
           onTableChange={handleInputChange}
           valueKey="value2"
+          onAddGradeRow={handleAddGradeRow}
         />
       </div>
     </AdjustEditLayout>

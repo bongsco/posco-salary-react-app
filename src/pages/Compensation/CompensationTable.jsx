@@ -10,6 +10,7 @@ export default function CompensationTable({
   originalData,
   onChange,
   valueKey,
+  onAddGradeRow,
 }) {
   const [checkedRows, setCheckedRows] = useState({});
   const [hasTypeError, setHasTypeError] = useState(false);
@@ -62,6 +63,16 @@ export default function CompensationTable({
               setHasTypeError={setHasTypeError}
             />
           ))}
+          <tr>
+            <td colSpan="8" className="button_td">
+              <button
+                type="button"
+                className="add_column"
+                aria-label="add_button"
+                onClick={onAddGradeRow}
+              />
+            </td>
+          </tr>
         </tbody>
       </table>
       {hasTypeError && (
@@ -92,4 +103,5 @@ CompensationTable.propTypes = {
   ).isRequired,
   onChange: PropTypes.func.isRequired,
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
+  onAddGradeRow: PropTypes.func.isRequired,
 };
