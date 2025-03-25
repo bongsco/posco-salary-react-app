@@ -25,21 +25,57 @@ function reducer(state, action) {
         selectedValue: null,
         isKeyOpen: false,
       };
+    case 'REMOVE_VALUE': {
+      const { key, value } = action.payload;
+      const updatedFilters = state.filters
+        .map((f) =>
+          f.key === key
+            ? { ...f, value: f.value.filter((v) => v !== value) }
+            : f,
+        )
+        .filter((f) => f.value.length > 0); // value가 비면 해당 필터 제거
+
+      return {
+        ...state,
+        filters: updatedFilters,
+      };
+    }
+
     case 'SELECT_VALUE':
       return { ...state, selectedValue: action.payload, isValueOpen: false };
-    case 'ADD_FILTER':
+    case 'ADD_FILTER': {
       if (state.selectedKey && state.selectedValue) {
+        const existing = state.filters.find((f) => f.key === state.selectedKey);
+
+        if (existing) {
+          const updatedFilters = state.filters.map((f) =>
+            f.key === state.selectedKey
+              ? {
+                  ...f,
+                  value: Array.from(new Set([...f.value, state.selectedValue])),
+                }
+              : f,
+          );
+          return {
+            ...state,
+            filters: updatedFilters,
+            selectedKey: null,
+            selectedValue: null,
+          };
+        }
         return {
           ...state,
           filters: [
             ...state.filters,
-            { key: state.selectedKey, value: state.selectedValue },
+            { key: state.selectedKey, value: [state.selectedValue] },
           ],
           selectedKey: null,
           selectedValue: null,
         };
       }
       return state;
+    }
+
     case 'REMOVE_FILTER':
       return {
         ...state,
@@ -95,20 +131,28 @@ export default function FilterModal({ option, onSubmit, onClose }) {
       </div>
 
       <div className={styles.filterWrapper}>
-        {state.filters.map((filter, index) => (
-          <div key={`${filter.key}-${filter.value}`} className={styles.filter}>
-            <span className={styles.filterName}>
-              {filter.key} : {filter.value}
-            </span>
-            <button
-              type="button"
-              onClick={() =>
-                dispatch({ type: 'REMOVE_FILTER', payload: index })
-              }
-              className={styles.removeButton}
-            >
-              <span className={styles.remove}>X</span>
-            </button>
+        {state.filters.map((filter) => (
+          <div key={filter.key} className={styles.filter}>
+            <span className={styles.filterName}>{filter.key} :</span>
+            <div className={styles.filterValueList}>
+              {filter.value.map((val) => (
+                <span key={val} className={styles.filterValueItem}>
+                  {val}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      dispatch({
+                        type: 'REMOVE_VALUE',
+                        payload: { key: filter.key, value: val },
+                      })
+                    }
+                    className={styles.removeButton}
+                  >
+                    <span className={styles.remove}>X</span>
+                  </button>
+                </span>
+              ))}
+            </div>
           </div>
         ))}
       </div>
