@@ -12,10 +12,8 @@ function HighOrganizationArea() {
       name: '홍',
       dep_name: '에너지조선마케팅실 산기플랜트팀',
       grade_name: 'P6',
-      rank_name: 'A',
+      rank_name: 'S',
       in_high_perform_group: false,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -25,8 +23,6 @@ function HighOrganizationArea() {
       grade_name: 'P6',
       rank_name: 'A',
       in_high_perform_group: true,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -34,10 +30,8 @@ function HighOrganizationArea() {
       name: '홍길동',
       dep_name: '에너지조선마케팅실 산기플랜트팀',
       grade_name: 'P6',
-      rank_name: 'A',
+      rank_name: 'B',
       in_high_perform_group: true,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -45,10 +39,8 @@ function HighOrganizationArea() {
       name: '홍길동김',
       dep_name: '에너지조선마케팅실 산기플랜트팀',
       grade_name: 'P6',
-      rank_name: 'A',
+      rank_name: 'S',
       in_high_perform_group: false,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -56,10 +48,8 @@ function HighOrganizationArea() {
       name: '홍길동김박',
       dep_name: '에너지조선마케팅실 산기플랜트팀',
       grade_name: 'P6',
-      rank_name: 'A',
+      rank_name: 'B',
       in_high_perform_group: false,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -69,8 +59,6 @@ function HighOrganizationArea() {
       grade_name: 'P6',
       rank_name: 'A',
       in_high_perform_group: false,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -80,8 +68,6 @@ function HighOrganizationArea() {
       grade_name: 'P6',
       rank_name: 'A',
       in_high_perform_group: false,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -91,8 +77,6 @@ function HighOrganizationArea() {
       grade_name: 'P6',
       rank_name: 'A',
       in_high_perform_group: false,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
     {
       isChecked: false,
@@ -102,8 +86,6 @@ function HighOrganizationArea() {
       grade_name: 'P6',
       rank_name: 'A',
       in_high_perform_group: false,
-      eval_diff_increment: 2.2,
-      eval_diff_bonus: 400,
     },
   ];
 

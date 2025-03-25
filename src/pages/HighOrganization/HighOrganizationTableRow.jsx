@@ -10,6 +10,23 @@ function HighOrganizationTableRow({
   handleHighPerformGroupSwitch,
   handleCheckBox,
 }) {
+  const salaryPerRank = {
+    S: {
+      eval_diff_increment: 5.0,
+      eval_diff_bonus: 400,
+    },
+    A: {
+      eval_diff_increment: 4.5,
+      eval_diff_bonus: 350,
+    },
+    B: {
+      eval_diff_increment: 4.0,
+      eval_diff_bonus: 300,
+    },
+  };
+  const evalAnnualSalaryIncrement = 2.0;
+  const evalPerformProvideRate = 100;
+
   return (
     <tr key={item.emp_num} className={`${styles['table-row']}`}>
       <td>
@@ -48,8 +65,20 @@ function HighOrganizationTableRow({
           />
         </div>
       </td>
-      <td>{item.eval_diff_increment}%</td>
-      <td>{item.eval_diff_bonus}%</td>
+      <td>
+        {item.in_high_perform_group
+          ? salaryPerRank[item.rank_name].eval_diff_increment +
+            evalAnnualSalaryIncrement
+          : salaryPerRank[item.rank_name].eval_diff_increment}
+        %
+      </td>
+      <td>
+        {item.in_high_perform_group
+          ? salaryPerRank[item.rank_name].eval_diff_bonus +
+            evalPerformProvideRate
+          : salaryPerRank[item.rank_name].eval_diff_bonus}
+        %
+      </td>
     </tr>
   );
 }
