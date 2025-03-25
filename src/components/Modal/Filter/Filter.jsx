@@ -4,12 +4,7 @@ import Modal from '../Modal';
 import styles from '../modal.module.css';
 import Dropdown from '#components/Dropdown';
 
-export default function Filter({ onSubmit, onClose }) {
-  const filterValues = {
-    연도: [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015],
-    상태: ['작업전', '작업중', '완료'],
-  };
-
+export default function Filter({ option, onSubmit, onClose }) {
   const [filters, setFilters] = useState([]);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -31,6 +26,8 @@ export default function Filter({ onSubmit, onClose }) {
     setFilters((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const keys = Object.keys(option);
+
   return (
     <Modal onSubmit={() => onSubmit?.(filters)} onClose={onClose}>
       <span className={styles.title}>필터</span>
@@ -38,7 +35,7 @@ export default function Filter({ onSubmit, onClose }) {
       <div className={styles.dropdownWrapper}>
         <Dropdown
           placeHolder="필터 항목 선택"
-          options={Object.keys(filterValues)}
+          options={keys}
           selectedValue={selectedKey}
           isOpen={isKeyOpen}
           onChange={(val) => {
@@ -47,12 +44,17 @@ export default function Filter({ onSubmit, onClose }) {
             setIsKeyOpen(false);
           }}
           onClick={() => setIsKeyOpen((prev) => !prev)}
-          customWidth={133}
+          customWidth="133px"
+          error={false}
         />
 
         <Dropdown
           placeHolder="값 선택"
-          options={selectedKey ? filterValues[selectedKey].map(String) : []}
+          options={
+            selectedKey && option[selectedKey]
+              ? option[selectedKey].options.map(String)
+              : []
+          }
           selectedValue={selectedValue}
           isOpen={isValueOpen}
           onChange={(val) => {
@@ -60,7 +62,8 @@ export default function Filter({ onSubmit, onClose }) {
             setIsValueOpen(false);
           }}
           onClick={() => setIsValueOpen((prev) => !prev)}
-          customWidth={133}
+          customWidth="133px"
+          error={false}
         />
 
         <button
@@ -93,6 +96,17 @@ export default function Filter({ onSubmit, onClose }) {
 }
 
 Filter.propTypes = {
+  option: PropTypes.objectOf(
+    PropTypes.shape({
+      options: PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ).isRequired,
+      currentSelectedValue: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    }),
+  ).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };

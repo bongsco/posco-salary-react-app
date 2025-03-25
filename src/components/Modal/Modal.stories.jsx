@@ -1,61 +1,47 @@
-import { useState } from 'react';
 import Modal from './Modal';
 import Filter from '#components/Modal/Filter';
 import Register from '#components/Modal/Register';
 import Sort from '#components/Modal/Sort';
 
 export default {
-  title: 'Components/Modal',
+  title: 'UI/Modal',
   component: Modal,
 };
 
 // ✅ 1. Filter 예시
 export function FilterModalStory() {
-  const [filters, setFilters] = useState([]);
-
-  const handleAddFilter = (newFilter) => {
-    setFilters((prev) => [...prev, newFilter]);
+  const option = {
+    연도: {
+      options: [2008, 2009, 2010],
+      currentSelectedValue: null,
+    },
+    상태: {
+      options: ['작업전', '작업중', '완료'],
+      currentSelectedValue: '완료',
+    },
   };
 
-  const handleRemoveFilter = (index) => {
-    setFilters((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  return (
-    <Filter
-      filters={filters}
-      onAddFilter={handleAddFilter}
-      onRemoveFilter={handleRemoveFilter}
-    />
-  );
+  return <Filter option={option} onSubmit={() => {}} onClose={() => {}} />;
 }
 
 // ✅ 2. Register 예시
 export function RegisterModalStory() {
-  const [registerData, setRegisterData] = useState({
-    title: '',
-    adjustmentType: null,
-  });
+  const adjustmentOptions = ['정기연봉조정', '승진자연봉조정', 'Base Up'];
 
-  return <Register data={registerData} onChange={setRegisterData} />;
+  return (
+    <Register
+      option={adjustmentOptions}
+      onSubmit={() => {}}
+      onClose={() => {}}
+    />
+  );
 }
 
 export function SortModalStory() {
-  const [sortList, setSortList] = useState([]);
-
-  const handleAddSort = (newSort) => {
-    setSortList((prev) => [...prev, newSort]);
+  const sortOption = {
+    keys: ['연도', '월', '조정유형', '상태', '통합인사반영여부'],
+    values: ['오름차순', '내림차순'],
   };
 
-  const handleRemoveSort = (index) => {
-    setSortList((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  return (
-    <Sort
-      sorts={sortList}
-      onAddSort={handleAddSort}
-      onRemoveSort={handleRemoveSort}
-    />
-  );
+  return <Sort option={sortOption} onSubmit={() => {}} onClose={() => {}} />;
 }

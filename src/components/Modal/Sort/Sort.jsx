@@ -4,10 +4,7 @@ import Modal from '../Modal';
 import Dropdown from '#components/Dropdown';
 import styles from '../modal.module.css';
 
-export default function Sort({ onSubmit, onClose }) {
-  const sortOptions = ['오름차순', '내림차순'];
-  const sortKeys = ['연도', '월', '조정유형', '상태', '통합인사반영여부'];
-
+export default function Sort({ option, onSubmit, onClose }) {
   const [sorts, setSorts] = useState([]);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -33,7 +30,7 @@ export default function Sort({ onSubmit, onClose }) {
       <div className={styles.dropdownWrapper}>
         <Dropdown
           placeHolder="정렬 항목"
-          options={sortKeys}
+          options={option.keys}
           selectedValue={selectedKey}
           isOpen={isKeyOpen}
           onChange={(val) => {
@@ -42,12 +39,13 @@ export default function Sort({ onSubmit, onClose }) {
             setIsKeyOpen(false);
           }}
           onClick={() => setIsKeyOpen((prev) => !prev)}
-          customWidth={133}
+          customWidth="133px"
+          error={false}
         />
 
         <Dropdown
           placeHolder="정렬 방식"
-          options={sortOptions}
+          options={option.values}
           selectedValue={selectedValue}
           isOpen={isValueOpen}
           onChange={(val) => {
@@ -55,7 +53,8 @@ export default function Sort({ onSubmit, onClose }) {
             setIsValueOpen(false);
           }}
           onClick={() => setIsValueOpen((prev) => !prev)}
-          customWidth={133}
+          customWidth="133px"
+          error={false}
         />
 
         <button
@@ -88,6 +87,10 @@ export default function Sort({ onSubmit, onClose }) {
 }
 
 Sort.propTypes = {
+  option: PropTypes.shape({
+    keys: PropTypes.arrayOf(PropTypes.string).isRequired,
+    values: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };

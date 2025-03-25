@@ -5,12 +5,10 @@ import styles from '../modal.module.css';
 import Input from '#components/Input';
 import Dropdown from '#components/Dropdown';
 
-export default function Register({ onSubmit, onClose }) {
+export default function Register({ option, onSubmit, onClose }) {
   const [title, setTitle] = useState('');
   const [adjustmentType, setAdjustmentType] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  const adjustmentOptions = ['정기연봉조정', '승진자연봉조정', 'Base Up'];
 
   return (
     <Modal
@@ -36,7 +34,7 @@ export default function Register({ onSubmit, onClose }) {
         <span className={styles.label}>조정 유형</span>
         <Dropdown
           placeHolder="조정 유형 선택"
-          options={adjustmentOptions}
+          options={option}
           selectedValue={adjustmentType}
           isOpen={isOpen}
           onChange={(val) => {
@@ -44,7 +42,8 @@ export default function Register({ onSubmit, onClose }) {
             setIsOpen(false);
           }}
           onClick={() => setIsOpen((prev) => !prev)}
-          customWidth={213}
+          customWidth="213px"
+          error={false}
         />
       </div>
     </Modal>
@@ -52,6 +51,7 @@ export default function Register({ onSubmit, onClose }) {
 }
 
 Register.propTypes = {
+  option: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
