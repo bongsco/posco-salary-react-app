@@ -5,7 +5,6 @@ import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 import Button from '#components/Button';
-import useBlocker from './hook';
 
 export default function PaybandConfigPage() {
   const [receivedPayband, setReceivedPayband] = useState([
@@ -53,13 +52,6 @@ export default function PaybandConfigPage() {
   const allChecked = useMemo(() => {
     return payband.length > 0 && payband.every((pb) => pb.isChecked);
   }, [payband]);
-
-  const { renderPrompt } = useBlocker(
-    ({ currentLocation, nextLocation }) => {
-      return needSave && currentLocation?.pathname !== nextLocation?.pathname;
-    },
-    { message: '데이터가 저장되지 않았습니다.\n그래도 이동하시겠습니까?' },
-  );
 
   return (
     <AdjustEditLayout
@@ -118,6 +110,7 @@ export default function PaybandConfigPage() {
         setDeletedPayband([]);
       }}
       isCommitted={!needSave}
+      canMove
     >
       <div className={`${styles.page}`}>
         <h2>Payband 상한, 하한 설정</h2>
@@ -229,7 +222,6 @@ export default function PaybandConfigPage() {
           </table>
         </div>
       </div>
-      {renderPrompt()}
     </AdjustEditLayout>
   );
 }
