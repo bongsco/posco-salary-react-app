@@ -23,7 +23,7 @@ export default function AdjustEditLayout({
   const { renderPrompt } = useBlocker(
     ({ currentLocation, nextLocation }) => {
       return (
-        (!canMove || !isCommitted) &&
+        !(canMove && isCommitted) &&
         currentLocation?.pathname !== nextLocation?.pathname
       );
     },
