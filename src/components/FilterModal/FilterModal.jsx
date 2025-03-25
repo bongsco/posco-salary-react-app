@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import Filter from '#components/FilterModal/Filter/Filter';
 import Dropdown from '#components/Dropdown';
 import styles from './filter-modal.module.css';
+import Button from '#components/Button';
 
 export default function FilterModal() {
   const options = [
@@ -24,8 +26,8 @@ export default function FilterModal() {
 
   return (
     <div className={styles.filters}>
-      필터
-      <div className={styles.filter}>
+      <span className={styles.title}>필터</span>
+      <div className={styles.dropdownWrapper}>
         <Dropdown
           placeHolder="상태"
           options={options}
@@ -38,8 +40,6 @@ export default function FilterModal() {
           }}
           onClick={() => setIsStatusOpen((prev) => !prev)}
         />
-
-        {/* 아래 Dropdown도 동작 추가 필요 시 동일한 패턴으로 관리 */}
         <Dropdown
           placeHolder="상태"
           options={options}
@@ -56,6 +56,16 @@ export default function FilterModal() {
         <div className={styles.button}>
           <span className={styles.plus}>+</span>
         </div>
+      </div>
+      {/* 나중에 Filter 컴포넌트로 묶을 예정 */}
+      <div className={styles.filterWrapper}>
+        <Filter />
+        <Filter />
+        <Filter />
+      </div>
+      <div className={styles.buttonWrapper}>
+        <Button variant="primary" label="추가" size="xsmall" />
+        <Button variant="secondary" label="닫기" size="xsmall" />
       </div>
     </div>
   );
