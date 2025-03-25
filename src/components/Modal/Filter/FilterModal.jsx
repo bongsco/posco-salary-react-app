@@ -1,49 +1,71 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import styles from '../modal.module.css';
 import Dropdown from '#components/Dropdown';
 
+const initialState = {
+  selectedKey: null,
+  selectedValue: null,
+  isKeyOpen: false,
+  isValueOpen: false,
+  filters: [],
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'TOGGLE_KEY':
+      return { ...state, isKeyOpen: !state.isKeyOpen };
+    case 'TOGGLE_VALUE':
+      return { ...state, isValueOpen: !state.isValueOpen };
+    case 'SELECT_KEY':
+      return {
+        ...state,
+        selectedKey: action.payload,
+        selectedValue: null,
+        isKeyOpen: false,
+      };
+    case 'SELECT_VALUE':
+      return { ...state, selectedValue: action.payload, isValueOpen: false };
+    case 'ADD_FILTER':
+      if (state.selectedKey && state.selectedValue) {
+        return {
+          ...state,
+          filters: [
+            ...state.filters,
+            { key: state.selectedKey, value: state.selectedValue },
+          ],
+          selectedKey: null,
+          selectedValue: null,
+        };
+      }
+      return state;
+    case 'REMOVE_FILTER':
+      return {
+        ...state,
+        filters: state.filters.filter((_, i) => i !== action.payload),
+      };
+    default:
+      return state;
+  }
+}
+
 export default function FilterModal({ option, onSubmit, onClose }) {
-  const [filters, setFilters] = useState([]);
-  const [selectedKey, setSelectedKey] = useState(null);
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [isKeyOpen, setIsKeyOpen] = useState(false);
-  const [isValueOpen, setIsValueOpen] = useState(false);
-
-  const handleAddFilter = () => {
-    if (selectedKey && selectedValue) {
-      setFilters((prev) => [
-        ...prev,
-        { key: selectedKey, value: selectedValue },
-      ]);
-      setSelectedKey(null);
-      setSelectedValue(null);
-    }
-  };
-
-  const handleRemoveFilter = (index) => {
-    setFilters((prev) => prev.filter((_, i) => i !== index));
-  };
-
+  const [state, dispatch] = useReducer(reducer, initialState);
   const keys = Object.keys(option);
 
   return (
-    <Modal onSubmit={() => onSubmit?.(filters)} onClose={onClose}>
+    <Modal onSubmit={() => onSubmit?.(state.filters)} onClose={onClose}>
       <span className={styles.title}>필터</span>
 
       <div className={styles.dropdownWrapper}>
         <Dropdown
           placeHolder="필터 항목 선택"
           options={keys}
-          selectedValue={selectedKey}
-          isOpen={isKeyOpen}
-          onChange={(val) => {
-            setSelectedKey(val);
-            setSelectedValue(null);
-            setIsKeyOpen(false);
-          }}
-          onClick={() => setIsKeyOpen((prev) => !prev)}
+          selectedValue={state.selectedKey}
+          isOpen={state.isKeyOpen}
+          onChange={(val) => dispatch({ type: 'SELECT_KEY', payload: val })}
+          onClick={() => dispatch({ type: 'TOGGLE_KEY' })}
           customWidth="133px"
           error={false}
         />
@@ -51,17 +73,14 @@ export default function FilterModal({ option, onSubmit, onClose }) {
         <Dropdown
           placeHolder="값 선택"
           options={
-            selectedKey && option[selectedKey]
-              ? option[selectedKey].options.map(String)
+            state.selectedKey && option[state.selectedKey]
+              ? option[state.selectedKey].options.map(String)
               : []
           }
-          selectedValue={selectedValue}
-          isOpen={isValueOpen}
-          onChange={(val) => {
-            setSelectedValue(val);
-            setIsValueOpen(false);
-          }}
-          onClick={() => setIsValueOpen((prev) => !prev)}
+          selectedValue={state.selectedValue}
+          isOpen={state.isValueOpen}
+          onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
+          onClick={() => dispatch({ type: 'TOGGLE_VALUE' })}
           customWidth="133px"
           error={false}
         />
@@ -69,21 +88,23 @@ export default function FilterModal({ option, onSubmit, onClose }) {
         <button
           type="button"
           className={styles.plusButton}
-          onClick={handleAddFilter}
+          onClick={() => dispatch({ type: 'ADD_FILTER' })}
         >
           <span className={styles.plus}>+</span>
         </button>
       </div>
 
       <div className={styles.filterWrapper}>
-        {filters.map((filter, index) => (
+        {state.filters.map((filter, index) => (
           <div key={`${filter.key}-${filter.value}`} className={styles.filter}>
             <span className={styles.filterName}>
               {filter.key} : {filter.value}
             </span>
             <button
               type="button"
-              onClick={() => handleRemoveFilter(index)}
+              onClick={() =>
+                dispatch({ type: 'REMOVE_FILTER', payload: index })
+              }
               className={styles.removeButton}
             >
               <span className={styles.remove}>X</span>
@@ -94,7 +115,6 @@ export default function FilterModal({ option, onSubmit, onClose }) {
     </Modal>
   );
 }
-
 FilterModal.propTypes = {
   option: PropTypes.objectOf(
     PropTypes.shape({

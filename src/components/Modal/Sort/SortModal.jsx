@@ -1,80 +1,101 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import Dropdown from '#components/Dropdown';
 import styles from '../modal.module.css';
 
+const initialState = {
+  selectedKey: null,
+  selectedValue: null,
+  isKeyOpen: false,
+  isValueOpen: false,
+  sortList: [],
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'TOGGLE_KEY':
+      return { ...state, isKeyOpen: !state.isKeyOpen };
+    case 'TOGGLE_VALUE':
+      return { ...state, isValueOpen: !state.isValueOpen };
+    case 'SELECT_KEY':
+      return {
+        ...state,
+        selectedKey: action.payload,
+        selectedValue: null,
+        isKeyOpen: false,
+      };
+    case 'SELECT_VALUE':
+      return { ...state, selectedValue: action.payload, isValueOpen: false };
+    case 'ADD_SORT':
+      if (state.selectedKey && state.selectedValue) {
+        return {
+          ...state,
+          sortList: [
+            ...state.sortList,
+            { key: state.selectedKey, value: state.selectedValue },
+          ],
+          selectedKey: null,
+          selectedValue: null,
+        };
+      }
+      return state;
+    case 'REMOVE_SORT':
+      return {
+        ...state,
+        sortList: state.sortList.filter((_, i) => i !== action.payload),
+      };
+    default:
+      return state;
+  }
+}
+
 export default function SortModal({ option, onSubmit, onClose }) {
-  const [sorts, setSorts] = useState([]);
-  const [selectedKey, setSelectedKey] = useState(null);
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [isKeyOpen, setIsKeyOpen] = useState(false);
-  const [isValueOpen, setIsValueOpen] = useState(false);
-
-  const handleAddSort = () => {
-    if (selectedKey && selectedValue) {
-      setSorts((prev) => [...prev, { key: selectedKey, value: selectedValue }]);
-      setSelectedKey(null);
-      setSelectedValue(null);
-    }
-  };
-
-  const handleRemoveSort = (index) => {
-    setSorts((prev) => prev.filter((_, i) => i !== index));
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <Modal onSubmit={() => onSubmit?.(sorts)} onClose={onClose}>
+    <Modal onSubmit={() => onSubmit?.(state.sortList)} onClose={onClose}>
       <span className={styles.title}>정렬</span>
 
       <div className={styles.dropdownWrapper}>
         <Dropdown
           placeHolder="정렬 항목"
           options={option.keys}
-          selectedValue={selectedKey}
-          isOpen={isKeyOpen}
-          onChange={(val) => {
-            setSelectedKey(val);
-            setSelectedValue(null);
-            setIsKeyOpen(false);
-          }}
-          onClick={() => setIsKeyOpen((prev) => !prev)}
+          selectedValue={state.selectedKey}
+          isOpen={state.isKeyOpen}
+          onChange={(val) => dispatch({ type: 'SELECT_KEY', payload: val })}
+          onClick={() => dispatch({ type: 'TOGGLE_KEY' })}
           customWidth="133px"
           error={false}
         />
-
         <Dropdown
           placeHolder="정렬 방식"
           options={option.values}
-          selectedValue={selectedValue}
-          isOpen={isValueOpen}
-          onChange={(val) => {
-            setSelectedValue(val);
-            setIsValueOpen(false);
-          }}
-          onClick={() => setIsValueOpen((prev) => !prev)}
+          selectedValue={state.selectedValue}
+          isOpen={state.isValueOpen}
+          onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
+          onClick={() => dispatch({ type: 'TOGGLE_VALUE' })}
           customWidth="133px"
           error={false}
         />
-
         <button
           type="button"
           className={styles.plusButton}
-          onClick={handleAddSort}
+          onClick={() => dispatch({ type: 'ADD_SORT' })}
         >
           <span className={styles.plus}>+</span>
         </button>
       </div>
 
       <div className={styles.filterWrapper}>
-        {sorts.map((sort, index) => (
+        {state.sortList.map((sort, index) => (
           <div key={`${sort.key}-${sort.value}`} className={styles.filter}>
             <span className={styles.filterName}>
               {sort.key} : {sort.value}
             </span>
             <button
               type="button"
-              onClick={() => handleRemoveSort(index)}
+              onClick={() => dispatch({ type: 'REMOVE_SORT', payload: index })}
               className={styles.removeButton}
             >
               <span className={styles.remove}>X</span>
