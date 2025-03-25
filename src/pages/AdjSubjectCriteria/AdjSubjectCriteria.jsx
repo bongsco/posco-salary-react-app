@@ -1,4 +1,4 @@
-import { useReducer, useMemo, useState } from 'react';
+import { useReducer, useMemo, useState, useEffect } from 'react';
 import styles from './adj-subject-criteria.module.css';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
@@ -275,12 +275,16 @@ export default function AdjSubjectCriteria() {
     dispatchGrade({ type: 'RESET_TO_PREVIOUS' });
   };
 
+  useEffect(() => {
+    console.log('✅ isModified changed:', isModified);
+  }, [isModified]);
+
   return (
     <AdjustEditLayout
       stepPaths={['기준 설정', '대상자 기준 설정']}
       onCommit={handleSave}
       onRollback={handleCancel}
-      isCommited={!isModified}
+      isCommitted={!isModified}
       nextStepPath="payment-rate"
     >
       <div>
