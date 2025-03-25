@@ -281,6 +281,7 @@ export default function AdjSubjectCriteria() {
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommited={!isModified}
+      nextStepPath="payment-rate"
     >
       <div>
         <div className={styles.content}>
