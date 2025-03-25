@@ -131,30 +131,27 @@ export default function FilterModal({ option, onSubmit, onClose }) {
       </div>
 
       <div className={styles.filterWrapper}>
-        {state.filters.map((filter) => (
-          <div key={filter.key} className={styles.filter}>
-            <span className={styles.filterName}>{filter.key} :</span>
-            <div className={styles.filterValueList}>
-              {filter.value.map((val) => (
-                <span key={val} className={styles.filterValueItem}>
-                  {val}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      dispatch({
-                        type: 'REMOVE_VALUE',
-                        payload: { key: filter.key, value: val },
-                      })
-                    }
-                    className={styles.removeButton}
-                  >
-                    <span className={styles.remove}>X</span>
-                  </button>
-                </span>
-              ))}
+        {state.filters.map((filter) =>
+          filter.value.map((val) => (
+            <div key={`${filter.key}-${val}`} className={styles.filter}>
+              <span className={styles.filterName}>
+                {filter.key} : {val}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  dispatch({
+                    type: 'REMOVE_VALUE',
+                    payload: { key: filter.key, value: val },
+                  })
+                }
+                className={styles.removeButton}
+              >
+                <span className={styles.remove}>X</span>
+              </button>
             </div>
-          </div>
-        ))}
+          )),
+        )}
       </div>
     </Modal>
   );
