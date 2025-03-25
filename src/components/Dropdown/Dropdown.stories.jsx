@@ -12,12 +12,12 @@ export default {
     error: { control: 'boolean' },
     message: { control: 'text' },
     placeHolder: { control: 'text' },
-    customWidth: { control: 'number' },
+    customWidth: { control: 'text' },
   },
   args: {
     onChange: fn(),
     message: '',
-    customWidth: 200,
+    customWidth: '200px',
   },
 };
 
@@ -62,7 +62,7 @@ Template.propTypes = {
 
 Template.defaultProps = {
   message: '',
-  customWidth: 200,
+  customWidth: '200px',
 };
 
 export const Default = Template.bind();

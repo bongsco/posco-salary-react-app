@@ -10,7 +10,7 @@ export default function Dropdown({
   isOpen,
   onChange,
   onClick,
-  customWidth = 200,
+  customWidth = '200px',
 }) {
   return (
     <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
@@ -53,10 +53,10 @@ Dropdown.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
-  customWidth: PropTypes.number,
+  customWidth: PropTypes.string,
 };
 
 Dropdown.defaultProps = {
   message: '',
-  customWidth: 200,
+  customWidth: '200px',
 };
