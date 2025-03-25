@@ -12,13 +12,9 @@ export default function Dropdown({
   onClick,
   customWidth = 200,
 }) {
-  const customStyle = {
-    width: customWidth,
-  };
-
   return (
     <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
-      <div className={styles.dropdown} style={customStyle}>
+      <div className={styles.dropdown} style={{ width: customWidth }}>
         <button
           type="button"
           className={`${styles['select-selected']} ${
