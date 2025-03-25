@@ -97,6 +97,26 @@ function SalaryAdjustmentArea() {
         creation_timestamp: '2020-12-01',
         creator: '한상진',
       },
+      {
+        year: 2020,
+        month: 1,
+        adj_type: 'ANNUAL_SALARY_ADJUSTMENT',
+        order_number: 1,
+        interface_use: true,
+        work_step: '완료',
+        creation_timestamp: '2019-12-01',
+        creator: '한상진',
+      },
+      {
+        year: 2019,
+        month: 1,
+        adj_type: 'ANNUAL_SALARY_ADJUSTMENT',
+        order_number: 1,
+        interface_use: true,
+        work_step: '완료',
+        creation_timestamp: '2018-12-01',
+        creator: '한상진',
+      },
     ],
     [],
   );
@@ -109,12 +129,18 @@ function SalaryAdjustmentArea() {
   const [clickedRow, setClickedRow] = useState(null);
 
   useEffect(() => {
-    setTableData(
-      salaryAdjustmentData.slice(
-        (currentPage - 1) * rowsPerPage,
-        currentPage * rowsPerPage,
-      ),
-    );
+    /* 페이지 이동 or 최대 갯수 변경으로 데이터가 없으면 가장 마지막 페이지로 이동하도록 로직 추가 */
+    const totalPages = Math.ceil(salaryAdjustmentData.length / rowsPerPage);
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages || 1);
+    } else {
+      setTableData(
+        salaryAdjustmentData.slice(
+          (currentPage - 1) * rowsPerPage,
+          currentPage * rowsPerPage,
+        ),
+      );
+    }
   }, [salaryAdjustmentData, currentPage, rowsPerPage]);
 
   /* 받은 데이터가 없으면 NoDataTable 호출 */
