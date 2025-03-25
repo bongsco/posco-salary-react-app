@@ -26,14 +26,13 @@
   border: 1px solid var(--color-primary-lighter);
   border-radius: 5px;
   padding: 7.25px 8px;
-  width: fit-content;
   height: auto;
 }
 
 /* select-selected 관련 css */
 .select-selected {
   border: none;
-  width: 209px;
+  width: 100%; 
   height: auto;
   padding: 0px;
   color: var(--color-grayscale-5);
