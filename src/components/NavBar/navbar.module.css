@@ -54,22 +54,23 @@
   position: relative;
 }
 
+.logoLink {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  text-decoration: none;
+  gap: 12px;
+}
+
 .logoImage {
+  padding: 2px 0 0 0;
   height: 27px;
   width: 83px;
   fill: #00588a;
   fill-opacity: 1;
   fill-rule: nonzero;
   stroke: none;
-}
-
-.logoWrapper {
-  align-items: center;
-  display: inline-flex;
-  flex: 0 0 auto;
-  justify-content: center;
-  padding: 8px 0 0;
-  position: relative;
 }
 
 .title {
@@ -81,18 +82,4 @@
   line-height: normal;
   position: relative;
   width: fit-content;
-}
-
-.text {
-  color: #111928;
-  font: var(--font-caption-1b-pc);
-  letter-spacing: 0;
-  line-height: 21px;
-  position: relative;
-  white-space: nowrap;
-  width: fit-content;
-  text-decoration: none;
-  align-items: center;
-  display: inline-flex;
-  flex: 0 0 auto;
 }
