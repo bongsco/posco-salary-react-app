@@ -58,7 +58,7 @@ export default function PaybandConfigPage() {
     ({ currentLocation, nextLocation }) => {
       return needSave && currentLocation?.pathname !== nextLocation?.pathname;
     },
-    { message: '데이터가 저장되지 않았습니다.' },
+    { message: '데이터가 저장되지 않았습니다.\n그래도 이동하시겠습니까?' },
   );
 
   return (

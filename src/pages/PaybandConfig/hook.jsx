@@ -25,12 +25,12 @@ const useBlocker = (when, alertOptions) => {
           zIndex: 9999,
         }}
       >
-        <p>{alertOptions?.message || '진짜로 이 페이지에서 나갈거야??'}</p>
-        <button type="button" onClick={reset}>
-          아니
-        </button>
+        <p>{alertOptions?.message || '페이지를 나가시겠습니까? '}</p>
         <button type="button" onClick={proceed} style={{ marginLeft: '8px' }}>
-          응!!
+          예
+        </button>
+        <button type="button" onClick={reset}>
+          아니오
         </button>
       </div>
     );
