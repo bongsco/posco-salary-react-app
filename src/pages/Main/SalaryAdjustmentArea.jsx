@@ -134,15 +134,9 @@ function SalaryAdjustmentArea() {
         currentPage={currentPage}
         rowsPerPage={rowsPerPage}
         clickedRow={clickedRow}
-        setClickedRow={(changeRow) => {
-          setClickedRow(changeRow);
-        }}
-        setRowsPerPage={(changeRowsPerPage) => {
-          setRowsPerPage(changeRowsPerPage);
-        }}
-        setCurrentPage={(changeCurrentPage) => {
-          setCurrentPage(changeCurrentPage);
-        }}
+        setClickedRow={setClickedRow}
+        setRowsPerPage={setRowsPerPage}
+        setCurrentPage={setCurrentPage}
       />
     </div>
   );
