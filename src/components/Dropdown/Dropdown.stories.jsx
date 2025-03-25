@@ -13,13 +13,11 @@ export default {
     message: { control: 'text' },
     placeHolder: { control: 'text' },
     customWidth: { control: 'number' },
-    customHeight: { control: 'number' },
   },
   args: {
     onChange: fn(),
     message: '',
-    customWidth: 225,
-    customHeight: 30,
+    customWidth: 200,
   },
 };
 
@@ -30,7 +28,6 @@ function Template({
   message,
   onChange,
   customWidth,
-  customHeight,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -49,7 +46,6 @@ function Template({
         onChange(newValue);
       }}
       onClick={() => setIsOpen((prev) => !prev)}
-      customHeight={customHeight}
       customWidth={customWidth}
     />
   );
@@ -62,13 +58,11 @@ Template.propTypes = {
   message: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   customWidth: PropTypes.number,
-  customHeight: PropTypes.number,
 };
 
 Template.defaultProps = {
   message: '',
-  customWidth: 225,
-  customHeight: 30,
+  customWidth: 200,
 };
 
 export const Default = Template.bind();

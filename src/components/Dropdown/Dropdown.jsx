@@ -10,12 +10,10 @@ export default function Dropdown({
   isOpen,
   onChange,
   onClick,
-  customWidth,
-  customHeight,
+  customWidth = 200,
 }) {
   const customStyle = {
     width: customWidth,
-    height: customHeight,
   };
 
   return (
@@ -60,11 +58,9 @@ Dropdown.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   customWidth: PropTypes.number,
-  customHeight: PropTypes.number,
 };
 
 Dropdown.defaultProps = {
   message: '',
-  customWidth: '200px',
-  customHeight: 'auto',
+  customWidth: 200,
 };
