@@ -2,7 +2,7 @@ import { fn } from '@storybook/test';
 import LabeledSwitch from './LabeledSwitch';
 
 export default {
-  title: 'UI/LabeledSwitch',
+  title: 'UI/Form/LabeledSwitch',
   component: LabeledSwitch,
   argTypes: {
     label: { control: 'text' },
