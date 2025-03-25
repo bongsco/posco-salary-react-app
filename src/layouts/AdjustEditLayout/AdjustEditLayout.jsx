@@ -14,13 +14,15 @@ export default function AdjustEditLayout({
   stepPaths = [],
   onCommit = () => {},
   onRollback = () => {},
-  isCommited,
+  isCommitted,
 }) {
   const { adjust } = useAdjustContext();
 
   return (
     <AppLayout
-      title={adjust.title}
+      title={
+        stepPaths.length > 0 ? stepPaths[stepPaths.length - 1] : adjust.title
+      }
       breadCrumbs={['조정', '등록', adjust.title, ...stepPaths]}
     >
       <div className={styles.stepperContainer}>
@@ -29,7 +31,7 @@ export default function AdjustEditLayout({
       {children}
       <hr />
       <div className={styles.navigator}>
-        {!isCommited && (
+        {!isCommitted && (
           <>
             <Button
               variant="secondary"
@@ -67,7 +69,7 @@ AdjustEditLayout.propTypes = {
   stepPaths: PropTypes.arrayOf(PropTypes.string).isRequired,
   onCommit: PropTypes.func,
   onRollback: PropTypes.func,
-  isCommited: PropTypes.bool,
+  isCommitted: PropTypes.bool,
 };
 
 AdjustEditLayout.defaultProps = {
@@ -75,5 +77,5 @@ AdjustEditLayout.defaultProps = {
   nextStepPath: null,
   onCommit: () => {},
   onRollback: () => {},
-  isCommited: true,
+  isCommitted: true,
 };

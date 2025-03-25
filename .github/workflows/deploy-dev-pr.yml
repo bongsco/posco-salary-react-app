@@ -48,4 +48,4 @@ jobs:
 
       - name: Add Deployment URL to Actions Summary
         run: |
-          echo "::notice::🚀 Deployment Successful! Preview URL: ${{vars.AWS_CLOUDFRONT_DEV_PR_URL}}/pr-${{ github.event.pull_request.number }}/index.html"
+          echo "::notice::🚀 Deployment Successful! Preview URL: ${{vars.AWS_CLOUDFRONT_DEV_PR_URL}}/pr-${{ github.event.pull_request.number }}/"

@@ -4,7 +4,7 @@ import { Outlet, useParams } from 'react-router-dom';
 function getMockAdjust(id) {
   return {
     id,
-    title: '2025 1차 정기연봉조정 (더미데이터)',
+    title: `2025 1차 정기연봉조정 (더미데이터, ID ${id})`,
   };
 }
 
