@@ -1,0 +1,53 @@
+@import url('../../../../../styles/global.css');
+
+.subitem {
+  text-decoration: none;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+
+  width: 186px;
+  height: fit-content;
+
+  padding: 5px 10px;
+  border-radius: 8px;
+
+  font: var(--font-caption-2r-pc);
+}
+
+.text {
+  text-overflow: ellipsis;
+  width: 100%;
+  height: 100%;
+}
+
+.subitem svg {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  min-height: 10px;
+  aspect-ratio: 1;
+}
+
+.subitem svg path,
+.subitem svg rect {
+  color: inherit;
+  stroke: currentColor;
+}
+
+.inactive {
+  background-color: var(--color-background-general);
+  color: var(--color-primary-darkest);
+}
+
+.inactive:hover {
+  background-color: var(--color-primary-lightest);
+}
+
+.active {
+  background-color: var(--color-primary-main);
+  color: var(--color-grayscale-white);
+}

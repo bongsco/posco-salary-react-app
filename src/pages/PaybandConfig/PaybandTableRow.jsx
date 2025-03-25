@@ -10,6 +10,7 @@ import CustomSlider from '#components/Slider/CustomSlider';
 
 export default function PaybandTableRow({
   item,
+  isDeleted,
   originItem,
   onChange,
   onChecked,
@@ -73,7 +74,6 @@ export default function PaybandTableRow({
       updatedPayband = addError(addModified, updatedPayband);
     } else {
       updatedPayband = removeError(addModified, updatedPayband);
-      // const opposite = addModified==="상한" ? "하한" : "상한"
       if (
         addModified === '상한' &&
         updatedPayband.error.includes('하한') &&
@@ -103,7 +103,7 @@ export default function PaybandTableRow({
   return (
     <tr>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
       >
         <div className={`${styles.table_cell}`}>
           <CheckBox
@@ -115,7 +115,7 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
       >
         {!item.modified.includes('전체') ? (
           item.grade
@@ -167,7 +167,7 @@ export default function PaybandTableRow({
         )}
       </td>
       <td
-        className={`${item.modified.includes('전체') || item.modified.includes('하한') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') || item.modified.includes('하한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
@@ -190,7 +190,7 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') || item.modified.includes('상한') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') || item.modified.includes('상한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
@@ -213,7 +213,7 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
       >
         <CustomSlider
           min={item.lowerBound}
@@ -243,6 +243,7 @@ PaybandTableRow.propTypes = {
     error: PropTypes.arrayOf(string).isRequired,
     isChecked: PropTypes.bool.isRequired,
   }).isRequired,
+  isDeleted: PropTypes.bool.isRequired,
   originItem: PropTypes.shape({
     grade: PropTypes.string.isRequired,
     upperBound: PropTypes.number.isRequired,

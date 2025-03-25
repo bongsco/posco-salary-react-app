@@ -5,10 +5,9 @@ import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
 import Button from '#components/Button';
+import useBlocker from './hook';
 
 export default function PaybandConfigPage() {
-  const [needSave, setNeedSave] = useState(false);
-
   const [receivedPayband, setReceivedPayband] = useState([
     {
       id: 1,
@@ -47,10 +46,20 @@ export default function PaybandConfigPage() {
 
   // const [createdPayband, setCreatedPayband] = useState([]);
   // 생성된 기준과 바뀐 기준 api 다르게 줄 걸 대비해서 써놓음
+  const needSave = useMemo(() => {
+    return payband.some((pb) => pb.isChecked) || changedPayband.length > 0;
+  }, [payband, changedPayband]);
 
   const allChecked = useMemo(() => {
     return payband.length > 0 && payband.every((pb) => pb.isChecked);
   }, [payband]);
+
+  const { renderPrompt } = useBlocker(
+    ({ currentLocation, nextLocation }) => {
+      return needSave && currentLocation?.pathname !== nextLocation?.pathname;
+    },
+    { message: '데이터가 저장되지 않았습니다.' },
+  );
 
   return (
     <AdjustEditLayout
@@ -60,7 +69,10 @@ export default function PaybandConfigPage() {
       onCommit={() => {
         const updatedPayband = payband.map((pb) => {
           const errors = [...pb.error];
-          if (pb.grade === undefined && !errors.includes('직급')) {
+          if (deletedPayband.some((d) => d.id === pb.id)) {
+            const idx = errors.indexOf('직급');
+            if (idx > -1) errors.splice(idx, 1);
+          } else if (pb.grade === undefined && !errors.includes('직급')) {
             errors.push('직급');
           } else if (pb.grade !== undefined) {
             const idx = errors.indexOf('직급');
@@ -70,35 +82,40 @@ export default function PaybandConfigPage() {
           return { ...pb, error: errors };
         });
 
-        const hasUndefinedGrade = updatedPayband.some(
-          (pb) => pb.grade === undefined,
-        );
-
         setPayband(updatedPayband);
 
-        if (
-          !hasUndefinedGrade &&
-          updatedPayband.every((pb) => pb.error.length === 0)
-        ) {
+        if (updatedPayband.every((pb) => pb.error.length === 0)) {
+          // 백엔드로 삭제 api
+          const cleanPayband = updatedPayband
+            .filter(
+              (item) =>
+                !deletedPayband.some((deleted) => deleted.id === item.id),
+            )
+            .map((item) => ({
+              ...item,
+              modified: [],
+            }));
+          setChangedPayband((prev) =>
+            prev.filter(
+              (item) =>
+                !deletedPayband.some((deleted) => deleted.id === item.id),
+            ),
+          );
+          setDeletedPayband([]);
           // 백엔드로 changedPayband 보냄
+          // createdPayband에서도 지워진 payband는 지움
           // 백엔드로 createdPayband 보냄
-          // console.log(createdPayband);
-          const cleanPayband = updatedPayband.map((item) => ({
-            ...item,
-            modified: [],
-          }));
           setPayband(cleanPayband);
           setReceivedPayband(structuredClone(cleanPayband));
           setChangedPayband([]);
           // setCreatedPayband([]);
-          setNeedSave(false);
         }
       }}
       onRollback={() => {
         setPayband(structuredClone(receivedPayband));
         setChangedPayband([]);
         // setCreatedPayband([]);
-        setNeedSave(false);
+        setDeletedPayband([]);
       }}
       isCommitted={!needSave}
     >
@@ -108,38 +125,19 @@ export default function PaybandConfigPage() {
         <div>
           <div className={`${styles.table_side}`}>
             <div className={`${styles.unit_label}`}>단위: %</div>
-            {deletedPayband.length !== 0 && (
+            {payband.some((pb) => pb.isChecked) && (
               <Button
                 label="삭제"
                 size="small"
                 variant="secondary"
                 onClick={() => {
-                  setPayband((prev) =>
-                    prev.filter(
+                  setDeletedPayband((prev) => {
+                    const newItems = payband.filter(
                       (item) =>
-                        !deletedPayband.some(
-                          (deleted) => deleted.id === item.id,
-                        ),
-                    ),
-                  );
-                  setReceivedPayband((prev) =>
-                    prev.filter(
-                      (item) =>
-                        !deletedPayband.some(
-                          (deleted) => deleted.id === item.id,
-                        ),
-                    ),
-                  );
-
-                  setChangedPayband((prev) =>
-                    prev.filter(
-                      (item) =>
-                        !deletedPayband.some(
-                          (deleted) => deleted.id === item.id,
-                        ),
-                    ),
-                  );
-                  setDeletedPayband([]);
+                        item.isChecked && !prev.some((d) => d.id === item.id),
+                    );
+                    return [...prev, ...newItems];
+                  });
                 }}
               />
             )}
@@ -152,23 +150,11 @@ export default function PaybandConfigPage() {
                     <CheckBox
                       isChecked={allChecked}
                       onClick={() => {
-                        if (!allChecked) {
-                          setPayband((prev) =>
-                            prev.map((item) => ({
-                              ...item,
-                              isChecked: true,
-                            })),
-                          );
-                          setDeletedPayband(payband);
-                        } else {
-                          setPayband((prev) =>
-                            prev.map((item) => ({
-                              ...item,
-                              isChecked: false,
-                            })),
-                          );
-                          setDeletedPayband([]);
-                        }
+                        setPayband((prev) =>
+                          prev.map((pb) => {
+                            return { ...pb, isChecked: !allChecked };
+                          }),
+                        );
                       }}
                     />
                   </div>
@@ -186,6 +172,7 @@ export default function PaybandConfigPage() {
                 <PaybandTableRow
                   key={item.id}
                   item={item}
+                  isDeleted={deletedPayband.some((d) => d.id === item.id)}
                   originItem={receivedPayband[index]}
                   onChange={(modifiedItem) => {
                     setPayband((prev) =>
@@ -203,27 +190,11 @@ export default function PaybandConfigPage() {
                         return updated;
                       });
                     }
-                    if (!needSave) {
-                      setNeedSave(true);
-                    }
                   }}
                   onChecked={(isChecked, modifiedItem) => {
                     setPayband((prev) =>
                       prev.map((pb, i) => (i === index ? modifiedItem : pb)),
                     );
-                    if (isChecked) {
-                      let updatedDeletedPayband = [];
-                      if (deletedPayband.some((d) => d.id === item.id)) {
-                        updatedDeletedPayband = deletedPayband; // 이미 있으면 그대로
-                      } else {
-                        updatedDeletedPayband = [...deletedPayband, item]; // 없으면 추가
-                      }
-                      setDeletedPayband(updatedDeletedPayband);
-                    } else {
-                      setDeletedPayband((prev) =>
-                        prev.filter((d) => d.id !== item.id),
-                      );
-                    }
                   }}
                 />
               ))}
@@ -234,8 +205,12 @@ export default function PaybandConfigPage() {
                     className="add_column"
                     aria-label="add_button"
                     onClick={() => {
+                      const newId =
+                        payband.length > 0
+                          ? payband[payband.length - 1].id + 1
+                          : Math.floor(Math.random() * 100000); // 랜덤 ID 는 api에서 마지막id 가져오는 방식으로 나중에 바꿔야할 듯
                       const newItem = {
-                        id: payband[payband.length - 1].id + 1,
+                        id: newId,
                         grade: undefined,
                         upperBound: 70,
                         lowerBound: 30,
@@ -254,6 +229,7 @@ export default function PaybandConfigPage() {
           </table>
         </div>
       </div>
+      {renderPrompt()}
     </AdjustEditLayout>
   );
 }

@@ -27,6 +27,10 @@
   background-color: var(--color-data-incline);
 }
 
+.deleted_cell {
+  background-color: var(--color-data-decline);
+}
+
 .table {
   width: 100%;
 }
