@@ -8,7 +8,8 @@
       "#utils/*": ["./src/utils/*"],
       "#assets/*": ["./src/assets/*"],
       "#layouts/*": ["./src/layouts/*/index.js"],
-      "#contexts/*": ["./src/contexts/*"]
+      "#contexts/*": ["./src/contexts/*"],
+      "#hooks/*": ["./src/hooks/*"]
     },
     "module": "ESNext",
     "target": "es6",
