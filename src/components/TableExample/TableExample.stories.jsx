@@ -1,7 +1,7 @@
 import TableExample from './TableExample';
 
 export default {
-  title: 'UI/TableExample',
+  title: 'Example/TableExample',
   component: TableExample,
   tags: ['autodocs'],
 };
