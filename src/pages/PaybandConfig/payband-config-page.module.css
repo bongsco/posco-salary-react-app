@@ -35,6 +35,14 @@
   width: 5%;
 }
 
+.grade_cell {
+  width: 10%;
+}
+
+.limit_cell {
+  width: 15%;
+}
+
 .table {
   width: 100%;
 }

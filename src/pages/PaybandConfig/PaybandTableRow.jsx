@@ -115,7 +115,7 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.grade_cell}`}
       >
         {!item.modified.includes('전체') ? (
           item.grade
@@ -162,12 +162,13 @@ export default function PaybandTableRow({
               onClick={() => {
                 setIsOpen((prev) => !prev);
               }}
+              customWidth="80px"
             />
           </div>
         )}
       </td>
       <td
-        className={`${item.modified.includes('전체') || item.modified.includes('하한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
+        className={`${item.modified.includes('전체') || item.modified.includes('하한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.limit_cell}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
@@ -186,11 +187,12 @@ export default function PaybandTableRow({
                 });
               }
             }}
+            customWidth={150}
           />
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') || item.modified.includes('상한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
+        className={`${item.modified.includes('전체') || item.modified.includes('상한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.limit_cell}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
@@ -209,11 +211,12 @@ export default function PaybandTableRow({
                 });
               }
             }}
+            customWidth={150}
           />
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} `}
       >
         <CustomSlider
           min={item.lowerBound}
