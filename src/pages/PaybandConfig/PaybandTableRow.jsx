@@ -37,6 +37,11 @@ export default function PaybandTableRow({
       error: updatedPayband.error.filter((e) => e !== addModified),
     };
   };
+  const hasError = (value) => {
+    return (
+      value === undefined || value < 0 || value > 200 || Number.isNaN(value)
+    );
+  };
   const handleChange = ({ lower, upper, addModified } = {}) => {
     let updatedModified = [];
     if (addModified !== undefined && !item.modified.includes('전체')) {
@@ -60,20 +65,28 @@ export default function PaybandTableRow({
       modified: updatedModified,
     };
 
-    if (
-      addModified === '상한' &&
-      (upper === undefined || upper < 0 || upper > 200 || Number.isNaN(upper))
-    ) {
+    if (addModified === '상한' && hasError(upper)) {
       updatedPayband = addError(addModified, updatedPayband);
-    } else if (
-      addModified === '하한' &&
-      (lower === undefined || lower < 0 || lower > 200 || Number.isNaN(lower))
-    ) {
+    } else if (addModified === '하한' && hasError(lower)) {
       updatedPayband = addError(addModified, updatedPayband);
     } else if (updatedPayband.lowerBound > updatedPayband.upperBound) {
       updatedPayband = addError(addModified, updatedPayband);
     } else {
       updatedPayband = removeError(addModified, updatedPayband);
+      // const opposite = addModified==="상한" ? "하한" : "상한"
+      if (
+        addModified === '상한' &&
+        updatedPayband.error.includes('하한') &&
+        !hasError(updatedPayband.lowerBound)
+      ) {
+        updatedPayband = removeError('하한', updatedPayband);
+      } else if (
+        addModified === '하한' &&
+        updatedPayband.error.includes('하한') &&
+        !hasError(updatedPayband.upperBound)
+      ) {
+        updatedPayband = removeError('상한', updatedPayband);
+      }
     }
     onChange(updatedPayband);
   };
@@ -161,10 +174,17 @@ export default function PaybandTableRow({
             value={item.lowerBound}
             mode={item.error.includes('하한') ? 'error' : 'default'}
             onChange={(newValue) => {
-              handleChange({
-                lower: Number(newValue.target.value),
-                addModified: '하한',
-              });
+              const { value } = newValue.target;
+              if (value.trim() === '' || Number.isNaN(Number(value))) {
+                const updatedPayband = addError('하한', item);
+                updatedPayband.lowerBound = value;
+                onChange(updatedPayband);
+              } else {
+                handleChange({
+                  lower: Number(newValue.target.value),
+                  addModified: '하한',
+                });
+              }
             }}
           />
         </div>
@@ -177,10 +197,17 @@ export default function PaybandTableRow({
             value={item.upperBound}
             mode={item.error.includes('상한') ? 'error' : 'default'}
             onChange={(newValue) => {
-              handleChange({
-                upper: Number(newValue.target.value),
-                addModified: '상한',
-              });
+              const { value } = newValue.target;
+              if (value.trim() === '' || Number.isNaN(Number(value))) {
+                const updatedPayband = addError('상한', item);
+                updatedPayband.upperBound = value;
+                onChange(updatedPayband);
+              } else {
+                handleChange({
+                  upper: Number(newValue.target.value),
+                  addModified: '상한',
+                });
+              }
             }}
           />
         </div>

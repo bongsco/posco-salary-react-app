@@ -11,9 +11,12 @@
 }
 
 .slider_value {
-  width: 5%;
+  width: 10%;
   font: var(--font-caption-2b-pc);
   color: var(--color-primary-darker);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 :global(.range-slider__thumb[data-lower]) {
