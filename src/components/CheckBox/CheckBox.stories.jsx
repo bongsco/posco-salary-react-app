@@ -5,9 +5,6 @@ export default {
   title: 'UI/Form/CheckBox',
   component: CheckBox,
   tags: ['autodocs'],
-  argTypes: {
-    checked: { control: 'boolean' },
-  },
 };
 
 function Template() {
