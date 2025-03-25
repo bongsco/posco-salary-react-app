@@ -31,6 +31,15 @@ export default function TableExample() {
           <td>14</td>
           <td>15</td>
         </tr>
+        <tr>
+          <td colSpan="3" className="button_td">
+            <button
+              type="button"
+              className="add_column"
+              aria-label="add_button"
+            />
+          </td>
+        </tr>
       </tbody>
     </table>
   );

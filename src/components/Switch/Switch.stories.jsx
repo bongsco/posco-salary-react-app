@@ -1,17 +1,16 @@
-import { fn } from '@storybook/test';
+import { useState } from 'react';
 import Switch from './Switch';
 
 export default {
-  title: 'UI/Switch',
+  title: 'UI/Form/Switch',
   component: Switch,
   tags: ['autodocs'],
-  args: {
-    onClick: fn(),
-  },
 };
 
-export const Default = {
-  args: {
-    initialOn: false,
-  },
-};
+function Template() {
+  const [isOn, setIsOn] = useState(true);
+
+  return <Switch isOn={isOn} onClick={() => setIsOn((prev) => !prev)} />;
+}
+
+export const Default = Template.bind({});

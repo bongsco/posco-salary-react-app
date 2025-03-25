@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: max-content;
+  flex-shrink: 0;
+
+  width: fit-content;
   max-width: 100%;
   min-width: 115px;
 }
@@ -11,8 +13,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: auto;
   gap: 6px;
+
+  width: auto;
   text-align: center;
   color: var(--color-grayscale-6);
 }
@@ -31,6 +34,14 @@
   color: var(--color-primary-dark);
 }
 
+.working {
+  color: var(--color-primary-main);
+}
+
+.undone {
+  color: var(--color-grayscale-6);
+}
+
 .list {
   display: flex;
   flex-direction: column;
@@ -45,7 +56,7 @@
   display: flex;
   align-items: center;
   gap: 6.5px;
-  width: auto;
+  width: fit-content;
 }
 
 .itemContent {
@@ -58,44 +69,16 @@
   font: var(--font-caption-1b-pc);
 }
 
-.complete .itemText {
-  color: var(--color-grayscale-black);
-}
-
-.working .itemText {
-  color: var(--color-primary-main);
-}
-
-.undone .itemText {
-  color: var(--color-grayscale-6);
-}
-
 .bullet {
   width: 8px;
   height: 8px;
+  aspect-ratio: 1;
   border-radius: 50%;
-}
-
-.complete .bullet {
-  background: var(--color-primary-darker);
-}
-
-.working .bullet {
-  background-color: var(--color-primary-main);
-}
-
-.undone .bullet {
-  background: var(--color-grayscale-3);
+  background-color: currentColor;
+  color: inherit;
 }
 
 .date {
   font: var(--font-caption-3l-pc);
-}
-
-.complete .date {
-  color: var(--color-grayscale-6);
-}
-
-.working .date {
-  color: var(--color-primary-main);
+  color: inherit;
 }
