@@ -1,36 +1,41 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
-import Dropdown from '#components/Dropdown';
 import styles from '../modal.module.css';
+import Dropdown from '#components/Dropdown';
 
-export default function Sort({ option, onSubmit, onClose }) {
-  const [sorts, setSorts] = useState([]);
+export default function FilterModal({ option, onSubmit, onClose }) {
+  const [filters, setFilters] = useState([]);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedValue, setSelectedValue] = useState(null);
   const [isKeyOpen, setIsKeyOpen] = useState(false);
   const [isValueOpen, setIsValueOpen] = useState(false);
 
-  const handleAddSort = () => {
+  const handleAddFilter = () => {
     if (selectedKey && selectedValue) {
-      setSorts((prev) => [...prev, { key: selectedKey, value: selectedValue }]);
+      setFilters((prev) => [
+        ...prev,
+        { key: selectedKey, value: selectedValue },
+      ]);
       setSelectedKey(null);
       setSelectedValue(null);
     }
   };
 
-  const handleRemoveSort = (index) => {
-    setSorts((prev) => prev.filter((_, i) => i !== index));
+  const handleRemoveFilter = (index) => {
+    setFilters((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const keys = Object.keys(option);
+
   return (
-    <Modal onSubmit={() => onSubmit?.(sorts)} onClose={onClose}>
-      <span className={styles.title}>정렬</span>
+    <Modal onSubmit={() => onSubmit?.(filters)} onClose={onClose}>
+      <span className={styles.title}>필터</span>
 
       <div className={styles.dropdownWrapper}>
         <Dropdown
-          placeHolder="정렬 항목"
-          options={option.keys}
+          placeHolder="필터 항목 선택"
+          options={keys}
           selectedValue={selectedKey}
           isOpen={isKeyOpen}
           onChange={(val) => {
@@ -44,8 +49,12 @@ export default function Sort({ option, onSubmit, onClose }) {
         />
 
         <Dropdown
-          placeHolder="정렬 방식"
-          options={option.values}
+          placeHolder="값 선택"
+          options={
+            selectedKey && option[selectedKey]
+              ? option[selectedKey].options.map(String)
+              : []
+          }
           selectedValue={selectedValue}
           isOpen={isValueOpen}
           onChange={(val) => {
@@ -60,21 +69,21 @@ export default function Sort({ option, onSubmit, onClose }) {
         <button
           type="button"
           className={styles.plusButton}
-          onClick={handleAddSort}
+          onClick={handleAddFilter}
         >
           <span className={styles.plus}>+</span>
         </button>
       </div>
 
       <div className={styles.filterWrapper}>
-        {sorts.map((sort, index) => (
-          <div key={`${sort.key}-${sort.value}`} className={styles.filter}>
+        {filters.map((filter, index) => (
+          <div key={`${filter.key}-${filter.value}`} className={styles.filter}>
             <span className={styles.filterName}>
-              {sort.key} : {sort.value}
+              {filter.key} : {filter.value}
             </span>
             <button
               type="button"
-              onClick={() => handleRemoveSort(index)}
+              onClick={() => handleRemoveFilter(index)}
               className={styles.removeButton}
             >
               <span className={styles.remove}>X</span>
@@ -86,11 +95,18 @@ export default function Sort({ option, onSubmit, onClose }) {
   );
 }
 
-Sort.propTypes = {
-  option: PropTypes.shape({
-    keys: PropTypes.arrayOf(PropTypes.string).isRequired,
-    values: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
+FilterModal.propTypes = {
+  option: PropTypes.objectOf(
+    PropTypes.shape({
+      options: PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ).isRequired,
+      currentSelectedValue: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    }),
+  ).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
