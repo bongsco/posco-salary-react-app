@@ -12,14 +12,26 @@ export default {
     error: { control: 'boolean' },
     message: { control: 'text' },
     placeHolder: { control: 'text' },
+    customWidth: { control: 'number' },
+    customHeight: { control: 'number' },
   },
   args: {
     onChange: fn(),
     message: '',
+    customWidth: 225,
+    customHeight: 30,
   },
 };
 
-function Template({ options, error, placeHolder, message, onChange }) {
+function Template({
+  options,
+  error,
+  placeHolder,
+  message,
+  onChange,
+  customWidth,
+  customHeight,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
 
@@ -37,6 +49,8 @@ function Template({ options, error, placeHolder, message, onChange }) {
         onChange(newValue);
       }}
       onClick={() => setIsOpen((prev) => !prev)}
+      customHeight={customHeight}
+      customWidth={customWidth}
     />
   );
 }
@@ -47,10 +61,14 @@ Template.propTypes = {
   placeHolder: PropTypes.string.isRequired,
   message: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  customWidth: PropTypes.number,
+  customHeight: PropTypes.number,
 };
 
 Template.defaultProps = {
   message: '',
+  customWidth: 225,
+  customHeight: 30,
 };
 
 export const Default = Template.bind();

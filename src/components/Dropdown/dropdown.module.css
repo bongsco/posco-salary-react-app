@@ -32,7 +32,7 @@
 /* select-selected 관련 css */
 .select-selected {
   border: none;
-  width: 209px;
+  width: 100%; 
   height: auto;
   padding: 0px;
   color: var(--color-grayscale-5);

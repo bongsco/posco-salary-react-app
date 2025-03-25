@@ -10,13 +10,22 @@ export default function Dropdown({
   isOpen,
   onChange,
   onClick,
+  customWidth,
+  customHeight,
 }) {
+  const customStyle = {
+    width: customWidth,
+    height: customHeight,
+  };
+
   return (
     <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
-      <div className={styles.dropdown}>
+      <div className={styles.dropdown} style={customStyle}>
         <button
           type="button"
-          className={`${styles['select-selected']} ${selectedValue === null ? '' : styles['selected-option']}`}
+          className={`${styles['select-selected']} ${
+            selectedValue === null ? '' : styles['selected-option']
+          }`}
           onClick={onClick}
         >
           {selectedValue === null ? placeHolder : selectedValue}
@@ -50,8 +59,12 @@ Dropdown.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
+  customWidth: PropTypes.number,
+  customHeight: PropTypes.number,
 };
 
 Dropdown.defaultProps = {
   message: '',
+  customWidth: '200px',
+  customHeight: 'auto',
 };
