@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import styles from '../filter-modal.module.css';
 import Dropdown from '#components/Dropdown';
 
-export default function Filter({ filters, onAddFilter, onRemoveFilter }) {
-  const filterValues = {
-    연도: [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015],
-    상태: ['작업전', '작업중', '완료'],
-  };
+export default function Sort({ sorts, onAddSort, onRemoveSort }) {
+  const sortOptions = ['오름차순', '내림차순'];
+  const sortKeys = ['연도', '월', '조정유형', '상태', '통합인사반영여부'];
 
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -16,7 +14,7 @@ export default function Filter({ filters, onAddFilter, onRemoveFilter }) {
 
   const handleAdd = () => {
     if (selectedKey && selectedValue) {
-      onAddFilter({ key: selectedKey, value: selectedValue });
+      onAddSort({ key: selectedKey, value: selectedValue });
       setSelectedKey(null);
       setSelectedValue(null);
     }
@@ -24,11 +22,11 @@ export default function Filter({ filters, onAddFilter, onRemoveFilter }) {
 
   return (
     <>
-      <span className={styles.title}>필터</span>
+      <span className={styles.title}>정렬</span>
       <div className={styles.dropdownWrapper}>
         <Dropdown
-          placeHolder="필터 항목 선택"
-          options={Object.keys(filterValues)}
+          placeHolder="정렬 항목"
+          options={sortKeys}
           selectedValue={selectedKey}
           isOpen={isKeyOpen}
           onChange={(val) => {
@@ -41,8 +39,8 @@ export default function Filter({ filters, onAddFilter, onRemoveFilter }) {
         />
 
         <Dropdown
-          placeHolder="값 선택"
-          options={selectedKey ? filterValues[selectedKey].map(String) : []}
+          placeHolder="정렬 방식"
+          options={sortOptions}
           selectedValue={selectedValue}
           isOpen={isValueOpen}
           onChange={(val) => {
@@ -59,14 +57,14 @@ export default function Filter({ filters, onAddFilter, onRemoveFilter }) {
       </div>
 
       <div className={styles.filterWrapper}>
-        {filters.map((filter, index) => (
-          <div key={`${filter.key}-${filter.value}`} className={styles.filter}>
+        {sorts.map((sort, index) => (
+          <div key={`${sort.key}-${sort.value}`} className={styles.filter}>
             <span className={styles.filterName}>
-              {filter.key} : {filter.value}
+              {sort.key} : {sort.value}
             </span>
             <button
               type="button"
-              onClick={() => onRemoveFilter(index)}
+              onClick={() => onRemoveSort(index)}
               className={styles.removeButton}
             >
               <span className={styles.remove}>X</span>
@@ -78,14 +76,13 @@ export default function Filter({ filters, onAddFilter, onRemoveFilter }) {
   );
 }
 
-Filter.propTypes = {
-  filters: PropTypes.arrayOf(
+Sort.propTypes = {
+  sorts: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      value: PropTypes.string.isRequired, // 정렬 방향: '오름차순' | '내림차순'
     }),
   ).isRequired,
-  onAddFilter: PropTypes.func.isRequired,
-  onRemoveFilter: PropTypes.func.isRequired,
+  onAddSort: PropTypes.func.isRequired,
+  onRemoveSort: PropTypes.func.isRequired,
 };

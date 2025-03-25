@@ -1,4 +1,5 @@
 @import url('../../styles/global.css');
+
 .filters,
 .filters * {
   box-sizing: border-box;
@@ -6,6 +7,11 @@
 
 .title{
   font: var(--font-caption-1b-pc);
+  text-align: left;
+}
+
+.label{
+  font: var(--font-caption-1r-pc)
 }
 
 .filters{
@@ -18,9 +24,7 @@
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  overflow: hidden;
-  width: 328px;
-  height: 155px;
+  width: 322px;
   box-shadow: var(--shadow);
 }
 
@@ -35,18 +39,21 @@
   position: relative;
 }
 
-.button{
+.plusButton{
+  all: unset;
   display: flex;
   flex-direction: column;
   gap: 0px;
-  align-items: center;
-  justify-content: center;
-  align-self: stretch;
-  flex-shrink: 0;
   width: 24.47px;
-  position: relative;
-  overflow: hidden;
+  height: 32px;
   aspect-ratio: 24.47/32;
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+  border-radius: 4px;
+}
+
+.plusButton:hover {
+  background-color: #e0e0e0; /* 더 어두운 회색 */
 }
 
 .plus{
@@ -59,6 +66,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 32px;
 }
 
 .filterWrapper{
@@ -72,6 +80,7 @@
   align-self: stretch;
   flex-shrink: 0;
   position: relative;
+
 }
 
 .filter{
@@ -82,10 +91,10 @@
   flex-direction: row;
   gap: 6px;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex-shrink: 0;
   position: relative;
-  width: 58px;
+  height: 28px;
 }
 
 .filterName{
@@ -103,6 +112,16 @@
   font: var(--font-caption-1r-pc);
 }
 
+.removeButton{
+  all: unset;
+  display: flex;
+  flex-direction: column;
+}
+
+.removeButton:hover {
+  background-color: #e0e0e0; /* 더 어두운 회색 */
+}
+
 .remove{
   color: var(--system-caution, #ff325f);
   text-align: left;
@@ -117,5 +136,17 @@
   align-items: flex-start;
   justify-content: flex-start;
   flex-shrink: 0;
+  position: relative;
+}
+
+.registerWrapper{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 32px;
   position: relative;
 }
