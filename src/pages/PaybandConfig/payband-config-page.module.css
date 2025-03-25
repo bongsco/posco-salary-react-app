@@ -31,6 +31,10 @@
   background-color: var(--color-data-decline);
 }
 
+.check_cell {
+  width: 5%;
+}
+
 .table {
   width: 100%;
 }

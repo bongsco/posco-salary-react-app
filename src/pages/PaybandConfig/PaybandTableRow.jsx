@@ -103,7 +103,7 @@ export default function PaybandTableRow({
   return (
     <tr>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.check_cell}`}
       >
         <div className={`${styles.table_cell}`}>
           <CheckBox
