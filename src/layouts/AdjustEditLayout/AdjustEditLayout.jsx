@@ -5,6 +5,7 @@ import { useAdjustContext } from '#contexts/AdjustContext';
 import Button from '#components/Button';
 import AppLayout from '#layouts/AppLayout';
 import Stepper from '#components/Stepper';
+import useBlocker from '#hooks/UseBlocker';
 import styles from './adjust-edit-layout.module.css';
 
 export default function AdjustEditLayout({
@@ -15,8 +16,20 @@ export default function AdjustEditLayout({
   onCommit = () => {},
   onRollback = () => {},
   isCommitted,
+  canMove = true,
 }) {
   const { adjust } = useAdjustContext();
+
+  const { renderPrompt } = useBlocker(
+    ({ currentLocation, nextLocation }) => {
+      return (
+        canMove &&
+        !isCommitted &&
+        currentLocation?.pathname !== nextLocation?.pathname
+      );
+    },
+    { message: '데이터가 저장되지 않았습니다. 그래도 이동하시겠습니까?' },
+  );
 
   return (
     <AppLayout
@@ -58,6 +71,7 @@ export default function AdjustEditLayout({
           </Link>
         )}
       </div>
+      {renderPrompt()}
     </AppLayout>
   );
 }
@@ -70,6 +84,7 @@ AdjustEditLayout.propTypes = {
   onCommit: PropTypes.func,
   onRollback: PropTypes.func,
   isCommitted: PropTypes.bool,
+  canMove: PropTypes.bool,
 };
 
 AdjustEditLayout.defaultProps = {
@@ -78,4 +93,5 @@ AdjustEditLayout.defaultProps = {
   onCommit: () => {},
   onRollback: () => {},
   isCommitted: true,
+  canMove: true,
 };
