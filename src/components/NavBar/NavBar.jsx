@@ -4,7 +4,7 @@ import styles from './navbar.module.css';
 import MenuTab from './icons/MenuTab';
 import Logo from './icons/Logo';
 
-export default function NavBar({ navItems, toggleSidebar }) {
+export default function NavBar({ children, toggleSidebar }) {
   return (
     <header>
       <div className={styles.navbar}>
@@ -13,23 +13,14 @@ export default function NavBar({ navItems, toggleSidebar }) {
             <MenuTab onClick={() => toggleSidebar((prev) => !prev)} />
 
             <div className={styles.logo}>
-              <div className={styles.logoWrapper}>
-                <Link to="/" className={styles.logoLink}>
-                  <Logo />
-                </Link>
-              </div>
-
-              <div className={styles.title}>연봉관리시스템</div>
+              <Link to="/" className={styles.logoLink}>
+                <Logo />
+                <div className={styles.title}>연봉관리시스템</div>
+              </Link>
             </div>
           </div>
 
-          <nav className={styles.frame}>
-            {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className={styles.text}>
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <nav className={styles.frame}>{children}</nav>
         </div>
       </div>
     </header>
@@ -37,18 +28,6 @@ export default function NavBar({ navItems, toggleSidebar }) {
 }
 
 NavBar.propTypes = {
-  navItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string,
-      href: PropTypes.string,
-    }),
-  ),
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
   toggleSidebar: PropTypes.func.isRequired, // ✅ 메뉴 상태 변경 함수 (부모에서 관리)
-};
-
-NavBar.defaultProps = {
-  navItems: [
-    { label: '로그인', href: '/login' },
-    { label: '계정 등록', href: '/register' },
-  ],
 };

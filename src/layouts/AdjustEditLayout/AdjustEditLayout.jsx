@@ -14,7 +14,7 @@ export default function AdjustEditLayout({
   stepPaths = [],
   onCommit = () => {},
   onRollback = () => {},
-  isCommited,
+  isCommitted,
 }) {
   const { adjust } = useAdjustContext();
 
@@ -31,7 +31,7 @@ export default function AdjustEditLayout({
       {children}
       <hr />
       <div className={styles.navigator}>
-        {!isCommited && (
+        {!isCommitted && (
           <>
             <Button
               variant="secondary"
@@ -69,7 +69,7 @@ AdjustEditLayout.propTypes = {
   stepPaths: PropTypes.arrayOf(PropTypes.string).isRequired,
   onCommit: PropTypes.func,
   onRollback: PropTypes.func,
-  isCommited: PropTypes.bool,
+  isCommitted: PropTypes.bool,
 };
 
 AdjustEditLayout.defaultProps = {
@@ -77,5 +77,5 @@ AdjustEditLayout.defaultProps = {
   nextStepPath: null,
   onCommit: () => {},
   onRollback: () => {},
-  isCommited: true,
+  isCommitted: true,
 };

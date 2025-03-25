@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import '../../styles/table.css';
 import styles from './compensation-page.module.css';
 import CheckBox from '#components/CheckBox';
-import Input from '#components/Input';
+import CompensationTableRow from './CompensationTableRow';
 
 export default function CompensationTable({
   currentData,
@@ -12,7 +12,7 @@ export default function CompensationTable({
   valueKey,
 }) {
   const [checkedRows, setCheckedRows] = useState({});
-  let hasTypeError = false;
+  const [hasTypeError, setHasTypeError] = useState(false);
 
   const handleCheck = (grade) => {
     setCheckedRows((prev) => ({
@@ -24,14 +24,14 @@ export default function CompensationTable({
   return (
     <>
       <table className={styles.table}>
-        <col style={{ width: '4%' }} /> {/* 체크박스 열 */}
-        <col style={{ width: '8%' }} /> {/* 직급 열 */}
-        <col style={{ width: '12%' }} /> {/* 탁월 */}
-        <col style={{ width: '12%' }} /> {/* 우수 */}
-        <col style={{ width: '12%' }} /> {/* 충족 */}
-        <col style={{ width: '12%' }} /> {/* 보완필요 */}
-        <col style={{ width: '12%' }} /> {/* 미흡 */}
-        <col style={{ width: '12%' }} /> {/* 매우미흡 */}
+        <col style={{ width: '4%' }} />
+        <col style={{ width: '8%' }} />
+        <col style={{ width: '12%' }} />
+        <col style={{ width: '12%' }} />
+        <col style={{ width: '12%' }} />
+        <col style={{ width: '12%' }} />
+        <col style={{ width: '12%' }} />
+        <col style={{ width: '12%' }} />
         <thead>
           <tr>
             <td>
@@ -50,49 +50,17 @@ export default function CompensationTable({
         </thead>
         <tbody>
           {Object.entries(currentData).map(([grade, ranks]) => (
-            <tr key={grade}>
-              <td>
-                <div className={styles.table_cell}>
-                  <CheckBox
-                    isChecked={!!checkedRows[grade]}
-                    onClick={() => handleCheck(grade)}
-                  />
-                </div>
-              </td>
-              <td>{grade}</td>
-              {Object.entries(ranks).map(([rank, values]) => {
-                const currentValue = values[valueKey];
-                const originalValue =
-                  originalData?.[grade]?.[rank]?.[valueKey] ?? '';
-                const isChanged = currentValue !== originalValue;
-
-                const isNumberLike = (str) => /^[\d.]+%?$/.test(str.trim());
-
-                const isTypeDifferent =
-                  isNumberLike(currentValue) !== isNumberLike(originalValue);
-
-                if (isTypeDifferent) hasTypeError = true;
-
-                return (
-                  <td
-                    key={`${grade}-${rank}`}
-                    className={
-                      isChanged ? styles.changedCell : styles.inputCell
-                    }
-                  >
-                    <div className={styles.table_cell}>
-                      <Input
-                        value={currentValue}
-                        mode={isTypeDifferent ? 'error' : 'default'}
-                        onChange={(e) => onChange(grade, rank, valueKey, e)}
-                        customWidth="100%"
-                        customHeight="100%"
-                      />
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
+            <CompensationTableRow
+              key={grade}
+              grade={grade}
+              ranks={ranks}
+              originalRanks={originalData?.[grade] ?? {}}
+              checked={!!checkedRows[grade]}
+              onCheck={() => handleCheck(grade)}
+              onChange={onChange}
+              valueKey={valueKey}
+              setHasTypeError={setHasTypeError}
+            />
           ))}
         </tbody>
       </table>
