@@ -62,7 +62,7 @@ function HighOrganizationTable({
         <tbody>
           {data.map((row) => (
             <HighOrganizationTableRow
-              key={row.id}
+              key={row.emp_num}
               item={row}
               checkedItems={checkedItems}
               handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
@@ -82,8 +82,18 @@ function HighOrganizationTable({
 }
 
 HighOrganizationTable.propTypes = {
-  data: PropTypes.arrayOf().isRequired,
-  checkedItems: PropTypes.arrayOf().isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      isChecked: PropTypes.bool.isRequired,
+      emp_num: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      dep_name: PropTypes.string.isRequired,
+      grade_name: PropTypes.string.isRequired,
+      rank_name: PropTypes.string.isRequired,
+      in_high_perform_group: PropTypes.bool.isRequired,
+    }),
+  ).isRequired,
+  checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentPage: PropTypes.number.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,

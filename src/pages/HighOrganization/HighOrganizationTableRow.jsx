@@ -10,6 +10,7 @@ function HighOrganizationTableRow({
   handleHighPerformGroupSwitch,
   handleCheckBox,
 }) {
+  /* DB에서 가져올 값 : 평가차등 가산율 정보 */
   const salaryPerRank = {
     S: {
       eval_diff_increment: 5.0,
@@ -24,6 +25,7 @@ function HighOrganizationTableRow({
       eval_diff_bonus: 300,
     },
   };
+  /* DB에서 가져올 값 : 고성과조직 가산율 정보 */
   const evalAnnualSalaryIncrement = 2.0;
   const evalPerformProvideRate = 100;
 
@@ -54,6 +56,7 @@ function HighOrganizationTableRow({
           <Switch
             isOn={item.in_high_perform_group}
             onClick={() => {
+              /* 코드 수정 */
               const targetEmpNums = checkedItems.includes(item.emp_num)
                 ? checkedItems
                 : [item.emp_num];
@@ -84,8 +87,18 @@ function HighOrganizationTableRow({
 }
 
 HighOrganizationTableRow.propTypes = {
-  item: PropTypes.arrayOf().isRequired,
-  checkedItems: PropTypes.arrayOf().isRequired,
+  item: PropTypes.arrayOf(
+    PropTypes.shape({
+      isChecked: PropTypes.bool.isRequired,
+      emp_num: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      dep_name: PropTypes.string.isRequired,
+      grade_name: PropTypes.string.isRequired,
+      rank_name: PropTypes.string.isRequired,
+      in_high_perform_group: PropTypes.bool.isRequired,
+    }),
+  ).isRequired,
+  checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleHighPerformGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
 };
