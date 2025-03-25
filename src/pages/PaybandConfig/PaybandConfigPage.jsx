@@ -1,13 +1,15 @@
-import { useRef, useState } from 'react';
+import { useState, useMemo } from 'react';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import CheckBox from '#components/CheckBox/CheckBox';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
 import '../../styles/table.css';
+import Button from '#components/Button';
 
 export default function PaybandConfigPage() {
   const [needSave, setNeedSave] = useState(false);
-  const receivedPayband = useRef([
+
+  const [receivedPayband, setReceivedPayband] = useState([
     {
       id: 1,
       grade: 'P3',
@@ -15,6 +17,7 @@ export default function PaybandConfigPage() {
       lowerBound: 30,
       modified: [],
       error: [],
+      isChecked: false,
     },
     {
       id: 2,
@@ -23,6 +26,7 @@ export default function PaybandConfigPage() {
       lowerBound: 20,
       modified: [],
       error: [],
+      isChecked: false,
     },
     {
       id: 3,
@@ -31,6 +35,7 @@ export default function PaybandConfigPage() {
       lowerBound: 10,
       modified: [],
       error: [],
+      isChecked: false,
     },
     {
       id: 4,
@@ -39,14 +44,19 @@ export default function PaybandConfigPage() {
       lowerBound: 10,
       modified: ['전체'],
       error: [],
+      isChecked: false,
     },
   ]);
 
-  const [payband, setPayband] = useState(
-    structuredClone(receivedPayband.current),
-  );
+  const [payband, setPayband] = useState(structuredClone(receivedPayband));
 
-  let changedPayband = [];
+  const [changedPayband, setChangedPayband] = useState([]);
+
+  const [deletedPayband, setDeletedPayband] = useState([]);
+
+  const allChecked = useMemo(() => {
+    return payband.length > 0 && payband.every((pb) => pb.isChecked);
+  }, [payband]);
 
   return (
     <AdjustEditLayout
@@ -54,61 +64,114 @@ export default function PaybandConfigPage() {
       nextStepPath="../preparation/target"
       stepPaths={['기준 설정', 'Payband 설정']}
       onCommit={() => {
-        let hasUndefinedGrade = false;
+        const updatedPayband = payband.map((pb) => {
+          const errors = [...pb.error];
+          if (pb.grade === undefined && !errors.includes('직급')) {
+            errors.push('직급');
+          } else if (pb.grade !== undefined) {
+            const idx = errors.indexOf('직급');
+            if (idx > -1) errors.splice(idx, 1);
+          }
 
-        setPayband((prev) => {
-          const updatedPayband = prev.map((pb) => {
-            const errors = [...pb.error];
-
-            if (pb.grade === undefined) {
-              if (!errors.includes('직급')) {
-                errors.push('직급');
-              }
-              hasUndefinedGrade = true;
-            }
-
-            return { ...pb, error: errors };
-          });
-
-          return updatedPayband;
+          return { ...pb, error: errors };
         });
+
+        const hasUndefinedGrade = updatedPayband.some(
+          (pb) => pb.grade === undefined,
+        );
+
+        setPayband(updatedPayband);
+
         if (
           !hasUndefinedGrade &&
-          payband.every((pb) => pb.error.length === 0)
+          updatedPayband.every((pb) => pb.error.length === 0)
         ) {
-          // changedPayband 백엔드 전송
-          setPayband((prev) => {
-            const updatedPayband = prev.map((item) => ({
-              ...item,
-              modified: [],
-            }));
-            receivedPayband.current = structuredClone(updatedPayband);
-            return updatedPayband;
-          });
-          changedPayband = [];
+          const cleanPayband = updatedPayband.map((item) => ({
+            ...item,
+            modified: [],
+          }));
+          setPayband(cleanPayband);
+          setReceivedPayband(structuredClone(cleanPayband));
+          setChangedPayband([]);
           setNeedSave(false);
         }
       }}
       onRollback={() => {
-        setPayband(structuredClone(receivedPayband.current));
-        changedPayband = [];
+        setPayband(structuredClone(receivedPayband));
+        setChangedPayband([]);
         setNeedSave(false);
       }}
-      isCommited={!needSave}
+      isCommitted={!needSave}
     >
       <div className={`${styles.page}`}>
-        <div className={`${styles.subtitle}`}>Payband 상한, 하한 설정</div>
-        <div className={`${styles.content}`}>
-          직급별 연봉 조정 결과의 상한, 하한을 설정합니다.
-        </div>
+        <h2>Payband 상한, 하한 설정</h2>
+        <p>직급별 연봉 조정 결과의 상한, 하한을 설정합니다.</p>
         <div>
-          <div className={`${styles.unit_label}`}>단위: %</div>
+          <div className={`${styles.table_side}`}>
+            <div className={`${styles.unit_label}`}>단위: %</div>
+            {deletedPayband.length !== 0 && (
+              <Button
+                label="삭제"
+                size="small"
+                variant="secondary"
+                onClick={() => {
+                  setPayband((prev) =>
+                    prev.filter(
+                      (item) =>
+                        !deletedPayband.some(
+                          (deleted) => deleted.id === item.id,
+                        ),
+                    ),
+                  );
+                  setReceivedPayband((prev) =>
+                    prev.filter(
+                      (item) =>
+                        !deletedPayband.some(
+                          (deleted) => deleted.id === item.id,
+                        ),
+                    ),
+                  );
+
+                  setChangedPayband((prev) =>
+                    prev.filter(
+                      (item) =>
+                        !deletedPayband.some(
+                          (deleted) => deleted.id === item.id,
+                        ),
+                    ),
+                  );
+                  setDeletedPayband([]);
+                }}
+              />
+            )}
+          </div>
           <table className={`${styles.table}`}>
             <thead>
               <tr>
                 <td>
                   <div className={`${styles.table_cell}`}>
-                    <CheckBox />
+                    <CheckBox
+                      isChecked={allChecked}
+                      onClick={() => {
+                        if (!allChecked) {
+                          setPayband((prev) =>
+                            prev.map((item) => ({
+                              ...item,
+                              isChecked: true,
+                            })),
+                          );
+                          setDeletedPayband(payband);
+                        } else {
+                          setPayband((prev) =>
+                            prev.map((item) => ({
+                              ...item,
+                              isChecked: false,
+                            })),
+                          );
+                          setDeletedPayband([]);
+                        }
+                      }}
+                    />
                   </div>
                 </td>
                 <td>직급</td>
@@ -124,7 +187,7 @@ export default function PaybandConfigPage() {
                 <PaybandTableRow
                   key={item.id}
                   item={item}
-                  originItem={receivedPayband.current[index]}
+                  originItem={receivedPayband[index]}
                   onChange={(modifiedItem) => {
                     setPayband((prev) =>
                       prev.map((pb, i) => (i === index ? modifiedItem : pb)),
@@ -133,12 +196,34 @@ export default function PaybandConfigPage() {
                       (pb) => pb.id === modifiedItem.id,
                     );
                     if (changedPaybandIndex === -1) {
-                      changedPayband.push(modifiedItem);
+                      setChangedPayband((prev) => [...prev, modifiedItem]);
                     } else {
-                      changedPayband[changedPaybandIndex] = modifiedItem;
+                      setChangedPayband((prev) => {
+                        const updated = [...prev];
+                        updated[changedPaybandIndex] = modifiedItem;
+                        return updated;
+                      });
                     }
                     if (!needSave) {
                       setNeedSave(true);
+                    }
+                  }}
+                  onChecked={(isChecked, modifiedItem) => {
+                    setPayband((prev) =>
+                      prev.map((pb, i) => (i === index ? modifiedItem : pb)),
+                    );
+                    if (isChecked) {
+                      let updatedDeletedPayband = [];
+                      if (deletedPayband.some((d) => d.id === item.id)) {
+                        updatedDeletedPayband = deletedPayband; // 이미 있으면 그대로
+                      } else {
+                        updatedDeletedPayband = [...deletedPayband, item]; // 없으면 추가
+                      }
+                      setDeletedPayband(updatedDeletedPayband);
+                    } else {
+                      setDeletedPayband((prev) =>
+                        prev.filter((d) => d.id !== item.id),
+                      );
                     }
                   }}
                 />

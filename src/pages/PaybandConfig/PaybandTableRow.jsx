@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes, { string } from 'prop-types';
 import CheckBox from '#components/CheckBox/CheckBox';
 import Dropdown from '#components/Dropdown';
@@ -7,7 +8,21 @@ import '../../styles/table.css';
 import Input from '#components/Input/Input';
 import CustomSlider from '#components/Slider/CustomSlider';
 
-export default function PaybandTableRow({ item, originItem, onChange }) {
+export default function PaybandTableRow({
+  item,
+  originItem,
+  onChange,
+  onChecked,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleChecked = () => {
+    const updatedPayband = {
+      ...item,
+      isChecked: !item.isChecked,
+    };
+    onChecked(updatedPayband.isChecked, updatedPayband);
+  };
   const addError = (addModified, updatedPayband) => {
     return {
       ...updatedPayband,
@@ -29,7 +44,7 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
         updatedModified = [...item.modified, addModified];
       } else if (addModified === '하한' && lower === originItem.lowerBound) {
         updatedModified = item.modified.filter((m) => m !== addModified);
-      } else if (addError === '상한' && upper === originItem.upperBound) {
+      } else if (addModified === '상한' && upper === originItem.upperBound) {
         updatedModified = item.modified.filter((m) => m !== addModified);
       } else {
         updatedModified = item.modified;
@@ -78,7 +93,12 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
         className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
       >
         <div className={`${styles.table_cell}`}>
-          <CheckBox />
+          <CheckBox
+            isChecked={item.isChecked}
+            onClick={() => {
+              handleChecked();
+            }}
+          />
         </div>
       </td>
       <td
@@ -120,7 +140,15 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
               ]}
               error={item.error.includes('직급')}
               placeHolder="선택"
-              onChange={(option) => selectGrade(option)}
+              onChange={(option) => {
+                selectGrade(option);
+                setIsOpen((prev) => !prev);
+              }}
+              selectedValue={item.grade !== undefined ? item.grade : null}
+              isOpen={isOpen}
+              onClick={() => {
+                setIsOpen((prev) => !prev);
+              }}
             />
           </div>
         )}
@@ -130,7 +158,7 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
       >
         <div className={`${styles.table_cell}`}>
           <Input
-            initialValue={item.lowerBound}
+            value={item.lowerBound}
             mode={item.error.includes('하한') ? 'error' : 'default'}
             onChange={(newValue) => {
               handleChange({
@@ -146,7 +174,7 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
       >
         <div className={`${styles.table_cell}`}>
           <Input
-            initialValue={item.upperBound}
+            value={item.upperBound}
             mode={item.error.includes('상한') ? 'error' : 'default'}
             onChange={(newValue) => {
               handleChange({
@@ -161,8 +189,8 @@ export default function PaybandTableRow({ item, originItem, onChange }) {
         className={`${item.modified.includes('전체') ? styles.modified_cell : ''}`}
       >
         <CustomSlider
-          initialMin={item.lowerBound}
-          initialMax={item.upperBound}
+          min={item.lowerBound}
+          max={item.upperBound}
           minLowerBound={0}
           maxUpperBound={200}
           step={10}
@@ -186,6 +214,7 @@ PaybandTableRow.propTypes = {
     lowerBound: PropTypes.number.isRequired,
     modified: PropTypes.arrayOf(string).isRequired,
     error: PropTypes.arrayOf(string).isRequired,
+    isChecked: PropTypes.bool.isRequired,
   }).isRequired,
   originItem: PropTypes.shape({
     grade: PropTypes.string.isRequired,
@@ -193,6 +222,8 @@ PaybandTableRow.propTypes = {
     lowerBound: PropTypes.number.isRequired,
     modified: PropTypes.arrayOf(string).isRequired,
     error: PropTypes.arrayOf(string).isRequired,
+    isChecked: PropTypes.bool.isRequired,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
+  onChecked: PropTypes.func.isRequired,
 };
