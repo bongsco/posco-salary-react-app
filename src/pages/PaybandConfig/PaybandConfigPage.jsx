@@ -46,8 +46,8 @@ export default function PaybandConfigPage() {
   // const [createdPayband, setCreatedPayband] = useState([]);
   // 생성된 기준과 바뀐 기준 api 다르게 줄 걸 대비해서 써놓음
   const needSave = useMemo(() => {
-    return payband.some((pb) => pb.isChecked) || changedPayband.length > 0;
-  }, [payband, changedPayband]);
+    return changedPayband.length > 0 || deletedPayband.length > 0;
+  }, [changedPayband, deletedPayband]);
 
   const allChecked = useMemo(() => {
     return payband.length > 0 && payband.every((pb) => pb.isChecked);
@@ -60,10 +60,9 @@ export default function PaybandConfigPage() {
       stepPaths={['기준 설정', 'Payband 설정']}
       onCommit={() => {
         const updatedPayband = payband.map((pb) => {
-          const errors = [...pb.error];
+          let errors = [...pb.error];
           if (deletedPayband.some((d) => d.id === pb.id)) {
-            const idx = errors.indexOf('직급');
-            if (idx > -1) errors.splice(idx, 1);
+            errors = [];
           } else if (pb.grade === undefined && !errors.includes('직급')) {
             errors.push('직급');
           } else if (pb.grade !== undefined) {
