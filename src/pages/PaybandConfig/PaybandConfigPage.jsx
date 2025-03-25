@@ -37,15 +37,6 @@ export default function PaybandConfigPage() {
       error: [],
       isChecked: false,
     },
-    {
-      id: 4,
-      grade: undefined,
-      upperBound: 80,
-      lowerBound: 10,
-      modified: ['전체'],
-      error: [],
-      isChecked: false,
-    },
   ]);
 
   const [payband, setPayband] = useState(structuredClone(receivedPayband));
@@ -53,6 +44,9 @@ export default function PaybandConfigPage() {
   const [changedPayband, setChangedPayband] = useState([]);
 
   const [deletedPayband, setDeletedPayband] = useState([]);
+
+  // const [createdPayband, setCreatedPayband] = useState([]);
+  // 생성된 기준과 바뀐 기준 api 다르게 줄 걸 대비해서 써놓음
 
   const allChecked = useMemo(() => {
     return payband.length > 0 && payband.every((pb) => pb.isChecked);
@@ -86,6 +80,9 @@ export default function PaybandConfigPage() {
           !hasUndefinedGrade &&
           updatedPayband.every((pb) => pb.error.length === 0)
         ) {
+          // 백엔드로 changedPayband 보냄
+          // 백엔드로 createdPayband 보냄
+          // console.log(createdPayband);
           const cleanPayband = updatedPayband.map((item) => ({
             ...item,
             modified: [],
@@ -93,12 +90,14 @@ export default function PaybandConfigPage() {
           setPayband(cleanPayband);
           setReceivedPayband(structuredClone(cleanPayband));
           setChangedPayband([]);
+          // setCreatedPayband([]);
           setNeedSave(false);
         }
       }}
       onRollback={() => {
         setPayband(structuredClone(receivedPayband));
         setChangedPayband([]);
+        // setCreatedPayband([]);
         setNeedSave(false);
       }}
       isCommitted={!needSave}
@@ -228,6 +227,29 @@ export default function PaybandConfigPage() {
                   }}
                 />
               ))}
+              <tr>
+                <td colSpan="5" className="button_td">
+                  <button
+                    type="button"
+                    className="add_column"
+                    aria-label="add_button"
+                    onClick={() => {
+                      const newItem = {
+                        id: payband[payband.length - 1].id + 1,
+                        grade: undefined,
+                        upperBound: 70,
+                        lowerBound: 30,
+                        modified: ['전체'],
+                        error: [],
+                        isChecked: false,
+                      };
+                      setPayband((prev) => [...prev, newItem]);
+                      setChangedPayband((prev) => [...prev, newItem]);
+                      // setCreatedPayband
+                    }}
+                  />
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
