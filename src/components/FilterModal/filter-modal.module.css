@@ -1,0 +1,66 @@
+@import url('../../styles/global.css');
+.filters,
+.filters * {
+  box-sizing: border-box;
+}
+.div {
+  color: #000000;
+  text-align: left;
+  font-family: var(--caption1b-pc-font-family, "Suit-Bold", sans-serif);
+  font-size: var(--caption1b-pc-font-size, 14px);
+  font-weight: var(--caption1b-pc-font-weight, 700);
+  position: relative;
+}
+
+.filters{
+  background: #ffffff;
+  border-radius: 6px;
+  border : 1px solid black;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  width: 328px;
+  height: 150px;
+}
+
+.filter{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.button{
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  width: 24.47px;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 24.47/32;
+}
+
+.plus{
+  color: var(--primary-main, #40afff);
+  text-align: center;
+  font-family: "Suit-Bold", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

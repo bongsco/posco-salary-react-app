@@ -13,7 +13,7 @@ export default function Dropdown({
 }) {
   return (
     <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
-      <div className={`${styles.dropdown}`}>
+      <div className={styles.dropdown}>
         <button
           type="button"
           className={`${styles['select-selected']} ${selectedValue === null ? '' : styles['selected-option']}`}
