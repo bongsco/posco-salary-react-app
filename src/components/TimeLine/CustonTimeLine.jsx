@@ -140,11 +140,22 @@ export default function CustomTimeLine({
                 textEl.textContent = `${year}년 ${rawText}`;
               }
             });
+
+            const svg = container.querySelector('svg');
+            const firstG = svg?.querySelector('g');
+
+            if (svg && firstG) {
+              const gBox = firstG.getBBox(); // ✅ g의 실제 높이 계산
+              const newHeight = gBox.y + gBox.height + 30;
+              svg.setAttribute('height', `${newHeight}`);
+              // svg 부모 div 스타일 높이도 맞춰줌
+              container.parentElement.style.height = `${newHeight}px`;
+            }
           },
         },
       ]}
       width="100%"
-      height="400px"
+      height="100%"
     />
   );
 }
