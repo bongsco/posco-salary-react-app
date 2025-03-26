@@ -1,4 +1,4 @@
-import { useReducer, useMemo, useState, useEffect } from 'react';
+import { useReducer, useMemo, useState } from 'react';
 import styles from './adj-subject-criteria.module.css';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
@@ -42,7 +42,7 @@ function criteriaReducer(state, action) {
   }
 }
 
-export default function AdjSubjectCriteria() {
+export default function AdjSubjectCriteriaPage() {
   const initialDateValues = {
     baseDate: null,
     expStartDate: null,
@@ -274,10 +274,6 @@ export default function AdjSubjectCriteria() {
     dispatchPayment({ type: 'RESET_TO_PREVIOUS' });
     dispatchGrade({ type: 'RESET_TO_PREVIOUS' });
   };
-
-  useEffect(() => {
-    console.log('✅ isModified changed:', isModified);
-  }, [isModified]);
 
   return (
     <AdjustEditLayout

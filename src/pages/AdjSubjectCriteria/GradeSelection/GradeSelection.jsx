@@ -13,7 +13,7 @@ export default function GradeSelection({
       <div className={styles.subTitle}>직급</div>
       {hasError && (
         <div className={styles.errorMessage}>
-          한 가지 이상의 직군을 선택해 주세요.
+          한 가지 이상의 직급을 선택해 주세요.
         </div>
       )}
       <div className={styles.gradeWrapper}>
@@ -21,8 +21,9 @@ export default function GradeSelection({
         <LabeledSwitch
           label="전체"
           isChecked={Object.values(grades)
-            .flat()
-            .every((v) => v)}
+            .filter((group) => typeof group === 'object')
+            .flatMap((group) => Object.values(group))
+            .every((v) => v === true)}
           isCommitted={committedStates.all['전체']}
           onClick={(tmp, isChecked) => onSwitchChange('all', '전체', isChecked)}
           isCheckedInitially={grades.all['전체']}
@@ -159,7 +160,7 @@ export default function GradeSelection({
 }
 // ✅ PropTypes 정의
 GradeSelection.propTypes = {
-  grades: PropTypes.objectOf(PropTypes.objectOf(PropTypes.bool)),
+  grades: PropTypes.objectOf(PropTypes.objectOf(PropTypes.bool)).isRequired,
   onSwitchChange: PropTypes.func.isRequired,
   hasError: PropTypes.bool,
   committedStates: PropTypes.shape({
@@ -177,15 +178,5 @@ GradeSelection.propTypes = {
 
 // ✅ 기본값 설정 (defaultProps)
 GradeSelection.defaultProps = {
-  grades: {
-    allLeft: { P직군전체: false, R직군전체: false, A직군전체: false },
-    allRight: { O직군전체: false, D직군전체: false, G직군전체: false },
-    P: { P6: false, P5: false, P4: false, P3: false, P2: false, P1: false },
-    R: { R3: false, R2: false, R1: false },
-    A: { A3: false, A2: false, A1: false },
-    O: { O3: false, O2: false, O1: false },
-    D: { D3: false, D2: false, D1: false },
-    G: { G3: false, G2: false, G1: false },
-  },
   hasError: false,
 };

@@ -1,1 +1,1 @@
-export { default } from './AdjSubjectCriteria';
+export { default } from './AdjSubjectCriteriaPage';

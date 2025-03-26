@@ -5,7 +5,7 @@ import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import RootLayout from '#layouts/RootLayout';
-import AdjSubjectCriteria from '#pages/AdjSubjectCriteria';
+import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 
 function App() {
   return (
@@ -54,7 +54,7 @@ function App() {
                 <Route path="criteria">
                   <Route
                     path="target"
-                    element={<AdjSubjectCriteria />}
+                    element={<AdjSubjectCriteriaPage />}
                     nextStepPath="payment-rate"
                   />
                   <Route
