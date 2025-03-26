@@ -11,9 +11,10 @@ export default function CompensationTable({
   onChange,
   valueKey,
   onAddGradeRow,
+  hasTypeError,
+  setHasTypeError,
 }) {
   const [checkedRows, setCheckedRows] = useState({});
-  const [hasTypeError, setHasTypeError] = useState(false);
 
   const handleCheck = (grade) => {
     setCheckedRows((prev) => ({
@@ -65,6 +66,7 @@ export default function CompensationTable({
               onCheck={() => handleCheck(grade)}
               onChange={onChange}
               valueKey={valueKey}
+              hasTypeError={hasTypeError}
               setHasTypeError={setHasTypeError}
             />
           ))}
@@ -109,4 +111,6 @@ CompensationTable.propTypes = {
   onChange: PropTypes.func.isRequired,
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
   onAddGradeRow: PropTypes.func.isRequired,
+  hasTypeError: PropTypes.bool.isRequired,
+  setHasTypeError: PropTypes.func.isRequired,
 };

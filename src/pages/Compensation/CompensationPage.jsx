@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useState, useEffect } from 'react';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './compensation-page.module.css';
 import CompensationSection from './CompensationSection';
@@ -96,7 +96,7 @@ function reducer(state, action) {
         isCommitted: true,
       };
     }
-
+    // 새로운 행 추가하기
     case 'addGradeRow': {
       const { grade } = action.payload;
 
@@ -131,6 +131,18 @@ export default function CompensationPage() {
     eval_annual_salary_increment: false,
     eval_perform_provoide_rate: false,
   });
+  const [hasTypeError, setHasTypeError] = useState(false);
+
+  useEffect(() => {
+    if (state.isCommitted) {
+      setErrorState({
+        eval_annual_salary_increment: false,
+        eval_perform_provoide_rate: false,
+      });
+
+      setHasTypeError(false);
+    }
+  }, [state.isCommitted]);
 
   // 테이블 셀 인풋 변경 핸들러
   const handleInputChange = (grade, rank, key, e) => {
@@ -201,6 +213,8 @@ export default function CompensationPage() {
           onTableChange={handleInputChange}
           valueKey="value1"
           onAddGradeRow={handleAddGradeRow}
+          hasTypeError={hasTypeError}
+          setHasTypeError={setHasTypeError}
         />
 
         {/* 2. 경영성과금 지급률 */}
@@ -217,6 +231,8 @@ export default function CompensationPage() {
           onTableChange={handleInputChange}
           valueKey="value2"
           onAddGradeRow={handleAddGradeRow}
+          hasTypeError={hasTypeError}
+          setHasTypeError={setHasTypeError}
         />
       </div>
     </AdjustEditLayout>

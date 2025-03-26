@@ -10,6 +10,7 @@ import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import RootLayout from '#layouts/RootLayout';
+import CompensationPage from '#pages/Compensation';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,16 +58,7 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="payment-rate"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="target"
-                    nextStepPath="payband"
-                    stepPaths={['기준 설정', '보상지급률 설정']}
-                  />
-                }
-              />
+              <Route path="payment-rate" element={<CompensationPage />} />
               <Route
                 path="payband"
                 element={

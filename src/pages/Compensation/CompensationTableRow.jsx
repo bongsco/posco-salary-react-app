@@ -49,6 +49,7 @@ export default function CompensationTableRow({
               isOpen={isDropdownOpen}
               onClick={handleDropdownToggle}
               onChange={handleDropdownSelect}
+              error
             />
           ) : (
             grade

@@ -14,6 +14,8 @@ export default function CompensationSection({
   onTableChange,
   valueKey,
   onAddGradeRow,
+  hasTypeError,
+  setHasTypeError,
 }) {
   return (
     <div className={styles.section}>
@@ -43,6 +45,8 @@ export default function CompensationSection({
         onChange={onTableChange}
         valueKey={valueKey}
         onAddGradeRow={onAddGradeRow}
+        hasTypeError={hasTypeError}
+        setHasTypeError={setHasTypeError}
       />
     </div>
   );
@@ -73,4 +77,6 @@ CompensationSection.propTypes = {
   onTableChange: PropTypes.func.isRequired,
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
   onAddGradeRow: PropTypes.func.isRequired,
+  hasTypeError: PropTypes.bool.isRequired,
+  setHasTypeError: PropTypes.func.isRequired,
 };
