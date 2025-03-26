@@ -88,16 +88,16 @@ CompensationTable.propTypes = {
   currentData: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.string.isRequired,
-        value2: PropTypes.string.isRequired,
+        value1: PropTypes.number.isRequired,
+        value2: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   originalData: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.string.isRequired,
-        value2: PropTypes.string.isRequired,
+        value1: PropTypes.number.isRequired,
+        value2: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,

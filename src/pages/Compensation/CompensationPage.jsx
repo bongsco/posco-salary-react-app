@@ -6,20 +6,20 @@ import CompensationSection from './CompensationSection';
 /* 더미 데이터 */
 const initialRankRate = {
   P3: {
-    S: { value1: '0.8%', value2: '400%' },
-    A: { value1: '0.8%', value2: '400%' },
-    BPlus: { value1: '0.8%', value2: '400%' },
-    B: { value1: '0.8%', value2: '400%' },
-    C: { value1: '0.8%', value2: '400%' },
-    D: { value1: '0.8%', value2: '400%' },
+    S: { value1: 0.8, value2: 400 },
+    A: { value1: 0.8, value2: 400 },
+    BPlus: { value1: 0.8, value2: 400 },
+    B: { value1: 0.8, value2: 400 },
+    C: { value1: 0.8, value2: 400 },
+    D: { value1: 0.8, value2: 400 },
   },
   P4: {
-    S: { value1: '0.6%', value2: '350%' },
-    A: { value1: '0.6%', value2: '350%' },
-    BPlus: { value1: '0.6%', value2: '350%' },
-    B: { value1: '0.6%', value2: '350%' },
-    C: { value1: '0.6%', value2: '350%' },
-    D: { value1: '0.6%', value2: '350%' },
+    S: { value1: 0.6, value2: 350 },
+    A: { value1: 0.6, value2: 350 },
+    BPlus: { value1: 0.6, value2: 350 },
+    B: { value1: 0.6, value2: 350 },
+    C: { value1: 0.6, value2: 350 },
+    D: { value1: 0.6, value2: 350 },
   },
 };
 
@@ -134,13 +134,16 @@ export default function CompensationPage() {
 
   // 테이블 셀 인풋 변경 핸들러
   const handleInputChange = (grade, rank, key, e) => {
+    const input = e.target.value.trim();
+    const isValidNumber = /^-?\d+(\.\d+)?$/.test(input);
+
     dispatch({
       type: 'changeRankRate',
       payload: {
         grade,
         rank,
         key,
-        value: e.target.value,
+        value: isValidNumber ? Number(input) : input,
       },
     });
   };

@@ -60,9 +60,8 @@ export default function CompensationTableRow({
         const originalValue = originalRanks?.[rank]?.[valueKey] ?? '';
         const isChanged = currentValue !== originalValue;
 
-        const isEmpty = currentValue.trim() === '';
-        const isInvalidNumber = !/^-?\d*(\.\d+)?%?$/.test(currentValue.trim());
-        const isTypeDifferent = isEmpty || isInvalidNumber;
+        const isTypeDifferent =
+          typeof currentValue === 'string' || currentValue === '';
 
         if (isTypeDifferent) rowHasTypeError = true;
 
@@ -75,7 +74,7 @@ export default function CompensationTableRow({
           >
             <div className={styles.table_cell}>
               <Input
-                value={currentValue}
+                value={currentValue.toString()}
                 mode={isTypeDifferent ? 'error' : 'default'}
                 onChange={(e) => onChange(grade, rank, valueKey, e)}
                 customWidth="100%"
