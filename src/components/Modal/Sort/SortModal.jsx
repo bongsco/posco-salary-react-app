@@ -4,13 +4,13 @@ import Modal from '../Modal';
 import Dropdown from '#components/Dropdown';
 import styles from '../modal.module.css';
 
-const initialState = {
+const init = (prevSortList) => ({
   selectedKey: null,
   selectedValue: null,
   isKeyOpen: false,
   isValueOpen: false,
-  sortList: [],
-};
+  sortList: prevSortList || [],
+});
 
 function reducer(state, action) {
   switch (action.type) {
@@ -50,8 +50,8 @@ function reducer(state, action) {
   }
 }
 
-export default function SortModal({ option, onSubmit, onClose }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
+  const [state, dispatch] = useReducer(reducer, prevSortList, init);
 
   return (
     <Modal onSubmit={() => onSubmit?.(state.sortList)} onClose={onClose}>
@@ -114,4 +114,14 @@ SortModal.propTypes = {
   }).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  prevSortList: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ),
+};
+
+SortModal.defaultProps = {
+  prevSortList: [],
 };
