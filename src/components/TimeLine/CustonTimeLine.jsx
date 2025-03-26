@@ -46,7 +46,7 @@ export default function CustomTimeLine({
         timeline: {
           showRowLabels: false,
           barLabelStyle: {
-            fontSize: 2,
+            fontSize: 5,
           },
         },
         hAxis: {
@@ -79,7 +79,6 @@ export default function CustomTimeLine({
           eventName: 'ready',
           callback: ({ chartWrapper }) => {
             const container = chartWrapper.getContainer();
-
             // 1. 기존 스타일 조작들 (수평선, border 제거 등)
             const paths = Array.from(container.getElementsByTagName('path'));
             const rects = Array.from(container.getElementsByTagName('rect'));
@@ -144,6 +143,8 @@ export default function CustomTimeLine({
           },
         },
       ]}
+      width="100%"
+      height="400px"
     />
   );
 }
