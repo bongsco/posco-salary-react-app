@@ -13,7 +13,10 @@ export default function Dropdown({
   customWidth = '200px',
 }) {
   return (
-    <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
+    <div
+      className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}
+      style={{ width: customWidth }}
+    >
       <div className={styles.dropdown} style={{ width: customWidth }}>
         <button
           type="button"
@@ -22,8 +25,11 @@ export default function Dropdown({
           }`}
           onClick={onClick}
         >
+          {/* <span className={styles.dropdownText}> */}
           {selectedValue === null ? placeHolder : selectedValue}
+          {/* </span> */}
         </button>
+        <div className={styles['select-selected-button']} />
       </div>
       {!isOpen && message && <div className={styles.message}>{message}</div>}
       {isOpen && (
