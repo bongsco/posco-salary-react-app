@@ -5,14 +5,7 @@ import RegisterModal from '#components/Modal/Register';
 import SortModal from '#components/Modal/Sort';
 import Modal from '#components/Modal/Modal';
 
-const handleSubmit = fn();
-
-function Template({ type, option, onClose }) {
-  const onSubmit = (data) => {
-    // console.log(`🔥 ${type} submitted:`, data);
-    handleSubmit(data); // ✅ 추적 가능!
-  };
-
+function Template({ type, option, onClose, onSubmit }) {
   if (type === 'filter') {
     return (
       <FilterModal option={option} onSubmit={onSubmit} onClose={onClose} />
@@ -39,11 +32,15 @@ Template.propTypes = {
     PropTypes.arrayOf(PropTypes.string), // for register
   ]).isRequired,
   onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default {
   title: 'UI/Modal',
   component: Modal,
+  args: {
+    onSubmit: fn(),
+  },
 };
 
 export const FilterModalStory = Template.bind({});
