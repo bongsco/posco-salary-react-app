@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import styles from '../modal.module.css';
 import Dropdown from '#components/Dropdown';
+import Input from '#components/Input';
+import CustomDatePicker from '#components/DatePicker';
 
 const initialState = {
   selectedKey: null,
@@ -40,7 +42,6 @@ function reducer(state, action) {
         filters: updatedFilters,
       };
     }
-
     case 'SELECT_VALUE':
       return { ...state, selectedValue: action.payload, isValueOpen: false };
     case 'ADD_FILTER': {
@@ -85,13 +86,80 @@ function reducer(state, action) {
       return state;
   }
 }
+function ValueSelector({
+  selectedKey,
+  option,
+  selectedValue,
+  isOpen,
+  dispatch,
+}) {
+  if (!selectedKey || !option[selectedKey]) return null;
+
+  const { optionType } = option[selectedKey];
+
+  const handleChange = (val) => {
+    dispatch({ type: 'SELECT_VALUE', payload: val });
+  };
+
+  const toggle = () => {
+    dispatch({ type: 'TOGGLE_VALUE' });
+  };
+
+  if (optionType === 'dropdown') {
+    return (
+      <Dropdown
+        placeHolder="값 선택"
+        options={option[selectedKey].options.map(String)}
+        selectedValue={selectedValue}
+        isOpen={isOpen}
+        onChange={handleChange}
+        onClick={toggle}
+        customWidth="133px"
+        error={false}
+      />
+    );
+  }
+
+  if (optionType === 'text') {
+    return (
+      <Input
+        placeholder="값 입력"
+        value={selectedValue || ''}
+        onChange={(e) => handleChange(e.target.value)}
+        customWidth="133px"
+      />
+    );
+  }
+
+  if (optionType === 'date') {
+    return (
+      <CustomDatePicker
+        selectedDate={selectedValue}
+        onChange={handleChange}
+        customWidth="133px"
+      />
+    );
+  }
+
+  return null;
+}
 
 export default function FilterModal({ option, onSubmit, onClose }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const keys = Object.keys(option);
 
+  const formatValue = (val) => {
+    if (val instanceof Date) return val.toLocaleDateString();
+    return val;
+  };
+
   return (
-    <Modal onSubmit={() => onSubmit?.(state.filters)} onClose={onClose}>
+    <Modal
+      onSubmit={() => {
+        onSubmit?.(state.filters);
+      }}
+      onClose={onClose}
+    >
       <span className={styles.title}>필터</span>
 
       <div className={styles.dropdownWrapper}>
@@ -106,19 +174,12 @@ export default function FilterModal({ option, onSubmit, onClose }) {
           error={false}
         />
 
-        <Dropdown
-          placeHolder="값 선택"
-          options={
-            state.selectedKey && option[state.selectedKey]
-              ? option[state.selectedKey].options.map(String)
-              : []
-          }
+        <ValueSelector
+          selectedKey={state.selectedKey}
+          option={option}
           selectedValue={state.selectedValue}
           isOpen={state.isValueOpen}
-          onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
-          onClick={() => dispatch({ type: 'TOGGLE_VALUE' })}
-          customWidth="133px"
-          error={false}
+          dispatch={dispatch}
         />
 
         <button
@@ -135,7 +196,7 @@ export default function FilterModal({ option, onSubmit, onClose }) {
           filter.value.map((val) => (
             <div key={`${filter.key}-${val}`} className={styles.filter}>
               <span className={styles.filterName}>
-                {filter.key} : {val}
+                {filter.key} : {formatValue(val)}
               </span>
               <button
                 type="button"
@@ -156,16 +217,43 @@ export default function FilterModal({ option, onSubmit, onClose }) {
     </Modal>
   );
 }
+
+ValueSelector.propTypes = {
+  selectedKey: PropTypes.string.isRequired,
+  option: PropTypes.objectOf(
+    PropTypes.shape({
+      optionType: PropTypes.oneOf(['dropdown', 'text', 'date']).isRequired,
+      initialValue: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.instanceOf(Date),
+      ]),
+      options: PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ),
+    }),
+  ).isRequired,
+  selectedValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date),
+  ]).isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
+
 FilterModal.propTypes = {
   option: PropTypes.objectOf(
     PropTypes.shape({
-      options: PropTypes.arrayOf(
-        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      ).isRequired,
-      currentSelectedValue: PropTypes.oneOfType([
+      optionType: PropTypes.oneOf(['dropdown', 'text', 'date']).isRequired,
+      initialValue: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
+        PropTypes.instanceOf(Date), // date 타입을 위한 처리
       ]),
+      options: PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ), // dropdown일 때만 필요함
     }),
   ).isRequired,
   onSubmit: PropTypes.func.isRequired,

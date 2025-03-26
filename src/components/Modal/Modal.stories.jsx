@@ -47,12 +47,15 @@ export const FilterModalStory = Template.bind({});
 FilterModalStory.args = {
   type: 'filter',
   option: {
-    연도: { options: [2008, 2009, 2010], currentSelectedValue: null },
+    연도: { initialValue: null, optionType: 'text' },
+    날짜: { initialValue: null, optionType: 'date' },
     상태: {
       options: ['작업전', '작업중', '완료'],
-      currentSelectedValue: '완료',
+      initialValue: '완료',
+      optionType: 'dropdown',
     },
   },
+
   onClose: () => {},
 };
 
