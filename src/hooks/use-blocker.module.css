@@ -19,7 +19,7 @@
 }
 
 .message {
-  font: var(--font-subtitle-3b-pc);
+  font: var(--font-body-2r-pc);
   color: var(--color-grayscale-white);
 }
 
