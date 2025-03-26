@@ -97,7 +97,6 @@ function reducer(state, action) {
       };
     }
 
-    // 행추가 하기
     case 'addGradeRow': {
       const { grade } = action.payload;
 
@@ -166,7 +165,6 @@ export default function CompensationPage() {
     }));
   };
 
-  // 행추가 핸들러
   const handleAddGradeRow = () => {
     dispatch({
       type: 'addGradeRow',

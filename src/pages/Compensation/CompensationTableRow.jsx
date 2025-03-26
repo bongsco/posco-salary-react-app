@@ -39,19 +39,21 @@ export default function CompensationTableRow({
         </div>
       </td>
       <td>
-        {isNewRow ? (
-          <Dropdown
-            className={styles.table_cell}
-            placeHolder="선택"
-            options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
-            selectedValue={selectedGrade}
-            isOpen={isDropdownOpen}
-            onClick={handleDropdownToggle}
-            onChange={handleDropdownSelect}
-          />
-        ) : (
-          grade
-        )}
+        <div className={styles.table_cell}>
+          {isNewRow ? (
+            <Dropdown
+              placeHolder="선택"
+              customWidth="100%"
+              options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
+              selectedValue={selectedGrade}
+              isOpen={isDropdownOpen}
+              onClick={handleDropdownToggle}
+              onChange={handleDropdownSelect}
+            />
+          ) : (
+            grade
+          )}
+        </div>
       </td>
       {Object.entries(ranks).map(([rank, values]) => {
         const currentValue = values[valueKey];
@@ -93,16 +95,16 @@ CompensationTableRow.propTypes = {
   ranks: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.string.isRequired,
-        value2: PropTypes.string.isRequired,
+        value1: PropTypes.number.isRequired,
+        value2: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   originalRanks: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.string.isRequired,
-        value2: PropTypes.string.isRequired,
+        value1: PropTypes.number.isRequired,
+        value2: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
