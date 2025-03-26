@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Pagination from '#components/Pagination';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './organization-subject.module.css';
@@ -96,31 +96,25 @@ export default function OrganizationSubject() {
     untarget: false,
   });
 
-  useEffect(() => {
-    setAllChecked((prev) => ({
-      ...prev,
-      target:
-        targets.length > 0 &&
-        targets.every((e) => selectedIds.target.includes(e.empId)),
-    }));
-  }, [selectedIds.target, targets]);
-
-  useEffect(() => {
-    setAllChecked((prev) => ({
-      ...prev,
-      untarget:
-        untargets.length > 0 &&
-        untargets.every((e) => selectedIds.untarget.includes(e.empId)),
-    }));
-  }, [selectedIds.untarget, untargets]);
-
   const toggleSelection = (id, type) => {
-    setSelectedIds((prev) => ({
-      ...prev,
-      [type]: prev[type].includes(id)
+    setSelectedIds((prev) => {
+      const isSelected = prev[type].includes(id);
+      const nextSelected = isSelected
         ? prev[type].filter((x) => x !== id)
-        : [...prev[type], id],
-    }));
+        : [...prev[type], id];
+
+      // 현재 리스트: 화면에 보여지는 target/untarget 리스트
+      const currentList = type === 'target' ? targets : untargets;
+      const allSelected = currentList.every((e) =>
+        type === 'target'
+          ? nextSelected.includes(e.empId)
+          : nextSelected.includes(e.empId),
+      );
+
+      setAllChecked((prevChecked) => ({ ...prevChecked, [type]: allSelected }));
+      return { ...prev, [type]: nextSelected };
+    });
+
     setIsCommitted(false);
   };
 
@@ -233,7 +227,8 @@ export default function OrganizationSubject() {
       stepPaths={['사전 작업', '대상자 편성']}
       onCommit={handleSave}
       onRollback={handleCancel}
-      isCommited={isCommitted}
+      isCommitted={isCommitted}
+      canMove
     >
       <div className={styles.contentWrapper}>
         {renderTable(paginatedTargets, 'target')}
