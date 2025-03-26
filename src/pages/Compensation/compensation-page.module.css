@@ -1,0 +1,80 @@
+@import '../../styles/global.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0px 0px 0px;
+}
+
+.sectionTitle {
+  font: var(--font-subtitle-1b-pc);
+  margin: 0px;
+}
+
+.description {
+  font: var(--font-caption-1r-pc);
+  margin: 0px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.inputLabel {
+  font: var(--font-caption-1b-pc);
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table_cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.tableHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 0;
+  margin-bottom: -4px; /* 표와 간격 없애기 위한 조정 */
+  padding-right: 4px;
+}
+
+.unitText {
+  font-size: 13px;
+}
+
+.inputCell {
+  padding: 6px 4px !important;
+  width: 100%;
+}
+
+.changedCell {
+  padding: 6px 4px !important;
+  background-color: #ecffd4 !important;
+}
+
+thead td:hover {
+  background-color: var(--color-primary-lightest) !important;
+  cursor: default;
+}
+
+.errorMessage {
+  font: var(--font-caption-1r-pc);
+  color: var(--color-system-caution);
+}
