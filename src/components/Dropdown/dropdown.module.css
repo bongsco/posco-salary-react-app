@@ -26,6 +26,14 @@
   border-radius: 5px;
   padding: 7.25px 8px;
   height: auto;
+  background-color: var(--color-background-general);
+}
+
+.dropdownText {
+  display: block;
+  flex-shrink: 0;
+  text-overflow: ellipsis;
+  line-break: unset;
 }
 
 .dropdownText {
