@@ -25,8 +25,11 @@ export default function Dropdown({
           }`}
           onClick={onClick}
         >
+          {/* <span className={styles.dropdownText}> */}
           {selectedValue === null ? placeHolder : selectedValue}
+          {/* </span> */}
         </button>
+        <div className={styles['select-selected-button']} />
       </div>
       {!isOpen && message && <div className={styles.message}>{message}</div>}
       {isOpen && (
