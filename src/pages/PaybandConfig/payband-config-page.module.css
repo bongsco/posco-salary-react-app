@@ -49,13 +49,12 @@
 
 .unit_label {
   font: var(--font-body-3-pc);
-  margin-bottom: 3px;
 }
 
 .table_side {
-  display: flex; /* 가로 방향 배치 */
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  align-items: center; /* 세로 중앙 정렬 (선택사항) */
-  gap: 8px;
-  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 40px;
+  margin-bottom: 3px;
 }

@@ -116,23 +116,25 @@ export default function PaybandConfigPage() {
         <p>직급별 연봉 조정 결과의 상한, 하한을 설정합니다.</p>
         <div>
           <div className={`${styles.table_side}`}>
+            <div>
+              {payband.some((pb) => pb.isChecked) && (
+                <Button
+                  label="삭제"
+                  size="small"
+                  variant="secondary"
+                  onClick={() => {
+                    setDeletedPayband((prev) => {
+                      const newItems = payband.filter(
+                        (item) =>
+                          item.isChecked && !prev.some((d) => d.id === item.id),
+                      );
+                      return [...prev, ...newItems];
+                    });
+                  }}
+                />
+              )}
+            </div>
             <div className={`${styles.unit_label}`}>단위: %</div>
-            {payband.some((pb) => pb.isChecked) && (
-              <Button
-                label="삭제"
-                size="small"
-                variant="secondary"
-                onClick={() => {
-                  setDeletedPayband((prev) => {
-                    const newItems = payband.filter(
-                      (item) =>
-                        item.isChecked && !prev.some((d) => d.id === item.id),
-                    );
-                    return [...prev, ...newItems];
-                  });
-                }}
-              />
-            )}
           </div>
           <table className={`${styles.table}`}>
             <thead>
