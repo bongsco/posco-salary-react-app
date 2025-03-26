@@ -1,0 +1,12 @@
+@import url('../../styles/global.css');
+
+.filterWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.leftGroup {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}

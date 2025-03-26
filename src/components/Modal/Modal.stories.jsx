@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { fn } from '@storybook/test';
-import FilterModal from '#components/Modal/Filter';
+import FilterModal from '#components/TableOption/Filter';
 import RegisterModal from '#components/Modal/Register';
-import SortModal from '#components/Modal/Sort';
+import SortModal from '#components/TableOption/Sort';
 import Modal from '#components/Modal/Modal';
 
 function Template({
@@ -47,8 +47,8 @@ function Template({
 Template.propTypes = {
   type: PropTypes.oneOf(['filter', 'register', 'sort']).isRequired,
   option: PropTypes.oneOfType([
-    PropTypes.object, // for filter & sort
-    PropTypes.arrayOf(PropTypes.string), // for register
+    PropTypes.object,
+    PropTypes.arrayOf(PropTypes.string),
   ]).isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

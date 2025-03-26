@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import Modal from '../Modal';
-import styles from '../modal.module.css';
+import Modal from '../../Modal/Modal';
+import styles from '../../Modal/modal.module.css';
 import Dropdown from '#components/Dropdown';
 import Input from '#components/Input';
 import CustomDatePicker from '#components/DatePicker';
