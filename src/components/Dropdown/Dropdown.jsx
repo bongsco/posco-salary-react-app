@@ -13,7 +13,10 @@ export default function Dropdown({
   customWidth = '200px',
 }) {
   return (
-    <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
+    <div
+      className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}
+      style={{ width: customWidth }}
+    >
       <div className={styles.dropdown} style={{ width: customWidth }}>
         <button
           type="button"
