@@ -6,13 +6,13 @@ import Dropdown from '#components/Dropdown';
 import Input from '#components/Input';
 import CustomDatePicker from '#components/DatePicker';
 
-const initialState = {
+const init = (prevFilters) => ({
   selectedKey: null,
   selectedValue: null,
   isKeyOpen: false,
   isValueOpen: false,
-  filters: [],
-};
+  filters: prevFilters || [],
+});
 
 function reducer(state, action) {
   switch (action.type) {
@@ -144,8 +144,13 @@ function ValueSelector({
   return null;
 }
 
-export default function FilterModal({ option, onSubmit, onClose }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export default function FilterModal({
+  option,
+  onSubmit,
+  onClose,
+  prevFilters,
+}) {
+  const [state, dispatch] = useReducer(reducer, prevFilters, init);
   const keys = Object.keys(option);
 
   const formatValue = (val) => {
@@ -249,13 +254,29 @@ FilterModal.propTypes = {
       initialValue: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-        PropTypes.instanceOf(Date), // date 타입을 위한 처리
+        PropTypes.instanceOf(Date),
       ]),
       options: PropTypes.arrayOf(
         PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      ), // dropdown일 때만 필요함
+      ),
     }),
   ).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  prevFilters: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.instanceOf(Date),
+        ]),
+      ).isRequired,
+    }),
+  ),
+};
+
+FilterModal.defaultProps = {
+  prevFilters: [],
 };
