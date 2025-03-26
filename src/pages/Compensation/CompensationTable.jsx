@@ -24,6 +24,11 @@ export default function CompensationTable({
 
   return (
     <>
+      <div className={styles.tableHeaderWrapper}>
+        <div />
+        <div className={styles.unitText}>단위 (%)</div>
+      </div>
+
       <table className={styles.table}>
         <col style={{ width: '4%' }} />
         <col style={{ width: '8%' }} />

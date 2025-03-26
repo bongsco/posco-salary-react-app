@@ -38,7 +38,7 @@ export default function CompensationTableRow({
           <CheckBox isChecked={checked} onClick={onCheck} />
         </div>
       </td>
-      <td>
+      <td className={isNewRow ? styles.changedCell : ''}>
         <div className={styles.table_cell}>
           {isNewRow ? (
             <Dropdown
@@ -74,7 +74,7 @@ export default function CompensationTableRow({
           >
             <div className={styles.table_cell}>
               <Input
-                value={currentValue.toString()}
+                value={currentValue}
                 mode={isTypeDifferent ? 'error' : 'default'}
                 onChange={(e) => onChange(grade, rank, valueKey, e)}
                 customWidth="100%"

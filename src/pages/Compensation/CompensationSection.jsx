@@ -37,7 +37,6 @@ export default function CompensationSection({
           고성과조직 가산률을 입력해 주세요.
         </div>
       )}
-
       <CompensationTable
         currentData={tableData}
         originalData={originalTableData}

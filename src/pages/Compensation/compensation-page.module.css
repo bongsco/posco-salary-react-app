@@ -46,6 +46,19 @@
   width: 100%;
 }
 
+.tableHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 0;
+  margin-bottom: -4px; /* 표와 간격 없애기 위한 조정 */
+  padding-right: 4px;
+}
+
+.unitText {
+  font-size: 13px;
+}
+
 .inputCell {
   padding: 6px 4px !important;
   width: 100%;
