@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import CheckBox from '#components/CheckBox/CheckBox';
 import PaybandTableRow from './PaybandTableRow';
@@ -19,7 +19,7 @@ export default function PaybandConfigPage() {
     },
     {
       id: 2,
-      grade: 'P1',
+      grade: 'P2',
       upperBound: 170,
       lowerBound: 20,
       modified: [],
@@ -35,6 +35,36 @@ export default function PaybandConfigPage() {
       error: [],
       isChecked: false,
     },
+  ]);
+
+  const allGrades = useRef([
+    'A1',
+    'A2',
+    'A3',
+    'D1',
+    'D2',
+    'D3',
+    'E2',
+    'E3',
+    'E4',
+    'E5',
+    'E6',
+    'G1',
+    'G2',
+    'G3',
+    'O1',
+    'O2',
+    'O3',
+    'P1',
+    'P2',
+    'P3',
+    'P4',
+    'P5',
+    'P6',
+    'P7',
+    'R1',
+    'R2',
+    'R3',
   ]);
 
   const [payband, setPayband] = useState(structuredClone(receivedPayband));
@@ -53,19 +83,38 @@ export default function PaybandConfigPage() {
     return payband.length > 0 && payband.every((pb) => pb.isChecked);
   }, [payband]);
 
+  const remainingGrades = useMemo(() => {
+    const usedGrades = payband.map((item) => item.grade);
+    return allGrades.current.filter((grade) => !usedGrades.includes(grade));
+  }, [payband, allGrades]);
+
   return (
     <AdjustEditLayout
       prevStepPath="payment-rate"
       nextStepPath="../preparation/target"
       stepPaths={['기준 설정', 'Payband 설정']}
       onCommit={() => {
+        const gradeCount = payband.reduce((acc, pb) => {
+          if (!pb.grade) return acc;
+          if (deletedPayband.some((d) => d.id === pb.id)) return acc;
+
+          acc[pb.grade] = (acc[pb.grade] || 0) + 1;
+          return acc;
+        }, {});
+
         const updatedPayband = payband.map((pb) => {
           let errors = [...pb.error];
           if (deletedPayband.some((d) => d.id === pb.id)) {
             errors = [];
-          } else if (pb.grade === undefined && !errors.includes('직급')) {
+          } else if (!pb.grade && !errors.includes('직급')) {
             errors.push('직급');
-          } else if (pb.grade !== undefined) {
+          } else if (pb.grade) {
+            if (gradeCount[pb.grade] > 1) {
+              errors.push('직급 중복');
+            } else {
+              const idx = errors.indexOf('직급 중복');
+              if (idx > -1) errors.splice(idx, 1);
+            }
             const idx = errors.indexOf('직급');
             if (idx > -1) errors.splice(idx, 1);
           }
@@ -190,6 +239,7 @@ export default function PaybandConfigPage() {
                       prev.map((pb, i) => (i === index ? modifiedItem : pb)),
                     );
                   }}
+                  remainingGrades={remainingGrades}
                 />
               ))}
               <tr>

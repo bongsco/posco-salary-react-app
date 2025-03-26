@@ -14,6 +14,7 @@ export default function PaybandTableRow({
   originItem,
   onChange,
   onChecked,
+  remainingGrades,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -115,42 +116,14 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.grade_cell}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted || item.error.includes('직급 중복') ? styles.deleted_cell : ''} ${styles.grade_cell}`}
       >
         {!item.modified.includes('전체') ? (
           item.grade
         ) : (
           <div className={`${styles.table_cell}`}>
             <Dropdown
-              options={[
-                'A1',
-                'A2',
-                'A3',
-                'D1',
-                'D2',
-                'D3',
-                'E2',
-                'E3',
-                'E4',
-                'E5',
-                'E6',
-                'G1',
-                'G2',
-                'G3',
-                'O1',
-                'O2',
-                'O3',
-                'P1',
-                'P2',
-                'P3',
-                'P4',
-                'P5',
-                'P6',
-                'P7',
-                'R1',
-                'R2',
-                'R3',
-              ]}
+              options={remainingGrades}
               error={item.error.includes('직급')}
               placeHolder="선택"
               onChange={(option) => {
@@ -257,4 +230,5 @@ PaybandTableRow.propTypes = {
   }).isRequired,
   onChange: PropTypes.func.isRequired,
   onChecked: PropTypes.func.isRequired,
+  remainingGrades: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
