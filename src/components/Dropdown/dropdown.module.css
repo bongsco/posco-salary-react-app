@@ -4,9 +4,9 @@
   display: flex;
   align-items: start;
   flex-direction: column;
-  width: fit-content;
   height: auto;
   position: relative;
+  width: 200px;
 }
 
 .dropdown-area.error .dropdown,
@@ -21,17 +21,24 @@
 .dropdown {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border: 1px solid var(--color-primary-lighter);
   border-radius: 5px;
   padding: 7.25px 8px;
   height: auto;
 }
 
+.dropdownText {
+  display: block;
+  flex-shrink: 0;
+  text-overflow: ellipsis;
+  line-break: unset;
+}
+
 /* select-selected 관련 css */
 .select-selected {
   border: none;
-  width: 100%; 
+  width: 100%;
   height: auto;
   padding: 0px;
   color: var(--color-grayscale-5);
@@ -39,22 +46,18 @@
   font: var(--font-caption-1r-pc);
   position: relative;
   text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.select-selected:after {
+.select-selected-button {
   content: '';
   width: 20px;
   height: 12px;
   background-image: url('./dropdownbutton.svg');
   background-size: contain;
   background-repeat: no-repeat;
-  display: inline-block;
-  position: absolute;
-  /* 우측 정렬 */
-  right: 0;
-  /* 중앙 정렬 */
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .select-selected.selected-option {
@@ -63,12 +66,12 @@
 
 /* message 관련 css */
 .message {
-  width: 100%;
+  width: fit-content;
   margin-top: 4px;
   padding-left: 3px;
   color: var(--color-primary-darker);
   font: var(--font-caption-1r-pc);
-  left: 0px;
+  white-space: nowrap;
 }
 
 /* select-items-list 관련 css*/
@@ -79,7 +82,6 @@
   border-radius: 5px;
   padding: 6px 4px;
   width: fit-content;
-  min-width: 213px;
   height: auto;
   background-color: var(--color-background-general);
   gap: 2px;
@@ -87,6 +89,9 @@
   max-height: 200px;
   overflow: auto;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
 }
 
 .select-items-list::-webkit-scrollbar {
