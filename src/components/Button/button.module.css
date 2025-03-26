@@ -22,7 +22,7 @@ custom : 임의로 사이즈 설정 가능
 
 .button.xsmall {
   width: 49px;
-  height: 34px;
+  height: 27px;
   border-radius: 8px;
   font: var(--font-body-3-pc);
 }
