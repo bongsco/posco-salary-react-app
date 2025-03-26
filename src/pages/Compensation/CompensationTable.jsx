@@ -12,7 +12,6 @@ export default function CompensationTable({
   valueKey,
   onAddGradeRow,
   hasTypeError,
-  setHasTypeError,
 }) {
   const [checkedRows, setCheckedRows] = useState({});
 
@@ -67,7 +66,6 @@ export default function CompensationTable({
               onChange={onChange}
               valueKey={valueKey}
               hasTypeError={hasTypeError}
-              setHasTypeError={setHasTypeError}
             />
           ))}
           <tr>
@@ -112,5 +110,4 @@ CompensationTable.propTypes = {
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
   onAddGradeRow: PropTypes.func.isRequired,
   hasTypeError: PropTypes.bool.isRequired,
-  setHasTypeError: PropTypes.func.isRequired,
 };

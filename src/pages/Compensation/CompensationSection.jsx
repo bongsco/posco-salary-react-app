@@ -15,7 +15,6 @@ export default function CompensationSection({
   valueKey,
   onAddGradeRow,
   hasTypeError,
-  setHasTypeError,
 }) {
   return (
     <div className={styles.section}>
@@ -46,7 +45,6 @@ export default function CompensationSection({
         valueKey={valueKey}
         onAddGradeRow={onAddGradeRow}
         hasTypeError={hasTypeError}
-        setHasTypeError={setHasTypeError}
       />
     </div>
   );
@@ -78,5 +76,4 @@ CompensationSection.propTypes = {
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
   onAddGradeRow: PropTypes.func.isRequired,
   hasTypeError: PropTypes.bool.isRequired,
-  setHasTypeError: PropTypes.func.isRequired,
 };

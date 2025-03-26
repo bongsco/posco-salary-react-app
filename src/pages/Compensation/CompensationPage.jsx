@@ -131,7 +131,8 @@ export default function CompensationPage() {
     eval_annual_salary_increment: false,
     eval_perform_provoide_rate: false,
   });
-  const [hasTypeError, setHasTypeError] = useState(false);
+  const [hasTypeError1, setHasTypeError1] = useState(false);
+  const [hasTypeError2, setHasTypeError2] = useState(false);
 
   useEffect(() => {
     if (state.isCommitted) {
@@ -140,14 +141,42 @@ export default function CompensationPage() {
         eval_perform_provoide_rate: false,
       });
 
-      setHasTypeError(false);
+      setHasTypeError1(false);
+      setHasTypeError2(false);
     }
   }, [state.isCommitted]);
+
+  const validateTable = (nextData, key) => {
+    const hasInvalid = Object.values(nextData).some((ranks) =>
+      Object.values(ranks).some((values) => {
+        const value = values[key];
+        return typeof value === 'string' || value === '' || Number.isNaN(value);
+      }),
+    );
+
+    if (key === 'value1') {
+      setHasTypeError1(hasInvalid);
+    } else if (key === 'value2') {
+      setHasTypeError2(hasInvalid);
+    }
+  };
 
   // 테이블 셀 인풋 변경 핸들러
   const handleInputChange = (grade, rank, key, e) => {
     const input = e.target.value.trim();
     const isValidNumber = /^-?\d+(\.\d+)?$/.test(input);
+    const nextValue = isValidNumber ? Number(input) : input;
+
+    const nextRankRate = {
+      ...state.rankRate,
+      [grade]: {
+        ...state.rankRate[grade],
+        [rank]: {
+          ...state.rankRate[grade][rank],
+          [key]: nextValue,
+        },
+      },
+    };
 
     dispatch({
       type: 'changeRankRate',
@@ -155,9 +184,11 @@ export default function CompensationPage() {
         grade,
         rank,
         key,
-        value: isValidNumber ? Number(input) : input,
+        value: nextValue,
       },
     });
+
+    validateTable(nextRankRate, key);
   };
 
   // 가산률 변경 핸들러
@@ -181,12 +212,29 @@ export default function CompensationPage() {
   };
 
   const handleAddGradeRow = () => {
+    const newGrade = `NEW${Object.keys(state.rankRate).length + 1}`;
+
     dispatch({
       type: 'addGradeRow',
       payload: {
-        grade: `NEW${Object.keys(state.rankRate).length + 1}`,
+        grade: newGrade,
       },
     });
+
+    const nextData = {
+      ...state.rankRate,
+      [newGrade]: {
+        S: { value1: '', value2: '' },
+        A: { value1: '', value2: '' },
+        BPlus: { value1: '', value2: '' },
+        B: { value1: '', value2: '' },
+        C: { value1: '', value2: '' },
+        D: { value1: '', value2: '' },
+      },
+    };
+
+    validateTable(nextData, 'value1');
+    validateTable(nextData, 'value2');
   };
 
   return (
@@ -213,8 +261,7 @@ export default function CompensationPage() {
           onTableChange={handleInputChange}
           valueKey="value1"
           onAddGradeRow={handleAddGradeRow}
-          hasTypeError={hasTypeError}
-          setHasTypeError={setHasTypeError}
+          hasTypeError={hasTypeError1}
         />
 
         {/* 2. 경영성과금 지급률 */}
@@ -231,8 +278,7 @@ export default function CompensationPage() {
           onTableChange={handleInputChange}
           valueKey="value2"
           onAddGradeRow={handleAddGradeRow}
-          hasTypeError={hasTypeError}
-          setHasTypeError={setHasTypeError}
+          hasTypeError={hasTypeError2}
         />
       </div>
     </AdjustEditLayout>

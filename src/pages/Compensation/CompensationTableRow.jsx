@@ -13,12 +13,9 @@ export default function CompensationTableRow({
   onCheck,
   onChange,
   valueKey,
-  setHasTypeError,
 }) {
   const [selectedGrade, setSelectedGrade] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  let rowHasTypeError = false;
 
   const isNewRow = grade.startsWith('NEW');
 
@@ -49,7 +46,7 @@ export default function CompensationTableRow({
               isOpen={isDropdownOpen}
               onClick={handleDropdownToggle}
               onChange={handleDropdownSelect}
-              error
+              error={!selectedGrade}
             />
           ) : (
             grade
@@ -63,8 +60,6 @@ export default function CompensationTableRow({
 
         const isTypeDifferent =
           typeof currentValue === 'string' || currentValue === '';
-
-        if (isTypeDifferent) rowHasTypeError = true;
 
         return (
           <td
@@ -85,7 +80,6 @@ export default function CompensationTableRow({
           </td>
         );
       })}
-      {rowHasTypeError && setHasTypeError(true)}
     </tr>
   );
 }
@@ -112,5 +106,6 @@ CompensationTableRow.propTypes = {
   onCheck: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
-  setHasTypeError: PropTypes.func.isRequired,
+  // hasTypeError: PropTypes.bool.isRequired,
+  // setHasTypeError: PropTypes.func.isRequired,
 };
