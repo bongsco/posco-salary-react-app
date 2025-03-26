@@ -10,8 +10,8 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
   const [showSort, setShowSort] = useState(false);
 
   return (
-    <>
-      <div className={styles.leftGroup}>
+    <div className={styles.leftGroup}>
+      <div className={styles.filterOne}>
         <Button
           variant="secondary"
           size="round"
@@ -21,6 +21,18 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
             setShowFilter(true);
           }}
         />
+        {showFilter && (
+          <FilterModal
+            option={filterOption}
+            onSubmit={(filters) => {
+              onSubmit({ type: 'filter', payload: filters });
+              setShowFilter(false);
+            }}
+            onClose={() => setShowFilter(false)}
+          />
+        )}
+      </div>
+      <div className={styles.filterOne}>
         <Button
           variant="secondary"
           size="round"
@@ -30,30 +42,18 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
             setShowSort(true);
           }}
         />
+        {showSort && (
+          <SortModal
+            option={sortOption}
+            onSubmit={(sortList) => {
+              onSubmit({ type: 'sort', payload: sortList });
+              setShowSort(false);
+            }}
+            onClose={() => setShowSort(false)}
+          />
+        )}
       </div>
-
-      {showFilter && (
-        <FilterModal
-          option={filterOption}
-          onSubmit={(filters) => {
-            onSubmit({ type: 'filter', payload: filters });
-            setShowFilter(false);
-          }}
-          onClose={() => setShowFilter(false)}
-        />
-      )}
-
-      {showSort && (
-        <SortModal
-          option={sortOption}
-          onSubmit={(sortList) => {
-            onSubmit({ type: 'sort', payload: sortList });
-            setShowSort(false);
-          }}
-          onClose={() => setShowSort(false)}
-        />
-      )}
-    </>
+    </div>
   );
 }
 

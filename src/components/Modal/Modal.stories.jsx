@@ -15,29 +15,35 @@ function Template({
 }) {
   if (type === 'filter') {
     return (
-      <FilterModal
-        option={option}
-        onSubmit={onSubmit}
-        onClose={onClose}
-        prevFilters={prevFilters}
-      />
+      <div style={{ position: 'absolute' }}>
+        <FilterModal
+          option={option}
+          onSubmit={onSubmit}
+          onClose={onClose}
+          prevFilters={prevFilters}
+        />
+      </div>
     );
   }
 
   if (type === 'register') {
     return (
-      <RegisterModal option={option} onSubmit={onSubmit} onClose={onClose} />
+      <div style={{ position: 'absolute' }}>
+        <RegisterModal option={option} onSubmit={onSubmit} onClose={onClose} />
+      </div>
     );
   }
 
   if (type === 'sort') {
     return (
-      <SortModal
-        option={option}
-        onSubmit={onSubmit}
-        onClose={onClose}
-        prevSortList={prevSortList}
-      />
+      <div style={{ position: 'absolute' }}>
+        <SortModal
+          option={option}
+          onSubmit={onSubmit}
+          onClose={onClose}
+          prevSortList={prevSortList}
+        />
+      </div>
     );
   }
 
@@ -52,8 +58,24 @@ Template.propTypes = {
   ]).isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  prevFilters: PropTypes.arrayOf([PropTypes.object]).isRequired,
-  prevSortList: PropTypes.arrayOf([PropTypes.object]).isRequired,
+  prevFilters: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.instanceOf(Date),
+        ]),
+      ).isRequired,
+    }),
+  ).isRequired,
+  prevSortList: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default {
@@ -76,7 +98,6 @@ FilterModalStory.args = {
       optionType: 'dropdown',
     },
   },
-
   onClose: () => {},
 };
 

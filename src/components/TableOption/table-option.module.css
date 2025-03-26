@@ -1,12 +1,13 @@
 @import url('../../styles/global.css');
 
-.filterWrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
 .leftGroup {
   display: flex;
   gap: 4px;
-  margin-bottom: 8px;
+}
+
+.filterOne{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position : relative;
 }

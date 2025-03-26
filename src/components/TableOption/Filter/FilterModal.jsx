@@ -121,12 +121,18 @@ function ValueSelector({
   }
 
   if (optionType === 'text') {
+    const isYearField = selectedKey === '연도'; // 또는 key에 따라
+    const hasError =
+      isYearField && selectedValue && !/^\d+$/.test(selectedValue);
+
     return (
       <Input
         placeholder="값 입력"
         value={selectedValue || ''}
         onChange={(e) => handleChange(e.target.value)}
         customWidth="133px"
+        mode={hasError ? 'error' : 'default'}
+        label={hasError ? '숫자를 입력하세요' : undefined}
       />
     );
   }
