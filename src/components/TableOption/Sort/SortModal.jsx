@@ -53,6 +53,12 @@ function reducer(state, action) {
 export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
   const [state, dispatch] = useReducer(reducer, prevSortList, init);
 
+  const valueOptions =
+    state.selectedKey &&
+    !state.sortList.some((sort) => sort.key === state.selectedKey)
+      ? option.values
+      : []; // 이미 정렬 방식이 지정된 key면 선택지 없음
+
   return (
     <Modal onSubmit={() => onSubmit?.(state.sortList)} onClose={onClose}>
       <span className={styles.title}>정렬</span>
@@ -70,7 +76,7 @@ export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
         />
         <Dropdown
           placeHolder="정렬 방식"
-          options={option.values}
+          options={valueOptions}
           selectedValue={state.selectedValue}
           isOpen={state.isValueOpen}
           onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
@@ -78,6 +84,7 @@ export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
           customWidth="133px"
           error={false}
         />
+
         <button
           type="button"
           className={styles.plusButton}

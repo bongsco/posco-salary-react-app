@@ -14,7 +14,7 @@ const init = (prevFilters) => ({
   filters: prevFilters || [],
 });
 
-function reducer(state, action) {
+function reducer(state, action, option) {
   switch (action.type) {
     case 'TOGGLE_KEY':
       return { ...state, isKeyOpen: !state.isKeyOpen };
@@ -47,13 +47,35 @@ function reducer(state, action) {
     case 'ADD_FILTER': {
       if (state.selectedKey && state.selectedValue) {
         const existing = state.filters.find((f) => f.key === state.selectedKey);
+        const optionType = option[state.selectedKey]?.optionType;
+
+        const isDuplicate =
+          existing?.value.some((val) => {
+            if (optionType === 'date') {
+              return (
+                val instanceof Date &&
+                state.selectedValue instanceof Date &&
+                val.toDateString() === state.selectedValue.toDateString()
+              );
+            }
+            return String(val) === String(state.selectedValue);
+          }) ?? false;
+
+        if (isDuplicate) {
+          // 중복이면 아무것도 추가하지 않음
+          return {
+            ...state,
+            selectedKey: null,
+            selectedValue: null,
+          };
+        }
 
         if (existing) {
           const updatedFilters = state.filters.map((f) =>
             f.key === state.selectedKey
               ? {
                   ...f,
-                  value: Array.from(new Set([...f.value, state.selectedValue])),
+                  value: [...f.value, state.selectedValue],
                 }
               : f,
           );
@@ -64,6 +86,7 @@ function reducer(state, action) {
             selectedValue: null,
           };
         }
+
         return {
           ...state,
           filters: [
@@ -92,6 +115,7 @@ function ValueSelector({
   selectedValue,
   isOpen,
   dispatch,
+  filters,
 }) {
   if (!selectedKey || !option[selectedKey]) return null;
 
@@ -106,10 +130,18 @@ function ValueSelector({
   };
 
   if (optionType === 'dropdown') {
+    const originalOptions = option[selectedKey]?.options.map(String) || [];
+    const alreadySelected =
+      filters?.find((f) => f.key === selectedKey)?.value.map(String) || [];
+
+    const filteredOptions = originalOptions.filter(
+      (opt) => !alreadySelected.includes(opt),
+    );
+
     return (
       <Dropdown
         placeHolder="값 선택"
-        options={option[selectedKey].options.map(String)}
+        options={filteredOptions}
         selectedValue={selectedValue}
         isOpen={isOpen}
         onChange={handleChange}
@@ -138,11 +170,25 @@ function ValueSelector({
   }
 
   if (optionType === 'date') {
+    // 날짜 중복 체크
+    const selectedDates =
+      filters?.find((f) => f.key === selectedKey)?.value || [];
+
+    const isDuplicate = selectedDates.some(
+      (date) =>
+        date instanceof Date &&
+        selectedValue instanceof Date &&
+        date.toDateString() === selectedValue.toDateString(),
+    );
+    console.log('중복', isDuplicate);
+
     return (
       <CustomDatePicker
         selectedDate={selectedValue}
-        onChange={handleChange}
+        onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
         customWidth="133px"
+        hasError={isDuplicate}
+        // errorMessage={isDuplicate ? '중복된 날짜입니다' : undefined}
       />
     );
   }
@@ -156,7 +202,11 @@ export default function FilterModal({
   onClose,
   prevFilters,
 }) {
-  const [state, dispatch] = useReducer(reducer, prevFilters, init);
+  const [state, dispatch] = useReducer(
+    (s, action) => reducer(s, action, option), // ✅ option 추가
+    prevFilters,
+    init,
+  );
   const keys = Object.keys(option);
 
   const formatValue = (val) => {
@@ -191,6 +241,7 @@ export default function FilterModal({
           selectedValue={state.selectedValue}
           isOpen={state.isValueOpen}
           dispatch={dispatch}
+          filters={state.filters}
         />
 
         <button
@@ -251,8 +302,22 @@ ValueSelector.propTypes = {
   ]).isRequired,
   isOpen: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.instanceOf(Date),
+        ]),
+      ).isRequired,
+    }),
+  ),
 };
-
+ValueSelector.defaultProps = {
+  filters: [],
+};
 FilterModal.propTypes = {
   option: PropTypes.objectOf(
     PropTypes.shape({
