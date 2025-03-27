@@ -1,9 +1,9 @@
-import { createRef, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import '#styles/datepicker.css'; // CSS Modules import
-import '#styles/input.css';
+import inputStyles from '#styles/input.module.css';
+import './datepicker.module.css';
 
 function CustomDatePicker({
   isDisabled,
@@ -13,7 +13,6 @@ function CustomDatePicker({
   customWidth = null,
   message = null,
 }) {
-  const inputRef = createRef();
   const [date, setDate] = useState(new Date());
 
   const handleDateChange = (d) => {
@@ -25,7 +24,8 @@ function CustomDatePicker({
 
   return (
     <div
-      className={`input-container ${hasError ? 'error' : ''} ${isSaved && !hasError ? 'default' : ''} ${!isSaved && !hasError ? 'ok' : ''}`}
+      className={`${inputStyles.container} ${hasError ? inputStyles.error : ''} ${isSaved && !hasError ? inputStyles.default : ''} ${!isSaved && !hasError ? inputStyles.ok : ''}`}
+      style={{ width: customWidth }}
     >
       <DatePicker
         showIcon
@@ -35,16 +35,15 @@ function CustomDatePicker({
         dateFormat="yyyy-MM-dd"
         disabled={isDisabled}
         readOnly={isDisabled}
-        ref={inputRef}
         customInput={
           <input
-            className="input"
+            className={inputStyles.input}
             placeholder="yyyy-MM-dd"
             style={{ width: customWidth }}
           />
         }
       />
-      {message && <div className="input-message">{message}</div>}
+      {message && <div className={inputStyles.message}>{message}</div>}
     </div>
   );
 }
