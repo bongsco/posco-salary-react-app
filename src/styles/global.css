@@ -1,6 +1,7 @@
 @import url('./fonts.css');
 @import url('./table.css');
 @import url('./input.css');
+@import url('./datepicker.css');
 
 :root {
   --color-primary-lightest: #e9f6ff;

@@ -4,9 +4,6 @@ import CustomDatePicker from './CustomDatePicker';
 export default {
   title: 'UI/Form/CustomDatePicker',
   component: CustomDatePicker,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
   argTypes: {
     isDisabled: { control: 'boolean' },
@@ -20,7 +17,8 @@ export default {
 export const Default = {
   args: {
     isDisabled: false,
-    isSaved: false,
+    isSaved: true,
+    hasError: false,
   },
 };
 
@@ -29,6 +27,7 @@ export const SavedState = {
   args: {
     isDisabled: false,
     isSaved: true,
+    hasError: false,
   },
 };
 
@@ -37,11 +36,13 @@ export const Disabled = {
   args: {
     isDisabled: true,
     isSaved: true,
+    hasError: false,
   },
 };
 
 export const Error = {
   args: {
+    isDisabled: false,
     isSaved: true,
     hasError: true,
   },

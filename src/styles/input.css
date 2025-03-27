@@ -12,21 +12,17 @@
   font: var(--font-caption-1r-pc);
 }
 
-.input-container.default > input,
-.input-container.default > button {
+.input-container.default .input {
   border-color: var(--color-primary-lighter);
 }
-.input-container.error > input,
-.input-container.error > button {
+.input-container.error .input {
   border-color: var(--color-system-caution);
 }
-.input-container.ok > input,
-.input-container.ok > button {
+.input-container.ok .input {
   border-color: var(--color-system-dark);
 }
 
-.input-container > input,
-.input-container > button {
+.input-container .input {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -38,6 +34,8 @@
   border-style: solid;
   border-radius: 5px;
   padding: 7.25px 8px;
+
+  transition: border 0.3s ease;
 }
 
 .input-text {
@@ -62,6 +60,7 @@
   padding-left: 3px;
   font: var(--font-caption-1r-pc);
   white-space: nowrap;
+  transition: color 0.3s ease;
 }
 
 .input-container.default .input-message {
