@@ -3,7 +3,9 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './compensation-page.module.css';
 import CompensationSection from './CompensationSection';
 
-/* 더미 데이터 */
+/* =============================
+  🔹 초기 더미 데이터 정의
+============================= */
 const initialRankRate = {
   P3: {
     S: { value1: 0.8, value2: 400 },
@@ -28,7 +30,9 @@ const initialAdjInfo = {
   eval_perform_provide_rate: 0.3,
 };
 
-/* 초기 상태 */
+/* =============================
+  🔹 상태 초기값 정의
+============================= */
 const initialState = {
   rankRate: initialRankRate,
   adjInfo: initialAdjInfo,
@@ -39,10 +43,11 @@ const initialState = {
   isCommitted: true,
 };
 
-/* 상태 관리 함수 */
+/* =============================
+  🔹 상태 관리용 Reducer
+============================= */
 function reducer(state, action) {
   switch (action.type) {
-    // 직급 & 등급별 보상 비율 값 변경
     case 'changeRankRate': {
       const { grade, rank, key, value } = action.payload;
       const updated = {
@@ -62,7 +67,6 @@ function reducer(state, action) {
       };
     }
 
-    // 보상 조정 정보 변경
     case 'changeAdjInfo': {
       const { key, value } = action.payload;
       return {
@@ -75,31 +79,8 @@ function reducer(state, action) {
       };
     }
 
-    // 현재 상태를 백업하고 커밋 완료 상태로 전환
-    case 'commit': {
-      return {
-        ...state,
-        backup: {
-          rankRate: JSON.parse(JSON.stringify(state.rankRate)),
-          adjInfo: JSON.parse(JSON.stringify(state.adjInfo)),
-        },
-        isCommitted: true,
-      };
-    }
-
-    // 마지막 커밋된 상태로 되돌리기
-    case 'rollback': {
-      return {
-        ...state,
-        rankRate: state.backup?.rankRate || state.rankRate,
-        adjInfo: state.backup?.adjInfo || state.adjInfo,
-        isCommitted: true,
-      };
-    }
-    // 새로운 행 추가하기
     case 'addGradeRow': {
       const { grade } = action.payload;
-
       const newRanks = {
         S: { value1: '', value2: '' },
         A: { value1: '', value2: '' },
@@ -108,7 +89,6 @@ function reducer(state, action) {
         C: { value1: '', value2: '' },
         D: { value1: '', value2: '' },
       };
-
       return {
         ...state,
         rankRate: {
@@ -119,33 +99,62 @@ function reducer(state, action) {
       };
     }
 
-    // 알 수 없는 액션이면 기존 상태 그대로 반환
+    case 'commit': {
+      const { updatedRankRate } = action.payload;
+      return {
+        ...state,
+        rankRate: updatedRankRate,
+        backup: {
+          rankRate: JSON.parse(JSON.stringify(updatedRankRate)),
+          adjInfo: JSON.parse(JSON.stringify(state.adjInfo)),
+        },
+        isCommitted: true,
+      };
+    }
+
+    case 'rollback': {
+      return {
+        ...state,
+        rankRate: state.backup?.rankRate || state.rankRate,
+        adjInfo: state.backup?.adjInfo || state.adjInfo,
+        isCommitted: true,
+      };
+    }
+
     default:
       return state;
   }
 }
 
+/* =============================
+  🔹 CompensationPage 
+============================= */
 export default function CompensationPage() {
+  // ✅ 상태 정의
   const [state, dispatch] = useReducer(reducer, initialState);
   const [errorState, setErrorState] = useState({
     eval_annual_salary_increment: false,
     eval_perform_provoide_rate: false,
   });
-  const [hasTypeError1, setHasTypeError1] = useState(false);
-  const [hasTypeError2, setHasTypeError2] = useState(false);
 
+  const [hasTypeError1, setHasTypeError1] = useState(false); // value1 관련 에러
+  const [hasTypeError2, setHasTypeError2] = useState(false); // value2 관련 에러
+
+  const [newGradeSelections, setNewGradeSelections] = useState({}); // NEW 행의 드롭다운 선택 값
+
+  // ✅ 커밋 시 초기화
   useEffect(() => {
     if (state.isCommitted) {
       setErrorState({
         eval_annual_salary_increment: false,
         eval_perform_provoide_rate: false,
       });
-
       setHasTypeError1(false);
       setHasTypeError2(false);
     }
   }, [state.isCommitted]);
 
+  // ✅ 테이블 입력값 유효성 검사
   const validateTable = (nextData, key) => {
     const hasInvalid = Object.values(nextData).some((ranks) =>
       Object.values(ranks).some((values) => {
@@ -153,15 +162,11 @@ export default function CompensationPage() {
         return typeof value === 'string' || value === '' || Number.isNaN(value);
       }),
     );
-
-    if (key === 'value1') {
-      setHasTypeError1(hasInvalid);
-    } else if (key === 'value2') {
-      setHasTypeError2(hasInvalid);
-    }
+    if (key === 'value1') setHasTypeError1(hasInvalid);
+    else if (key === 'value2') setHasTypeError2(hasInvalid);
   };
 
-  // 테이블 셀 인풋 변경 핸들러
+  // ✅ 셀 값 변경 시 핸들러
   const handleInputChange = (grade, rank, key, e) => {
     const input = e.target.value.trim();
     const isValidNumber = /^-?\d+(\.\d+)?$/.test(input);
@@ -191,7 +196,7 @@ export default function CompensationPage() {
     validateTable(nextRankRate, key);
   };
 
-  // 가산률 변경 핸들러
+  // ✅ 연봉/성과금 가산률 입력 변경
   const handleAdjustmentChange = (key, e) => {
     const isValid =
       /^-?\d*(\.\d+)?$/.test(e.target.value.trim()) &&
@@ -211,14 +216,12 @@ export default function CompensationPage() {
     }));
   };
 
+  // ✅ 행 추가 시
   const handleAddGradeRow = () => {
     const newGrade = `NEW${Object.keys(state.rankRate).length + 1}`;
-
     dispatch({
       type: 'addGradeRow',
-      payload: {
-        grade: newGrade,
-      },
+      payload: { grade: newGrade },
     });
 
     const nextData = {
@@ -232,22 +235,55 @@ export default function CompensationPage() {
         D: { value1: '', value2: '' },
       },
     };
-
     validateTable(nextData, 'value1');
     validateTable(nextData, 'value2');
   };
 
+  // ✅ 에러 상태 계산 : 에러 하나라도 있으면 저장 불가
+  const hasAnyError =
+    hasTypeError1 ||
+    hasTypeError2 ||
+    errorState.eval_annual_salary_increment ||
+    errorState.eval_perform_provoide_rate;
+
+  // ✅ 커밋 처리 로직
+  const handleCommit = () => {
+    if (hasAnyError) {
+      return; // 에러 있을 경우 저장 무시
+    }
+
+    const updatedRankRate = { ...state.rankRate };
+
+    // NEW → 선택된 grade로 변환 + 덮어쓰기
+    Object.entries(updatedRankRate).forEach(([grade, ranks]) => {
+      if (grade.startsWith('NEW')) {
+        const selected = newGradeSelections[grade];
+        if (selected) {
+          updatedRankRate[selected] = ranks; // 덮어쓰기
+          delete updatedRankRate[grade];
+        }
+      }
+    });
+
+    dispatch({
+      type: 'commit',
+      payload: { updatedRankRate },
+    });
+
+    setNewGradeSelections({});
+  };
+
+  // ✅ UI 렌더링
   return (
     <AdjustEditLayout
       prevStepPath="target"
       nextStepPath="payband"
       stepPaths={['기준 설정', '보상지급률 설정']}
-      onCommit={() => dispatch({ type: 'commit' })}
+      onCommit={handleCommit}
       onRollback={() => dispatch({ type: 'rollback' })}
       isCommitted={state.isCommitted}
     >
       <div className={styles.container}>
-        {/* 1. 연봉인상률 */}
         <CompensationSection
           title="평가차등 연봉인상률 설정"
           description="직급 및 평가등급별 기준연봉 인상률을 설정합니다. 고성과조직 가산 대상은 인상률에 고성과조직 가산률 입력값이 곱해집니다."
@@ -262,9 +298,15 @@ export default function CompensationPage() {
           valueKey="value1"
           onAddGradeRow={handleAddGradeRow}
           hasTypeError={hasTypeError1}
+          newGradeSelections={newGradeSelections}
+          onSelectGrade={(gradeKey, selected) =>
+            setNewGradeSelections((prev) => ({
+              ...prev,
+              [gradeKey]: selected,
+            }))
+          }
         />
 
-        {/* 2. 경영성과금 지급률 */}
         <CompensationSection
           title="평가차등 경영성과금 지급률 설정"
           description="직급 및 평가등급별 경영성과금 지급 비율을 설정합니다. 고성과조직 가산 대상은 지급률에 고성과조직 가산률 입력값이 더해집니다."
@@ -279,6 +321,13 @@ export default function CompensationPage() {
           valueKey="value2"
           onAddGradeRow={handleAddGradeRow}
           hasTypeError={hasTypeError2}
+          newGradeSelections={newGradeSelections}
+          onSelectGrade={(gradeKey, selected) =>
+            setNewGradeSelections((prev) => ({
+              ...prev,
+              [gradeKey]: selected,
+            }))
+          }
         />
       </div>
     </AdjustEditLayout>

@@ -5,54 +5,78 @@ import CheckBox from '#components/CheckBox';
 import Dropdown from '#components/Dropdown';
 import styles from './compensation-page.module.css';
 
-export default function CompensationTableRow({
-  grade,
-  ranks,
-  originalRanks,
-  checked,
-  onCheck,
-  onChange,
-  valueKey,
-}) {
-  const [selectedGrade, setSelectedGrade] = useState(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+/**
+ * CompensationTableRow
+ *
+ * - 보상 비율 테이블의 각 행(Row)을 렌더링
+ * - NEW로 시작하는 행은 드롭다운이 표시되고, 기존 행은 직급명 텍스트 표시
+ * - 각 셀은 Input 컴포넌트로 구성되어 실시간 입력 가능
+ */
 
+export default function CompensationTableRow({
+  grade, // 직급 키 (e.g. P3, P4, NEW1 등)
+  ranks, // 평가 등급별 보상 데이터 (S~D 등급)
+  originalRanks, // 커밋된 원본 데이터 (diff 체크용)
+  checked, // 행 체크박스 여부
+  onCheck, // 체크박스 클릭 핸들러
+  onChange, // 셀 입력 변경 핸들러
+  valueKey, // 'value1' 또는 'value2' 지정
+  selectedGrade, // NEW 행일 경우 선택된 드롭다운 값
+  onSelectGrade, // 드롭다운 선택 시 호출되는 함수
+}) {
+  // 해당 행이 NEW로 추가된 행인지 여부
   const isNewRow = grade.startsWith('NEW');
+  const hasSelected = !!selectedGrade;
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
   const handleDropdownSelect = (value) => {
-    setSelectedGrade(value);
+    onSelectGrade(grade, value);
     setIsDropdownOpen(false);
   };
 
+  // 직급 표시 영역: 드롭다운 또는 텍스트
+  let gradeContent;
+  if (isNewRow) {
+    if (hasSelected) {
+      gradeContent = selectedGrade;
+    } else {
+      gradeContent = (
+        <Dropdown
+          placeHolder="선택"
+          customWidth="100%"
+          options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
+          selectedValue={selectedGrade || null}
+          isOpen={isDropdownOpen}
+          onClick={handleDropdownToggle}
+          onChange={handleDropdownSelect}
+          error={!selectedGrade}
+        />
+      );
+    }
+  } else {
+    gradeContent = grade;
+  }
+
   return (
     <tr>
+      {/* 체크박스 영역 */}
       <td>
         <div className={styles.table_cell}>
           <CheckBox isChecked={checked} onClick={onCheck} />
         </div>
       </td>
+
+      {/* 직급 셀 (드롭다운 or 텍스트) */}
       <td className={isNewRow ? styles.changedCell : ''}>
-        <div className={styles.table_cell}>
-          {isNewRow ? (
-            <Dropdown
-              placeHolder="선택"
-              customWidth="100%"
-              options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
-              selectedValue={selectedGrade}
-              isOpen={isDropdownOpen}
-              onClick={handleDropdownToggle}
-              onChange={handleDropdownSelect}
-              error={!selectedGrade}
-            />
-          ) : (
-            grade
-          )}
-        </div>
+        <div className={styles.table_cell}>{gradeContent}</div>
       </td>
+
+      {/* 평가등급별 셀 렌더링 */}
       {Object.entries(ranks).map(([rank, values]) => {
         const currentValue = values[valueKey];
         const originalValue = originalRanks?.[rank]?.[valueKey] ?? '';
@@ -106,6 +130,10 @@ CompensationTableRow.propTypes = {
   onCheck: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
-  // hasTypeError: PropTypes.bool.isRequired,
-  // setHasTypeError: PropTypes.func.isRequired,
+  selectedGrade: PropTypes.string,
+  onSelectGrade: PropTypes.func.isRequired,
+};
+
+CompensationTableRow.defaultProps = {
+  selectedGrade: '',
 };

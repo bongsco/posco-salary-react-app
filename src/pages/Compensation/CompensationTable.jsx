@@ -5,16 +5,27 @@ import styles from './compensation-page.module.css';
 import CheckBox from '#components/CheckBox';
 import CompensationTableRow from './CompensationTableRow';
 
-export default function CompensationTable({
-  currentData,
-  originalData,
-  onChange,
-  valueKey,
-  onAddGradeRow,
-  hasTypeError,
-}) {
-  const [checkedRows, setCheckedRows] = useState({});
+/**
+ * CompensationTable
+ *
+ * - 직급/평가등급별 보상 비율 테이블 컴포넌트
+ * - 상위 Section 컴포넌트에서 데이터를 받아 테이블 형태로 렌더링
+ * - 각 행은 CompensationTableRow로 구성됨
+ */
 
+export default function CompensationTable({
+  currentData, // 현재 입력 중인 보상 비율 데이터
+  originalData, // 백업된(커밋된) 보상 테이블 데이터 (diff 확인용)
+  onChange, // 셀 변경 핸들러
+  valueKey, // 'value1' 또는 'value2' 지정
+  onAddGradeRow, // 행 추가 버튼 클릭 시 호출
+  hasTypeError, // 테이블 내 숫자 형식 오류 여부
+  newGradeSelections, // NEW 행의 드롭다운 선택 상태
+  onSelectGrade, // 드롭다운 선택 이벤트 핸들러
+}) {
+  const [checkedRows, setCheckedRows] = useState({}); // 체크 박스 상태
+
+  // 개별 행 체크박스 토글 핸들러
   const handleCheck = (grade) => {
     setCheckedRows((prev) => ({
       ...prev,
@@ -24,6 +35,7 @@ export default function CompensationTable({
 
   return (
     <>
+      {/* 테이블 헤더 상단 텍스트 */}
       <div className={styles.tableHeaderWrapper}>
         <div />
         <div className={styles.unitText}>단위 (%)</div>
@@ -38,6 +50,7 @@ export default function CompensationTable({
         <col style={{ width: '12%' }} />
         <col style={{ width: '12%' }} />
         <col style={{ width: '12%' }} />
+
         <thead>
           <tr>
             <td>
@@ -66,8 +79,12 @@ export default function CompensationTable({
               onChange={onChange}
               valueKey={valueKey}
               hasTypeError={hasTypeError}
+              selectedGrade={newGradeSelections[grade]}
+              onSelectGrade={onSelectGrade}
             />
           ))}
+
+          {/* 행 추가 버튼 영역 */}
           <tr>
             <td colSpan="8" className="button_td">
               <button
@@ -80,6 +97,8 @@ export default function CompensationTable({
           </tr>
         </tbody>
       </table>
+
+      {/* 숫자 입력 오류 메시지 */}
       {hasTypeError && (
         <div className={styles.errorMessage}>
           표에서 빈 값이나 잘못된 값을 수정해 주세요.
@@ -110,4 +129,6 @@ CompensationTable.propTypes = {
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
   onAddGradeRow: PropTypes.func.isRequired,
   hasTypeError: PropTypes.bool.isRequired,
+  newGradeSelections: PropTypes.objectOf(PropTypes.string).isRequired,
+  onSelectGrade: PropTypes.func.isRequired,
 };
