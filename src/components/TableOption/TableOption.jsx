@@ -5,7 +5,13 @@ import FilterModal from './Filter';
 import SortModal from './Sort';
 import styles from './table-option.module.css';
 
-export default function TableOption({ filterOption, sortOption, onSubmit }) {
+export default function TableOption({
+  filterOption,
+  sortOption,
+  onSubmit,
+  filters,
+  sortList,
+}) {
   const [showFilter, setShowFilter] = useState(false);
   const [showSort, setShowSort] = useState(false);
 
@@ -24,15 +30,17 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
         {showFilter && (
           <FilterModal
             option={filterOption}
-            onSubmit={(filters) => {
-              onSubmit({ type: 'filter', payload: filters });
+            prevFilters={filters}
+            onSubmit={(newFilters) => {
+              onSubmit({ type: 'filter', payload: newFilters }); // ✅ 부모에서 관리
               setShowFilter(false);
             }}
             onClose={() => setShowFilter(false)}
           />
         )}
       </div>
-      <div className={styles.filterOne}>
+
+      <div className={styles.filter}>
         <Button
           variant="secondary"
           size="round"
@@ -45,8 +53,9 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
         {showSort && (
           <SortModal
             option={sortOption}
-            onSubmit={(sortList) => {
-              onSubmit({ type: 'sort', payload: sortList });
+            prevSortList={sortList}
+            onSubmit={(newSortList) => {
+              onSubmit({ type: 'sort', payload: newSortList }); // ✅ 부모에서 관리
               setShowSort(false);
             }}
             onClose={() => setShowSort(false)}
@@ -75,5 +84,18 @@ TableOption.propTypes = {
     keys: PropTypes.arrayOf(PropTypes.string).isRequired,
     values: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.instanceOf(Date),
+        ]),
+      ).isRequired,
+    }),
+  ).isRequired,
+  sortList: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSubmit: PropTypes.func.isRequired,
 };

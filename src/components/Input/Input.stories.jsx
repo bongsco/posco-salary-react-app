@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import Input from './Input';
 
 export default {
-  title: 'UI/Form/Input',
+  title: 'UI/Form/Inputs/Input',
   component: Input,
   tags: ['autodocs'],
   argTypes: {
@@ -12,7 +12,11 @@ export default {
     placeholder: { control: 'text' },
     label: { control: 'text' },
     customWidth: { control: 'text' },
+    minWidth: { control: 'text' },
+    maxWidth: { control: 'text' },
     customHeight: { control: 'text' },
+    minHeight: { control: 'text' },
+    maxHeight: { control: 'text' },
     onChange: { action: 'changed' },
     value: { control: 'text' },
   },
@@ -29,8 +33,12 @@ function Template({
   mode,
   placeholder,
   label,
-  customWidth,
-  customHeight,
+  customWidth = null,
+  customHeight = null,
+  maxWidth = null,
+  minWidth = null,
+  maxHeight = null,
+  minHeight = null,
 }) {
   const [value, setValue] = useState(initialValue);
 
@@ -50,7 +58,11 @@ function Template({
       placeholder={placeholder}
       label={label}
       customWidth={customWidth}
+      minWidth={minWidth}
+      maxWidth={maxWidth}
       customHeight={customHeight}
+      minHeight={maxHeight}
+      maxHeight={minHeight}
       value={value}
       onChange={handleChange}
     />
@@ -65,6 +77,10 @@ Template.propTypes = {
   label: PropTypes.string,
   customWidth: PropTypes.string,
   customHeight: PropTypes.string,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
+  maxHeight: PropTypes.string,
+  minHeight: PropTypes.string,
 };
 
 Template.defaultProps = {
@@ -72,6 +88,10 @@ Template.defaultProps = {
   label: '여기에 입력 관련 메시지를 입력하세요.',
   customWidth: null,
   customHeight: null,
+  maxWidth: null,
+  minWidth: null,
+  maxHeight: null,
+  minHeight: null,
 };
 
 export const Default = Template.bind();
