@@ -180,7 +180,6 @@ function ValueSelector({
         selectedValue instanceof Date &&
         date.toDateString() === selectedValue.toDateString(),
     );
-    console.log('중복', isDuplicate);
 
     return (
       <CustomDatePicker
@@ -188,7 +187,6 @@ function ValueSelector({
         onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
         customWidth="133px"
         hasError={isDuplicate}
-        // errorMessage={isDuplicate ? '중복된 날짜입니다' : undefined}
       />
     );
   }
