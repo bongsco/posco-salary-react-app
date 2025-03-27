@@ -1,43 +1,36 @@
 import PropTypes from 'prop-types';
 import styles from './dropdown.module.css';
+import InputFrame from '#components/InputFrame';
 
 export default function Dropdown({
+  error = false,
+  message = null,
+  selectedValue = null,
+  customWidth = null,
   options,
-  error,
-  message = '',
   placeHolder,
-  selectedValue,
   isOpen,
   onChange,
   onClick,
-  customWidth = '200px',
 }) {
   return (
-    <div
-      className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}
-      style={{ width: customWidth }}
+    <InputFrame
+      state={error ? 'error' : 'default'}
+      message={message}
+      customWidth={customWidth}
     >
-      <div className={styles.dropdown} style={{ width: customWidth }}>
-        <button
-          type="button"
-          className={`${styles['select-selected']} ${
-            selectedValue === null ? '' : styles['selected-option']
-          }`}
-          onClick={onClick}
-        >
-          {/* <span className={styles.dropdownText}> */}
+      <button type="button" className={styles.dropdown} onClick={onClick}>
+        <div className={styles.dropdownText}>
           {selectedValue === null ? placeHolder : selectedValue}
-          {/* </span> */}
-        </button>
-        <div className={styles['select-selected-button']} />
-      </div>
-      {!isOpen && message && <div className={styles.message}>{message}</div>}
+        </div>
+        <div className={styles.selectIcon} />
+      </button>
       {isOpen && (
-        <div className={styles['select-items-list']}>
+        <div className={styles.itemList}>
           {options.map((option) => (
             <button
               type="button"
-              className={styles['select-item']}
+              className={styles.item}
               key={option}
               onClick={() => onChange(option)}
             >
@@ -46,13 +39,13 @@ export default function Dropdown({
           ))}
         </div>
       )}
-    </div>
+    </InputFrame>
   );
 }
 
 Dropdown.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  error: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
   message: PropTypes.string,
   placeHolder: PropTypes.string.isRequired,
   selectedValue: PropTypes.string.isRequired,
@@ -63,6 +56,7 @@ Dropdown.propTypes = {
 };
 
 Dropdown.defaultProps = {
-  message: '',
-  customWidth: '200px',
+  error: false,
+  message: null,
+  customWidth: null,
 };

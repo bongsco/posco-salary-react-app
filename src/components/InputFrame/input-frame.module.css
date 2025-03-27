@@ -1,0 +1,60 @@
+@import url('../../styles/global.css');
+
+.container {
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+
+  font: var(--font-caption-1r-pc);
+}
+
+.default > input,
+.default > button {
+  border-color: var(--color-primary-lighter);
+}
+.error > input,
+.error > button {
+  border-color: var(--color-system-caution);
+}
+.ok > input,
+.ok > button {
+  border-color: var(--color-system-dark);
+}
+
+.container > input,
+.container > button {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: var(--color-background-general);
+
+  width: 225px;
+  height: 32px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 7.25px 8px;
+}
+
+.message {
+  flex: 0;
+  padding-left: 3px;
+  font: var(--font-caption-1r-pc);
+  white-space: nowrap;
+}
+
+.default .message {
+  color: var(--color-primary-darker);
+}
+.error .message {
+  color: var(--color-system-caution);
+}
+.ok .message {
+  color: var(--color-system-dark);
+}
