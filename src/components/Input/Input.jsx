@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import '#styles/input.css';
+import inputStyles from '#styles/input.module.css';
 
 function Input({
   id,
@@ -12,17 +12,20 @@ function Input({
   onChange,
 }) {
   return (
-    <div className={`input-container ${mode}`}>
+    <div
+      className={`${inputStyles.container} ${inputStyles[mode]}`}
+      style={{ width: customWidth, height: customHeight }}
+    >
       <input
         id={id}
         type="text"
         value={value}
-        className="input"
+        className={inputStyles.input}
         placeholder={placeholder}
         onChange={onChange}
         style={{ width: customWidth, height: customHeight }}
       />
-      {label && <span className="input-message">{label}</span>}
+      {label && <span className={inputStyles.message}>{label}</span>}
     </div>
   );
 }

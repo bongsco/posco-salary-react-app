@@ -1,0 +1,13 @@
+@import url('../../styles/global.css');
+
+.leftGroup {
+  display: flex;
+  gap: 4px;
+}
+
+.filter{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position : relative;
+}
