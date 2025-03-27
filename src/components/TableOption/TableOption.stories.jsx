@@ -50,7 +50,7 @@ WithInitialState.args = {
     { key: '상태', value: ['진행중'] },
     { key: '연도', value: ['2024'] },
   ],
-  sortList: ['연도', '내림차순'],
+  sortList: [{ key: '연도', value: '내림차순' }],
 };
 
 // ✅ PropTypes 정의
