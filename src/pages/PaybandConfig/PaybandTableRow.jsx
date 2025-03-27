@@ -136,6 +136,7 @@ export default function PaybandTableRow({
                 setIsOpen((prev) => !prev);
               }}
               customWidth="100%"
+              minWidth="50px"
             />
           </div>
         )}
@@ -161,6 +162,7 @@ export default function PaybandTableRow({
               }
             }}
             customWidth="100%"
+            minWidth="50px"
           />
         </div>
       </td>
@@ -185,6 +187,7 @@ export default function PaybandTableRow({
               }
             }}
             customWidth="100%"
+            minWidth="50px"
           />
         </div>
       </td>

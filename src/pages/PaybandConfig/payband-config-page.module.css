@@ -37,6 +37,7 @@
 
 .grade_cell {
   width: 10%;
+  min-width: 87px;
 }
 
 .limit_cell {
@@ -45,6 +46,7 @@
 
 .table {
   width: 100%;
+  min-width: 524px;
 }
 
 .unit_label {
