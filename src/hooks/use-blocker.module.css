@@ -1,0 +1,32 @@
+@import url('../styles/global.css');
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 22px;
+
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 100;
+
+  border-radius: 10px;
+  width: fit-content;
+  height: fit-content;
+  padding: 16px 24px;
+  background: var(--color-primary-main);
+}
+
+.message {
+  font: var(--font-body-2r-pc);
+  color: var(--color-grayscale-white);
+}
+
+.button_group {
+  display: flex;
+  gap: 10px;
+  width: fit-content;
+  justify-content: flex-start;
+  align-items: center;
+}
