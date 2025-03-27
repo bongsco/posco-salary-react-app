@@ -99,19 +99,22 @@ const mapping = {
 };
 
 /* 해당 Filter, Sort Option들은 DB에서 가져올 예정 딱 1번만 가져오면 됌 */
-const initialFilterOptions = {
+const filterOptions = {
   이름: {
+    optionType: 'dropdown',
     options: ['홍', '홍길', '홍길동', '홍길동김'],
-    currentSelectedValue: null,
+    currentSelectedValue: '',
   },
   상태: {
+    optionType: 'dropdown',
     options: ['작업전', '작업중', '완료'],
-    currentSelectedValue: '완료',
+    initialValue: '',
   },
+  연도: { optionType: 'text', initialValue: '' },
 };
 
 /* 해당 Sort Option들은 DB에서 가져올 예정 딱 1번만 가져오면 됌 */
-const initialSortOptions = {
+const sortOptions = {
   keys: ['이름', '직번', '부서', '직급', '평가등급', '고성과조직가산'],
   values: ['오름차순', '내림차순'],
 };
@@ -173,61 +176,18 @@ function HighOrganizationPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   /* Table에서 Pagination을 적용해서 보여줄 Data */
   const [tableData, setTableData] = useState([]);
-  /* Filter, Sort 조건 저장 */
+
+  /* Filter, Sort 조건 저장 , FilterOption과 SortOption 들을 보여주는건 알아서 Table Option에서 처리 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
-  const [filterOptions, setFilterOptions] = useState(initialFilterOptions);
-  const [sortOptions, setSortOptions] = useState(initialSortOptions);
 
-  /* Filter Modal에 Filter를 추가하고 저장하면 실행되는 함수 */
-  const handleAddFilterModal = (data) => {
-    /* 필터 추가 */
-    setFilters(data);
+  const handleModal = (data) => {
+    const { type, payload } = data;
 
-    /* 현재 보여줄 수 있는 Filter Dropdown들에 대한 설정 */
-    if (data.length > 0) {
-      const updatedFilterOptions = { ...filterOptions };
-
-      data.forEach((filter) => {
-        const { key, value } = filter;
-
-        if (updatedFilterOptions[key]) {
-          // 'value'가 배열인 경우, 해당 배열의 모든 값을 삭제
-          value.forEach((val) => {
-            updatedFilterOptions[key].options = updatedFilterOptions[
-              key
-            ].options.filter((item) => item !== val);
-          });
-        }
-      });
-
-      Object.keys(updatedFilterOptions).forEach((key) => {
-        if (
-          updatedFilterOptions[key].options &&
-          updatedFilterOptions[key].options.length === 0
-        ) {
-          delete updatedFilterOptions[key];
-        }
-      });
-
-      setFilterOptions(updatedFilterOptions);
-    }
-  };
-
-  const handleAddSortModal = (data) => {
-    setSorts(data);
-
-    if (data.length > 0) {
-      const updatedSortOptions = { ...sortOptions };
-
-      data.forEach((filter) => {
-        const { key } = filter;
-        const keyIndex = updatedSortOptions.keys.indexOf(key);
-        if (keyIndex !== -1) {
-          updatedSortOptions.keys.splice(keyIndex, 1);
-        }
-      });
-      setSortOptions(updatedSortOptions);
+    if (type === 'filter') {
+      setFilters(payload);
+    } else if (type === 'sort') {
+      setSorts(payload);
     }
   };
 
@@ -320,8 +280,9 @@ function HighOrganizationPage() {
         <FilterSort
           filterOptions={filterOptions}
           sortOptions={sortOptions}
-          onFilterClick={handleAddFilterModal}
-          onSortClick={handleAddSortModal}
+          onSubmit={handleModal}
+          filters={filters}
+          sortList={sorts}
         />
         <HighOrganizationTable
           data={tableData}
