@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import inputStyles from '#styles/input.module.css';
 import styles from './dropdown.module.css';
 
 export default function Dropdown({
@@ -14,17 +13,14 @@ export default function Dropdown({
   onClick,
 }) {
   return (
-    <div
-      className={`${inputStyles.container} ${error ? inputStyles.error : inputStyles.default}`}
-      style={{ width: customWidth }}
-    >
+    <div className={`input-container ${error ? 'error' : 'default'}`}>
       <button
         type="button"
-        className={`${inputStyles.input} ${styles.dropdown}`}
+        className={`input ${styles.dropdown}`}
         onClick={onClick}
         style={{ width: customWidth }}
       >
-        <div className={styles.selectedValue}>
+        <div className="input-text">
           {selectedValue === null ? placeHolder : selectedValue}
         </div>
         <div className={styles.selectIcon} />
@@ -43,7 +39,7 @@ export default function Dropdown({
           ))}
         </div>
       )}
-      {message && <div className={inputStyles.message}>{message}</div>}
+      {message && <div className="input-message">{message}</div>}
     </div>
   );
 }

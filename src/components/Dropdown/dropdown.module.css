@@ -13,21 +13,6 @@
   background-repeat: no-repeat;
 }
 
-.selectedItem {
-  border: 0;
-  padding: 0;
-  margin: 0;
-
-  display: inline;
-  width: max-content;
-  height: fit-content;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  white-space: nowrap;
-}
-
 .itemList {
   position: absolute;
   top: 36px;
