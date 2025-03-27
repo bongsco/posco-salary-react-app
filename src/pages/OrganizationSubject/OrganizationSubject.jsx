@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import Pagination from '#components/Pagination';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './organization-subject.module.css';
@@ -6,38 +6,83 @@ import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 import TableOption from '#components/TableOption';
 
+const filterOption = {
+  평가등급: {
+    optionType: 'dropdown',
+    options: ['S', 'A', 'B', 'B+', 'C', 'D'],
+    initialValue: '',
+  },
+  채용일자: {
+    optionType: 'date',
+    initialValue: '',
+  },
+  성명: {
+    optionType: 'text',
+    initialValue: '',
+  },
+  직번: {
+    optionType: 'text',
+    initialValue: '',
+  },
+};
+
+const sortOption = {
+  keys: ['직번', '성명', '채용일자', '평가등급'],
+  values: ['오름차순', '내림차순'],
+};
+
+const initialOptionState = {
+  filters: { target: [], untarget: [] },
+  sortList: { target: [], untarget: [] },
+};
+
+const optionReducer = (state, action) => {
+  const { tableType, payload } = action;
+  switch (action.type) {
+    case 'SET_FILTER':
+      return {
+        ...state,
+        filters: { ...state.filters, [tableType]: payload },
+      };
+    case 'SET_SORT':
+      return {
+        ...state,
+        sortList: { ...state.sortList, [tableType]: payload },
+      };
+    case 'RESET':
+      return initialOptionState;
+    default:
+      return state;
+  }
+};
+
+const parseHiredDateToDate = (str) => {
+  const normalized = `20${str.replace(/\./g, '-')}`;
+  return new Date(normalized);
+};
+
+const eValueForKey = (e, key) => {
+  switch (key) {
+    case '직번':
+      return e.empId;
+    case '성명':
+      return e.name;
+    case '채용일자':
+      return e.hiredDate;
+    case '평가등급':
+      return e.grade;
+    default:
+      return '';
+  }
+};
+
 export default function OrganizationSubject() {
-  const filterOption = {
-    평가등급: {
-      optionType: 'dropdown',
-      options: ['S', 'A', 'B', 'B+', 'C', 'D'],
-      initialValue: '',
-    },
-    채용일자: {
-      optionType: 'text',
-      initialValue: '',
-    },
-  };
-
-  const sortOption = {
-    keys: ['직번', '성명', '채용일자', '평가등급'],
-    values: ['오름차순', '내림차순'],
-  };
-
-  const [filters, setFilters] = useState({ target: [], untarget: [] });
-  const [sortList, setSortList] = useState({ target: [], untarget: [] });
-
-  const handleOptionSubmit = (tableType, { type, payload }) => {
-    if (type === 'filter') {
-      setFilters((prev) => ({ ...prev, [tableType]: payload }));
-    } else if (type === 'sort') {
-      setSortList((prev) => ({ ...prev, [tableType]: payload }));
-    }
-  };
-
+  const [optionState, dispatchOption] = useReducer(
+    optionReducer,
+    initialOptionState,
+  );
   const [page, setPage] = useState({ target: 1, untarget: 1 });
   const [rowsPerPage, setRowsPerPage] = useState({ target: 5, untarget: 5 });
-
   const [employees, setEmployees] = useState([
     {
       empId: 'pd0a001',
@@ -103,6 +148,21 @@ export default function OrganizationSubject() {
       isTarget: false,
     },
   ]);
+  const [savedEmployees, setSavedEmployees] = useState([]);
+  const [isCommitted, setIsCommitted] = useState(false);
+  const [selectedIds, setSelectedIds] = useState({ target: [], untarget: [] });
+  const [allChecked, setAllChecked] = useState({
+    target: false,
+    untarget: false,
+  });
+
+  const handleOptionSubmit = (tableType, { type, payload }) => {
+    if (type === 'filter') {
+      dispatchOption({ type: 'SET_FILTER', tableType, payload });
+    } else if (type === 'sort') {
+      dispatchOption({ type: 'SET_SORT', tableType, payload });
+    }
+  };
 
   const getProcessedEmployees = (type) => {
     let result = employees.filter((e) =>
@@ -110,52 +170,45 @@ export default function OrganizationSubject() {
     );
 
     // 필터링
-    if (Array.isArray(filters[type])) {
-      filters[type].forEach(({ key, value }) => {
-        if (key === '평가등급' && value.length > 0) {
-          result = result.filter((e) => value.includes(e.grade));
-        } else if (key === '채용일자' && value[0]) {
-          result = result.filter((e) => e.hiredDate.includes(value[0]));
+    const filters = optionState.filters[type];
+    filters.forEach(({ key, value }) => {
+      if (!value || value.length === 0) return;
+      const optionType = filterOption[key]?.optionType;
+      result = result.filter((e) => {
+        const targetValue = eValueForKey(e, key);
+        if (optionType === 'text' || optionType === 'dropdown') {
+          return value.some((v) => String(targetValue).includes(v));
         }
+        if (optionType === 'date') {
+          const inputDate = new Date(value[0]);
+          const empDate = parseHiredDateToDate(targetValue);
+          return (
+            empDate.getFullYear() === inputDate.getFullYear() &&
+            empDate.getMonth() === inputDate.getMonth() &&
+            empDate.getDate() === inputDate.getDate()
+          );
+        }
+        return true;
       });
-    }
+    });
 
     // 정렬
-    if (Array.isArray(sortList[type])) {
-      sortList[type].forEach(({ key, value }) => {
-        result.sort((a, b) => {
-          let aVal = '';
-          let bVal = '';
-          if (key === '직번') {
-            aVal = a.empId;
-            bVal = b.empId;
-          } else if (key === '성명') {
-            aVal = a.name;
-            bVal = b.name;
-          } else if (key === '채용일자') {
-            aVal = a.hiredDate;
-            bVal = b.hiredDate;
-          } else if (key === '평가등급') {
-            aVal = a.grade;
-            bVal = b.grade;
-          }
-
-          if (value === '오름차순') return aVal.localeCompare(bVal);
-          if (value === '내림차순') return bVal.localeCompare(aVal);
-          return 0;
-        });
+    const sortList = optionState.sortList[type];
+    sortList.forEach(({ key, value }) => {
+      result.sort((a, b) => {
+        const aVal = String(eValueForKey(a, key));
+        const bVal = String(eValueForKey(b, key));
+        return value === '오름차순'
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
       });
-    }
+    });
 
     return result;
   };
 
-  const [savedEmployees, setSavedEmployees] = useState([]);
-  const [isCommitted, setIsCommitted] = useState(false);
-
   const targets = getProcessedEmployees('target');
   const untargets = getProcessedEmployees('untarget');
-
   const paginatedTargets = targets.slice(
     (page.target - 1) * rowsPerPage.target,
     page.target * rowsPerPage.target,
@@ -165,31 +218,19 @@ export default function OrganizationSubject() {
     page.untarget * rowsPerPage.untarget,
   );
 
-  const [selectedIds, setSelectedIds] = useState({ target: [], untarget: [] });
-  const [allChecked, setAllChecked] = useState({
-    target: false,
-    untarget: false,
-  });
-
   const toggleSelection = (id, type) => {
     setSelectedIds((prev) => {
       const isSelected = prev[type].includes(id);
       const nextSelected = isSelected
         ? prev[type].filter((x) => x !== id)
         : [...prev[type], id];
-
-      // 현재 리스트: 화면에 보여지는 target/untarget 리스트
       const currentList = type === 'target' ? targets : untargets;
       const allSelected = currentList.every((e) =>
-        type === 'target'
-          ? nextSelected.includes(e.empId)
-          : nextSelected.includes(e.empId),
+        nextSelected.includes(e.empId),
       );
-
       setAllChecked((prevChecked) => ({ ...prevChecked, [type]: allSelected }));
       return { ...prev, [type]: nextSelected };
     });
-
     setIsCommitted(false);
   };
 
@@ -238,8 +279,8 @@ export default function OrganizationSubject() {
             <TableOption
               filterOption={filterOption}
               sortOption={sortOption}
-              filters={filters[type]}
-              sortList={sortList[type]}
+              filters={optionState.filters[type]}
+              sortList={optionState.sortList[type]}
               onSubmit={(submitted) => handleOptionSubmit(type, submitted)}
             />
           </div>
