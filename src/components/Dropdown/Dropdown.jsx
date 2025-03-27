@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '#styles/input.css';
 import styles from './dropdown.module.css';
 
 export default function Dropdown({

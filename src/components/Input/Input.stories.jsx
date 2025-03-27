@@ -18,8 +18,6 @@ export default {
   },
   args: {
     value: 'value 초기값',
-    customWidth: 225,
-    customHeight: 30,
     placeholder: 'Placeholder 플레이스홀더',
     onChange: fn(),
   },
