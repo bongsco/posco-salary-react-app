@@ -1,4 +1,6 @@
-.input-container {
+@import url('./global.css');
+
+.container {
   width: fit-content;
   height: fit-content;
   position: relative;
@@ -12,21 +14,22 @@
   font: var(--font-caption-1r-pc);
 }
 
-.input-container.default .input {
+.container.default .input {
   border-color: var(--color-primary-lighter);
 }
-.input-container.error .input {
+.container.error .input {
   border-color: var(--color-system-caution);
 }
-.input-container.ok .input {
+.container.ok .input {
   border-color: var(--color-system-dark);
 }
 
-.input-container .input {
+.container .input {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   background-color: var(--color-background-general);
+  font: var(--font-caption-1r-pc);
 
   width: 225px;
   height: 32px;
@@ -38,24 +41,7 @@
   transition: border 0.3s ease;
 }
 
-.input-text {
-  border: 0;
-  padding: 0;
-  margin: 0;
-
-  font: var(--font-caption-1r-pc);
-
-  display: inline;
-  width: max-content;
-  height: fit-content;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  white-space: nowrap;
-}
-
-.input-message {
+.message {
   flex: 0;
   padding-left: 3px;
   font: var(--font-caption-1r-pc);
@@ -63,12 +49,12 @@
   transition: color 0.3s ease;
 }
 
-.input-container.default .input-message {
+.container.default .message {
   color: var(--color-primary-darker);
 }
-.input-container.error .input-message {
+.container.error .message {
   color: var(--color-system-caution);
 }
-.input-container.ok .input-message {
+.container.ok .message {
   color: var(--color-system-dark);
 }
