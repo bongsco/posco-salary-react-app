@@ -14,3 +14,32 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.salary-td {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.salary-bundle {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.salary-detail {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.body-salary-detail {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.salary-inner-value {
+  width: 25%;
+}
