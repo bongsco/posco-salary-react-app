@@ -11,9 +11,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 55000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -24,9 +24,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 55000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -37,9 +37,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 55000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -50,9 +50,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 55000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -63,9 +63,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 55000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -76,9 +76,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 19000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -89,9 +89,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 19000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -102,9 +102,9 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 19000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: false,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -115,9 +115,35 @@ const initialPaybandApplyData = [
     dep_name: '에너지조선마케팅실 산기플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
-    std_salary: '50,000,000',
-    upper_limit_price: '50,000,000',
-    lower_limit_price: '20,000,000',
+    std_salary: 19000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
+    in_payband_use_group: true,
+    remarks: '초과하는 내용은 클릭하면 표시되도록...',
+  },
+  {
+    isChecked: false,
+    emp_num: 'Pd001000',
+    name: '홍동박',
+    dep_name: '에너지조선마케팅실 산기플랜트팀',
+    grade_name: 'P6',
+    rank_name: 'A',
+    std_salary: 19000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
+    in_payband_use_group: true,
+    remarks: '초과하는 내용은 클릭하면 표시되도록...',
+  },
+  {
+    isChecked: false,
+    emp_num: 'Pd001001',
+    name: '홍동박',
+    dep_name: '에너지조선마케팅실 산기플랜트팀',
+    grade_name: 'P6',
+    rank_name: 'A',
+    std_salary: 19000000,
+    upper_limit_price: 50000000,
+    lower_limit_price: 20000000,
     in_payband_use_group: true,
     remarks: '초과하는 내용은 클릭하면 표시되도록...',
   },
@@ -175,6 +201,14 @@ function reducer(state, action) {
 function PaybandApplyPage() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const filteredUpperData = state.data.filter(
+    (item) => item.std_salary > item.upper_limit_price,
+  );
+
+  const filteredLowerData = state.data.filter(
+    (item) => item.std_salary < item.lower_limit_price,
+  );
+
   return (
     <AdjustEditLayout
       prevStepPath="../preparation/high-performance"
@@ -185,10 +219,18 @@ function PaybandApplyPage() {
       isCommitted={state.isCommitted}
     >
       <h1>상한 초과자 Payband 적용 여부 설정</h1>
-      <PaybandApplyArea type="upper" data={state.data} dispatch={dispatch} />
+      <PaybandApplyArea
+        type="upper"
+        data={filteredUpperData}
+        dispatch={dispatch}
+      />
 
       <h1>하한 초과자 Payband 적용 여부 설정</h1>
-      <PaybandApplyArea type="lower" data={state.data} dispatch={dispatch} />
+      <PaybandApplyArea
+        type="lower"
+        data={filteredLowerData}
+        dispatch={dispatch}
+      />
     </AdjustEditLayout>
   );
 }

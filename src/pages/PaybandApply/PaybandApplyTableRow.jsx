@@ -26,9 +26,11 @@ function PaybandApplyTableRow({
       <td>{item.dep_name}</td>
       <td>{item.grade_name}</td>
       <td>{item.rank_name}</td>
-      <td>{item.std_salary}</td>
+      <td>{item.std_salary.toLocaleString()}</td>
       <td>
-        {type === 'upper' ? item.upper_limit_price : item.lower_limit_price}
+        {type === 'upper'
+          ? item.upper_limit_price.toLocaleString()
+          : item.lower_limit_price.toLocaleString()}
       </td>
       <td>
         <div className={styles['switch-area']}>
