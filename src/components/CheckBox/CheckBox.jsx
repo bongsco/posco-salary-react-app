@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import styles from './check-box.module.css';
 
-export default function CheckBox({ isChecked, onClick }) {
+export default function CheckBox({ isChecked = false, onClick }) {
   return (
     <button
       type="button"

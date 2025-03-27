@@ -1,34 +1,40 @@
 import PropTypes from 'prop-types';
+import inputStyles from '#styles/input.module.css';
 import styles from './dropdown.module.css';
 
 export default function Dropdown({
+  error = false,
+  message = null,
+  selectedValue = null,
+  customWidth = null,
   options,
-  error,
-  message = '',
   placeHolder,
-  selectedValue,
   isOpen,
   onChange,
   onClick,
 }) {
   return (
-    <div className={`${styles['dropdown-area']} ${error ? styles.error : ''}`}>
-      <div className={styles.dropdown}>
-        <button
-          type="button"
-          className={`${styles['select-selected']} ${selectedValue === null ? '' : styles['selected-option']}`}
-          onClick={onClick}
-        >
+    <div
+      className={`${inputStyles.container} ${error ? inputStyles.error : inputStyles.default}`}
+      style={{ width: customWidth }}
+    >
+      <button
+        type="button"
+        className={`${inputStyles.input} ${styles.dropdown}`}
+        onClick={onClick}
+        style={{ width: customWidth }}
+      >
+        <div className={styles.selectedValue}>
           {selectedValue === null ? placeHolder : selectedValue}
-        </button>
-      </div>
-      {!isOpen && message && <div className={styles.message}>{message}</div>}
+        </div>
+        <div className={styles.selectIcon} />
+      </button>
       {isOpen && (
-        <div className={styles['select-items-list']}>
+        <div className={styles.itemList}>
           {options.map((option) => (
             <button
               type="button"
-              className={styles['select-item']}
+              className={styles.item}
               key={option}
               onClick={() => onChange(option)}
             >
@@ -37,21 +43,25 @@ export default function Dropdown({
           ))}
         </div>
       )}
+      {message && <div className={inputStyles.message}>{message}</div>}
     </div>
   );
 }
 
 Dropdown.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  error: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
   message: PropTypes.string,
   placeHolder: PropTypes.string.isRequired,
   selectedValue: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
+  customWidth: PropTypes.string,
 };
 
 Dropdown.defaultProps = {
-  message: '',
+  error: false,
+  message: null,
+  customWidth: null,
 };

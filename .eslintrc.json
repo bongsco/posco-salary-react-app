@@ -25,7 +25,8 @@
           ["#utils", "./src/utils"],
           ["#assets", "./src/assets"],
           ["#layouts", "./src/layouts"],
-          ["#contexts", "./src/contexts"]
+          ["#contexts", "./src/contexts"],
+          ["#hooks", "./src/hooks"]
         ],
         "extensions": [".js", ".jsx", ".css"]
       }
