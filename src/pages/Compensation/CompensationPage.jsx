@@ -280,7 +280,10 @@ export default function CompensationPage() {
       nextStepPath="payband"
       stepPaths={['기준 설정', '보상지급률 설정']}
       onCommit={handleCommit}
-      onRollback={() => dispatch({ type: 'rollback' })}
+      onRollback={() => {
+        dispatch({ type: 'rollback' });
+        setNewGradeSelections({});
+      }}
       isCommitted={state.isCommitted}
     >
       <div className={styles.container}>
