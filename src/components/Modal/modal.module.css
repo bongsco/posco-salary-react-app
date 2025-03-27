@@ -17,15 +17,18 @@
 .filters{
   background: #ffffff;
   border-radius: 6px;
+  /* border : 1px solid var(--color-primary-lighter); */
   padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: center;
   justify-content: flex-start;
-  position: relative;
+  position: absolute;
   width: 322px;
   box-shadow: var(--shadow);
+  left:0; 
+  top:130%;
 }
 
 .dropdownWrapper{
