@@ -1,48 +1,42 @@
 import PropTypes from 'prop-types';
-import styles from './input.module.css';
+import inputStyles from '#styles/input.module.css';
 
 function Input({
   id,
   mode = 'default',
   placeholder = '',
-  label = '',
+  label = null,
   value = '',
-  customWidth = 225,
-  customHeight = 30,
+  customWidth = null,
+  customHeight = null,
   onChange,
 }) {
   return (
     <div
-      className={styles['input-box-container']}
+      className={`${inputStyles.container} ${inputStyles[mode]}`}
       style={{ width: customWidth, height: customHeight }}
     >
       <input
         id={id}
         type="text"
         value={value}
-        className={`${styles['input-box']} ${styles[mode]}`}
+        className={inputStyles.input}
         placeholder={placeholder}
         onChange={onChange}
         style={{ width: customWidth, height: customHeight }}
       />
-      {label ? (
-        <span
-          className={`${styles['input-box-label']} ${styles[mode]} ${styles.visible}`}
-        >
-          {label}
-        </span>
-      ) : null}
+      {label && <span className={inputStyles.message}>{label}</span>}
     </div>
   );
 }
 
 Input.defaultProps = {
   mode: 'default',
-  label: '',
-  value: '',
-  customWidth: 225,
-  customHeight: 30,
-  placeholder: '',
+  label: null,
+  value: null,
+  customWidth: null,
+  customHeight: null,
+  placeholder: null,
 };
 
 Input.propTypes = {
@@ -51,8 +45,8 @@ Input.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   value: PropTypes.string,
-  customWidth: PropTypes.number,
-  customHeight: PropTypes.number,
+  customWidth: PropTypes.string,
+  customHeight: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };
 
