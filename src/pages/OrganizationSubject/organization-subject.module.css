@@ -98,6 +98,7 @@
   align-content: flex-start;
   flex-shrink: 0;
   position: relative;
+  z-index : 100;
 }
 
 .excelWrapper{

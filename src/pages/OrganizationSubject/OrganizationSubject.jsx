@@ -4,8 +4,37 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './organization-subject.module.css';
 import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
+import TableOption from '#components/TableOption';
 
 export default function OrganizationSubject() {
+  const filterOption = {
+    평가등급: {
+      optionType: 'dropdown',
+      options: ['S', 'A', 'B', 'B+', 'C', 'D'],
+      initialValue: '',
+    },
+    채용일자: {
+      optionType: 'text',
+      initialValue: '',
+    },
+  };
+
+  const sortOption = {
+    keys: ['직번', '성명', '채용일자', '평가등급'],
+    values: ['오름차순', '내림차순'],
+  };
+
+  const [filters, setFilters] = useState({ target: [], untarget: [] });
+  const [sortList, setSortList] = useState({ target: [], untarget: [] });
+
+  const handleOptionSubmit = (tableType, { type, payload }) => {
+    if (type === 'filter') {
+      setFilters((prev) => ({ ...prev, [tableType]: payload }));
+    } else if (type === 'sort') {
+      setSortList((prev) => ({ ...prev, [tableType]: payload }));
+    }
+  };
+
   const [page, setPage] = useState({ target: 1, untarget: 1 });
   const [rowsPerPage, setRowsPerPage] = useState({ target: 5, untarget: 5 });
 
@@ -75,11 +104,57 @@ export default function OrganizationSubject() {
     },
   ]);
 
+  const getProcessedEmployees = (type) => {
+    let result = employees.filter((e) =>
+      type === 'target' ? e.isTarget : !e.isTarget,
+    );
+
+    // 필터링
+    if (Array.isArray(filters[type])) {
+      filters[type].forEach(({ key, value }) => {
+        if (key === '평가등급' && value.length > 0) {
+          result = result.filter((e) => value.includes(e.grade));
+        } else if (key === '채용일자' && value[0]) {
+          result = result.filter((e) => e.hiredDate.includes(value[0]));
+        }
+      });
+    }
+
+    // 정렬
+    if (Array.isArray(sortList[type])) {
+      sortList[type].forEach(({ key, value }) => {
+        result.sort((a, b) => {
+          let aVal = '';
+          let bVal = '';
+          if (key === '직번') {
+            aVal = a.empId;
+            bVal = b.empId;
+          } else if (key === '성명') {
+            aVal = a.name;
+            bVal = b.name;
+          } else if (key === '채용일자') {
+            aVal = a.hiredDate;
+            bVal = b.hiredDate;
+          } else if (key === '평가등급') {
+            aVal = a.grade;
+            bVal = b.grade;
+          }
+
+          if (value === '오름차순') return aVal.localeCompare(bVal);
+          if (value === '내림차순') return bVal.localeCompare(aVal);
+          return 0;
+        });
+      });
+    }
+
+    return result;
+  };
+
   const [savedEmployees, setSavedEmployees] = useState([]);
   const [isCommitted, setIsCommitted] = useState(false);
 
-  const targets = employees.filter((e) => e.isTarget);
-  const untargets = employees.filter((e) => !e.isTarget);
+  const targets = getProcessedEmployees('target');
+  const untargets = getProcessedEmployees('untarget');
 
   const paginatedTargets = targets.slice(
     (page.target - 1) * rowsPerPage.target,
@@ -160,11 +235,12 @@ export default function OrganizationSubject() {
       <div className={styles.tableWrapper}>
         <div className={styles.filterWrapper}>
           <div className={styles.filterButton}>
-            <Button size="round" label="필터 추가" variant="secondary" />
-            <Button
-              size="round"
-              label="정렬: 직번,직급,부서"
-              variant="secondary"
+            <TableOption
+              filterOption={filterOption}
+              sortOption={sortOption}
+              filters={filters[type]}
+              sortList={sortList[type]}
+              onSubmit={(submitted) => handleOptionSubmit(type, submitted)}
             />
           </div>
           <div className={styles.excelWrapper}>
