@@ -12,7 +12,10 @@ function Input({
   onChange,
 }) {
   return (
-    <div className={`${inputStyles.container} ${inputStyles[mode]}`}>
+    <div
+      className={`${inputStyles.container} ${inputStyles[mode]}`}
+      style={{ width: customWidth, height: customHeight }}
+    >
       <input
         id={id}
         type="text"

@@ -25,6 +25,7 @@ function CustomDatePicker({
   return (
     <div
       className={`${inputStyles.container} ${hasError ? inputStyles.error : ''} ${isSaved && !hasError ? inputStyles.default : ''} ${!isSaved && !hasError ? inputStyles.ok : ''}`}
+      style={{ width: customWidth }}
     >
       <DatePicker
         showIcon

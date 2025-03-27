@@ -16,6 +16,7 @@ export default function Dropdown({
   return (
     <div
       className={`${inputStyles.container} ${error ? inputStyles.error : inputStyles.default}`}
+      style={{ width: customWidth }}
     >
       <button
         type="button"
