@@ -5,7 +5,7 @@
   gap: 4px;
 }
 
-.filterOne{
+.filter{
   display: flex;
   flex-direction: column;
   gap: 8px;

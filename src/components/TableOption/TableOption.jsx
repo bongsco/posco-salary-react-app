@@ -11,7 +11,7 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
 
   return (
     <div className={styles.leftGroup}>
-      <div className={styles.filterOne}>
+      <div className={styles.filter}>
         <Button
           variant="secondary"
           size="round"
