@@ -40,7 +40,7 @@
 }
 
 .limit_cell {
-  width: 15%;
+  width: 8%;
 }
 
 .table {
@@ -56,7 +56,6 @@
   justify-content: space-between;
   align-items: flex-end;
   height: 40px;
-  margin-bottom: 3px;
 }
 
 .duplicated_cell {
@@ -67,4 +66,10 @@
 
   font: var(--font-body-3-pc);
   color: var(--color-system-caution);
+}
+
+.whole_table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }

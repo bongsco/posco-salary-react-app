@@ -135,7 +135,7 @@ export default function PaybandTableRow({
               onClick={() => {
                 setIsOpen((prev) => !prev);
               }}
-              customWidth="80px"
+              customWidth="100%"
             />
           </div>
         )}
@@ -160,7 +160,7 @@ export default function PaybandTableRow({
                 });
               }
             }}
-            customWidth={150}
+            customWidth="100%"
           />
         </div>
       </td>
@@ -184,7 +184,7 @@ export default function PaybandTableRow({
                 });
               }
             }}
-            customWidth={150}
+            customWidth="100%"
           />
         </div>
       </td>
