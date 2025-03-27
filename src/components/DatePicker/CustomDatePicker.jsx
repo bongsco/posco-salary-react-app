@@ -1,60 +1,66 @@
+import { createRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from './datepicker.module.css'; // CSS Modules import
+import '#styles/datepicker.css'; // CSS Modules import
+import '#styles/input.css';
 
 function CustomDatePicker({
   isDisabled,
   isSaved,
   onChange,
   hasError,
-  eMessage,
-  selectedDate,
+  customWidth = null,
+  message = null,
 }) {
-  // const [date, setDate] = useState(new Date());
+  const inputRef = createRef();
+  const [date, setDate] = useState(new Date());
 
   const handleDateChange = (d) => {
     if (!isDisabled) {
-      onChange(d); // ✅ 부모 상태를 업데이트해야 날짜가 반영됨
+      setDate(d);
+      onChange(d);
     }
   };
 
-  const inputClass = [
-    styles.input,
-    isSaved ? styles.saved : styles.unsaved,
-    hasError ? styles.error : '', // ✅ null일 때 에러 스타일 추가
-  ].join(' ');
-
   return (
-    <div>
+    <div
+      className={`input-container ${hasError ? 'error' : ''} ${isSaved && !hasError ? 'default' : ''} ${!isSaved && !hasError ? 'ok' : ''}`}
+    >
       <DatePicker
         showIcon
         toggleCalendarOnIconClick={!isDisabled}
-        selected={selectedDate}
+        selected={date}
         onChange={(d) => !isDisabled && handleDateChange(d)}
         dateFormat="yyyy-MM-dd"
         disabled={isDisabled}
-        className={inputClass}
-        placeholderText="YYYY-MM-DD"
+        readOnly={isDisabled}
+        ref={inputRef}
+        customInput={
+          <input
+            className="input"
+            placeholder="yyyy-MM-dd"
+            style={{ width: customWidth }}
+          />
+        }
       />
-      {hasError && <div className={styles.errorMessage}>{eMessage}</div>}
+      {message && <div className="input-message">{message}</div>}
     </div>
   );
 }
 
 CustomDatePicker.propTypes = {
-  isDisabled: PropTypes.bool,
+  isDisabled: PropTypes.bool.isRequired,
   isSaved: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
-  hasError: PropTypes.bool,
-  eMessage: PropTypes.string,
-  selectedDate: PropTypes.instanceOf(Date).isRequired,
+  hasError: PropTypes.bool.isRequired,
+  message: PropTypes.string,
+  customWidth: PropTypes.string,
 };
 
 CustomDatePicker.defaultProps = {
-  isDisabled: false,
-  hasError: false,
-  eMessage: '날짜를 입력해주세요',
+  message: null,
+  customWidth: null,
 };
 
 export default CustomDatePicker;
