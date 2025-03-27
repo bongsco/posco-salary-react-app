@@ -2,9 +2,19 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from './datepicker.module.css'; // CSS Modules import
+import inputStyles from '#styles/input.module.css';
+import './datepicker.module.css';
 
-function CustomDatePicker({ isDisabled, isSaved, onChange, hasError }) {
+function CustomDatePicker({
+  isDisabled,
+  isSaved,
+  onChange,
+  hasError,
+  customWidth = null,
+  message = null,
+  maxWidth = null,
+  minWidth = null,
+}) {
   const [date, setDate] = useState(new Date());
 
   const handleDateChange = (d) => {
@@ -14,14 +24,17 @@ function CustomDatePicker({ isDisabled, isSaved, onChange, hasError }) {
     }
   };
 
-  const inputClass = [
-    styles.input,
-    isSaved ? styles.saved : styles.unsaved,
-    hasError ? styles.error : '', // ✅ null일 때 에러 스타일 추가
-  ].join(' ');
+  const customStyle = {
+    width: customWidth,
+    minWidth,
+    maxWidth,
+  };
 
   return (
-    <div>
+    <div
+      className={`${inputStyles.container} ${hasError ? inputStyles.error : ''} ${isSaved && !hasError ? inputStyles.default : ''} ${!isSaved && !hasError ? inputStyles.ok : ''}`}
+      style={customStyle}
+    >
       <DatePicker
         showIcon
         toggleCalendarOnIconClick={!isDisabled}
@@ -29,27 +42,32 @@ function CustomDatePicker({ isDisabled, isSaved, onChange, hasError }) {
         onChange={(d) => !isDisabled && handleDateChange(d)}
         dateFormat="yyyy-MM-dd"
         disabled={isDisabled}
-        className={inputClass}
+        readOnly={isDisabled}
+        customInput={
+          <input className={inputStyles.input} placeholder="yyyy-MM-dd" />
+        }
       />
-      {hasError && (
-        <div className={styles.errorMessage}>날짜를 선택해주세요</div>
-      )}
+      {message && <div className={inputStyles.message}>{message}</div>}
     </div>
   );
 }
 
 CustomDatePicker.propTypes = {
-  isDisabled: PropTypes.bool,
-  isSaved: PropTypes.bool,
-  onChange: PropTypes.func,
-  hasError: PropTypes.bool,
+  isDisabled: PropTypes.bool.isRequired,
+  isSaved: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+  hasError: PropTypes.bool.isRequired,
+  message: PropTypes.string,
+  customWidth: PropTypes.string,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
 };
 
 CustomDatePicker.defaultProps = {
-  isDisabled: false,
-  isSaved: false,
-  hasError: false,
-  onChange: () => {},
+  message: null,
+  customWidth: null,
+  maxWidth: null,
+  minWidth: null,
 };
 
 export default CustomDatePicker;
