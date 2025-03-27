@@ -117,7 +117,9 @@ function ValueSelector({
   dispatch,
   filters,
 }) {
-  if (!selectedKey || !option[selectedKey]) return null;
+  if (!selectedKey || !option[selectedKey]) {
+    return <Input placeholder="항목을 선택하세요" customWidth="133px" />;
+  }
 
   const { optionType } = option[selectedKey];
 
