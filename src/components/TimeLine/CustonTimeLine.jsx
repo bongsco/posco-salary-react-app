@@ -1,6 +1,7 @@
 import Chart from 'react-google-charts';
 import PropTypes from 'prop-types';
 import '#styles/fonts.css';
+import styles from './time-line.module.css';
 
 export default function CustomTimeLine({
   selectedIndex = 0,
@@ -38,7 +39,7 @@ export default function CustomTimeLine({
   const ticks = generateMonthlyTicks(minDate, maxDate);
 
   return (
-    <div style={{ width: '100%', height: 'fit-content' }}>
+    <div className={`${styles['timeline-container']}`}>
       <Chart
         chartType="Timeline"
         data={chartData}
@@ -195,21 +196,6 @@ export default function CustomTimeLine({
                   });
                   // svg 부모 div 스타일 높이도 맞춰줌
                   container.parentElement.style.height = `${newHeight}px`;
-
-                  const targetDiv = Array.from(
-                    container.getElementsByTagName('div'),
-                  ).find((div) => {
-                    const { position, width, height } = div.style;
-                    return (
-                      position === 'relative' &&
-                      width === '1366px' &&
-                      height === '200px'
-                    );
-                  });
-
-                  if (targetDiv) {
-                    targetDiv.style.height = `auto`;
-                  }
                 }
               }
             },
