@@ -19,7 +19,7 @@ export default function PaybandConfigPage() {
     },
     {
       id: 2,
-      grade: 'P2',
+      grade: 'P1',
       upperBound: 170,
       lowerBound: 20,
       modified: [],
@@ -73,6 +73,8 @@ export default function PaybandConfigPage() {
 
   const [deletedPayband, setDeletedPayband] = useState([]);
 
+  const [duplicated, setDuplicated] = useState(false);
+
   // const [createdPayband, setCreatedPayband] = useState([]);
   // 생성된 기준과 바뀐 기준 api 다르게 줄 걸 대비해서 써놓음
   const needSave = useMemo(() => {
@@ -101,6 +103,10 @@ export default function PaybandConfigPage() {
           acc[pb.grade] = (acc[pb.grade] || 0) + 1;
           return acc;
         }, {});
+        const isDuplicated = Object.values(gradeCount).some(
+          (count) => count > 1,
+        );
+        setDuplicated(isDuplicated);
 
         const updatedPayband = payband.map((pb) => {
           let errors = [...pb.error];
@@ -109,12 +115,6 @@ export default function PaybandConfigPage() {
           } else if (!pb.grade && !errors.includes('직급')) {
             errors.push('직급');
           } else if (pb.grade) {
-            if (gradeCount[pb.grade] > 1) {
-              errors.push('직급 중복');
-            } else {
-              const idx = errors.indexOf('직급 중복');
-              if (idx > -1) errors.splice(idx, 1);
-            }
             const idx = errors.indexOf('직급');
             if (idx > -1) errors.splice(idx, 1);
           }
@@ -124,7 +124,10 @@ export default function PaybandConfigPage() {
 
         setPayband(updatedPayband);
 
-        if (updatedPayband.every((pb) => pb.error.length === 0)) {
+        if (
+          updatedPayband.every((pb) => pb.error.length === 0) &&
+          !isDuplicated
+        ) {
           // 백엔드로 삭제 api
           const cleanPayband = updatedPayband
             .filter(
@@ -156,6 +159,7 @@ export default function PaybandConfigPage() {
         setChangedPayband([]);
         // setCreatedPayband([]);
         setDeletedPayband([]);
+        setDuplicated(false);
       }}
       isCommitted={!needSave}
       canMove
@@ -221,17 +225,23 @@ export default function PaybandConfigPage() {
                     setPayband((prev) =>
                       prev.map((pb, i) => (i === index ? modifiedItem : pb)),
                     );
-                    const changedPaybandIndex = changedPayband.findIndex(
-                      (pb) => pb.id === modifiedItem.id,
-                    );
-                    if (changedPaybandIndex === -1) {
-                      setChangedPayband((prev) => [...prev, modifiedItem]);
+                    if (modifiedItem.modified.length > 0) {
+                      const changedPaybandIndex = changedPayband.findIndex(
+                        (pb) => pb.id === modifiedItem.id,
+                      );
+                      if (changedPaybandIndex === -1) {
+                        setChangedPayband((prev) => [...prev, modifiedItem]);
+                      } else {
+                        setChangedPayband((prev) => {
+                          const updated = [...prev];
+                          updated[changedPaybandIndex] = modifiedItem;
+                          return updated;
+                        });
+                      }
                     } else {
-                      setChangedPayband((prev) => {
-                        const updated = [...prev];
-                        updated[changedPaybandIndex] = modifiedItem;
-                        return updated;
-                      });
+                      setChangedPayband((prev) =>
+                        prev.filter((pb) => pb.id !== modifiedItem.id),
+                      );
                     }
                   }}
                   onChecked={(isChecked, modifiedItem) => {
@@ -271,6 +281,11 @@ export default function PaybandConfigPage() {
               </tr>
             </tbody>
           </table>
+          {duplicated && (
+            <div className={`${styles.duplicated_cell}`}>
+              중복된 직급이 있습니다.
+            </div>
+          )}
         </div>
       </div>
     </AdjustEditLayout>

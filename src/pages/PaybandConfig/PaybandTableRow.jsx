@@ -116,7 +116,7 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted || item.error.includes('직급 중복') ? styles.deleted_cell : ''} ${styles.grade_cell}`}
+        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.grade_cell}`}
       >
         {!item.modified.includes('전체') ? (
           item.grade
