@@ -9,6 +9,7 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import PaybandApplyPage from '#pages/PaybandApply';
 import RootLayout from '#layouts/RootLayout';
 
 const router = createBrowserRouter(
@@ -101,16 +102,7 @@ const router = createBrowserRouter(
               />
             </Route>
             <Route path="main">
-              <Route
-                path="payband"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="../preparation/high-performance"
-                    nextStepPath="result"
-                    stepPaths={['본 연봉조정', 'Payband 적용']}
-                  />
-                }
-              />
+              <Route path="payband" element={<PaybandApplyPage />} />
               <Route
                 path="result"
                 element={

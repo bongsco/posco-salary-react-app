@@ -17,7 +17,7 @@ function PaybandApplyTableRow({
         <div className={`${styles['check-box']}`}>
           <CheckBox
             isChecked={item.isChecked}
-            onClick={() => handleCheckBox(item.emp_num, item.isChecked)}
+            onClick={() => handleCheckBox(item.emp_num)}
           />
         </div>
       </td>
@@ -61,7 +61,7 @@ function PaybandApplyTableRow({
 PaybandApplyTableRow.propTypes = {
   type: PropTypes.oneOf(['upper', 'lower']).isRequired,
   item: PropTypes.arrayOf().isRequired,
-  checkedItems: PropTypes.arrayOf().isRequired,
+  checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   handlePaybandApplyGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
 };

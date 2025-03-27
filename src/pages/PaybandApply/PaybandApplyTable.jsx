@@ -30,7 +30,7 @@ function PaybandApplyTable({
       const allEmpNums = data.map((row) => row.emp_num);
       /* 현재 Table에 표시되는 애들에 대해서 CheckBox 표시 바꾸기 */
       allEmpNums.forEach((empNum) => {
-        handleCheckBox(empNum, prev);
+        handleCheckBox(empNum);
       });
 
       return newHeaderChecked;
