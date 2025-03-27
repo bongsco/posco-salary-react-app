@@ -11,8 +11,8 @@ export default {
     mode: { control: { type: 'select', options: ['default', 'error', 'ok'] } },
     placeholder: { control: 'text' },
     label: { control: 'text' },
-    customWidth: { control: 'number' },
-    customHeight: { control: 'number' },
+    customWidth: { control: 'text' },
+    customHeight: { control: 'text' },
     onChange: { action: 'changed' },
     value: { control: 'text' },
   },
@@ -65,15 +65,15 @@ Template.propTypes = {
   mode: PropTypes.oneOf(['default', 'error', 'ok']),
   placeholder: PropTypes.string.isRequired,
   label: PropTypes.string,
-  customWidth: PropTypes.number,
-  customHeight: PropTypes.number,
+  customWidth: PropTypes.string,
+  customHeight: PropTypes.string,
 };
 
 Template.defaultProps = {
   mode: 'default',
   label: '여기에 입력 관련 메시지를 입력하세요.',
-  customWidth: 225,
-  customHeight: 30,
+  customWidth: null,
+  customHeight: null,
 };
 
 export const Default = Template.bind();

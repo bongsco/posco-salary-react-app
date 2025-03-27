@@ -17,7 +17,7 @@ export default function Dropdown({
     <div className={`input-container ${error ? 'error' : 'default'}`}>
       <button
         type="button"
-        className={styles.dropdown}
+        className={`input ${styles.dropdown}`}
         onClick={onClick}
         style={{ width: customWidth }}
       >
