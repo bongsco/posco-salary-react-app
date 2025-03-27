@@ -1,16 +1,16 @@
 import { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import Modal from '../Modal';
+import Modal from '../../Modal/Modal';
 import Dropdown from '#components/Dropdown';
-import styles from '../modal.module.css';
+import styles from '../../Modal/modal.module.css';
 
-const initialState = {
+const init = (prevSortList) => ({
   selectedKey: null,
   selectedValue: null,
   isKeyOpen: false,
   isValueOpen: false,
-  sortList: [],
-};
+  sortList: prevSortList || [],
+});
 
 function reducer(state, action) {
   switch (action.type) {
@@ -50,8 +50,14 @@ function reducer(state, action) {
   }
 }
 
-export default function SortModal({ option, onSubmit, onClose }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
+  const [state, dispatch] = useReducer(reducer, prevSortList, init);
+
+  const valueOptions =
+    state.selectedKey &&
+    !state.sortList.some((sort) => sort.key === state.selectedKey)
+      ? option.values
+      : []; // 이미 정렬 방식이 지정된 key면 선택지 없음
 
   return (
     <Modal onSubmit={() => onSubmit?.(state.sortList)} onClose={onClose}>
@@ -70,7 +76,7 @@ export default function SortModal({ option, onSubmit, onClose }) {
         />
         <Dropdown
           placeHolder="정렬 방식"
-          options={option.values}
+          options={valueOptions}
           selectedValue={state.selectedValue}
           isOpen={state.isValueOpen}
           onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
@@ -78,6 +84,7 @@ export default function SortModal({ option, onSubmit, onClose }) {
           customWidth="133px"
           error={false}
         />
+
         <button
           type="button"
           className={styles.plusButton}
@@ -114,4 +121,14 @@ SortModal.propTypes = {
   }).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  prevSortList: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ),
+};
+
+SortModal.defaultProps = {
+  prevSortList: [],
 };
