@@ -40,7 +40,7 @@ export default function TableOption({
         )}
       </div>
 
-      <div className={styles.filterOne}>
+      <div className={styles.filter}>
         <Button
           variant="secondary"
           size="round"
