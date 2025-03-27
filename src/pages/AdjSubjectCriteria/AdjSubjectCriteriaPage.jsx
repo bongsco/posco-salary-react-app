@@ -66,45 +66,48 @@ export default function AdjSubjectCriteriaPage() {
           Object.keys(values).forEach((key) => {
             const newVal = !allChecked;
             updated[group][key] = newVal;
-            if (previous[group]?.[key] !== newVal) {
-              committed[group][key] = false;
-            }
+            committed[group][key] = previous[group]?.[key] === newVal;
           });
         });
         break;
       }
 
       case 'TOGGLE_GROUP': {
-        Object.keys(updated[category]).forEach((key) => {
-          updated[category][key] = isChecked;
-          if (previous[category][key] !== isChecked) {
-            committed[category][key] = false;
-          }
+        const groupToCategoryMap = {
+          P직군전체: 'P',
+          R직군전체: 'R',
+          A직군전체: 'A',
+          O직군전체: 'O',
+          D직군전체: 'D',
+          G직군전체: 'G',
+        };
+
+        const targetCategory = groupToCategoryMap[label];
+
+        Object.keys(updated[targetCategory]).forEach((key) => {
+          updated[targetCategory][key] = isChecked;
+          committed[targetCategory][key] =
+            previous[targetCategory][key] === isChecked;
         });
+
         updated[category][label] = isChecked;
-        committed[category][label] = false;
+        committed[category][label] = previous[category]?.[label] === isChecked;
         break;
       }
 
       case 'TOGGLE_SINGLE': {
         updated[category][label] = isChecked;
-        if (previous[category][label] !== isChecked) {
-          committed[category][label] = false;
-        }
+        committed[category][label] = previous[category][label] === isChecked;
 
-        // 그룹 전체 체크 여부에 따라 직군전체 버튼 값도 갱신
         const allChecked = Object.values(updated[category]).every((v) => v);
         const groupLabel = `${category}직군전체`;
-
         const groupKey = ['P', 'R', 'A'].includes(category)
           ? 'allLeft'
           : 'allRight';
 
         updated[groupKey][groupLabel] = allChecked;
-
-        if (previous[groupKey]?.[groupLabel] !== allChecked) {
-          committed[groupKey][groupLabel] = false;
-        }
+        committed[groupKey][groupLabel] =
+          previous[groupKey]?.[groupLabel] === allChecked;
         break;
       }
 
@@ -131,7 +134,8 @@ export default function AdjSubjectCriteriaPage() {
           },
           committed: {
             ...state.committed,
-            [action.payload.key]: false,
+            [action.payload.key]:
+              state.previous[action.payload.key] === action.payload.value,
           },
         };
 
@@ -143,24 +147,17 @@ export default function AdjSubjectCriteriaPage() {
         if (isAllToggle) {
           Object.keys(updatedPayments).forEach((key) => {
             updatedPayments[key] = isChecked;
-            if (state.previous[key] !== isChecked) {
-              updatedCommitted[key] = false;
-            }
+            updatedCommitted[key] = state.previous[key] === isChecked;
           });
         } else {
           updatedPayments[label] = isChecked;
-          if (state.previous[label] !== isChecked) {
-            updatedCommitted[label] = false;
-          }
+          updatedCommitted[label] = state.previous[label] === isChecked;
 
           const allChecked = Object.entries(updatedPayments)
             .filter(([k]) => k !== '전체')
             .every(([, v]) => v === true);
           updatedPayments['전체'] = allChecked;
-
-          if (state.previous['전체'] !== allChecked) {
-            updatedCommitted['전체'] = false;
-          }
+          updatedCommitted['전체'] = state.previous['전체'] === allChecked;
         }
 
         return {
