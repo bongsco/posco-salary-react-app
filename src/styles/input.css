@@ -1,6 +1,4 @@
-@import url('../../styles/global.css');
-
-.container {
+.input-container {
   width: fit-content;
   height: fit-content;
   position: relative;
@@ -14,21 +12,21 @@
   font: var(--font-caption-1r-pc);
 }
 
-.default > input,
-.default > button {
+.input-container.default > input,
+.input-container.default > button {
   border-color: var(--color-primary-lighter);
 }
-.error > input,
-.error > button {
+.input-container.error > input,
+.input-container.error > button {
   border-color: var(--color-system-caution);
 }
-.ok > input,
-.ok > button {
+.input-container.ok > input,
+.input-container.ok > button {
   border-color: var(--color-system-dark);
 }
 
-.container > input,
-.container > button {
+.input-container > input,
+.input-container > button {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -42,19 +40,36 @@
   padding: 7.25px 8px;
 }
 
-.message {
+.input-text {
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  font: var(--font-caption-1r-pc);
+
+  display: inline;
+  width: max-content;
+  height: fit-content;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.input-message {
   flex: 0;
   padding-left: 3px;
   font: var(--font-caption-1r-pc);
   white-space: nowrap;
 }
 
-.default .message {
+.input-container.default .input-message {
   color: var(--color-primary-darker);
 }
-.error .message {
+.input-container.error .input-message {
   color: var(--color-system-caution);
 }
-.ok .message {
+.input-container.ok .input-message {
   color: var(--color-system-dark);
 }

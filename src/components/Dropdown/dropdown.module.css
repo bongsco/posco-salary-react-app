@@ -1,23 +1,5 @@
-@import url('../../styles/global.css');
-
 .dropdown {
   justify-content: space-between !important;
-}
-
-.dropdownText {
-  position: relative;
-  border: none;
-  padding: 0px;
-  font: var(--font-caption-1r-pc);
-
-  display: inline;
-  width: max-content;
-  height: 100%;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  white-space: nowrap;
 }
 
 .selectIcon {
@@ -29,11 +11,6 @@
   background-repeat: no-repeat;
 }
 
-.select-selected.selected-option {
-  color: var(--color-grayscale-black);
-}
-
-/* itemList 관련 css*/
 .itemList {
   position: absolute;
   top: 36px;
