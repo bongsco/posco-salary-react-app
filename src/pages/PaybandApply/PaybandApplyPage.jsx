@@ -8,7 +8,7 @@ const initialPaybandApplyData = [
     isChecked: false,
     emp_num: 'Pd000111',
     name: '홍',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
+    dep_name: '에너지조선마케팅실 해양플랜트팀',
     grade_name: 'P6',
     rank_name: 'A',
     std_salary: 55000000,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './payband-apply-page.module.css';
 import PaybandApplyTable from './PaybandApplyTable';
 import Button from '#components/Button';
+import TableOption from '#components/TableOption';
 
 function PaybandApplyArea({ type, data, dispatch }) {
   // ✅ 체크박스 및 스위치 처리
@@ -39,7 +40,26 @@ function PaybandApplyArea({ type, data, dispatch }) {
   return (
     <div className={styles['payband-apply-area']}>
       <div className={styles['payband-apply-area-header']}>
-        <p>필터 추가</p>
+        <TableOption
+          filterOption={{
+            name: { optionType: 'text', initialValue: '' },
+            dep_name: {
+              optionType: 'dropdown',
+              initialValue: '',
+              options: [
+                '에너지조선마케팅실 산기플랜트팀',
+                '에너지조선마케팅실 해양플랜트팀',
+              ],
+            },
+          }}
+          sortOption={{
+            keys: ['연도', '상태'],
+            values: ['오름차순', '내림차순'],
+            filters: [],
+            sortList: [],
+          }}
+          onSubmit={{}}
+        />
         <Button variant="secondary" size="large" label="엑셀다운로드" />
       </div>
       <PaybandApplyTable
