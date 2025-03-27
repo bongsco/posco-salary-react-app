@@ -89,11 +89,39 @@ const initialHighOrganizationData = [
   },
 ];
 
+const mapping = {
+  이름: 'name',
+  직번: 'emp_num',
+  부서: 'dep_name',
+  직급: 'grade_name',
+  평가등급: 'rank_name',
+  고성과조직가산율: 'in_high_perform_group',
+};
+
+/* 해당 Filter, Sort Option들은 DB에서 가져올 예정 딱 1번만 가져오면 됌 */
+const initialFilterOptions = {
+  이름: {
+    options: ['홍', '홍길', '홍길동', '홍길동김'],
+    currentSelectedValue: null,
+  },
+  상태: {
+    options: ['작업전', '작업중', '완료'],
+    currentSelectedValue: '완료',
+  },
+};
+
+/* 해당 Sort Option들은 DB에서 가져올 예정 딱 1번만 가져오면 됌 */
+const initialSortOptions = {
+  keys: ['이름', '직번', '부서', '직급', '평가등급', '고성과조직가산'],
+  values: ['오름차순', '내림차순'],
+};
+
 function HighOrganizationPage() {
   /* 현재 수정하고 있는 테이블 데이터 */
   const [highOrganizationData, setHighOrganizationData] = useState(
     initialHighOrganizationData,
   );
+
   /* 취소시 마지막 저장된 데이터 */
   const [prevHighOrganizationData, setPrevHighOrganizationData] = useState(
     initialHighOrganizationData,
@@ -145,22 +173,118 @@ function HighOrganizationPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   /* Table에서 Pagination을 적용해서 보여줄 Data */
   const [tableData, setTableData] = useState([]);
+  /* Filter, Sort 조건 저장 */
+  const [filters, setFilters] = useState([]);
+  const [sorts, setSorts] = useState([]);
+  const [filterOptions, setFilterOptions] = useState(initialFilterOptions);
+  const [sortOptions, setSortOptions] = useState(initialSortOptions);
+
+  /* Filter Modal에 Filter를 추가하고 저장하면 실행되는 함수 */
+  const handleAddFilterModal = (data) => {
+    /* 필터 추가 */
+    setFilters(data);
+
+    /* 현재 보여줄 수 있는 Filter Dropdown들에 대한 설정 */
+    if (data.length > 0) {
+      const updatedFilterOptions = { ...filterOptions };
+
+      data.forEach((filter) => {
+        const { key, value } = filter;
+
+        if (updatedFilterOptions[key]) {
+          // 'value'가 배열인 경우, 해당 배열의 모든 값을 삭제
+          value.forEach((val) => {
+            updatedFilterOptions[key].options = updatedFilterOptions[
+              key
+            ].options.filter((item) => item !== val);
+          });
+        }
+      });
+
+      Object.keys(updatedFilterOptions).forEach((key) => {
+        if (
+          updatedFilterOptions[key].options &&
+          updatedFilterOptions[key].options.length === 0
+        ) {
+          delete updatedFilterOptions[key];
+        }
+      });
+
+      setFilterOptions(updatedFilterOptions);
+    }
+  };
+
+  const handleAddSortModal = (data) => {
+    setSorts(data);
+
+    if (data.length > 0) {
+      const updatedSortOptions = { ...sortOptions };
+
+      data.forEach((filter) => {
+        const { key } = filter;
+        const keyIndex = updatedSortOptions.keys.indexOf(key);
+        if (keyIndex !== -1) {
+          updatedSortOptions.keys.splice(keyIndex, 1);
+        }
+      });
+      setSortOptions(updatedSortOptions);
+    }
+  };
 
   useEffect(() => {
-    /* 페이지 이동 or 최대 갯수 변경으로 데이터가 없으면 가장 마지막 페이지로 이동하도록 로직 추가 */
-    const totalPages = Math.ceil(highOrganizationData.length / rowsPerPage);
+    /* 해당 useEffect 안에 있는 정렬, 페이징 알고리즘은 나중에 DB Query로 해결할 예정 */
+    /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
+    let filteredData = highOrganizationData;
+
+    // filters가 존재하고 비어있지 않으면 필터 적용
+    if (filters.length > 0) {
+      filteredData = highOrganizationData.filter((item) =>
+        filters.every(
+          ({ key, value }) =>
+            (value?.length ?? 0) === 0 || value?.includes(item[mapping[key]]),
+        ),
+      );
+    }
+
+    const sortedData = [...filteredData];
+
+    // sorts가 존재하고 비어있지 않으면 정렬 적용
+    if (sorts.length > 0) {
+      sorts.forEach((sort) => {
+        const { key, value: order } = sort;
+        sortedData.sort((a, b) => {
+          let comparison = 1;
+
+          if (a[mapping[key]] < b[mapping[key]]) {
+            comparison = -1;
+          }
+
+          if (order === '내림차순') {
+            comparison *= -1; // 내림차순인 경우 순서 반전
+          }
+          return comparison;
+        });
+      });
+    }
+
+    // 총 페이지 수 계산
+    const totalPages = Math.ceil(sortedData.length / rowsPerPage);
+
+    // 현재 페이지가 유효한지 확인 후 조정
     if (currentPage > totalPages) {
       setCurrentPage(totalPages || 1);
     } else {
+      // 페이징 적용 후 데이터 설정
       setTableData(
-        highOrganizationData.slice(
+        sortedData.slice(
           (currentPage - 1) * rowsPerPage,
           currentPage * rowsPerPage,
         ),
       );
     }
-  }, [highOrganizationData, currentPage, rowsPerPage]);
+  }, [highOrganizationData, currentPage, rowsPerPage, filters, sorts]);
 
+  /* 페이지 수정 사항이 있는지 확인 */
   const isModified = () => {
     return highOrganizationData.some(
       (item, index) =>
@@ -193,7 +317,12 @@ function HighOrganizationPage() {
         확인할 수 있습니다.
       </p>
       <div className={styles['high-organization-area']}>
-        <FilterSort />
+        <FilterSort
+          filterOptions={filterOptions}
+          sortOptions={sortOptions}
+          onFilterClick={handleAddFilterModal}
+          onSortClick={handleAddSortModal}
+        />
         <HighOrganizationTable
           data={tableData}
           checkedItems={checkedItems}

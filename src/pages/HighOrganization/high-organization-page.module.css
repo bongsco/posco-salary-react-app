@@ -66,3 +66,13 @@
   width: 100%;
   height: auto;
 }
+
+.button-modal {
+  position: relative;
+}
+
+.modal {
+  top: 120%;
+  position: absolute;
+  z-index: 10;
+}
