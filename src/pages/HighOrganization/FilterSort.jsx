@@ -31,6 +31,7 @@ function FilterSort({
           variant={excelDownloadButtonVariant}
           size={excelDownloadButtonSize}
           label={excelDownloadButtonLabel}
+          onClick={() => {}}
         />
       </div>
     </div>

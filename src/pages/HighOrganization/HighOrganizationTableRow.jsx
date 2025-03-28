@@ -4,31 +4,31 @@ import styles from './high-organization-page.module.css';
 import Switch from '#components/Switch';
 import CheckBox from '#components/CheckBox';
 
+/* DB에서 가져올 값 : 평가차등 가산율 정보 */
+const salaryPerRank = {
+  S: {
+    eval_diff_increment: 5.0,
+    eval_diff_bonus: 400,
+  },
+  A: {
+    eval_diff_increment: 4.5,
+    eval_diff_bonus: 350,
+  },
+  B: {
+    eval_diff_increment: 4.0,
+    eval_diff_bonus: 300,
+  },
+};
+/* DB에서 가져올 값 : 고성과조직 가산율 정보 */
+const evalAnnualSalaryIncrement = 2.0;
+const evalPerformProvideRate = 100;
+
 function HighOrganizationTableRow({
   item,
   checkedItems,
   handleHighPerformGroupSwitch,
   handleCheckBox,
 }) {
-  /* DB에서 가져올 값 : 평가차등 가산율 정보 */
-  const salaryPerRank = {
-    S: {
-      eval_diff_increment: 5.0,
-      eval_diff_bonus: 400,
-    },
-    A: {
-      eval_diff_increment: 4.5,
-      eval_diff_bonus: 350,
-    },
-    B: {
-      eval_diff_increment: 4.0,
-      eval_diff_bonus: 300,
-    },
-  };
-  /* DB에서 가져올 값 : 고성과조직 가산율 정보 */
-  const evalAnnualSalaryIncrement = 2.0;
-  const evalPerformProvideRate = 100;
-
   return (
     <tr key={item.emp_num} className={`${styles['table-row']}`}>
       <td>
@@ -56,7 +56,7 @@ function HighOrganizationTableRow({
           <Switch
             isOn={item.in_high_perform_group}
             onClick={() => {
-              /* 코드 수정 */
+              /* Checkbox에 선택된 데이터이면 CheckItems를 넘겨주고, 아니면 해당 Item만 넘겨줌 */
               const targetEmpNums = checkedItems.includes(item.emp_num)
                 ? checkedItems
                 : [item.emp_num];

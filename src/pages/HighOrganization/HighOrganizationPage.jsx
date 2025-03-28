@@ -46,7 +46,7 @@ const initialHighOrganizationData = [
     isChecked: false,
     emp_num: 'Pd000555',
     name: '홍길동김박',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
+    dep_name: '철강IT그룹 ERP개발섹션',
     grade_name: 'P6',
     rank_name: 'B',
     in_high_perform_group: false,
@@ -55,7 +55,7 @@ const initialHighOrganizationData = [
     isChecked: false,
     emp_num: 'Pd000666',
     name: '홍길동김박이',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
+    dep_name: '철강IT그룹 ERP개발섹션',
     grade_name: 'P6',
     rank_name: 'A',
     in_high_perform_group: false,
@@ -73,7 +73,7 @@ const initialHighOrganizationData = [
     isChecked: false,
     emp_num: 'Pd000888',
     name: '김치박',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
+    dep_name: '철강IT그룹 ERP개발섹션',
     grade_name: 'P6',
     rank_name: 'A',
     in_high_perform_group: false,
@@ -89,7 +89,8 @@ const initialHighOrganizationData = [
   },
 ];
 
-const mapping = {
+/* Sample Data랑 테이블 컬럼 Mapping을 위한 임시 변수 */
+const nameMapping = {
   이름: 'name',
   직번: 'emp_num',
   부서: 'dep_name',
@@ -98,22 +99,27 @@ const mapping = {
   고성과조직가산율: 'in_high_perform_group',
 };
 
-/* 해당 Filter, Sort Option들은 DB에서 가져올 예정 딱 1번만 가져오면 됌 */
+/* Filter Option에 대한 Sample Data */
 const filterOptions = {
+  직번: { optionType: 'text', initialValue: '' },
   이름: {
     optionType: 'dropdown',
     options: ['홍', '홍길', '홍길동', '홍길동김'],
     currentSelectedValue: '',
   },
-  상태: {
+  부서: {
     optionType: 'dropdown',
-    options: ['작업전', '작업중', '완료'],
+    options: ['에너지조선마케팅실 산기플랜트팀', '철강IT그룹 ERP개발섹션'],
     initialValue: '',
   },
-  연도: { optionType: 'text', initialValue: '' },
+  평가등급: {
+    optionType: 'dropdown',
+    options: ['S', 'A', 'B'],
+    initialValue: '',
+  },
 };
 
-/* 해당 Sort Option들은 DB에서 가져올 예정 딱 1번만 가져오면 됌 */
+/* Sort Option에 대한 Sample Data */
 const sortOptions = {
   keys: ['이름', '직번', '부서', '직급', '평가등급', '고성과조직가산'],
   values: ['오름차순', '내림차순'],
@@ -124,35 +130,26 @@ function HighOrganizationPage() {
   const [highOrganizationData, setHighOrganizationData] = useState(
     initialHighOrganizationData,
   );
-
-  /* 취소시 마지막 저장된 데이터 */
+  /* 마지막으로 저장된 데이터 */
   const [prevHighOrganizationData, setPrevHighOrganizationData] = useState(
     initialHighOrganizationData,
   );
 
   /* 고성과조직 Table 가산대상 여부 Switch 관리 */
-  const handleHighPerformGroupSwitch = (empNums, isOn) => {
+  const handleHighPerformGroupSwitch = (empNumsArray, isOn) => {
     setHighOrganizationData((prevData) => {
-      if (Array.isArray(empNums)) {
-        return prevData.map((item) =>
-          empNums.includes(item.emp_num)
-            ? { ...item, in_high_perform_group: isOn }
-            : item,
-        );
-      }
-      if (typeof empNums === 'string') {
-        return prevData.map((item) =>
-          item.emp_num === empNums
-            ? { ...item, in_high_perform_group: isOn }
-            : item,
-        );
-      }
-      return prevData;
+      return prevData.map((item) =>
+        empNumsArray.includes(item.emp_num)
+          ? { ...item, in_high_perform_group: isOn }
+          : item,
+      );
     });
   };
 
   /* Checked Item들을 담는 배열 */
   const [checkedItems, setCheckedItems] = useState([]);
+
+  /* Checkbox 선택시 CheckItem 배열 Update하고, Table Data에 Check 표시 */
   const handleCheckBox = (empNum, isChecked) => {
     const newCheckedState = !isChecked;
     // Checked된 Item 배열 Update
@@ -161,7 +158,8 @@ function HighOrganizationPage() {
         ? [...prev, empNum]
         : prev.filter((num) => num !== empNum),
     );
-    // 기존 Sample Data Check 표시
+
+    // 기존 Sample Data에 Check 표시
     setHighOrganizationData((prevData) => {
       return prevData.map((item) =>
         item.emp_num === empNum
@@ -177,11 +175,12 @@ function HighOrganizationPage() {
   /* Table에서 Pagination을 적용해서 보여줄 Data */
   const [tableData, setTableData] = useState([]);
 
-  /* Filter, Sort 조건 저장 , FilterOption과 SortOption 들을 보여주는건 알아서 Table Option에서 처리 */
+  /* Table에 적용되는 Filter, Sort 조건들을 저장하는 배열 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
 
-  const handleModal = (data) => {
+  // TableOption에 onSubmit시 동작하는 함수 */
+  const handleFilterSortModal = (data) => {
     const { type, payload } = data;
 
     if (type === 'filter') {
@@ -194,20 +193,20 @@ function HighOrganizationPage() {
   useEffect(() => {
     /* 해당 useEffect 안에 있는 정렬, 페이징 알고리즘은 나중에 DB Query로 해결할 예정 */
     /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
-    let filteredData = highOrganizationData;
 
+    let filteredData = highOrganizationData;
     // filters가 존재하고 비어있지 않으면 필터 적용
     if (filters.length > 0) {
       filteredData = highOrganizationData.filter((item) =>
         filters.every(
           ({ key, value }) =>
-            (value?.length ?? 0) === 0 || value?.includes(item[mapping[key]]),
+            (value?.length ?? 0) === 0 ||
+            value?.includes(item[nameMapping[key]]),
         ),
       );
     }
 
     const sortedData = [...filteredData];
-
     // sorts가 존재하고 비어있지 않으면 정렬 적용
     if (sorts.length > 0) {
       sorts.forEach((sort) => {
@@ -215,7 +214,7 @@ function HighOrganizationPage() {
         sortedData.sort((a, b) => {
           let comparison = 1;
 
-          if (a[mapping[key]] < b[mapping[key]]) {
+          if (a[nameMapping[key]] < b[nameMapping[key]]) {
             comparison = -1;
           }
 
@@ -226,6 +225,7 @@ function HighOrganizationPage() {
         });
       });
     }
+    /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
 
     // 총 페이지 수 계산
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
@@ -244,7 +244,7 @@ function HighOrganizationPage() {
     }
   }, [highOrganizationData, currentPage, rowsPerPage, filters, sorts]);
 
-  /* 페이지 수정 사항이 있는지 확인 */
+  /* 페이지 수정 사항이 있는지 확인하는 함수 -> isCommitted에 사용 */
   const isModified = () => {
     return highOrganizationData.some(
       (item, index) =>
@@ -280,7 +280,7 @@ function HighOrganizationPage() {
         <FilterSort
           filterOptions={filterOptions}
           sortOptions={sortOptions}
-          onSubmit={handleModal}
+          onSubmit={handleFilterSortModal}
           filters={filters}
           sortList={sorts}
         />

@@ -16,18 +16,21 @@ function HighOrganizationTable({
   handleHighPerformGroupSwitch,
   handleCheckBox,
 }) {
-  const [isHeaderChecked, setIsHeaderChecked] = useState(false); // Header 체크박스 상태
+  /* Table Box의 헤더 체크 상태 관리 */
+  const [isHeaderChecked, setIsHeaderChecked] = useState(false);
 
   useEffect(() => {
     const allChecked = data.every((row) => checkedItems.includes(row.emp_num));
     setIsHeaderChecked(allChecked);
   }, [data, checkedItems]);
 
+  /* Header에 Check를 하게 되면 현재 Table 요소들을 Check하게 하는 함수 */
   const handleHeaderCheckboxChange = () => {
     setIsHeaderChecked((prev) => {
       const newHeaderChecked = !prev;
+      /* 현재 Table에 표시되는 데이터 */
       const allEmpNums = data.map((row) => row.emp_num);
-      /* 현재 Table에 표시되는 애들에 대해서 CheckBox 표시 바꾸기 */
+      /* 현재 Table에 표시되는 데이터에 대해서 CheckBox 표시 수정 */
       allEmpNums.forEach((empNum) => {
         handleCheckBox(empNum, prev);
       });
