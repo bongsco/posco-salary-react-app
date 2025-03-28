@@ -29,10 +29,11 @@ export default function CompensationTable({
 }) {
   // 개별 행 체크박스 토글 핸들러
   const handleCheck = (grade) => {
-    setCheckedRows((prev) => ({
-      ...prev,
-      [grade]: !prev[grade],
-    }));
+    const updated = {
+      ...checkedRows,
+      [grade]: !checkedRows[grade],
+    };
+    setCheckedRows(updated);
   };
 
   return (

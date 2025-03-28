@@ -1,4 +1,5 @@
 import { useReducer, useState, useEffect } from 'react';
+
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './compensation-page.module.css';
 import CompensationSection from './CompensationSection';
@@ -41,6 +42,7 @@ const initialState = {
     adjInfo: JSON.parse(JSON.stringify(initialAdjInfo)),
   },
   isCommitted: true,
+  checkedRows: {},
 };
 
 /* =============================
@@ -88,6 +90,15 @@ function reducer(state, action) {
       };
     }
 
+    case 'ChangeCheckedRows': {
+      const { updatedCheckedRows } = action.payload;
+      return {
+        ...state,
+        checkedRows: updatedCheckedRows,
+        isCommitted: false,
+      };
+    }
+
     case 'AddGradeRow': {
       const { grade } = action.payload;
       const newRanks = {
@@ -126,6 +137,7 @@ function reducer(state, action) {
         ...state,
         rankRate: state.backup?.rankRate || state.rankRate,
         adjInfo: state.backup?.adjInfo || state.adjInfo,
+        checkedRows: {},
         isCommitted: true,
       };
     }
@@ -150,7 +162,6 @@ export default function CompensationPage() {
   const [hasTypeError2, setHasTypeError2] = useState(false); // value2 관련 에러
 
   const [newGradeSelections, setNewGradeSelections] = useState({}); // NEW 행의 드롭다운 선택 값
-  const [checkedRows, setCheckedRows] = useState({}); // 체크박스에 체크된 행들
 
   // ✅ 커밋 시 초기화
   useEffect(() => {
@@ -252,7 +263,7 @@ export default function CompensationPage() {
   // ✅ 행 삭제시
   const handleDeleteCheckedRows = () => {
     const updated = { ...state.rankRate };
-    Object.entries(checkedRows).forEach(([grade, isChecked]) => {
+    Object.entries(state.checkedRows).forEach(([grade, isChecked]) => {
       if (isChecked) delete updated[grade];
     });
 
@@ -261,7 +272,11 @@ export default function CompensationPage() {
       payload: { updatedRankRate: updated },
     });
 
-    setCheckedRows({});
+    dispatch({
+      type: 'ChangeCheckedRows',
+      payload: { updatedCheckedRows: {} },
+    });
+
     validateTable(updated, 'value1');
     validateTable(updated, 'value2');
   };
@@ -335,8 +350,13 @@ export default function CompensationPage() {
               [gradeKey]: selected,
             }))
           }
-          checkedRows={checkedRows}
-          setCheckedRows={setCheckedRows}
+          checkedRows={state.checkedRows}
+          setCheckedRows={(updated) =>
+            dispatch({
+              type: 'ChangeCheckedRows',
+              payload: { updatedCheckedRows: updated },
+            })
+          }
           onDeleteCheckedRows={handleDeleteCheckedRows}
           isCommitted={state.isCommitted}
         />
@@ -362,8 +382,13 @@ export default function CompensationPage() {
               [gradeKey]: selected,
             }))
           }
-          checkedRows={checkedRows}
-          setCheckedRows={setCheckedRows}
+          checkedRows={state.checkedRows}
+          setCheckedRows={(updated) =>
+            dispatch({
+              type: 'ChangeCheckedRows',
+              payload: { updatedCheckedRows: updated },
+            })
+          }
           onDeleteCheckedRows={handleDeleteCheckedRows}
           isCommitted={state.isCommitted}
         />

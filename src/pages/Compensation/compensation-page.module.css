@@ -64,7 +64,7 @@
 }
 
 .unitText {
-  font-size: 13px;
+  font: var(--font-caption-2r-pc);
 }
 
 .inputCell {
