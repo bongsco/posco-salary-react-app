@@ -14,6 +14,7 @@ export default {
         initialValue: '',
       },
       연도: { optionType: 'text', initialValue: '' },
+      입사일: { optionType: 'date', initialValue: '' },
     },
     sortOption: {
       keys: ['연도', '상태'],
