@@ -53,11 +53,12 @@ function reducer(state, action) {
 export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
   const [state, dispatch] = useReducer(reducer, prevSortList, init);
 
-  const valueOptions =
-    state.selectedKey &&
-    !state.sortList.some((sort) => sort.key === state.selectedKey)
-      ? option.values
-      : []; // 이미 정렬 방식이 지정된 key면 선택지 없음
+  // 이미 sortList에 있는 key는 제외
+  const keyOptions = option.keys.filter(
+    (key) => !state.sortList.some((sort) => sort.key === key),
+  );
+
+  const valueOptions = state.selectedKey ? option.values : [];
 
   return (
     <Modal onSubmit={() => onSubmit?.(state.sortList)} onClose={onClose}>
@@ -66,7 +67,7 @@ export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
       <div className={styles.dropdownWrapper}>
         <Dropdown
           placeHolder="정렬 항목"
-          options={option.keys}
+          options={keyOptions}
           selectedValue={state.selectedKey}
           isOpen={state.isKeyOpen}
           onChange={(val) => dispatch({ type: 'SELECT_KEY', payload: val })}
