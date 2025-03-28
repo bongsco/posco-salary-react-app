@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Button from '#components/Button';
 import styles from './result-page.module.css';
 import TableOption from '#components/TableOption';
+import Switch from '#components/Switch';
 
 function FilterSort({
   filterOptions,
@@ -9,6 +10,8 @@ function FilterSort({
   sortOptions,
   filters,
   sortList,
+  tableMode,
+  setTableMode,
 }) {
   const excelDownloadButtonVariant = 'secondary';
   const excelDownloadButtonSize = 'large';
@@ -27,6 +30,14 @@ function FilterSort({
       </div>
 
       <div className={styles['right-group']}>
+        <div className={styles['switch-container']}>
+          <div className={styles['switch-label']}>카드</div>
+          <Switch
+            isOn={tableMode}
+            onClick={() => setTableMode((prev) => !prev)}
+          />
+          <div className={styles['switch-label']}>테이블</div>
+        </div>
         <Button
           variant={excelDownloadButtonVariant}
           size={excelDownloadButtonSize}
@@ -44,6 +55,8 @@ FilterSort.propTypes = {
   filters: PropTypes.arrayOf().isRequired,
   sortList: PropTypes.arrayOf().isRequired,
   onSubmit: PropTypes.func.isRequired,
+  tableMode: PropTypes.bool.isRequired,
+  setTableMode: PropTypes.func.isRequired,
 };
 
 export default FilterSort;

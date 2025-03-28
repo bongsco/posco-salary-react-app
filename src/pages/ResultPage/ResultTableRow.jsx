@@ -1,23 +1,37 @@
 import PropTypes from 'prop-types';
-// import styles from './result-page.module.css';
+import styles from './result-page.module.css';
 
 function ResultTableRow({ item }) {
   return (
     <tr>
-      <td>{item.empNum}</td>
-      <td>{item.name}</td>
-      <td>{item.grade}</td>
-      <td>{item.position}</td>
-      <td>{item.departmentName}</td>
-      <td>{item.rank}</td>
-      <td>{item.salaryIncrementRate}%</td>
-      <td>{item.bonusIncretmentRate}%</td>
-      <td>{item.stdSalaryIncrementRate}%</td>
-      <td>{item.payband}</td>
-      <td>{item.salaryBefore.toLocaleString()}</td>
-      <td>{item.salaryAfter.toLocaleString()}</td>
-      <td>{item.totalSalaryBefore.toLocaleString()}</td>
-      <td>{item.totalSalaryAfter.toLocaleString()}</td>
+      <td className={styles['table-medium-cell']}>{item.empNum}</td>
+      <td className={styles['table-small-cell']}>{item.name}</td>
+      <td className={styles['table-small-cell']}>{item.grade}</td>
+      <td className={styles['table-small-cell']}>{item.position}</td>
+      <td className={styles['table-large-cell']}>{item.departmentName}</td>
+      <td className={styles['table-small-cell']}>{item.rank}</td>
+      <td className={styles['table-small-cell']}>
+        {item.salaryIncrementRate}%
+      </td>
+      <td className={styles['table-small-cell']}>
+        {item.bonusIncretmentRate}%
+      </td>
+      <td className={styles['table-small-cell']}>
+        {item.stdSalaryIncrementRate}%
+      </td>
+      <td className={styles['table-medium-cell']}>{item.payband}</td>
+      <td className={styles['table-large-cell']}>
+        {item.salaryBefore.toLocaleString()}
+      </td>
+      <td className={styles['table-large-cell']}>
+        {item.salaryAfter.toLocaleString()}
+      </td>
+      <td className={styles['table-large-cell']}>
+        {item.totalSalaryBefore.toLocaleString()}
+      </td>
+      <td className={styles['table-large-cell']}>
+        {item.totalSalaryAfter.toLocaleString()}
+      </td>
     </tr>
   );
 }

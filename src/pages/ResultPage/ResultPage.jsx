@@ -430,6 +430,7 @@ export default function ResultPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
+  const [tableMode, setTableMode] = useState(true);
 
   /* Filter Option에 대한 Sample Data */
   const filterOptions = useMemo(
@@ -558,32 +559,47 @@ export default function ResultPage() {
           onSubmit={handleFilterSortModal}
           filters={filters}
           sortList={sorts}
+          tableMode={tableMode}
+          setTableMode={setTableMode}
         />
-        <table>
-          <thead>
-            <tr>
-              <td>직번</td>
-              <td>성명</td>
-              <td>직급</td>
-              <td>직책</td>
-              <td>부서</td>
-              <td>평가</td>
-              <td>평차연봉인상률</td>
-              <td>평차금인상률</td>
-              <td>기준연봉인상률</td>
-              <td>Payband</td>
-              <td>기준연봉 조정전</td>
-              <td>기준연봉 조정후</td>
-              <td>계약연봉 조정전</td>
-              <td>계약연봉 조정후</td>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row) => (
-              <ResultTableRow key={row.empNum} item={row} />
-            ))}
-          </tbody>
-        </table>
+        <div className={styles['table-area']}>
+          {tableMode && (
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <td className={styles['table-medium-cell']}>직번</td>
+                  <td className={styles['table-small-cell']}>성명</td>
+                  <td className={styles['table-small-cell']}>직급</td>
+                  <td className={styles['table-small-cell']}>직책</td>
+                  <td className={styles['table-large-cell']}>부서</td>
+                  <td className={styles['table-small-cell']}>평가</td>
+                  <td className={styles['table-small-cell']}>평차연봉인상률</td>
+                  <td className={styles['table-small-cell']}>평차금인상률</td>
+                  <td className={styles['table-small-cell']}>기준연봉인상률</td>
+                  <td className={styles['table-medium-cell']}>Payband</td>
+                  <td className={styles['table-large-cell']}>
+                    기준연봉 조정전
+                  </td>
+                  <td className={styles['table-large-cell']}>
+                    기준연봉 조정후
+                  </td>
+                  <td className={styles['table-large-cell']}>
+                    계약연봉 조정전
+                  </td>
+                  <td className={styles['table-large-cell']}>
+                    계약연봉 조정후
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                {tableData.map((row) => (
+                  <ResultTableRow key={row.empNum} item={row} />
+                ))}
+              </tbody>
+            </table>
+          )}
+          {!tableMode && <div />}
+        </div>
         <div className={styles['page-nation-area']}>
           <PageNation
             currentPage={currentPage}

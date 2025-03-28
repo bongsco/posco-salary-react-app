@@ -1,3 +1,5 @@
+@import url('../../styles/global.css');
+
 .page-nation-area {
   width: 100%;
   display: flex;
@@ -17,6 +19,8 @@
 
 .right-group {
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .table-container {
@@ -24,4 +28,37 @@
   width: 100%;
   flex-direction: column;
   gap: 10px;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.switch-label {
+  font: var(--font-caption-3l-pc);
+}
+
+.table-area {
+  width: 100%;
+  overflow-x: auto;
+}
+.table {
+  border-collapse: collapse;
+  min-width: 524px;
+}
+.table-small-cell {
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+.table-medium-cell {
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.table-large-cell {
+  min-width: 150px;
+  white-space: nowrap;
 }
