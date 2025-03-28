@@ -18,8 +18,8 @@ export default function DateSelection({
         date={dateValues.baseDate}
         isSaved={committedStates.baseDate}
         onChange={(date) => onChange('baseDate', date)}
-        message="기준 일자를 선택해 주세요."
-        hasError={hasError}
+        message={hasError.baseDate ? '기준 일자를 선택해 주세요.' : null}
+        hasError={hasError.baseDate}
       />
 
       <div className={styles.subTitle}>입사일자 기준 대상제외일자</div>
@@ -31,16 +31,16 @@ export default function DateSelection({
           date={dateValues.expStartDate}
           isSaved={committedStates.expStartDate}
           onChange={(date) => onChange('expStartDate', date)}
-          message="시작일을 입력해 주세요."
-          hasError={hasError}
+          message={hasError.expStartDate ? '시작일을 입력해 주세요.' : null}
+          hasError={hasError.expStartDate}
         />
         <div>~</div>
         <CustomDatePicker
           date={dateValues.expEndDate}
           isSaved={committedStates.expEndDate}
           onChange={(date) => onChange('expEndDate', date)}
-          message="종료일을 입력해 주세요."
-          hasError={hasError}
+          message={hasError.expEndDate ? '종료일을 입력해 주세요.' : null}
+          hasError={hasError.expEndDate}
         />
       </div>
     </div>

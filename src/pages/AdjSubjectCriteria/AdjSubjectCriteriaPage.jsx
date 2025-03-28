@@ -224,23 +224,32 @@ export default function AdjSubjectCriteriaPage() {
       isEqual(gradeState.current, gradeState.previous)
     );
   }, [dateState, paymentState, gradeState]);
-
   const validateForm = () => {
-    const hasDateError = Object.values(dateState.current).some(
-      (v) => v === null,
-    );
+    const hasDateError = {
+      baseDate: dateState.current.baseDate === null,
+      expStartDate: dateState.current.expStartDate === null,
+      expEndDate: dateState.current.expEndDate === null,
+    };
+
     const hasPaymentError = Object.values(paymentState.current).every(
       (v) => v === false,
     );
+
     const allGradeValues = Object.values(gradeState.current)
       .filter((group) => typeof group === 'object')
       .flatMap((group) => Object.values(group));
     const hasGradeError = allGradeValues.every((v) => v === false);
+
     return {
       hasDateError,
       hasPaymentError,
       hasGradeError,
-      isValid: !hasDateError && !hasPaymentError && !hasGradeError,
+      isValid:
+        !hasDateError.baseDate &&
+        !hasDateError.expStartDate &&
+        !hasDateError.expEndDate &&
+        !hasPaymentError &&
+        !hasGradeError,
     };
   };
 
@@ -314,8 +323,13 @@ export default function AdjSubjectCriteriaPage() {
             dateValues={dateState.current}
             onChange={handleDateChange}
             committedStates={dateState.committed}
-            hasError={hasTriedSubmit && formValidation.hasDateError}
+            hasError={
+              hasTriedSubmit
+                ? formValidation.hasDateError
+                : { baseDate: false, expStartDate: false, expEndDate: false }
+            }
           />
+
           <PaymentSelection
             payments={paymentState.current}
             onSwitchChange={handleSwitchPaymentChange}
