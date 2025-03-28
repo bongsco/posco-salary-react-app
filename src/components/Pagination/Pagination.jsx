@@ -21,7 +21,6 @@ export default function Pagination({
 
   return (
     <div className={styles.paginationContainer}>
-      {/* ✅ 이전 / 다음 버튼 */}
       <div className={styles.buttonContainer}>
         <Button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -39,7 +38,7 @@ export default function Pagination({
       <div className={styles.inputSelectContainer}>
         <PageInput
           currentPage={currentPage}
-          onPageChange={(e) => handlePageChange(Number(e.target.value))}
+          onPageChange={handlePageChange}
           totalPage={totalPage}
         />
         <PageSelect
