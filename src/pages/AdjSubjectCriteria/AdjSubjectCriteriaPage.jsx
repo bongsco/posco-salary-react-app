@@ -108,6 +108,15 @@ export default function AdjSubjectCriteriaPage() {
         updated[groupKey][groupLabel] = allChecked;
         committed[groupKey][groupLabel] =
           previous[groupKey]?.[groupLabel] === allChecked;
+
+        // ✅ '전체' 버튼 상태도 갱신
+        const allValues = Object.values(updated)
+          .filter((v) => typeof v === 'object')
+          .flatMap((group) => Object.values(group));
+        const topLevelAllChecked = allValues.every((v) => v);
+        updated.all['전체'] = topLevelAllChecked;
+        committed.all['전체'] = previous.all?.['전체'] === topLevelAllChecked;
+
         break;
       }
 
