@@ -57,10 +57,11 @@ Pagination.propTypes = {
   onPageChange: PropTypes.func.isRequired, // ✅ 페이지 변경 핸들러 필수
   rowsPerPage: PropTypes.number, // ✅ 한 페이지에 표시할 행 개수 필수
   onRowsPerPageChange: PropTypes.func.isRequired, // ✅ 행 개수 변경 핸들러 필수
-  pageOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
+  pageOptions: PropTypes.arrayOf(PropTypes.number),
 };
 
 Pagination.defaultProps = {
   currentPage: 1,
   rowsPerPage: 10, // ✅ 기본값: 10개 행 표시
+  pageOptions: [5, 10, 20, 50],
 };
