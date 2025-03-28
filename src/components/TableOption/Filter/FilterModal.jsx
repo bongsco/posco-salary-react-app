@@ -185,11 +185,11 @@ function ValueSelector({
 
     return (
       <CustomDatePicker
-        selectedDate={selectedValue}
         onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
         customWidth="133px"
         hasError={isDuplicate}
         isSaved="true"
+        date={selectedValue}
       />
     );
   }
