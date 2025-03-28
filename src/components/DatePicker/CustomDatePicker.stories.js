@@ -2,16 +2,16 @@ import { fn } from '@storybook/test';
 import CustomDatePicker from './CustomDatePicker';
 
 export default {
-  title: 'UI/Form/CustomDatePicker',
+  title: 'UI/Form/Inputs/CustomDatePicker',
   component: CustomDatePicker,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
   argTypes: {
     isDisabled: { control: 'boolean' },
     isSaved: { control: 'boolean' },
     hasError: { control: 'boolean' },
+    customWidth: { control: 'text' },
+    minWidth: { control: 'text' },
+    maxWidth: { control: 'text' },
   },
   args: { onChange: fn() }, // ✅ Storybook에서 onChange 이벤트 추적 가능
 };
@@ -20,7 +20,8 @@ export default {
 export const Default = {
   args: {
     isDisabled: false,
-    isSaved: false,
+    isSaved: true,
+    hasError: false,
   },
 };
 
@@ -29,6 +30,7 @@ export const SavedState = {
   args: {
     isDisabled: false,
     isSaved: true,
+    hasError: false,
   },
 };
 
@@ -37,11 +39,13 @@ export const Disabled = {
   args: {
     isDisabled: true,
     isSaved: true,
+    hasError: false,
   },
 };
 
 export const Error = {
   args: {
+    isDisabled: false,
     isSaved: true,
     hasError: true,
   },
