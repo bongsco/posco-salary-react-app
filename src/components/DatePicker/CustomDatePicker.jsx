@@ -1,4 +1,4 @@
-import { useState, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -6,6 +6,7 @@ import inputStyles from '#styles/input.module.css';
 import './datepicker.module.css';
 
 function CustomDatePicker({
+  date,
   isDisabled,
   isSaved,
   onChange,
@@ -15,15 +16,6 @@ function CustomDatePicker({
   maxWidth = null,
   minWidth = null,
 }) {
-  const [date, setDate] = useState(null);
-
-  const handleDateChange = (d) => {
-    if (!isDisabled) {
-      setDate(d);
-      onChange(d);
-    }
-  };
-
   const customStyle = {
     width: customWidth,
     minWidth,
@@ -54,7 +46,7 @@ function CustomDatePicker({
         showIcon
         toggleCalendarOnIconClick={!isDisabled}
         selected={date}
-        onChange={(d) => !isDisabled && handleDateChange(d)}
+        onChange={(d) => !isDisabled && onChange(d)}
         dateFormat="yyyy-MM-dd"
         disabled={isDisabled}
         customInput={<CustomInput />}
@@ -65,6 +57,7 @@ function CustomDatePicker({
 }
 
 CustomDatePicker.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
   isDisabled: PropTypes.bool.isRequired,
   isSaved: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
