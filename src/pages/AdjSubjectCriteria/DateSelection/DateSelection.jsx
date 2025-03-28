@@ -15,10 +15,10 @@ export default function DateSelection({
         다음 날짜부터의 근속일을 기반으로 연봉을 조정합니다.
       </div>
       <CustomDatePicker
-        selectedDate={dateValues.baseDate}
+        date={dateValues.baseDate}
         isSaved={committedStates.baseDate}
         onChange={(date) => onChange('baseDate', date)}
-        eMessage="기준 일자를 선택해 주세요."
+        message="기준 일자를 선택해 주세요."
         hasError={hasError}
       />
 
@@ -28,18 +28,18 @@ export default function DateSelection({
       </div>
       <div className={styles.inputDays}>
         <CustomDatePicker
-          selectedDate={dateValues.expStartDate}
+          date={dateValues.expStartDate}
           isSaved={committedStates.expStartDate}
           onChange={(date) => onChange('expStartDate', date)}
-          eMessage="시작일을 입력해 주세요."
+          message="시작일을 입력해 주세요."
           hasError={hasError}
         />
         <div>~</div>
         <CustomDatePicker
-          selectedDate={dateValues.expEndDate}
+          date={dateValues.expEndDate}
           isSaved={committedStates.expEndDate}
           onChange={(date) => onChange('expEndDate', date)}
-          eMessage="종료일을 입력해 주세요."
+          message="종료일을 입력해 주세요."
           hasError={hasError}
         />
       </div>
