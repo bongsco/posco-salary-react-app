@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,7 +15,7 @@ function CustomDatePicker({
   maxWidth = null,
   minWidth = null,
 }) {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(null);
 
   const handleDateChange = (d) => {
     if (!isDisabled) {
@@ -30,6 +30,21 @@ function CustomDatePicker({
     maxWidth,
   };
 
+  const CustomInput = forwardRef(({ value, onClick }, ref) => (
+    <input
+      onClick={onClick}
+      ref={ref}
+      value={value || 'YYYY-MM-DD'}
+      readOnly
+      className={inputStyles.input}
+      style={{ color: value ? '#000' : '#aaa' }} // 값 없을 땐 흐리게 표시
+    />
+  ));
+  CustomInput.displayName = 'CustomInput';
+  CustomInput.propTypes = {
+    value: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+  };
   return (
     <div
       className={`${inputStyles.container} ${hasError ? inputStyles.error : ''} ${isSaved && !hasError ? inputStyles.default : ''} ${!isSaved && !hasError ? inputStyles.ok : ''}`}
@@ -42,10 +57,7 @@ function CustomDatePicker({
         onChange={(d) => !isDisabled && handleDateChange(d)}
         dateFormat="yyyy-MM-dd"
         disabled={isDisabled}
-        readOnly={isDisabled}
-        customInput={
-          <input className={inputStyles.input} placeholder="yyyy-MM-dd" />
-        }
+        customInput={<CustomInput />}
       />
       {message && <div className={inputStyles.message}>{message}</div>}
     </div>

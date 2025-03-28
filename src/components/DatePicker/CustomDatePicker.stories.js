@@ -12,6 +12,7 @@ export default {
     customWidth: { control: 'text' },
     minWidth: { control: 'text' },
     maxWidth: { control: 'text' },
+    message: { control: 'text' },
   },
   args: { onChange: fn() }, // ✅ Storybook에서 onChange 이벤트 추적 가능
 };
@@ -48,5 +49,6 @@ export const Error = {
     isDisabled: false,
     isSaved: true,
     hasError: true,
+    message: '날짜를 선택해주세요',
   },
 };
