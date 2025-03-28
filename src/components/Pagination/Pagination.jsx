@@ -9,6 +9,7 @@ export default function Pagination({
   onPageChange,
   rowsPerPage,
   onRowsPerPageChange,
+  pageOptions,
 }) {
   const totalPage = 10; // ✅ 전체 페이지 수
 
@@ -21,7 +22,6 @@ export default function Pagination({
 
   return (
     <div className={styles.paginationContainer}>
-      {/* ✅ 이전 / 다음 버튼 */}
       <div className={styles.buttonContainer}>
         <Button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -39,12 +39,13 @@ export default function Pagination({
       <div className={styles.inputSelectContainer}>
         <PageInput
           currentPage={currentPage}
-          onPageChange={(e) => handlePageChange(Number(e.target.value))}
+          onPageChange={handlePageChange}
           totalPage={totalPage}
         />
         <PageSelect
           rowsPerPage={rowsPerPage} // ✅ 한 페이지에 표시할 행 개수 전달
           onRowsPerPageChange={onRowsPerPageChange} // ✅ 부모에서 행 개수 변경 가능하도록 Prop 전달
+          options={pageOptions}
         />
       </div>
     </div>
@@ -56,9 +57,11 @@ Pagination.propTypes = {
   onPageChange: PropTypes.func.isRequired, // ✅ 페이지 변경 핸들러 필수
   rowsPerPage: PropTypes.number, // ✅ 한 페이지에 표시할 행 개수 필수
   onRowsPerPageChange: PropTypes.func.isRequired, // ✅ 행 개수 변경 핸들러 필수
+  pageOptions: PropTypes.arrayOf(PropTypes.number),
 };
 
 Pagination.defaultProps = {
   currentPage: 1,
   rowsPerPage: 10, // ✅ 기본값: 10개 행 표시
+  pageOptions: [5, 10, 20, 50],
 };

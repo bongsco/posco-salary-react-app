@@ -22,6 +22,7 @@ export const Default = {
   args: {
     currentPage: 1,
     rowsPerPage: 10,
+    pageOptions: [5, 100, 200, 300],
   },
 };
 
@@ -30,6 +31,7 @@ export const MidPage = {
   args: {
     currentPage: 5,
     rowsPerPage: 20,
+    pageOptions: [5, 10, 15, 20],
   },
 };
 
@@ -38,5 +40,6 @@ export const LastPage = {
   args: {
     currentPage: 10,
     rowsPerPage: 50,
+    pageOptions: [5, 10, 15, 20],
   },
 };
