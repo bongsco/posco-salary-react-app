@@ -49,10 +49,14 @@
 .tableHeaderWrapper {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  height: 0;
-  margin-bottom: -4px; /* 표와 간격 없애기 위한 조정 */
+  align-items: center;
+  height: 0px;
   padding-right: 4px;
+}
+
+.deleteButton {
+  display: flex;
+  align-items: center;
 }
 
 .unitText {
@@ -77,4 +81,5 @@ thead td:hover {
 .errorMessage {
   font: var(--font-caption-1r-pc);
   color: var(--color-system-caution);
+  margin-bottom: 20px;
 }

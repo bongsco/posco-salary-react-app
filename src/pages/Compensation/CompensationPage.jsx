@@ -67,6 +67,15 @@ function reducer(state, action) {
       };
     }
 
+    case 'ChangeAllRankRate': {
+      const { updatedRankRate } = action.payload;
+      return {
+        ...state,
+        rankRate: updatedRankRate,
+        isCommitted: false,
+      };
+    }
+
     case 'ChangeAdjInfo': {
       const { key, value } = action.payload;
       return {
@@ -141,6 +150,7 @@ export default function CompensationPage() {
   const [hasTypeError2, setHasTypeError2] = useState(false); // value2 관련 에러
 
   const [newGradeSelections, setNewGradeSelections] = useState({}); // NEW 행의 드롭다운 선택 값
+  const [checkedRows, setCheckedRows] = useState({}); // 체크박스에 체크된 행들
 
   // ✅ 커밋 시 초기화
   useEffect(() => {
@@ -239,6 +249,23 @@ export default function CompensationPage() {
     validateTable(nextData, 'value2');
   };
 
+  // ✅ 행 삭제시
+  const handleDeleteCheckedRows = () => {
+    const updated = { ...state.rankRate };
+    Object.entries(checkedRows).forEach(([grade, isChecked]) => {
+      if (isChecked) delete updated[grade];
+    });
+
+    dispatch({
+      type: 'ChangeAllRankRate',
+      payload: { updatedRankRate: updated },
+    });
+
+    setCheckedRows({});
+    validateTable(updated, 'value1');
+    validateTable(updated, 'value2');
+  };
+
   // ✅ 에러 상태 계산 : 에러 하나라도 있으면 저장 불가
   const hasAnyError =
     hasTypeError1 ||
@@ -308,6 +335,9 @@ export default function CompensationPage() {
               [gradeKey]: selected,
             }))
           }
+          checkedRows={checkedRows}
+          setCheckedRows={setCheckedRows}
+          onDeleteCheckedRows={handleDeleteCheckedRows}
         />
 
         <CompensationSection
@@ -331,6 +361,9 @@ export default function CompensationPage() {
               [gradeKey]: selected,
             }))
           }
+          checkedRows={checkedRows}
+          setCheckedRows={setCheckedRows}
+          onDeleteCheckedRows={handleDeleteCheckedRows}
         />
       </div>
     </AdjustEditLayout>

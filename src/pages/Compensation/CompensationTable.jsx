@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../styles/table.css';
 import styles from './compensation-page.module.css';
 import CheckBox from '#components/CheckBox';
+import Button from '#components/Button';
 import CompensationTableRow from './CompensationTableRow';
 
 /**
@@ -22,9 +22,10 @@ export default function CompensationTable({
   hasTypeError, // 테이블 내 숫자 형식 오류 여부
   newGradeSelections, // NEW 행의 드롭다운 선택 상태
   onSelectGrade, // 드롭다운 선택 이벤트 핸들러
+  checkedRows,
+  setCheckedRows,
+  onDeleteCheckedRows,
 }) {
-  const [checkedRows, setCheckedRows] = useState({}); // 체크 박스 상태
-
   // 개별 행 체크박스 토글 핸들러
   const handleCheck = (grade) => {
     setCheckedRows((prev) => ({
@@ -37,7 +38,16 @@ export default function CompensationTable({
     <>
       {/* 테이블 헤더 상단 텍스트 */}
       <div className={styles.tableHeaderWrapper}>
-        <div />
+        <div className={styles.deleteButton}>
+          {Object.values(checkedRows).some((v) => v) && (
+            <Button
+              label="삭제"
+              sizes="small"
+              variant="secondary"
+              onClick={onDeleteCheckedRows}
+            />
+          )}
+        </div>
         <div className={styles.unitText}>단위 (%)</div>
       </div>
 
@@ -132,4 +142,7 @@ CompensationTable.propTypes = {
   hasTypeError: PropTypes.bool.isRequired,
   newGradeSelections: PropTypes.objectOf(PropTypes.string).isRequired,
   onSelectGrade: PropTypes.func.isRequired,
+  onDeleteCheckedRows: PropTypes.func.isRequired,
+  checkedRows: PropTypes.objectOf(PropTypes.bool).isRequired,
+  setCheckedRows: PropTypes.func.isRequired,
 };

@@ -25,6 +25,9 @@ export default function CompensationSection({
   hasTypeError, // 테이블 내 숫자 형식 오류 여부
   newGradeSelections, // NEW 행들의 드롭다운 선택 상태
   onSelectGrade, // 드롭다운 선택시 호출되는 함수
+  checkedRows,
+  setCheckedRows,
+  onDeleteCheckedRows,
 }) {
   return (
     <div className={styles.section}>
@@ -57,6 +60,9 @@ export default function CompensationSection({
         hasTypeError={hasTypeError}
         newGradeSelections={newGradeSelections}
         onSelectGrade={onSelectGrade}
+        checkedRows={checkedRows}
+        setCheckedRows={setCheckedRows}
+        onDeleteCheckedRows={onDeleteCheckedRows}
       />
     </div>
   );
@@ -90,4 +96,7 @@ CompensationSection.propTypes = {
   hasTypeError: PropTypes.bool.isRequired,
   newGradeSelections: PropTypes.objectOf(PropTypes.string).isRequired,
   onSelectGrade: PropTypes.func.isRequired,
+  onDeleteCheckedRows: PropTypes.func.isRequired,
+  checkedRows: PropTypes.objectOf(PropTypes.bool).isRequired,
+  setCheckedRows: PropTypes.func.isRequired,
 };
