@@ -32,7 +32,7 @@ export default function PageInput({ currentPage, onPageChange, totalPage }) {
         type="number"
         min={1}
         max={totalPage}
-        value={inputValue}
+        value={currentPage}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}

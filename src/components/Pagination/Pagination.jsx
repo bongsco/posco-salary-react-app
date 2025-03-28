@@ -9,7 +9,7 @@ export default function Pagination({
   onPageChange,
   rowsPerPage,
   onRowsPerPageChange,
-  pageOptions,
+  pageOptions = [5, 10, 15, 20],
 }) {
   const totalPage = 10; // ✅ 전체 페이지 수
 
