@@ -549,6 +549,8 @@ export default function ResultPage() {
   useEffect(() => {
     if (!tableMode) {
       setRowsPerPage(6);
+    } else {
+      setRowsPerPage(5);
     }
   }, [tableMode]);
   return (
@@ -619,6 +621,7 @@ export default function ResultPage() {
             rowsPerPage={rowsPerPage}
             onPageChange={setCurrentPage}
             onRowsPerPageChange={setRowsPerPage}
+            pageOptions={tableMode ? [5, 10, 20, 50] : [6, 12, 24, 30]}
           />
         </div>
       </div>
