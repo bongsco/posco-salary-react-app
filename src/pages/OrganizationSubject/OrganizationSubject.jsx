@@ -196,11 +196,16 @@ export default function OrganizationSubject() {
     const sortList = optionState.sortList[type];
     sortList.forEach(({ key, value }) => {
       result.sort((a, b) => {
-        const aVal = String(eValueForKey(a, key));
-        const bVal = String(eValueForKey(b, key));
+        const aVal = eValueForKey(a, key) ?? '';
+        const bVal = eValueForKey(b, key) ?? '';
+
         return value === '오름차순'
-          ? aVal.localeCompare(bVal)
-          : bVal.localeCompare(aVal);
+          ? String(aVal).localeCompare(String(bVal), undefined, {
+              numeric: true,
+            })
+          : String(bVal).localeCompare(String(aVal), undefined, {
+              numeric: true,
+            });
       });
     });
 
