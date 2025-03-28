@@ -23,15 +23,21 @@ export default function AdjSubjectCriteriaPage() {
     임원: false,
   };
   const initialGrades = {
-    all: { 전체: false },
-    allLeft: { P직군전체: false, R직군전체: false, A직군전체: false },
-    allRight: { O직군전체: false, D직군전체: false, G직군전체: false },
-    P: { P6: false, P5: false, P4: false, P3: false, P2: false, P1: false },
-    R: { R3: false, R2: false, R1: false },
-    A: { A3: false, A2: false, A1: false },
-    O: { O3: false, O2: false, O1: false },
-    D: { D3: false, D2: false, D1: false },
-    G: { G3: false, G2: false, G1: false },
+    all: false,
+    P: {
+      all: false,
+      P1: false,
+      P2: false,
+      P3: false,
+      P4: false,
+      P5: false,
+      P6: false,
+    },
+    R: { all: false, R1: false, R2: false, R3: false },
+    A: { all: false, A1: false, A2: false, A3: false },
+    O: { all: false, O1: false, O2: false, O3: false },
+    D: { all: false, D1: false, D2: false, D3: false },
+    G: { all: false, G1: false, G2: false, G3: false },
   };
 
   const structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -42,7 +48,7 @@ export default function AdjSubjectCriteriaPage() {
       Object.entries(obj).map(([k, v]) => [k, setAllTrue(v)]),
     );
   };
-  // 🔧 상태 생성 유틸
+
   const createInitialState = (initial) => ({
     current: initial,
     previous: structuredClone(initial),
@@ -59,39 +65,44 @@ export default function AdjSubjectCriteriaPage() {
 
     switch (toggleType) {
       case 'TOGGLE_ALL': {
-        const allChecked = Object.values(updated)
-          .flatMap((group) => Object.values(group))
-          .every((v) => v);
-        Object.entries(updated).forEach(([group, values]) => {
-          Object.keys(values).forEach((key) => {
-            const newVal = !allChecked;
-            updated[group][key] = newVal;
-            committed[group][key] = previous[group]?.[key] === newVal;
+        const newVal = isChecked;
+
+        Object.entries(updated).forEach(([key, val]) => {
+          if (key === 'all') return;
+          Object.keys(val).forEach((gradeKey) => {
+            updated[key][gradeKey] = newVal;
+            committed[key][gradeKey] = previous[key][gradeKey] === newVal;
           });
         });
+
+        updated.all = newVal;
+        committed.all = previous.all === newVal;
         break;
       }
 
       case 'TOGGLE_GROUP': {
-        const groupToCategoryMap = {
-          P직군전체: 'P',
-          R직군전체: 'R',
-          A직군전체: 'A',
-          O직군전체: 'O',
-          D직군전체: 'D',
-          G직군전체: 'G',
-        };
-
-        const targetCategory = groupToCategoryMap[label];
-
-        Object.keys(updated[targetCategory]).forEach((key) => {
-          updated[targetCategory][key] = isChecked;
-          committed[targetCategory][key] =
-            previous[targetCategory][key] === isChecked;
+        Object.keys(updated[category]).forEach((key) => {
+          if (key === 'all') return; // 실제 버튼들만 적용
+          updated[category][key] = isChecked;
+          committed[category][key] = previous[category][key] === isChecked;
         });
 
-        updated[category][label] = isChecked;
-        committed[category][label] = previous[category]?.[label] === isChecked;
+        // 직군 전체 토글 상태
+        updated[category].all = isChecked;
+        committed[category].all = previous[category].all === isChecked;
+
+        // 전체(all) 다시 계산
+        const allChecked = Object.entries(updated)
+          .filter(([k]) => typeof updated[k] === 'object')
+          .flatMap(([, group]) =>
+            Object.entries(group)
+              .filter(([k]) => k !== 'all')
+              .map(([, v]) => v),
+          )
+          .every((v) => v);
+
+        updated.all = allChecked;
+        committed.all = previous.all === allChecked;
         break;
       }
 
@@ -99,24 +110,24 @@ export default function AdjSubjectCriteriaPage() {
         updated[category][label] = isChecked;
         committed[category][label] = previous[category][label] === isChecked;
 
-        const allChecked = Object.values(updated[category]).every((v) => v);
-        const groupLabel = `${category}직군전체`;
-        const groupKey = ['P', 'R', 'A'].includes(category)
-          ? 'allLeft'
-          : 'allRight';
+        // 그룹 전체 상태 재계산
+        const groupAllChecked = Object.entries(updated[category])
+          .filter(([k]) => k !== 'all')
+          .every(([, v]) => v);
+        updated[category].all = groupAllChecked;
+        committed[category].all = previous[category].all === groupAllChecked;
 
-        updated[groupKey][groupLabel] = allChecked;
-        committed[groupKey][groupLabel] =
-          previous[groupKey]?.[groupLabel] === allChecked;
-
-        // ✅ '전체' 버튼 상태도 갱신
-        const allValues = Object.values(updated)
-          .filter((v) => typeof v === 'object')
-          .flatMap((group) => Object.values(group));
-        const topLevelAllChecked = allValues.every((v) => v);
-        updated.all['전체'] = topLevelAllChecked;
-        committed.all['전체'] = previous.all?.['전체'] === topLevelAllChecked;
-
+        // 전체도 업데이트
+        const allChecked = Object.entries(updated)
+          .filter(([k]) => k !== 'all')
+          .flatMap(([, group]) =>
+            Object.entries(group)
+              .filter(([k]) => k !== 'all')
+              .map(([, v]) => v),
+          )
+          .every((v) => v);
+        updated.all = allChecked;
+        committed.all = previous.all === allChecked;
         break;
       }
 
@@ -131,73 +142,87 @@ export default function AdjSubjectCriteriaPage() {
     };
   }
 
-  // 🔧 reducer
   function criteriaReducer(state, action) {
-    switch (action.type) {
-      case 'SET_DATE_VALUE':
+    const { type, payload } = action;
+
+    switch (type) {
+      case 'SET_DATE_VALUE': {
+        const { key, value } = payload;
         return {
           ...state,
           current: {
             ...state.current,
-            [action.payload.key]: action.payload.value,
+            [key]: value,
           },
           committed: {
             ...state.committed,
-            [action.payload.key]:
-              state.previous[action.payload.key] === action.payload.value,
+            [key]: state.previous[key] === value,
           },
         };
+      }
 
       case 'TOGGLE_PAYMENT': {
-        const { label, isChecked, isAllToggle } = action.payload;
-        const updatedPayments = { ...state.current };
-        const updatedCommitted = { ...state.committed };
+        const { label, isChecked, isAllToggle } = payload;
+        const updated = { ...state.current };
+        const committed = { ...state.committed };
 
         if (isAllToggle) {
-          Object.keys(updatedPayments).forEach((key) => {
-            updatedPayments[key] = isChecked;
-            updatedCommitted[key] = state.previous[key] === isChecked;
+          Object.keys(updated).forEach((key) => {
+            updated[key] = isChecked;
+            committed[key] = state.previous[key] === isChecked;
           });
         } else {
-          updatedPayments[label] = isChecked;
-          updatedCommitted[label] = state.previous[label] === isChecked;
+          updated[label] = isChecked;
+          committed[label] = state.previous[label] === isChecked;
 
-          const allChecked = Object.entries(updatedPayments)
+          const allChecked = Object.entries(updated)
             .filter(([k]) => k !== '전체')
             .every(([, v]) => v === true);
-          updatedPayments['전체'] = allChecked;
-          updatedCommitted['전체'] = state.previous['전체'] === allChecked;
+
+          updated['전체'] = allChecked;
+          committed['전체'] = state.previous['전체'] === allChecked;
         }
 
         return {
           ...state,
-          current: updatedPayments,
-          committed: updatedCommitted,
+          current: updated,
+          committed,
         };
       }
 
       case 'TOGGLE_GRADE':
-        return handleGradeToggle(state, action.payload); // 외부 함수 분리 처리
+        return handleGradeToggle(state, payload);
 
-      // 나머지 기본 액션들
       case 'SET_PREVIOUS':
-        return { ...state, previous: structuredClone(action.payload) };
+        return {
+          ...state,
+          previous: structuredClone(payload),
+        };
+
       case 'SET_COMMITTED':
-        return { ...state, committed: structuredClone(action.payload) };
+        return {
+          ...state,
+          committed: structuredClone(payload),
+        };
+
       case 'MARK_ALL_COMMITTED':
-        return { ...state, committed: setAllTrue(state.current) };
+        return {
+          ...state,
+          committed: setAllTrue(state.current),
+        };
+
       case 'RESET_TO_PREVIOUS':
         return {
           ...state,
           current: structuredClone(state.previous),
           committed: setAllTrue(state.previous),
         };
+
       default:
         return state;
     }
   }
 
-  // useReducer
   const [dateState, dispatchDate] = useReducer(
     criteriaReducer,
     initialDateValues,
@@ -224,6 +249,7 @@ export default function AdjSubjectCriteriaPage() {
       isEqual(gradeState.current, gradeState.previous)
     );
   }, [dateState, paymentState, gradeState]);
+
   const validateForm = () => {
     const hasDateError = {
       baseDate: dateState.current.baseDate === null,
@@ -255,8 +281,6 @@ export default function AdjSubjectCriteriaPage() {
 
   const formValidation = validateForm();
 
-  // ✅ 핸들러들
-  // ✅ 날짜
   const handleDateChange = (key, date) => {
     dispatchDate({
       type: 'SET_DATE_VALUE',
@@ -264,7 +288,6 @@ export default function AdjSubjectCriteriaPage() {
     });
   };
 
-  // ✅ 연봉직
   const handleSwitchPaymentChange = (label, isChecked) => {
     const isAllToggle = label === '전체';
     dispatchPayment({
@@ -272,12 +295,14 @@ export default function AdjSubjectCriteriaPage() {
       payload: { label, isChecked, isAllToggle },
     });
   };
-
-  // ✅ 직급
   const handleSwitchGradeChange = (category, label, isChecked) => {
     let toggleType = 'TOGGLE_SINGLE';
-    if (label === '전체') toggleType = 'TOGGLE_ALL';
-    else if (label.includes('직군전체')) toggleType = 'TOGGLE_GROUP';
+
+    if (category === 'all' && label === '전체') {
+      toggleType = 'TOGGLE_ALL';
+    } else if (label === 'all') {
+      toggleType = 'TOGGLE_GROUP';
+    }
 
     dispatchGrade({
       type: 'TOGGLE_GRADE',
@@ -329,7 +354,6 @@ export default function AdjSubjectCriteriaPage() {
                 : { baseDate: false, expStartDate: false, expEndDate: false }
             }
           />
-
           <PaymentSelection
             payments={paymentState.current}
             onSwitchChange={handleSwitchPaymentChange}

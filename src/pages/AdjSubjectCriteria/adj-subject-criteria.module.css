@@ -170,3 +170,21 @@
   font: var(--font-caption-1r-pc);
   color: var(--color-system-caution);
 }
+
+.gradeWrapper {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.groupRow {
+  display: flex;
+  flex-wrap: wrap; /* 너무 좁으면 자동 줄바꿈 */
+  gap: 4px;        /* 각 스위치 사이 간격 */
+  align-items: center;
+}
+
+.groupRow > :first-child {
+  margin-right: 8px; /* ➤ 직군전체 버튼 오른쪽 여백 */
+}
