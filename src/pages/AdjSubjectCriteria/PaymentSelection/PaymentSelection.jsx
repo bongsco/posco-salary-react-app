@@ -55,14 +55,6 @@ PaymentSelection.propTypes = {
 PaymentSelection.defaultProps = {
   payments: {
     전체: false,
-    연봉직: false,
-    '비서직(정규)': false,
-    '비서직(계약)': false,
-    별정직: false,
-    계약직: false,
-    '임시직(시간)': false,
-    '임시직(일)': false,
-    임원: false,
   },
   hasError: false,
 };
