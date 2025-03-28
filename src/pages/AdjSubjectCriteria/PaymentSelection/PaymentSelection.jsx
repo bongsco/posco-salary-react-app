@@ -9,7 +9,7 @@ export default function PaymentSelection({
   hasError,
 }) {
   return (
-    <div className={styles.selectSwitch}>
+    <section className={styles.selectSwitch}>
       <div className={styles.subTitle}>급여기준</div>
       {hasError && (
         <div className={styles.errorMessage}>
@@ -39,7 +39,7 @@ export default function PaymentSelection({
             />
           ))}
       </div>
-    </div>
+    </section>
   );
 }
 

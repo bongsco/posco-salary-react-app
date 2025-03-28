@@ -46,7 +46,7 @@ export default function GradeSelection({
   );
 
   return (
-    <div className={styles.selectSwitch}>
+    <section className={styles.selectSwitch}>
       <div className={styles.subTitle}>직급</div>
       {hasError && (
         <div className={styles.errorMessage}>
@@ -66,30 +66,18 @@ export default function GradeSelection({
           renderGroupRow(groupKey),
         )}
       </div>
-    </div>
+    </section>
   );
 }
 
 GradeSelection.propTypes = {
   grades: PropTypes.shape({
     all: PropTypes.bool.isRequired,
-    P: PropTypes.objectOf(PropTypes.bool).isRequired,
-    R: PropTypes.objectOf(PropTypes.bool).isRequired,
-    A: PropTypes.objectOf(PropTypes.bool).isRequired,
-    O: PropTypes.objectOf(PropTypes.bool).isRequired,
-    D: PropTypes.objectOf(PropTypes.bool).isRequired,
-    G: PropTypes.objectOf(PropTypes.bool).isRequired,
   }).isRequired,
   onSwitchChange: PropTypes.func.isRequired,
   hasError: PropTypes.bool,
   committedStates: PropTypes.shape({
     all: PropTypes.bool.isRequired,
-    P: PropTypes.objectOf(PropTypes.bool).isRequired,
-    R: PropTypes.objectOf(PropTypes.bool).isRequired,
-    A: PropTypes.objectOf(PropTypes.bool).isRequired,
-    O: PropTypes.objectOf(PropTypes.bool).isRequired,
-    D: PropTypes.objectOf(PropTypes.bool).isRequired,
-    G: PropTypes.objectOf(PropTypes.bool).isRequired,
   }).isRequired,
 };
 

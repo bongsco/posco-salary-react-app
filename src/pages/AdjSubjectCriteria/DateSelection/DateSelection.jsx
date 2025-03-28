@@ -9,7 +9,7 @@ export default function DateSelection({
   hasError,
 }) {
   return (
-    <div className={styles.selectDay}>
+    <section className={styles.selectDay}>
       <div className={styles.subTitle}>기준일자</div>
       <div className={styles.description}>
         다음 날짜부터의 근속일을 기반으로 연봉을 조정합니다.
@@ -43,7 +43,7 @@ export default function DateSelection({
           hasError={hasError.expEndDate}
         />
       </div>
-    </div>
+    </section>
   );
 }
 // ✅ PropTypes 정의
