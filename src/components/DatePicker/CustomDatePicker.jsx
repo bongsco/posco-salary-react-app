@@ -12,6 +12,8 @@ function CustomDatePicker({
   hasError,
   customWidth = null,
   message = null,
+  maxWidth = null,
+  minWidth = null,
 }) {
   const [date, setDate] = useState(new Date());
 
@@ -22,10 +24,16 @@ function CustomDatePicker({
     }
   };
 
+  const customStyle = {
+    width: customWidth,
+    minWidth,
+    maxWidth,
+  };
+
   return (
     <div
       className={`${inputStyles.container} ${hasError ? inputStyles.error : ''} ${isSaved && !hasError ? inputStyles.default : ''} ${!isSaved && !hasError ? inputStyles.ok : ''}`}
-      style={{ width: customWidth }}
+      style={customStyle}
     >
       <DatePicker
         showIcon
@@ -36,11 +44,7 @@ function CustomDatePicker({
         disabled={isDisabled}
         readOnly={isDisabled}
         customInput={
-          <input
-            className={inputStyles.input}
-            placeholder="yyyy-MM-dd"
-            style={{ width: customWidth }}
-          />
+          <input className={inputStyles.input} placeholder="yyyy-MM-dd" />
         }
       />
       {message && <div className={inputStyles.message}>{message}</div>}
@@ -55,11 +59,15 @@ CustomDatePicker.propTypes = {
   hasError: PropTypes.bool.isRequired,
   message: PropTypes.string,
   customWidth: PropTypes.string,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
 };
 
 CustomDatePicker.defaultProps = {
   message: null,
   customWidth: null,
+  maxWidth: null,
+  minWidth: null,
 };
 
 export default CustomDatePicker;

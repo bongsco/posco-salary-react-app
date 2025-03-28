@@ -1,7 +1,7 @@
 @import url('./global.css');
 
 .container {
-  width: fit-content;
+  width: 200px;
   height: fit-content;
   position: relative;
 
@@ -24,15 +24,15 @@
   border-color: var(--color-system-dark);
 }
 
-.container .input {
+.input {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   background-color: var(--color-background-general);
   font: var(--font-caption-1r-pc);
 
-  width: 225px;
-  height: 32px;
+  width: 100%;
+  height: 100%;
   border-width: 1px;
   border-style: solid;
   border-radius: 5px;
