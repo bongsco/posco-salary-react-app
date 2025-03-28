@@ -26,7 +26,7 @@ function CustomDatePicker({
     <input
       onClick={onClick}
       ref={ref}
-      value={value || 'YYYY-MM-DD'}
+      value={value || 'yyyy-mm-dd'}
       readOnly
       className={inputStyles.input}
       style={{ color: value ? '#000' : '#aaa' }} // 값 없을 땐 흐리게 표시
