@@ -1,3 +1,5 @@
+// 🔧 OrganizationSubject 페이지 전체 코드 - employees에 selected 필드 사용 방식 적용
+
 import { useReducer, useState } from 'react';
 import Pagination from '#components/Pagination';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
@@ -90,6 +92,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'A',
       isTarget: true,
+      selected: false,
     },
     {
       empId: 'pd0a002',
@@ -97,6 +100,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'B',
       isTarget: true,
+      selected: false,
     },
     {
       empId: 'pd0a003',
@@ -104,6 +108,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'C',
       isTarget: true,
+      selected: false,
     },
     {
       empId: 'pd0a004',
@@ -111,6 +116,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'D',
       isTarget: true,
+      selected: false,
     },
     {
       empId: 'pd0a005',
@@ -118,6 +124,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'D',
       isTarget: true,
+      selected: false,
     },
     {
       empId: 'gh0a001',
@@ -125,6 +132,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'A',
       isTarget: false,
+      selected: false,
     },
     {
       empId: 'gh0a002',
@@ -132,6 +140,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'B',
       isTarget: false,
+      selected: false,
     },
     {
       empId: 'gh0a003',
@@ -139,6 +148,7 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'C',
       isTarget: false,
+      selected: false,
     },
     {
       empId: 'gh0a004',
@@ -146,15 +156,44 @@ export default function OrganizationSubject() {
       hiredDate: '24.03.03',
       grade: 'D',
       isTarget: false,
+      selected: false,
+    },
+    {
+      empId: 'gh0a005',
+      name: '이도현',
+      hiredDate: '24.03.03',
+      grade: 'A',
+      isTarget: false,
+      selected: false,
+    },
+    {
+      empId: 'gh0a006',
+      name: '이도현',
+      hiredDate: '24.03.03',
+      grade: 'B',
+      isTarget: false,
+      selected: false,
+    },
+    {
+      empId: 'gh0a007',
+      name: '이도현',
+      hiredDate: '24.03.03',
+      grade: 'C',
+      isTarget: false,
+      selected: false,
+    },
+    {
+      empId: 'gh0a008',
+      name: '이도현',
+      hiredDate: '24.03.03',
+      grade: 'D',
+      isTarget: false,
+      selected: false,
     },
   ]);
+
   const [savedEmployees, setSavedEmployees] = useState([]);
   const [isCommitted, setIsCommitted] = useState(false);
-  const [selectedIds, setSelectedIds] = useState({ target: [], untarget: [] });
-  const [allChecked, setAllChecked] = useState({
-    target: false,
-    untarget: false,
-  });
 
   const handleOptionSubmit = (tableType, { type, payload }) => {
     if (type === 'filter') {
@@ -170,8 +209,7 @@ export default function OrganizationSubject() {
     );
 
     // 필터링
-    const filters = optionState.filters[type];
-    filters.forEach(({ key, value }) => {
+    optionState.filters[type].forEach(({ key, value }) => {
       if (!value || value.length === 0) return;
       const optionType = filterOption[key]?.optionType;
       result = result.filter((e) => {
@@ -193,12 +231,10 @@ export default function OrganizationSubject() {
     });
 
     // 정렬
-    const sortList = optionState.sortList[type];
-    sortList.forEach(({ key, value }) => {
+    optionState.sortList[type].forEach(({ key, value }) => {
       result.sort((a, b) => {
         const aVal = eValueForKey(a, key) ?? '';
         const bVal = eValueForKey(b, key) ?? '';
-
         return value === '오름차순'
           ? String(aVal).localeCompare(String(bVal), undefined, {
               numeric: true,
@@ -212,51 +248,33 @@ export default function OrganizationSubject() {
     return result;
   };
 
-  const targets = getProcessedEmployees('target');
-  const untargets = getProcessedEmployees('untarget');
-  const paginatedTargets = targets.slice(
-    (page.target - 1) * rowsPerPage.target,
-    page.target * rowsPerPage.target,
-  );
-  const paginatedUntargets = untargets.slice(
-    (page.untarget - 1) * rowsPerPage.untarget,
-    page.untarget * rowsPerPage.untarget,
-  );
-
-  const toggleSelection = (id, type) => {
-    setSelectedIds((prev) => {
-      const isSelected = prev[type].includes(id);
-      const nextSelected = isSelected
-        ? prev[type].filter((x) => x !== id)
-        : [...prev[type], id];
-      const currentList = type === 'target' ? targets : untargets;
-      const allSelected = currentList.every((e) =>
-        nextSelected.includes(e.empId),
-      );
-      setAllChecked((prevChecked) => ({ ...prevChecked, [type]: allSelected }));
-      return { ...prev, [type]: nextSelected };
-    });
+  const toggleSelection = (id) => {
+    setEmployees((prev) =>
+      prev.map((e) => (e.empId === id ? { ...e, selected: !e.selected } : e)),
+    );
     setIsCommitted(false);
   };
 
-  const toggleAll = (type, list) => {
-    const next = !allChecked[type];
-    setAllChecked((prev) => ({ ...prev, [type]: next }));
-    setSelectedIds((prev) => ({
-      ...prev,
-      [type]: next ? list.map((e) => e.empId) : [],
-    }));
+  const toggleAll = (list) => {
+    const shouldSelectAll = !list.every((e) => e.selected);
+    setEmployees((prev) =>
+      prev.map((e) =>
+        list.some((row) => row.empId === e.empId)
+          ? { ...e, selected: shouldSelectAll }
+          : e,
+      ),
+    );
     setIsCommitted(false);
   };
 
   const move = (from, to) => {
-    const movingIds = selectedIds[from];
     setEmployees((prev) =>
       prev.map((e) =>
-        movingIds.includes(e.empId) ? { ...e, isTarget: to === 'target' } : e,
+        e.selected && (from === 'target' ? e.isTarget : !e.isTarget)
+          ? { ...e, isTarget: to === 'target', selected: false }
+          : e,
       ),
     );
-    setSelectedIds((prev) => ({ ...prev, [from]: [] }));
     setIsCommitted(false);
   };
 
@@ -267,7 +285,6 @@ export default function OrganizationSubject() {
 
   const handleCancel = () => {
     setEmployees(savedEmployees);
-    setSelectedIds({ target: [], untarget: [] });
     setIsCommitted(true);
   };
 
@@ -297,10 +314,10 @@ export default function OrganizationSubject() {
           <table>
             <thead>
               <tr>
-                <td>
+                <td style={{ width: 'fit-content' }}>
                   <CheckBox
-                    isChecked={allChecked[type]}
-                    onClick={() => toggleAll(type, list)}
+                    isChecked={list.every((e) => e.selected)}
+                    onClick={() => toggleAll(list)}
                   />
                 </td>
                 <td>직번</td>
@@ -314,8 +331,8 @@ export default function OrganizationSubject() {
                 <tr key={row.empId}>
                   <td>
                     <CheckBox
-                      isChecked={selectedIds[type].includes(row.empId)}
-                      onClick={() => toggleSelection(row.empId, type)}
+                      isChecked={row.selected}
+                      onClick={() => toggleSelection(row.empId)}
                     />
                   </td>
                   <td>{row.empId}</td>
@@ -340,6 +357,17 @@ export default function OrganizationSubject() {
         />
       </div>
     </div>
+  );
+
+  const targets = getProcessedEmployees('target');
+  const untargets = getProcessedEmployees('untarget');
+  const paginatedTargets = targets.slice(
+    (page.target - 1) * rowsPerPage.target,
+    page.target * rowsPerPage.target,
+  );
+  const paginatedUntargets = untargets.slice(
+    (page.untarget - 1) * rowsPerPage.untarget,
+    page.untarget * rowsPerPage.untarget,
   );
 
   return (
