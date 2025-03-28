@@ -231,7 +231,7 @@ function HighOrganizationPage() {
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
 
     // 현재 페이지가 유효한지 확인 후 조정
-    if (currentPage > totalPages) {
+    if (currentPage > totalPages && totalPages !== 0) {
       setCurrentPage(totalPages || 1);
     } else {
       // 페이징 적용 후 데이터 설정
