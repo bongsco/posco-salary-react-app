@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
 import styles from './page-select.module.css';
 
-export default function PageSelect({ rowsPerPage, onRowsPerPageChange }) {
-  const options = [5, 10, 20, 50, 100]; // ✅ 선택 가능한 행 개수 옵션
+export default function PageSelect({
+  options,
+  rowsPerPage,
+  onRowsPerPageChange,
+}) {
+  // const options = [5, 10, 20, 50, 100]; // ✅ 선택 가능한 행 개수 옵션
 
   return (
     <div className={styles.pageSelectContainer}>
@@ -25,6 +29,7 @@ export default function PageSelect({ rowsPerPage, onRowsPerPageChange }) {
 PageSelect.propTypes = {
   rowsPerPage: PropTypes.number, // ✅ 현재 선택된 행 개수
   onRowsPerPageChange: PropTypes.func.isRequired, // ✅ 행 개수 변경 이벤트 핸들러
+  options: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 PageSelect.defaultProps = {

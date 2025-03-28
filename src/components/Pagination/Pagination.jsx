@@ -9,6 +9,7 @@ export default function Pagination({
   onPageChange,
   rowsPerPage,
   onRowsPerPageChange,
+  pageOptions,
 }) {
   const totalPage = 10; // ✅ 전체 페이지 수
 
@@ -44,6 +45,7 @@ export default function Pagination({
         <PageSelect
           rowsPerPage={rowsPerPage} // ✅ 한 페이지에 표시할 행 개수 전달
           onRowsPerPageChange={onRowsPerPageChange} // ✅ 부모에서 행 개수 변경 가능하도록 Prop 전달
+          options={pageOptions}
         />
       </div>
     </div>
@@ -55,6 +57,7 @@ Pagination.propTypes = {
   onPageChange: PropTypes.func.isRequired, // ✅ 페이지 변경 핸들러 필수
   rowsPerPage: PropTypes.number, // ✅ 한 페이지에 표시할 행 개수 필수
   onRowsPerPageChange: PropTypes.func.isRequired, // ✅ 행 개수 변경 핸들러 필수
+  pageOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 Pagination.defaultProps = {
