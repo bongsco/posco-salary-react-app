@@ -26,17 +26,19 @@ export default function CustomTimeLine({
     .slice(0)
     .map((_, i) => (i === selectedIndex ? highlightColor : baseColor));
 
-  const generateMonthlyTicks = (start, end) => {
-    const ticks = [];
-    const current = new Date(start.getFullYear(), start.getMonth(), 1);
-    while (current <= end) {
-      ticks.push(new Date(current));
-      current.setMonth(current.getMonth() + 1);
+  const generateYearLabels = (start, end) => {
+    const years = [];
+    const startYear = start.getFullYear();
+    const endYear = end.getFullYear();
+
+    for (let year = startYear; year <= endYear; year += 1) {
+      years.push(year);
     }
-    return ticks;
+
+    return years;
   };
 
-  const ticks = generateMonthlyTicks(minDate, maxDate);
+  const years = generateYearLabels(minDate, maxDate);
 
   return (
     <div className={`${styles['timeline-container']}`}>
@@ -54,7 +56,6 @@ export default function CustomTimeLine({
             minValue: minDate,
             maxValue: maxDate,
             format: 'M월',
-            ticks,
           },
           colors,
           alternatingRowStyle: false,
@@ -123,6 +124,7 @@ export default function CustomTimeLine({
                 }
               });
 
+              let count = 0;
               // ✅ "1월" 텍스트에만 년도 붙이기 & 폰트 바꾸기
               texts.forEach((textElOrigin, i) => {
                 const textEl = textElOrigin;
@@ -139,10 +141,11 @@ export default function CustomTimeLine({
 
                 if (
                   (rawText === '1월' || (i === 0 && rawText !== '12월')) &&
-                  ticks[i]
+                  years[count]
                 ) {
-                  const year = String(ticks[i].getFullYear()).slice(-2);
+                  const year = String(years[count]).slice(-2);
                   textEl.textContent = `${year}년 ${rawText}`;
+                  count += 1;
                 }
               });
 
