@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import styles from './result-page.module.css';
+// import styles from './result-page.module.css';
 
 function ResultTableRow({ item }) {
   return (
@@ -14,20 +14,10 @@ function ResultTableRow({ item }) {
       <td>{item.bonusIncretmentRate}%</td>
       <td>{item.stdSalaryIncrementRate}%</td>
       <td>{item.payband}</td>
-      <td>
-        <div className={styles['body-salary-detail']}>
-          <div className={styles['salary-inner-value']}>
-            {item.salaryBefore}
-          </div>
-          <div className={styles['salary-inner-value']}>{item.salaryAfter}</div>
-          <div className={styles['salary-inner-value']}>
-            {item.totalSalaryBefore}
-          </div>
-          <div className={styles['salary-inner-value']}>
-            {item.totalSalaryAfter}
-          </div>
-        </div>
-      </td>
+      <td>{item.salaryBefore.toLocaleString()}</td>
+      <td>{item.salaryAfter.toLocaleString()}</td>
+      <td>{item.totalSalaryBefore.toLocaleString()}</td>
+      <td>{item.totalSalaryAfter.toLocaleString()}</td>
     </tr>
   );
 }

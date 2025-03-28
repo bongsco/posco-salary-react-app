@@ -1,45 +1,27 @@
-.filter-sort-area {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.right-group {
-  display: flex;
-}
-
 .page-nation-area {
   width: 100%;
   display: flex;
   justify-content: flex-end;
 }
 
-.salary-td {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.salary-bundle {
+.filter-sort-area {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+}
+
+.left-group {
+  display: flex;
+  gap: 4px;
+}
+
+.right-group {
+  display: flex;
+}
+
+.table-container {
+  display: flex;
   width: 100%;
-}
-
-.salary-detail {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.body-salary-detail {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.salary-inner-value {
-  width: 25%;
+  flex-direction: column;
+  gap: 10px;
 }
