@@ -338,6 +338,7 @@ export default function CompensationPage() {
           checkedRows={checkedRows}
           setCheckedRows={setCheckedRows}
           onDeleteCheckedRows={handleDeleteCheckedRows}
+          isCommitted={state.isCommitted}
         />
 
         <CompensationSection
@@ -364,6 +365,7 @@ export default function CompensationPage() {
           checkedRows={checkedRows}
           setCheckedRows={setCheckedRows}
           onDeleteCheckedRows={handleDeleteCheckedRows}
+          isCommitted={state.isCommitted}
         />
       </div>
     </AdjustEditLayout>

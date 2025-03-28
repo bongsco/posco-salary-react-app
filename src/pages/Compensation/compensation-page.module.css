@@ -54,6 +54,10 @@
   padding-right: 4px;
 }
 
+.withMarginTop {
+  margin-top: 20px;
+}
+
 .deleteButton {
   display: flex;
   align-items: center;
@@ -81,5 +85,5 @@ thead td:hover {
 .errorMessage {
   font: var(--font-caption-1r-pc);
   color: var(--color-system-caution);
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }

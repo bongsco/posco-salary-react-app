@@ -25,6 +25,7 @@ export default function CompensationTable({
   checkedRows,
   setCheckedRows,
   onDeleteCheckedRows,
+  isCommitted,
 }) {
   // 개별 행 체크박스 토글 핸들러
   const handleCheck = (grade) => {
@@ -37,7 +38,10 @@ export default function CompensationTable({
   return (
     <>
       {/* 테이블 헤더 상단 텍스트 */}
-      <div className={styles.tableHeaderWrapper}>
+      <div
+        className={`${styles.tableHeaderWrapper} 
+        ${Object.values(checkedRows).some((v) => v) ? styles.withMarginTop : ''}`}
+      >
         <div className={styles.deleteButton}>
           {Object.values(checkedRows).some((v) => v) && (
             <Button
@@ -92,6 +96,7 @@ export default function CompensationTable({
               hasTypeError={hasTypeError}
               selectedGrade={newGradeSelections[grade]}
               onSelectGrade={onSelectGrade}
+              isCommitted={isCommitted}
             />
           ))}
 
@@ -145,4 +150,5 @@ CompensationTable.propTypes = {
   onDeleteCheckedRows: PropTypes.func.isRequired,
   checkedRows: PropTypes.objectOf(PropTypes.bool).isRequired,
   setCheckedRows: PropTypes.func.isRequired,
+  isCommitted: PropTypes.bool.isRequired,
 };

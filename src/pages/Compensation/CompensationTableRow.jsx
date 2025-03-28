@@ -23,10 +23,11 @@ export default function CompensationTableRow({
   valueKey, // 'value1' 또는 'value2' 지정
   selectedGrade, // NEW 행일 경우 선택된 드롭다운 값
   onSelectGrade, // 드롭다운 선택 시 호출되는 함수
+  isCommitted,
 }) {
   // 해당 행이 NEW로 추가된 행인지 여부
   const isNewRow = grade.startsWith('NEW');
-  const hasSelected = !!selectedGrade;
+  const shouldShowDropdown = isNewRow && !isCommitted;
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -41,25 +42,21 @@ export default function CompensationTableRow({
 
   // 직급 표시 영역: 드롭다운 또는 텍스트
   let gradeContent;
-  if (isNewRow) {
-    if (hasSelected) {
-      gradeContent = selectedGrade;
-    } else {
-      gradeContent = (
-        <Dropdown
-          placeHolder="선택"
-          customWidth="100%"
-          options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
-          selectedValue={selectedGrade || null}
-          isOpen={isDropdownOpen}
-          onClick={handleDropdownToggle}
-          onChange={handleDropdownSelect}
-          error={!selectedGrade}
-        />
-      );
-    }
+  if (shouldShowDropdown) {
+    gradeContent = (
+      <Dropdown
+        placeHolder="선택"
+        customWidth="100%"
+        options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
+        selectedValue={selectedGrade || null}
+        isOpen={isDropdownOpen}
+        onClick={handleDropdownToggle}
+        onChange={handleDropdownSelect}
+        error={!selectedGrade}
+      />
+    );
   } else {
-    gradeContent = grade;
+    gradeContent = selectedGrade || grade;
   }
 
   return (
@@ -132,6 +129,7 @@ CompensationTableRow.propTypes = {
   valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
   selectedGrade: PropTypes.string,
   onSelectGrade: PropTypes.func.isRequired,
+  isCommitted: PropTypes.bool.isRequired,
 };
 
 CompensationTableRow.defaultProps = {

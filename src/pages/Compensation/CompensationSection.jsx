@@ -28,6 +28,7 @@ export default function CompensationSection({
   checkedRows,
   setCheckedRows,
   onDeleteCheckedRows,
+  isCommitted,
 }) {
   return (
     <div className={styles.section}>
@@ -63,6 +64,7 @@ export default function CompensationSection({
         checkedRows={checkedRows}
         setCheckedRows={setCheckedRows}
         onDeleteCheckedRows={onDeleteCheckedRows}
+        isCommitted={isCommitted}
       />
     </div>
   );
@@ -99,4 +101,5 @@ CompensationSection.propTypes = {
   onDeleteCheckedRows: PropTypes.func.isRequired,
   checkedRows: PropTypes.objectOf(PropTypes.bool).isRequired,
   setCheckedRows: PropTypes.func.isRequired,
+  isCommitted: PropTypes.bool.isRequired,
 };
