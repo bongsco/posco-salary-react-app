@@ -48,7 +48,7 @@ const initialState = {
 ============================= */
 function reducer(state, action) {
   switch (action.type) {
-    case 'changeRankRate': {
+    case 'ChangeRankRate': {
       const { grade, rank, key, value } = action.payload;
       const updated = {
         ...state.rankRate,
@@ -67,7 +67,7 @@ function reducer(state, action) {
       };
     }
 
-    case 'changeAdjInfo': {
+    case 'ChangeAdjInfo': {
       const { key, value } = action.payload;
       return {
         ...state,
@@ -79,7 +79,7 @@ function reducer(state, action) {
       };
     }
 
-    case 'addGradeRow': {
+    case 'AddGradeRow': {
       const { grade } = action.payload;
       const newRanks = {
         S: { value1: '', value2: '' },
@@ -99,7 +99,7 @@ function reducer(state, action) {
       };
     }
 
-    case 'commit': {
+    case 'Commit': {
       const { updatedRankRate } = action.payload;
       return {
         ...state,
@@ -112,7 +112,7 @@ function reducer(state, action) {
       };
     }
 
-    case 'rollback': {
+    case 'Rollback': {
       return {
         ...state,
         rankRate: state.backup?.rankRate || state.rankRate,
@@ -184,7 +184,7 @@ export default function CompensationPage() {
     };
 
     dispatch({
-      type: 'changeRankRate',
+      type: 'ChangeRankRate',
       payload: {
         grade,
         rank,
@@ -203,7 +203,7 @@ export default function CompensationPage() {
       e.target.value.trim() !== '';
 
     dispatch({
-      type: 'changeAdjInfo',
+      type: 'ChangeAdjInfo',
       payload: {
         key,
         value: e.target.value,
@@ -220,7 +220,7 @@ export default function CompensationPage() {
   const handleAddGradeRow = () => {
     const newGrade = `NEW${Object.keys(state.rankRate).length + 1}`;
     dispatch({
-      type: 'addGradeRow',
+      type: 'AddGradeRow',
       payload: { grade: newGrade },
     });
 
@@ -266,7 +266,7 @@ export default function CompensationPage() {
     });
 
     dispatch({
-      type: 'commit',
+      type: 'Commit',
       payload: { updatedRankRate },
     });
 
@@ -281,7 +281,7 @@ export default function CompensationPage() {
       stepPaths={['기준 설정', '보상지급률 설정']}
       onCommit={handleCommit}
       onRollback={() => {
-        dispatch({ type: 'rollback' });
+        dispatch({ type: 'Rollback' });
         setNewGradeSelections({});
       }}
       isCommitted={state.isCommitted}
