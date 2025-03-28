@@ -1,8 +1,7 @@
 @import url('../../styles/table.css');
 @import url('../../styles/global.css');
 
-
-.contentWrapper{
+.contentWrapper {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -12,7 +11,7 @@
   position: relative;
 }
 
-.listWrapper{
+.listWrapper {
   display: flex;
   flex-direction: column;
   gap: 0px;
@@ -22,7 +21,7 @@
   position: relative;
 }
 
-.titleWrapper{
+.titleWrapper {
   padding: 8px 8px 8px 16px;
   display: flex;
   flex-direction: column;
@@ -34,17 +33,17 @@
   position: relative;
 }
 
-.title{
+.title {
   color: #000000;
   text-align: center;
-  font-family: var(--subtitle1b-pc-font-family, "Suit-Bold", sans-serif);
+  font-family: var(--subtitle1b-pc-font-family, 'Suit-Bold', sans-serif);
   font-size: var(--subtitle1b-pc-font-size, 28px);
   line-height: var(--subtitle1b-pc-line-height, 40px);
   font-weight: var(--subtitle1b-pc-font-weight, 700);
   position: relative;
 }
 
-.tableWrapper{
+.tableWrapper {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -55,7 +54,7 @@
   position: relative;
 }
 
-.tables{
+.tables {
   display: flex;
   flex-direction: column;
   gap: 0px;
@@ -76,8 +75,7 @@
   border-collapse: collapse;
 }
 
-
-.filterWrapper{
+.filterWrapper {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -88,7 +86,7 @@
   position: relative;
 }
 
-.filterButton{
+.filterButton {
   display: flex;
   flex-direction: row;
   gap: 4px;
@@ -98,10 +96,10 @@
   align-content: flex-start;
   flex-shrink: 0;
   position: relative;
-  z-index : 100;
+  z-index: 100;
 }
 
-.excelWrapper{
+.excelWrapper {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -111,7 +109,7 @@
   position: relative;
 }
 
-.controlWrapper{
+.controlWrapper {
   padding: 10px 40px 10px 40px;
   display: flex;
   flex-direction: column;
@@ -123,25 +121,26 @@
   position: relative;
 }
 
-
-.arrow{
-background: var(--primary-dark, #237dbe);
-color: var( --color-grayscale-white);
-font: 700 20px var(--font-family);
-border-radius: 8px;
-border: 0px;
-display: flex;
-flex-direction: column;
-gap: 10px;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-width: 40px;
-height: 40px;
-position: relative;
-overflow: hidden;
-cursor: pointer;
-transition: background-color 0.3s ease, color 0.3s ease;
+.arrow {
+  background: var(--primary-dark, #237dbe);
+  color: var(--color-grayscale-white);
+  font: 700 20px var(--font-family);
+  border-radius: 8px;
+  border: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .arrow:hover {
@@ -149,7 +148,7 @@ transition: background-color 0.3s ease, color 0.3s ease;
   color: white; /* 호버 시 텍스트 색 */
 }
 
-.paginationWrapper{
+.paginationWrapper {
   border-style: solid;
   border-color: var(--neutral-40, #e0e0e0);
   border-width: 1px 0px 0px 0px;
@@ -162,4 +161,12 @@ transition: background-color 0.3s ease, color 0.3s ease;
   align-self: stretch;
   flex-shrink: 0;
   position: relative;
+}
+
+.checkboxCell {
+  width: 32px;
+  min-width: 32px;
+  max-width: 32px;
+  padding: 8px; /* ✅ 여기서 전역 padding override */
+  text-align: center;
 }

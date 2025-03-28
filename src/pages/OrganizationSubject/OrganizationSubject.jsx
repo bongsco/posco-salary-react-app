@@ -314,7 +314,7 @@ export default function OrganizationSubject() {
           <table>
             <thead>
               <tr>
-                <td style={{ width: 'fit-content' }}>
+                <td className={styles.checkboxCell}>
                   <CheckBox
                     isChecked={list.every((e) => e.selected)}
                     onClick={() => toggleAll(list)}
@@ -329,7 +329,7 @@ export default function OrganizationSubject() {
             <tbody>
               {list.map((row) => (
                 <tr key={row.empId}>
-                  <td>
+                  <td className={styles.checkboxCell}>
                     <CheckBox
                       isChecked={row.selected}
                       onClick={() => toggleSelection(row.empId)}
