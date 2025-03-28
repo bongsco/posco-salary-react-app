@@ -8,7 +8,7 @@ import styles from './compensation-page.module.css';
  *
  * - 연봉 인상률 or 성과금 지급률 섹션을 렌더링
  * - 상단 가산률 입력 필드 + 하단 테이블로 구성됨
- * - valueKey에 따라 각 섹션에서 다루는 값(value1 or value2)이 구분됨
+ * - valueKey에 따라 각 섹션에서 다루는 값(incrementRate or provideRate)이 구분됨
  */
 
 export default function CompensationSection({
@@ -20,7 +20,7 @@ export default function CompensationSection({
   tableData, // 현재 보상 테이블 데이터
   originalTableData, // 백업된(커밋된) 보상 테이블 데이터 (diff 확인용)
   onTableChange, // 테이블 셀 변경 핸들러
-  valueKey, // 'value1' 또는 'value2' 구분 (섹션 타입 분기용)
+  valueKey, // 'incrementRate' 또는 'provideRate' 구분 (섹션 타입 분기용)
   onAddGradeRow, // 행 추가 버튼 클릭시 핸들러
   hasTypeError, // 테이블 내 숫자 형식 오류 여부
   newGradeSelections, // NEW 행들의 드롭다운 선택 상태
@@ -79,21 +79,21 @@ CompensationSection.propTypes = {
   tableData: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.number.isRequired,
-        value2: PropTypes.number.isRequired,
+        incrementRate: PropTypes.number.isRequired,
+        provideRate: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   originalTableData: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.number.isRequired,
-        value2: PropTypes.number.isRequired,
+        incrementRate: PropTypes.number.isRequired,
+        provideRate: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   onTableChange: PropTypes.func.isRequired,
-  valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
+  valueKey: PropTypes.oneOf(['incrementRate', 'provideRate']).isRequired,
   onAddGradeRow: PropTypes.func.isRequired,
   hasTypeError: PropTypes.bool.isRequired,
   newGradeSelections: PropTypes.objectOf(PropTypes.string).isRequired,

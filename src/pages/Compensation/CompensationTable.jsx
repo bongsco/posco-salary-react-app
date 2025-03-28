@@ -17,7 +17,7 @@ export default function CompensationTable({
   currentData, // 현재 입력 중인 보상 비율 데이터
   originalData, // 백업된(커밋된) 보상 테이블 데이터 (diff 확인용)
   onChange, // 셀 변경 핸들러
-  valueKey, // 'value1' 또는 'value2' 지정
+  valueKey, // 'incrementRate' 또는 'provideRate' 지정
   onAddGradeRow, // 행 추가 버튼 클릭 시 호출
   hasTypeError, // 테이블 내 숫자 형식 오류 여부
   newGradeSelections, // NEW 행의 드롭다운 선택 상태
@@ -76,7 +76,7 @@ export default function CompensationTable({
             </td>
             <td>직급</td>
             <td>탁월(S)</td>
-            <td>우수</td>
+            <td>우수(A)</td>
             <td>충족(B+)</td>
             <td>보완필요(B)</td>
             <td>미흡(C)</td>
@@ -129,21 +129,21 @@ CompensationTable.propTypes = {
   currentData: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.number.isRequired,
-        value2: PropTypes.number.isRequired,
+        incrementRate: PropTypes.number.isRequired,
+        provideRate: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   originalData: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.number.isRequired,
-        value2: PropTypes.number.isRequired,
+        incrementRate: PropTypes.number.isRequired,
+        provideRate: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   onChange: PropTypes.func.isRequired,
-  valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
+  valueKey: PropTypes.oneOf(['incrementRate', 'provideRate']).isRequired,
   onAddGradeRow: PropTypes.func.isRequired,
   hasTypeError: PropTypes.bool.isRequired,
   newGradeSelections: PropTypes.objectOf(PropTypes.string).isRequired,

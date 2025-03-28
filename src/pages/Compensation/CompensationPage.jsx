@@ -9,20 +9,20 @@ import CompensationSection from './CompensationSection';
 ============================= */
 const initialRankRate = {
   P3: {
-    S: { value1: 0.8, value2: 400 },
-    A: { value1: 0.8, value2: 400 },
-    BPlus: { value1: 0.8, value2: 400 },
-    B: { value1: 0.8, value2: 400 },
-    C: { value1: 0.8, value2: 400 },
-    D: { value1: 0.8, value2: 400 },
+    S: { incrementRate: 0.8, provideRate: 400 },
+    A: { incrementRate: 0.8, provideRate: 400 },
+    'B+': { incrementRate: 0.8, provideRate: 400 },
+    B: { incrementRate: 0.8, provideRate: 400 },
+    C: { incrementRate: 0.8, provideRate: 400 },
+    D: { incrementRate: 0.8, provideRate: 400 },
   },
   P4: {
-    S: { value1: 0.6, value2: 350 },
-    A: { value1: 0.6, value2: 350 },
-    BPlus: { value1: 0.6, value2: 350 },
-    B: { value1: 0.6, value2: 350 },
-    C: { value1: 0.6, value2: 350 },
-    D: { value1: 0.6, value2: 350 },
+    S: { incrementRate: 0.6, provideRate: 350 },
+    A: { incrementRate: 0.6, provideRate: 350 },
+    'B+': { incrementRate: 0.6, provideRate: 350 },
+    B: { incrementRate: 0.6, provideRate: 350 },
+    C: { incrementRate: 0.6, provideRate: 350 },
+    D: { incrementRate: 0.6, provideRate: 350 },
   },
 };
 
@@ -102,12 +102,12 @@ function reducer(state, action) {
     case 'AddGradeRow': {
       const { grade } = action.payload;
       const newRanks = {
-        S: { value1: '', value2: '' },
-        A: { value1: '', value2: '' },
-        BPlus: { value1: '', value2: '' },
-        B: { value1: '', value2: '' },
-        C: { value1: '', value2: '' },
-        D: { value1: '', value2: '' },
+        S: { incrementRate: '', provideRate: '' },
+        A: { incrementRate: '', provideRate: '' },
+        BPlus: { incrementRate: '', provideRate: '' },
+        B: { incrementRate: '', provideRate: '' },
+        C: { incrementRate: '', provideRate: '' },
+        D: { incrementRate: '', provideRate: '' },
       };
       return {
         ...state,
@@ -158,8 +158,8 @@ export default function CompensationPage() {
     eval_perform_provoide_rate: false,
   });
 
-  const [hasTypeError1, setHasTypeError1] = useState(false); // value1 관련 에러
-  const [hasTypeError2, setHasTypeError2] = useState(false); // value2 관련 에러
+  const [hasTypeError1, setHasTypeError1] = useState(false); // incrementRate 관련 에러
+  const [hasTypeError2, setHasTypeError2] = useState(false); // provideRate 관련 에러
 
   const [newGradeSelections, setNewGradeSelections] = useState({}); // NEW 행의 드롭다운 선택 값
 
@@ -183,8 +183,8 @@ export default function CompensationPage() {
         return typeof value === 'string' || value === '' || Number.isNaN(value);
       }),
     );
-    if (key === 'value1') setHasTypeError1(hasInvalid);
-    else if (key === 'value2') setHasTypeError2(hasInvalid);
+    if (key === 'incrementRate') setHasTypeError1(hasInvalid);
+    else if (key === 'provideRate') setHasTypeError2(hasInvalid);
   };
 
   // ✅ 셀 값 변경 시 핸들러
@@ -248,16 +248,16 @@ export default function CompensationPage() {
     const nextData = {
       ...state.rankRate,
       [newGrade]: {
-        S: { value1: '', value2: '' },
-        A: { value1: '', value2: '' },
-        BPlus: { value1: '', value2: '' },
-        B: { value1: '', value2: '' },
-        C: { value1: '', value2: '' },
-        D: { value1: '', value2: '' },
+        S: { incrementRate: '', provideRate: '' },
+        A: { incrementRate: '', provideRate: '' },
+        BPlus: { incrementRate: '', provideRate: '' },
+        B: { incrementRate: '', provideRate: '' },
+        C: { incrementRate: '', provideRate: '' },
+        D: { incrementRate: '', provideRate: '' },
       },
     };
-    validateTable(nextData, 'value1');
-    validateTable(nextData, 'value2');
+    validateTable(nextData, 'incrementRate');
+    validateTable(nextData, 'provideRate');
   };
 
   // ✅ 행 삭제시
@@ -277,8 +277,8 @@ export default function CompensationPage() {
       payload: { updatedCheckedRows: {} },
     });
 
-    validateTable(updated, 'value1');
-    validateTable(updated, 'value2');
+    validateTable(updated, 'incrementRate');
+    validateTable(updated, 'provideRate');
   };
 
   // ✅ 에러 상태 계산 : 에러 하나라도 있으면 저장 불가
@@ -340,7 +340,7 @@ export default function CompensationPage() {
           tableData={state.rankRate}
           originalTableData={state.backup?.rankRate}
           onTableChange={handleInputChange}
-          valueKey="value1"
+          valueKey="incrementRate"
           onAddGradeRow={handleAddGradeRow}
           hasTypeError={hasTypeError1}
           newGradeSelections={newGradeSelections}
@@ -372,7 +372,7 @@ export default function CompensationPage() {
           tableData={state.rankRate}
           originalTableData={state.backup?.rankRate}
           onTableChange={handleInputChange}
-          valueKey="value2"
+          valueKey="provideRate"
           onAddGradeRow={handleAddGradeRow}
           hasTypeError={hasTypeError2}
           newGradeSelections={newGradeSelections}

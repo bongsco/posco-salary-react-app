@@ -20,7 +20,7 @@ export default function CompensationTableRow({
   checked, // 행 체크박스 여부
   onCheck, // 체크박스 클릭 핸들러
   onChange, // 셀 입력 변경 핸들러
-  valueKey, // 'value1' 또는 'value2' 지정
+  valueKey, // 'incrementRate' 또는 'provideRate' 지정
   selectedGrade, // NEW 행일 경우 선택된 드롭다운 값
   onSelectGrade, // 드롭다운 선택 시 호출되는 함수
   isCommitted,
@@ -110,23 +110,23 @@ CompensationTableRow.propTypes = {
   ranks: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.number.isRequired,
-        value2: PropTypes.number.isRequired,
+        incrementRate: PropTypes.number.isRequired,
+        provideRate: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   originalRanks: PropTypes.objectOf(
     PropTypes.objectOf(
       PropTypes.shape({
-        value1: PropTypes.number.isRequired,
-        value2: PropTypes.number.isRequired,
+        incrementRate: PropTypes.number.isRequired,
+        provideRate: PropTypes.number.isRequired,
       }),
     ),
   ).isRequired,
   checked: PropTypes.bool.isRequired,
   onCheck: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  valueKey: PropTypes.oneOf(['value1', 'value2']).isRequired,
+  valueKey: PropTypes.oneOf(['incrementRate', 'provideRate']).isRequired,
   selectedGrade: PropTypes.string,
   onSelectGrade: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool.isRequired,
