@@ -26,6 +26,7 @@ export default function CompensationTable({
   setCheckedRows,
   onDeleteCheckedRows,
   isCommitted,
+  availableGradeOptions,
 }) {
   // 개별 행 체크박스 토글 핸들러
   const handleCheck = (grade) => {
@@ -88,6 +89,7 @@ export default function CompensationTable({
               selectedGrade={newGradeSelections[grade]}
               onSelectGrade={onSelectGrade}
               isCommitted={isCommitted}
+              availableGradeOptions={availableGradeOptions}
             />
           ))}
 
@@ -142,4 +144,5 @@ CompensationTable.propTypes = {
   checkedRows: PropTypes.objectOf(PropTypes.bool).isRequired,
   setCheckedRows: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool.isRequired,
+  availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

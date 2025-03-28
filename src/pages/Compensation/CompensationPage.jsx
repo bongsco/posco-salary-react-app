@@ -163,6 +163,15 @@ export default function CompensationPage() {
 
   const [newGradeSelections, setNewGradeSelections] = useState({}); // NEW 행의 드롭다운 선택 값
 
+  // 이미 존재하는 직급 설정
+  const usedGrades = Object.keys(state.rankRate).filter(
+    (grade) => !grade.startsWith('NEW'),
+  );
+  const allGradeOptions = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
+  const availableGradeOptions = allGradeOptions.filter(
+    (g) => !usedGrades.includes(g),
+  );
+
   // ✅ 커밋 시 초기화
   useEffect(() => {
     if (state.isCommitted) {
@@ -359,6 +368,7 @@ export default function CompensationPage() {
           }
           onDeleteCheckedRows={handleDeleteCheckedRows}
           isCommitted={state.isCommitted}
+          availableGradeOptions={availableGradeOptions}
         />
 
         <CompensationSection
@@ -391,6 +401,7 @@ export default function CompensationPage() {
           }
           onDeleteCheckedRows={handleDeleteCheckedRows}
           isCommitted={state.isCommitted}
+          availableGradeOptions={availableGradeOptions}
         />
       </div>
     </AdjustEditLayout>

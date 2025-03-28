@@ -24,6 +24,7 @@ export default function CompensationTableRow({
   selectedGrade, // NEW 행일 경우 선택된 드롭다운 값
   onSelectGrade, // 드롭다운 선택 시 호출되는 함수
   isCommitted,
+  availableGradeOptions,
 }) {
   // 해당 행이 NEW로 추가된 행인지 여부
   const isNewRow = grade.startsWith('NEW');
@@ -47,7 +48,7 @@ export default function CompensationTableRow({
       <Dropdown
         placeHolder="선택"
         customWidth="100%"
-        options={['P1', 'P2', 'P3', 'P4', 'P5', 'P6']}
+        options={availableGradeOptions}
         selectedValue={selectedGrade || null}
         isOpen={isDropdownOpen}
         onClick={handleDropdownToggle}
@@ -130,6 +131,7 @@ CompensationTableRow.propTypes = {
   selectedGrade: PropTypes.string,
   onSelectGrade: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool.isRequired,
+  availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 CompensationTableRow.defaultProps = {
