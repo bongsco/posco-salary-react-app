@@ -123,25 +123,8 @@
   position: relative;
 }
 
-.rightArrow{
-  background: var(--primary-dark, #237dbe);
-  color: var( --color-grayscale-white);
-  font: 700 20px var(--font-family);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  position: relative;
-  overflow: hidden;
-  border: 0px;
-}
 
-.leftArrow{
+.arrow{
 background: var(--primary-dark, #237dbe);
 color: var( --color-grayscale-white);
 font: 700 20px var(--font-family);
@@ -157,6 +140,13 @@ width: 40px;
 height: 40px;
 position: relative;
 overflow: hidden;
+cursor: pointer;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.arrow:hover {
+  background-color: var(--color-primary-light); /* 호버 시 배경색 */
+  color: white; /* 호버 시 텍스트 색 */
 }
 
 .paginationWrapper{

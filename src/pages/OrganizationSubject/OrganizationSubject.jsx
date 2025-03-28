@@ -385,14 +385,14 @@ export default function OrganizationSubject() {
         <div className={styles.controlWrapper}>
           <button
             type="button"
-            className={styles.rightArrow}
+            className={styles.arrow}
             onClick={() => move('target', 'untarget')}
           >
             {'>'}
           </button>
           <button
             type="button"
-            className={styles.leftArrow}
+            className={styles.arrow}
             onClick={() => move('untarget', 'target')}
           >
             {'<'}
