@@ -12,19 +12,26 @@ export default function Dropdown({
   isOpen,
   onChange,
   onClick,
+  maxWidth = null,
+  minWidth = null,
 }) {
+  const customStyle = {
+    width: customWidth,
+    minWidth,
+    maxWidth,
+  };
+
   return (
     <div
       className={`${inputStyles.container} ${error ? inputStyles.error : inputStyles.default}`}
-      style={{ width: customWidth }}
+      style={customStyle}
     >
       <button
         type="button"
         className={`${inputStyles.input} ${styles.dropdown}`}
         onClick={onClick}
-        style={{ width: customWidth }}
       >
-        <div className={styles.selectedValue}>
+        <div className={styles.selectedItem}>
           {selectedValue === null ? placeHolder : selectedValue}
         </div>
         <div className={styles.selectIcon} />
@@ -58,10 +65,14 @@ Dropdown.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   customWidth: PropTypes.string,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
 };
 
 Dropdown.defaultProps = {
   error: false,
   message: null,
   customWidth: null,
+  maxWidth: null,
+  minWidth: null,
 };
