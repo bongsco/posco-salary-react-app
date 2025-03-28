@@ -5,6 +5,7 @@ import PageNation from '#components/Pagination';
 import ResultTableRow from './ResultTableRow';
 import FilterSort from './FilterSort';
 import '../../styles/table.css';
+import Card from './Card';
 
 export default function ResultPage() {
   const [result] = useState([
@@ -544,6 +545,12 @@ export default function ResultPage() {
       );
     }
   }, [result, currentPage, rowsPerPage, filters, sorts]);
+
+  useEffect(() => {
+    if (!tableMode) {
+      setRowsPerPage(6);
+    }
+  }, [tableMode]);
   return (
     <AdjustEditLayout
       prevStepPath="payband"
@@ -598,7 +605,13 @@ export default function ResultPage() {
               </tbody>
             </table>
           )}
-          {!tableMode && <div />}
+          {!tableMode && (
+            <div className={styles['card-container']}>
+              {tableData.map((card) => (
+                <Card key={card.empNum} item={card} />
+              ))}
+            </div>
+          )}
         </div>
         <div className={styles['page-nation-area']}>
           <PageNation
