@@ -27,8 +27,6 @@
   position: absolute;
   width: 322px;
   box-shadow: var(--shadow);
-  left: 0;
-  top: 130%;
 }
 
 .dropdownWrapper {
