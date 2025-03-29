@@ -10,6 +10,7 @@ import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import RootLayout from '#layouts/RootLayout';
+import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -48,15 +49,7 @@ const router = createBrowserRouter(
           <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
-              <Route
-                path="target"
-                element={
-                  <AdjustEditLayout
-                    nextStepPath="payment-rate"
-                    stepPaths={['기준 설정', '대상자 기준 설정']}
-                  />
-                }
-              />
+              <Route path="target" element={<AdjSubjectCriteriaPage />} />
               <Route
                 path="payment-rate"
                 element={

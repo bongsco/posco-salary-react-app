@@ -1,0 +1,189 @@
+@import url("../../styles/global.css");
+
+.titleWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+  height: 60px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.title {
+  font: var(--font-title-pc);
+}
+
+.savedWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 20px;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.subTitle {
+  font: var(--font-subtitle-1r-pc);
+}
+
+.selectDay {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 13px;
+}
+
+.description {
+  font: var(--font-caption-1r-pc);
+}
+
+.inputDays {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 13px;
+  flex: 1;
+}
+
+.selectSwitch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.gradeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.frame {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 24px;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.frame2 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;   
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.frame3 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;   
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.buttons2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.separator {
+  box-sizing: border-box;
+  margin-top: -1px;
+  height: 1px;
+  width: 100%;
+  border-top: 1px solid #eeedec;
+  flex-shrink: 0;
+  position: relative;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(1, 1);
+}
+
+.errorMessage{
+  font: var(--font-caption-1r-pc);
+  color: var(--color-system-caution);
+}
+
+.gradeWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.groupRow {
+  display: flex;
+  flex-wrap: wrap; /* 너무 좁으면 자동 줄바꿈 */
+  gap: 4px;        /* 각 스위치 사이 간격 */
+  align-items: center;
+}
+
+.groupRow > :first-child {
+  margin-right: 8px; /* ➤ 직군전체 버튼 오른쪽 여백 */
+}

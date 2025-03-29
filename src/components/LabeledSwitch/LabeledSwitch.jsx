@@ -1,16 +1,16 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './labeled-switch.module.css';
 
-export default function LabeledSwitch({ label, isCommitted, onClick }) {
-  const [isChecked, setIsChecked] = useState(false);
-
+export default function LabeledSwitch({
+  label,
+  isCommitted,
+  isChecked,
+  onClick,
+}) {
   const handleClick = () => {
-    setIsChecked((prev) => !prev);
-    if (onClick) {
-      onClick(!isChecked); // 변경된 값 상위로 전달
-    }
+    onClick(label, !isChecked);
   };
+
   return (
     <button
       type="button"
@@ -27,5 +27,6 @@ export default function LabeledSwitch({ label, isCommitted, onClick }) {
 LabeledSwitch.propTypes = {
   label: PropTypes.string.isRequired,
   isCommitted: PropTypes.bool.isRequired,
+  isChecked: PropTypes.bool.isRequired, // ✅ 변경됨
   onClick: PropTypes.func.isRequired,
 };
