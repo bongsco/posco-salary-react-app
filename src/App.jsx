@@ -4,6 +4,7 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
+import ResultPage from '#pages/ResultPage';
 import AppLayout from '#layouts/AppLayout';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
@@ -104,15 +105,7 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="result"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="payband"
-                    stepPaths={['본 연봉조정', '조정 결과 미리보기']}
-                  />
-                }
-              />
+              <Route path="result" element={<ResultPage />} />
             </Route>
           </Route>
         </Route>
