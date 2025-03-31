@@ -79,6 +79,10 @@
   width: 12%;
 }
 
+.markedForDelete td {
+  background-color: var(--color-data-decline) !important;
+}
+
 .table_cell {
   display: flex;
   justify-content: center;

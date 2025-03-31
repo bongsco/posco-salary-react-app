@@ -14,6 +14,7 @@ import styles from './compensation-page.module.css';
 export default function CompensationSection({
   title, // 섹션 제목
   description, // 섹션 설명 문구
+  originalValue,
   value, // 상단 input 입력값 (가산률)
   onInputChange, // 상단 input 값 변경 핸들러
   inputError, // 상단 input 유효성 오류 여부
@@ -30,10 +31,19 @@ export default function CompensationSection({
   onDeleteCheckedRows,
   isCommitted,
   availableGradeOptions,
+  pendingDeleteRows,
 }) {
+  let inputMode = 'default';
+
+  if (inputError) {
+    inputMode = 'error';
+  } else if (value !== originalValue) {
+    inputMode = 'ok';
+  }
+
   return (
     <div className={styles.section}>
-      <h2 className={styles.sectionTitle}>{title}</h2>
+      <section className={styles.sectionTitle}>{title}</section>
       <p className={styles.description}>{description}</p>
 
       <div className={styles.inputContainer}>
@@ -41,7 +51,7 @@ export default function CompensationSection({
         <Input
           value={value}
           onChange={onInputChange}
-          mode={inputError ? 'error' : 'default'}
+          mode={inputMode}
           customWidth={50}
           customHeight={30}
         />
@@ -67,6 +77,7 @@ export default function CompensationSection({
         onDeleteCheckedRows={onDeleteCheckedRows}
         isCommitted={isCommitted}
         availableGradeOptions={availableGradeOptions}
+        pendingDeleteRows={pendingDeleteRows} // 🔥 추가
       />
     </div>
   );
@@ -75,6 +86,7 @@ export default function CompensationSection({
 CompensationSection.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  originalValue: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   inputError: PropTypes.bool.isRequired,
@@ -105,4 +117,5 @@ CompensationSection.propTypes = {
   setCheckedRows: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool.isRequired,
   availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pendingDeleteRows: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

@@ -25,6 +25,7 @@ export default function CompensationTableRow({
   onSelectGrade, // 드롭다운 선택 시 호출되는 함수
   isCommitted,
   availableGradeOptions,
+  pendingDeleteRows,
 }) {
   // 해당 행이 NEW로 추가된 행인지 여부
   const isNewRow = grade.startsWith('NEW');
@@ -40,6 +41,12 @@ export default function CompensationTableRow({
     onSelectGrade(grade, value);
     setIsDropdownOpen(false);
   };
+
+  // 삭제 예정 여부 판단
+  const isMarkedForDeletion = pendingDeleteRows.includes(grade);
+
+  // 삭제 표시 스타일 클래스 적용
+  const rowClass = isMarkedForDeletion ? styles.markedForDelete : '';
 
   // 직급 표시 영역: 드롭다운 또는 텍스트
   let gradeContent;
@@ -61,7 +68,7 @@ export default function CompensationTableRow({
   }
 
   return (
-    <tr>
+    <tr className={rowClass}>
       {/* 체크박스 영역 */}
       <td>
         <div className={styles.table_cell}>
@@ -132,6 +139,7 @@ CompensationTableRow.propTypes = {
   onSelectGrade: PropTypes.func.isRequired,
   isCommitted: PropTypes.bool.isRequired,
   availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pendingDeleteRows: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 CompensationTableRow.defaultProps = {

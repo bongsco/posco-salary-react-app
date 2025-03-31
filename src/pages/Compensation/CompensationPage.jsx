@@ -43,6 +43,7 @@ const initialState = {
   },
   isCommitted: true,
   checkedRows: {},
+  pendingDeleteRows: [],
 };
 
 /* =============================
@@ -119,16 +120,32 @@ function reducer(state, action) {
       };
     }
 
-    case 'Commit': {
-      const { updatedRankRate } = action.payload;
+    case 'MarkRowsForDeletion': {
+      const { rowsToDelete } = action.payload;
       return {
         ...state,
-        rankRate: updatedRankRate,
+        pendingDeleteRows: rowsToDelete,
+        isCommitted: false,
+      };
+    }
+
+    case 'Commit': {
+      const { updatedRankRate } = action.payload;
+      const cleaned = { ...updatedRankRate };
+      state.pendingDeleteRows.forEach((delGrade) => {
+        delete cleaned[delGrade];
+      });
+
+      return {
+        ...state,
+        rankRate: cleaned,
         backup: {
-          rankRate: JSON.parse(JSON.stringify(updatedRankRate)),
+          rankRate: JSON.parse(JSON.stringify(cleaned)),
           adjInfo: JSON.parse(JSON.stringify(state.adjInfo)),
         },
         isCommitted: true,
+        pendingDeleteRows: [],
+        checkedRows: {},
       };
     }
 
@@ -138,6 +155,7 @@ function reducer(state, action) {
         rankRate: state.backup?.rankRate || state.rankRate,
         adjInfo: state.backup?.adjInfo || state.adjInfo,
         checkedRows: {},
+        pendingDeleteRows: [],
         isCommitted: true,
       };
     }
@@ -271,19 +289,37 @@ export default function CompensationPage() {
 
   // ✅ 행 삭제시
   const handleDeleteCheckedRows = () => {
+    const rowsToDelete = Object.entries(state.checkedRows)
+      .filter(([, checked]) => checked)
+      .map(([grade]) => grade);
+
+    const newRows = rowsToDelete.filter((grade) => grade.startsWith('NEW'));
+    const existingRows = rowsToDelete.filter(
+      (grade) => !grade.startsWith('NEW'),
+    );
+
+    // NEW 행은 즉시 삭제
     const updated = { ...state.rankRate };
-    Object.entries(state.checkedRows).forEach(([grade, isChecked]) => {
-      if (isChecked) delete updated[grade];
+    newRows.forEach((grade) => {
+      delete updated[grade];
     });
 
+    // 기존 행은 삭제 예약 상태로만
+    dispatch({
+      type: 'MarkRowsForDeletion',
+      payload: { rowsToDelete: existingRows },
+    });
+
+    // 체크 상태 업데이트: 삭제된 NEW 행은 체크 해제
+    const updatedCheckedRows = { ...state.checkedRows };
+    newRows.forEach((grade) => {
+      delete updatedCheckedRows[grade];
+    });
+
+    // 상태 변경
     dispatch({
       type: 'ChangeAllRankRate',
       payload: { updatedRankRate: updated },
-    });
-
-    dispatch({
-      type: 'ChangeCheckedRows',
-      payload: { updatedCheckedRows: {} },
     });
 
     validateTable(updated, 'incrementRate');
@@ -341,6 +377,7 @@ export default function CompensationPage() {
         <CompensationSection
           title="평가차등 연봉인상률 설정"
           description="직급 및 평가등급별 기준연봉 인상률을 설정합니다. 고성과조직 가산 대상은 인상률에 고성과조직 가산률 입력값이 곱해집니다."
+          originalValue={state.backup?.adjInfo.eval_annual_salary_increment.toString()}
           value={state.adjInfo.eval_annual_salary_increment.toString()}
           onInputChange={(e) =>
             handleAdjustmentChange('eval_annual_salary_increment', e)
@@ -369,11 +406,13 @@ export default function CompensationPage() {
           onDeleteCheckedRows={handleDeleteCheckedRows}
           isCommitted={state.isCommitted}
           availableGradeOptions={availableGradeOptions}
+          pendingDeleteRows={state.pendingDeleteRows}
         />
 
         <CompensationSection
           title="평가차등 경영성과금 지급률 설정"
           description="직급 및 평가등급별 경영성과금 지급 비율을 설정합니다. 고성과조직 가산 대상은 지급률에 고성과조직 가산률 입력값이 더해집니다."
+          originalValue={state.backup?.adjInfo.eval_perform_provide_rate.toString()}
           value={state.adjInfo.eval_perform_provide_rate.toString()}
           onInputChange={(e) =>
             handleAdjustmentChange('eval_perform_provide_rate', e)
@@ -402,6 +441,7 @@ export default function CompensationPage() {
           onDeleteCheckedRows={handleDeleteCheckedRows}
           isCommitted={state.isCommitted}
           availableGradeOptions={availableGradeOptions}
+          pendingDeleteRows={state.pendingDeleteRows}
         />
       </div>
     </AdjustEditLayout>
