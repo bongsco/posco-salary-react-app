@@ -11,114 +11,29 @@ import CustomSlider from '#components/Slider/CustomSlider';
 export default function PaybandTableRow({
   item,
   isDeleted,
-  originItem,
   onChange,
-  onChecked,
   remainingGrades,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleChecked = () => {
-    const updatedPayband = {
-      ...item,
-      isChecked: !item.isChecked,
-    };
-    onChecked(updatedPayband.isChecked, updatedPayband);
-  };
-  const addError = (addModified, updatedPayband) => {
-    return {
-      ...updatedPayband,
-      error: updatedPayband.error.includes(addModified)
-        ? updatedPayband.error
-        : [...updatedPayband.error, addModified],
-    };
-  };
-  const removeError = (addModified, updatedPayband) => {
-    return {
-      ...updatedPayband,
-      error: updatedPayband.error.filter((e) => e !== addModified),
-    };
-  };
-  const hasError = (value) => {
-    return (
-      value === undefined || value < 0 || value > 200 || Number.isNaN(value)
-    );
-  };
-  const handleChange = ({ lower, upper, addModified } = {}) => {
-    let updatedModified = [];
-    if (addModified !== undefined && !item.modified.includes('전체')) {
-      if (!item.modified.includes(addModified)) {
-        updatedModified = [...item.modified, addModified];
-      } else if (addModified === '하한' && lower === originItem.lowerBound) {
-        updatedModified = item.modified.filter((m) => m !== addModified);
-      } else if (addModified === '상한' && upper === originItem.upperBound) {
-        updatedModified = item.modified.filter((m) => m !== addModified);
-      } else {
-        updatedModified = item.modified;
-      }
-    } else {
-      updatedModified = item.modified;
-    }
-
-    let updatedPayband = {
-      ...item,
-      lowerBound: lower !== undefined ? lower : item.lowerBound,
-      upperBound: upper !== undefined ? upper : item.upperBound,
-      modified: updatedModified,
-    };
-
-    if (addModified === '상한' && hasError(upper)) {
-      updatedPayband = addError(addModified, updatedPayband);
-    } else if (addModified === '하한' && hasError(lower)) {
-      updatedPayband = addError(addModified, updatedPayband);
-    } else if (updatedPayband.lowerBound > updatedPayband.upperBound) {
-      updatedPayband = addError(addModified, updatedPayband);
-    } else {
-      updatedPayband = removeError(addModified, updatedPayband);
-      if (
-        addModified === '상한' &&
-        updatedPayband.error.includes('하한') &&
-        !hasError(updatedPayband.lowerBound)
-      ) {
-        updatedPayband = removeError('하한', updatedPayband);
-      } else if (
-        addModified === '하한' &&
-        updatedPayband.error.includes('하한') &&
-        !hasError(updatedPayband.upperBound)
-      ) {
-        updatedPayband = removeError('상한', updatedPayband);
-      }
-    }
-    onChange(updatedPayband);
-  };
-
-  const selectGrade = (option) => {
-    const updatedPayband = {
-      ...item,
-      grade: option,
-      error: item.error.filter((e) => e !== '직급'),
-    };
-    onChange(updatedPayband);
-  };
-
   return (
     <tr>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.check_cell}`}
+        className={`${item.isNewRow ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.check_cell}`}
       >
         <div className={`${styles.table_cell}`}>
           <CheckBox
             isChecked={item.isChecked}
             onClick={() => {
-              handleChecked();
+              onChange(!item.isChecked, '체크');
             }}
           />
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.grade_cell}`}
+        className={`${item.isNewRow ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.grade_cell}`}
       >
-        {!item.modified.includes('전체') ? (
+        {!item.isNewRow ? (
           item.grade
         ) : (
           <div className={`${styles.table_cell}`}>
@@ -127,7 +42,7 @@ export default function PaybandTableRow({
               error={item.error.includes('직급')}
               placeHolder="선택"
               onChange={(option) => {
-                selectGrade(option);
+                onChange(option, '직급');
                 setIsOpen((prev) => !prev);
               }}
               selectedValue={item.grade !== undefined ? item.grade : null}
@@ -142,7 +57,7 @@ export default function PaybandTableRow({
         )}
       </td>
       <td
-        className={`${item.modified.includes('전체') || item.modified.includes('하한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.limit_cell}`}
+        className={`${item.isNewRow || item.modified.includes('하한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.limit_cell}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
@@ -151,14 +66,9 @@ export default function PaybandTableRow({
             onChange={(newValue) => {
               const { value } = newValue.target;
               if (value.trim() === '' || Number.isNaN(Number(value))) {
-                const updatedPayband = addError('하한', item);
-                updatedPayband.lowerBound = value;
-                onChange(updatedPayband);
+                onChange(value, '하한');
               } else {
-                handleChange({
-                  lower: Number(newValue.target.value),
-                  addModified: '하한',
-                });
+                onChange(Number(newValue.target.value), '하한');
               }
             }}
             customWidth="100%"
@@ -167,7 +77,7 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') || item.modified.includes('상한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.limit_cell}`}
+        className={`${item.isNewRow || item.modified.includes('상한') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} ${styles.limit_cell}`}
       >
         <div className={`${styles.table_cell}`}>
           <Input
@@ -176,14 +86,9 @@ export default function PaybandTableRow({
             onChange={(newValue) => {
               const { value } = newValue.target;
               if (value.trim() === '' || Number.isNaN(Number(value))) {
-                const updatedPayband = addError('상한', item);
-                updatedPayband.upperBound = value;
-                onChange(updatedPayband);
+                onChange(value, '상한');
               } else {
-                handleChange({
-                  upper: Number(newValue.target.value),
-                  addModified: '상한',
-                });
+                onChange(Number(newValue.target.value), '상한');
               }
             }}
             customWidth="100%"
@@ -192,7 +97,7 @@ export default function PaybandTableRow({
         </div>
       </td>
       <td
-        className={`${item.modified.includes('전체') ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} `}
+        className={`${item.isNewRow ? styles.modified_cell : ''} ${isDeleted ? styles.deleted_cell : ''} `}
       >
         <CustomSlider
           min={item.lowerBound}
@@ -201,11 +106,11 @@ export default function PaybandTableRow({
           maxUpperBound={200}
           step={10}
           onChange={(min, max) => {
-            handleChange({
-              lower: min,
-              upper: max,
-              addModified: min !== item.lowerBound ? '하한' : '상한',
-            });
+            if (min !== item.lowerBound) {
+              onChange(min, '하한');
+            } else {
+              onChange(max, '상한');
+            }
           }}
         />
       </td>
@@ -221,17 +126,9 @@ PaybandTableRow.propTypes = {
     modified: PropTypes.arrayOf(string).isRequired,
     error: PropTypes.arrayOf(string).isRequired,
     isChecked: PropTypes.bool.isRequired,
+    isNewRow: PropTypes.bool.isRequired,
   }).isRequired,
   isDeleted: PropTypes.bool.isRequired,
-  originItem: PropTypes.shape({
-    grade: PropTypes.string.isRequired,
-    upperBound: PropTypes.number.isRequired,
-    lowerBound: PropTypes.number.isRequired,
-    modified: PropTypes.arrayOf(string).isRequired,
-    error: PropTypes.arrayOf(string).isRequired,
-    isChecked: PropTypes.bool.isRequired,
-  }).isRequired,
   onChange: PropTypes.func.isRequired,
-  onChecked: PropTypes.func.isRequired,
   remainingGrades: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
