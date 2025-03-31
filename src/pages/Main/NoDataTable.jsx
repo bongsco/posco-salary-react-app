@@ -1,8 +1,20 @@
-import React from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import styles from './main-page.module.css';
 import Button from '#components/Button';
+import RegisterModal from '#components/Modal/Register';
 
-function NoDataTable() {
+function NoDataTable({ type, onRegisterSubmit = () => {} }) {
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const handleRegisterClick = () => {
+    setIsRegisterModalOpen((prev) => !prev);
+  };
+
+  const handleCloseRegisterModal = () => {
+    setIsRegisterModalOpen(false);
+  };
+
   const addButtonVariant = 'primary';
   const addButtonSize = 'medium';
   const addButtonLabel = '새 연봉 조정 등록';
@@ -26,14 +38,32 @@ function NoDataTable() {
           <tr>
             <td colSpan="8" className={styles['empty-table-cell']}>
               <div className={styles['empty-table-content']}>
-                <div className={styles['no-data-message']}>
-                  연봉 조정 내역이 없습니다.
-                </div>
-                <Button
-                  variant={addButtonVariant}
-                  size={addButtonSize}
-                  label={addButtonLabel}
-                />
+                {type === 'logic' ? (
+                  <div className={styles['no-data-message']}>
+                    조건에 부합하는 연봉 조정 내역이 없습니다.
+                  </div>
+                ) : (
+                  <>
+                    <div className={styles['no-data-message']}>
+                      연봉 조정 내역이 없습니다.
+                    </div>
+                    <Button
+                      variant={addButtonVariant}
+                      size={addButtonSize}
+                      label={addButtonLabel}
+                      onClick={handleRegisterClick}
+                    />
+                    {isRegisterModalOpen && (
+                      <RegisterModal
+                        option={['정기연봉조정', '승진자연봉조정', 'Base Up']}
+                        onSubmit={onRegisterSubmit}
+                        onClose={handleCloseRegisterModal}
+                        top="130%"
+                        right={0}
+                      />
+                    )}
+                  </>
+                )}
               </div>
             </td>
           </tr>
@@ -42,5 +72,14 @@ function NoDataTable() {
     </div>
   );
 }
+
+NoDataTable.propTypes = {
+  type: PropTypes.string.isRequired,
+  onRegisterSubmit: PropTypes.func,
+};
+
+NoDataTable.defaultProps = {
+  onRegisterSubmit: () => {},
+};
 
 export default NoDataTable;

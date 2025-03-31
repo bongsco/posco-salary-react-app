@@ -1,14 +1,27 @@
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 import Button from '#components/Button';
 import styles from './main-page.module.css';
+import TableOption from '#components/TableOption';
+import RegisterModal from '#components/Modal/Register';
 
-function FilterSort() {
-  const filterButtonVariant = 'secondary';
-  const filterButtonSize = 'round';
-  const filterButtonLabel = '필터 추가 +';
+function FilterSort({
+  filterOptions,
+  onTableOptionSubmit,
+  onRegisterSubmit,
+  sortOptions,
+  filters,
+  sortList,
+}) {
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
-  const sortButtonVariant = 'secondary';
-  const sortButtonSize = 'round';
-  const sortButtonLabel = '정렬: 연도, 월, 등록일 ↓';
+  const handleRegisterClick = () => {
+    setIsRegisterModalOpen((prev) => !prev);
+  };
+
+  const handleCloseRegisterModal = () => {
+    setIsRegisterModalOpen(false);
+  };
 
   const excelDownloadButtonVariant = 'secondary';
   const excelDownloadButtonSize = 'large';
@@ -21,15 +34,12 @@ function FilterSort() {
   return (
     <div className={styles['filter-sort-area']}>
       <div className={styles['left-group']}>
-        <Button
-          variant={filterButtonVariant}
-          size={filterButtonSize}
-          label={filterButtonLabel}
-        />
-        <Button
-          variant={sortButtonVariant}
-          size={sortButtonSize}
-          label={sortButtonLabel}
+        <TableOption
+          filterOption={filterOptions}
+          sortOption={sortOptions}
+          onSubmit={onTableOptionSubmit}
+          filters={filters}
+          sortList={sortList}
         />
       </div>
 
@@ -39,14 +49,38 @@ function FilterSort() {
           size={excelDownloadButtonSize}
           label={excelDownloadButtonLabel}
         />
-        <Button
-          variant={salaryAdjustmentAddButtonVariant}
-          size={salaryAdjustmentAddButtonSize}
-          label={salaryAdjustmentAddButtonLabel}
-        />
+        <div className={styles['button-modal']}>
+          <Button
+            variant={salaryAdjustmentAddButtonVariant}
+            size={salaryAdjustmentAddButtonSize}
+            label={salaryAdjustmentAddButtonLabel}
+            onClick={handleRegisterClick}
+          />
+          {isRegisterModalOpen && (
+            <RegisterModal
+              option={['정기연봉조정', '승진자연봉조정', 'Base Up']}
+              onSubmit={(data) => {
+                onRegisterSubmit(data);
+                handleCloseRegisterModal();
+              }}
+              onClose={handleCloseRegisterModal}
+              top="130%"
+              right={0}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
 }
+
+FilterSort.propTypes = {
+  filterOptions: PropTypes.arrayOf().isRequired,
+  sortOptions: PropTypes.arrayOf().isRequired,
+  filters: PropTypes.arrayOf().isRequired,
+  sortList: PropTypes.arrayOf().isRequired,
+  onTableOptionSubmit: PropTypes.func.isRequired,
+  onRegisterSubmit: PropTypes.func.isRequired,
+};
 
 export default FilterSort;

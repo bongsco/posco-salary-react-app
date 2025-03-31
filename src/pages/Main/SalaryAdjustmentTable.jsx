@@ -11,22 +11,10 @@ function SalaryAdjustmentTable({
   rowsPerPage,
   setRowsPerPage,
   clickedRow,
-  setClickedRow,
+  handleRowClick,
+  handleEditClick,
+  handleDeleteClick,
 }) {
-  const handleRowClick = (creationTimestamp) => {
-    // 나중에 조정차수ID로 값 변경 예정
-    /* 같은 행을 누르면 원래 Table 형태로 전환(null), 다른 행을 누르면 그 행에 Stepper 추가 */
-    setClickedRow(clickedRow === creationTimestamp ? null : creationTimestamp);
-  };
-
-  const handleEditClick = (row) => {
-    console.log('Edit clicked for row:', row);
-  };
-
-  const handleDeleteClick = (row) => {
-    console.log('Delete clicked for row:', row);
-  };
-
   return (
     <div className={styles['salary-adjustment-table-area']}>
       <table className={styles['salary-adjustment-table']}>
@@ -43,16 +31,17 @@ function SalaryAdjustmentTable({
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
+          {data.map((row, index) => (
             <SalaryAdjustmentTableRow
+              /* 나중에 table key로 id 값을 넘길 예정 */
               key={row.creation_timestamp}
               row={row}
               clickedRow={clickedRow}
               handleRowClick={(creationTimestamp) =>
-                handleRowClick(creationTimestamp)
+                handleRowClick(creationTimestamp, index)
               }
-              handleEditClick={() => handleEditClick(row)}
-              handleDeleteClick={() => handleDeleteClick(row)}
+              handleEditClick={handleEditClick}
+              handleDeleteClick={handleDeleteClick}
             />
           ))}
         </tbody>
@@ -85,7 +74,9 @@ SalaryAdjustmentTable.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
   setRowsPerPage: PropTypes.func.isRequired,
   clickedRow: PropTypes.number.isRequired,
-  setClickedRow: PropTypes.func.isRequired,
+  handleRowClick: PropTypes.func.isRequired,
+  handleEditClick: PropTypes.func.isRequired,
+  handleDeleteClick: PropTypes.func.isRequired,
 };
 
 export default SalaryAdjustmentTable;

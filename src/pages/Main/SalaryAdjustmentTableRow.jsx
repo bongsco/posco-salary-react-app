@@ -70,13 +70,15 @@ function SalaryAdjustmentTableRow({
             <div className={styles['button-container']}>
               <button
                 type="button"
-                onClick={() => handleEditClick()}
+                /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
+                onClick={() => handleEditClick(row.creation_timestamp)}
                 className={styles['edit-button']}
                 aria-label="편집"
               />
               <button
                 type="button"
-                onClick={() => handleDeleteClick()}
+                /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
+                onClick={() => handleDeleteClick(row.creation_timestamp)}
                 className={styles['delete-button']}
                 aria-label="삭제"
               />

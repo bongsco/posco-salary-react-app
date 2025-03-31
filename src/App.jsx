@@ -34,12 +34,7 @@ const router = createBrowserRouter(
           <AppLayout title="계산식 관리" breadCrumbs={['계산식 관리']} />
         }
       />
-      <Route
-        path="adjust/list"
-        element={
-          <AppLayout title="연봉조정 조회" breadCrumbs={['조정', '조회']} />
-        }
-      />
+      <Route path="adjust/list" element={<MainPage />} />
       <Route path="adjust/edit">
         <Route
           index
