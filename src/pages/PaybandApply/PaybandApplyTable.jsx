@@ -15,6 +15,7 @@ function PaybandApplyTable({
   setRowsPerPage,
   handlePaybandApplyGroupSwitch,
   handleCheckBox,
+  originalData,
 }) {
   const [isHeaderChecked, setIsHeaderChecked] = useState(false); // Header 체크박스 상태
 
@@ -61,16 +62,23 @@ function PaybandApplyTable({
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
-            <PaybandApplyTableRow
-              key={row.id}
-              item={row}
-              type={type}
-              checkedItems={checkedItems}
-              handlePaybandApplyGroupSwitch={handlePaybandApplyGroupSwitch}
-              handleCheckBox={handleCheckBox}
-            />
-          ))}
+          {data.map((row) => {
+            const originalItem = originalData.find(
+              (o) => o.emp_num === row.emp_num,
+            );
+
+            return (
+              <PaybandApplyTableRow
+                key={row.id}
+                item={row}
+                originalItem={originalItem}
+                type={type}
+                checkedItems={checkedItems}
+                handlePaybandApplyGroupSwitch={handlePaybandApplyGroupSwitch}
+                handleCheckBox={handleCheckBox}
+              />
+            );
+          })}
         </tbody>
       </table>
       <PageNation
@@ -93,6 +101,7 @@ PaybandApplyTable.propTypes = {
   setRowsPerPage: PropTypes.func.isRequired,
   handlePaybandApplyGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
+  originalData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default PaybandApplyTable;

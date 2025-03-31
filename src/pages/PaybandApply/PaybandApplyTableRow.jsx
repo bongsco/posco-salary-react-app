@@ -9,7 +9,12 @@ function PaybandApplyTableRow({
   checkedItems,
   handlePaybandApplyGroupSwitch,
   handleCheckBox,
+  originalItem,
 }) {
+  const isModified =
+    originalItem &&
+    item.in_payband_use_group !== originalItem.in_payband_use_group;
+
   return (
     <tr key={item.emp_num} className={`${styles['table-row']}`}>
       <td>
@@ -31,7 +36,7 @@ function PaybandApplyTableRow({
           ? item.upper_limit_price.toLocaleString()
           : item.lower_limit_price.toLocaleString()}
       </td>
-      <td>
+      <td className={isModified ? styles.changedCell : ''}>
         <div className={styles['switch-area']}>
           <p
             className={`${styles['switch-text']} ${
@@ -65,6 +70,10 @@ PaybandApplyTableRow.propTypes = {
   checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   handlePaybandApplyGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
+  originalItem: PropTypes.shape({
+    emp_num: PropTypes.string,
+    in_payband_use_group: PropTypes.bool,
+  }).isRequired,
 };
 
 export default PaybandApplyTableRow;

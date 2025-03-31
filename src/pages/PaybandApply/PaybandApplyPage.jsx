@@ -229,6 +229,7 @@ function PaybandApplyPage() {
         type="upper"
         data={filteredUpperData}
         dispatch={dispatch}
+        originalData={state.backup}
       />
 
       <h1>하한 초과자 Payband 적용 여부 설정</h1>
@@ -236,6 +237,7 @@ function PaybandApplyPage() {
         type="lower"
         data={filteredLowerData}
         dispatch={dispatch}
+        originalData={state.backup}
       />
     </AdjustEditLayout>
   );

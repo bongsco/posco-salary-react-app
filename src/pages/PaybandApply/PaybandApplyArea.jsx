@@ -5,7 +5,7 @@ import PaybandApplyTable from './PaybandApplyTable';
 import Button from '#components/Button';
 import TableOption from '#components/TableOption';
 
-function PaybandApplyArea({ type, data, dispatch }) {
+function PaybandApplyArea({ type, data, dispatch, originalData }) {
   // ✅ 체크박스 및 스위치 처리
   const handleCheckBox = (empNum) => {
     dispatch({
@@ -72,6 +72,7 @@ function PaybandApplyArea({ type, data, dispatch }) {
         setCurrentPage={setCurrentPage}
         handlePaybandApplyGroupSwitch={handlePaybandApplyGroupSwitch}
         handleCheckBox={handleCheckBox}
+        originalData={originalData}
       />
     </div>
   );
@@ -81,6 +82,7 @@ PaybandApplyArea.propTypes = {
   type: PropTypes.oneOf(['upper', 'lower']).isRequired,
   data: PropTypes.arrayOf().isRequired,
   dispatch: PropTypes.func.isRequired,
+  originalData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default PaybandApplyArea;
