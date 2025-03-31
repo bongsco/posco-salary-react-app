@@ -4,6 +4,7 @@ import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
 import TableOption from '#components/TableOption';
+import TableSelectIndicator from '#components/TableSelectIndicator';
 
 export default function EmployeeTable({
   title,
@@ -19,6 +20,9 @@ export default function EmployeeTable({
   onRowsPerPageChange,
   toggleAll,
   toggleSelection,
+  checkedItemCount,
+  onSelectAll,
+  onClearSelection,
 }) {
   return (
     <section className={styles.listWrapper}>
@@ -76,6 +80,11 @@ export default function EmployeeTable({
         </div>
       </div>
       <div className={styles.paginationWrapper}>
+        <TableSelectIndicator
+          checkedItemCount={checkedItemCount}
+          onSelect={onSelectAll}
+          onClear={onClearSelection}
+        />
         <Pagination
           currentPage={page}
           onPageChange={onPageChange}
@@ -127,4 +136,7 @@ EmployeeTable.propTypes = {
   onRowsPerPageChange: PropTypes.func.isRequired,
   toggleAll: PropTypes.func.isRequired,
   toggleSelection: PropTypes.func.isRequired,
+  checkedItemCount: PropTypes.number.isRequired,
+  onSelectAll: PropTypes.func.isRequired,
+  onClearSelection: PropTypes.func.isRequired,
 };

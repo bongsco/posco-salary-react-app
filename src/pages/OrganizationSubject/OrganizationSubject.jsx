@@ -317,6 +317,32 @@ export default function OrganizationSubject() {
     setIsCommitted(true);
   };
 
+  const onSelectAll = (type) => {
+    const updatedEmployees = employees.map((employee) => {
+      const isCurrentType =
+        type === 'target' ? employee.isTarget : !employee.isTarget;
+      return isCurrentType ? { ...employee, selected: true } : employee;
+    });
+
+    setEmployees(updatedEmployees);
+  };
+
+  const onClearSelection = (type) => {
+    const updatedEmployees = employees.map((employee) => {
+      const isCurrentType =
+        type === 'target' ? employee.isTarget : !employee.isTarget;
+      return isCurrentType ? { ...employee, selected: false } : employee;
+    });
+
+    setEmployees(updatedEmployees);
+  };
+
+  const getCheckedItemCount = (type) => {
+    return employees.filter(
+      (e) => (type === 'target' ? e.isTarget : !e.isTarget) && e.selected,
+    ).length;
+  };
+
   const targets = getProcessedEmployees('target');
   const untargets = getProcessedEmployees('untarget');
   const paginatedTargets = targets.slice(
@@ -358,6 +384,9 @@ export default function OrganizationSubject() {
           }}
           toggleAll={toggleAll}
           toggleSelection={toggleSelection}
+          checkedItemCount={getCheckedItemCount('target')}
+          onSelectAll={() => onSelectAll('target')}
+          onClearSelection={() => onClearSelection('target')}
         />
 
         <div className={styles.controlWrapper}>
@@ -396,6 +425,9 @@ export default function OrganizationSubject() {
           }}
           toggleAll={toggleAll}
           toggleSelection={toggleSelection}
+          checkedItemCount={getCheckedItemCount('untarget')}
+          onSelectAll={() => onSelectAll('untarget')}
+          onClearSelection={() => onClearSelection('untarget')}
         />
       </div>
     </AdjustEditLayout>
