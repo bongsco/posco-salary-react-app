@@ -50,7 +50,16 @@ function reducer(state, action) {
   }
 }
 
-export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
+export default function SortModal({
+  option,
+  onSubmit,
+  onClose,
+  prevSortList,
+  left,
+  right,
+  top,
+  bottom,
+}) {
   const [state, dispatch] = useReducer(reducer, prevSortList, init);
 
   // 이미 sortList에 있는 key는 제외
@@ -61,7 +70,14 @@ export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
   const valueOptions = state.selectedKey ? option.values : [];
 
   return (
-    <Modal onSubmit={() => onSubmit?.(state.sortList)} onClose={onClose}>
+    <Modal
+      onSubmit={() => onSubmit?.(state.sortList)}
+      onClose={onClose}
+      left={left}
+      right={right}
+      top={top}
+      bottom={bottom}
+    >
       <span className={styles.title}>정렬</span>
 
       <div className={styles.dropdownWrapper}>
@@ -128,8 +144,16 @@ SortModal.propTypes = {
       value: PropTypes.string.isRequired,
     }),
   ),
+  left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  right: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 SortModal.defaultProps = {
   prevSortList: [],
+  left: 'auto',
+  right: 'auto',
+  top: 'auto',
+  bottom: 'auto',
 };

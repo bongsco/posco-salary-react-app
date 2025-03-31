@@ -36,6 +36,8 @@ export default function TableOption({
               setShowFilter(false);
             }}
             onClose={() => setShowFilter(false)}
+            left={0}
+            top="130%"
           />
         )}
       </div>
@@ -59,6 +61,8 @@ export default function TableOption({
               setShowSort(false);
             }}
             onClose={() => setShowSort(false)}
+            left={0}
+            top="130%"
           />
         )}
       </div>

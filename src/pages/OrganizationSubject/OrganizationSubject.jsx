@@ -1,12 +1,7 @@
-// 🔧 OrganizationSubject 페이지 전체 코드 - employees에 selected 필드 사용 방식 적용
-
 import { useReducer, useState } from 'react';
-import Pagination from '#components/Pagination';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './organization-subject.module.css';
-import Button from '#components/Button';
-import CheckBox from '#components/CheckBox';
-import TableOption from '#components/TableOption';
+import EmployeeTable from '#pages/OrganizationSubject/EmployeeTable';
 
 const filterOption = {
   평가등급: {
@@ -32,6 +27,113 @@ const sortOption = {
   keys: ['직번', '성명', '채용일자', '평가등급'],
   values: ['오름차순', '내림차순'],
 };
+
+const initialEmployees = [
+  {
+    empId: 'pd0a001',
+    name: '홍길동',
+    hiredDate: '24.03.03',
+    grade: 'A',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'pd0a002',
+    name: '홍길동',
+    hiredDate: '24.03.03',
+    grade: 'B',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'pd0a003',
+    name: '홍길동',
+    hiredDate: '24.03.03',
+    grade: 'C',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'pd0a004',
+    name: '홍길동',
+    hiredDate: '24.03.03',
+    grade: 'D',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'pd0a005',
+    name: '홍길동',
+    hiredDate: '24.03.03',
+    grade: 'D',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'gh0a001',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'A',
+    isTarget: false,
+    selected: false,
+  },
+  {
+    empId: 'gh0a002',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'B',
+    isTarget: false,
+    selected: false,
+  },
+  {
+    empId: 'gh0a003',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'C',
+    isTarget: false,
+    selected: false,
+  },
+  {
+    empId: 'gh0a004',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'D',
+    isTarget: false,
+    selected: false,
+  },
+  {
+    empId: 'gh0a005',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'A',
+    isTarget: false,
+    selected: false,
+  },
+  {
+    empId: 'gh0a006',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'B',
+    isTarget: false,
+    selected: false,
+  },
+  {
+    empId: 'gh0a007',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'C',
+    isTarget: false,
+    selected: false,
+  },
+  {
+    empId: 'gh0a008',
+    name: '이도현',
+    hiredDate: '24.03.03',
+    grade: 'D',
+    isTarget: false,
+    selected: false,
+  },
+];
 
 const initialOptionState = {
   filters: { target: [], untarget: [] },
@@ -85,114 +187,9 @@ export default function OrganizationSubject() {
   );
   const [page, setPage] = useState({ target: 1, untarget: 1 });
   const [rowsPerPage, setRowsPerPage] = useState({ target: 5, untarget: 5 });
-  const [employees, setEmployees] = useState([
-    {
-      empId: 'pd0a001',
-      name: '홍길동',
-      hiredDate: '24.03.03',
-      grade: 'A',
-      isTarget: true,
-      selected: false,
-    },
-    {
-      empId: 'pd0a002',
-      name: '홍길동',
-      hiredDate: '24.03.03',
-      grade: 'B',
-      isTarget: true,
-      selected: false,
-    },
-    {
-      empId: 'pd0a003',
-      name: '홍길동',
-      hiredDate: '24.03.03',
-      grade: 'C',
-      isTarget: true,
-      selected: false,
-    },
-    {
-      empId: 'pd0a004',
-      name: '홍길동',
-      hiredDate: '24.03.03',
-      grade: 'D',
-      isTarget: true,
-      selected: false,
-    },
-    {
-      empId: 'pd0a005',
-      name: '홍길동',
-      hiredDate: '24.03.03',
-      grade: 'D',
-      isTarget: true,
-      selected: false,
-    },
-    {
-      empId: 'gh0a001',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'A',
-      isTarget: false,
-      selected: false,
-    },
-    {
-      empId: 'gh0a002',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'B',
-      isTarget: false,
-      selected: false,
-    },
-    {
-      empId: 'gh0a003',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'C',
-      isTarget: false,
-      selected: false,
-    },
-    {
-      empId: 'gh0a004',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'D',
-      isTarget: false,
-      selected: false,
-    },
-    {
-      empId: 'gh0a005',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'A',
-      isTarget: false,
-      selected: false,
-    },
-    {
-      empId: 'gh0a006',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'B',
-      isTarget: false,
-      selected: false,
-    },
-    {
-      empId: 'gh0a007',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'C',
-      isTarget: false,
-      selected: false,
-    },
-    {
-      empId: 'gh0a008',
-      name: '이도현',
-      hiredDate: '24.03.03',
-      grade: 'D',
-      isTarget: false,
-      selected: false,
-    },
-  ]);
+  const [employees, setEmployees] = useState(initialEmployees);
 
-  const [savedEmployees, setSavedEmployees] = useState([]);
+  const [savedEmployees, setSavedEmployees] = useState(initialEmployees);
   const [isCommitted, setIsCommitted] = useState(false);
 
   const handleOptionSubmit = (tableType, { type, payload }) => {
@@ -204,37 +201,44 @@ export default function OrganizationSubject() {
   };
 
   const getProcessedEmployees = (type) => {
-    let result = employees.filter((e) =>
+    // 초기 필터링 (target 여부)
+    const initial = employees.filter((e) =>
       type === 'target' ? e.isTarget : !e.isTarget,
     );
 
-    // 필터링
-    optionState.filters[type].forEach(({ key, value }) => {
-      if (!value || value.length === 0) return;
-      const optionType = filterOption[key]?.optionType;
-      result = result.filter((e) => {
-        const targetValue = eValueForKey(e, key);
-        if (optionType === 'text' || optionType === 'dropdown') {
-          return value.some((v) => String(targetValue).includes(v));
-        }
-        if (optionType === 'date') {
-          const inputDate = new Date(value[0]);
-          const empDate = parseHiredDateToDate(targetValue);
-          return (
-            empDate.getFullYear() === inputDate.getFullYear() &&
-            empDate.getMonth() === inputDate.getMonth() &&
-            empDate.getDate() === inputDate.getDate()
-          );
-        }
-        return true;
-      });
-    });
+    // 필터 적용
+    const filtered = optionState.filters[type].reduce(
+      (prev, { key, value }) => {
+        if (!value || value.length === 0) return prev;
 
-    // 정렬
-    optionState.sortList[type].forEach(({ key, value }) => {
-      result.sort((a, b) => {
+        const optionType = filterOption[key]?.optionType;
+        if (!optionType) return prev;
+
+        return prev.filter((e) => {
+          const targetValue = eValueForKey(e, key);
+
+          if (optionType === 'date') {
+            const inputDate = new Date(value[0]);
+            const empDate = parseHiredDateToDate(targetValue);
+            return (
+              empDate.getFullYear() === inputDate.getFullYear() &&
+              empDate.getMonth() === inputDate.getMonth() &&
+              empDate.getDate() === inputDate.getDate()
+            );
+          }
+
+          return value.some((val) => String(targetValue).includes(val));
+        });
+      },
+      initial,
+    );
+
+    // 정렬 적용
+    const sorted = optionState.sortList[type].reduce((prev, { key, value }) => {
+      return prev.slice().sort((a, b) => {
         const aVal = eValueForKey(a, key) ?? '';
         const bVal = eValueForKey(b, key) ?? '';
+
         return value === '오름차순'
           ? String(aVal).localeCompare(String(bVal), undefined, {
               numeric: true,
@@ -243,9 +247,9 @@ export default function OrganizationSubject() {
               numeric: true,
             });
       });
-    });
+    }, filtered);
 
-    return result;
+    return sorted;
   };
 
   const toggleSelection = (id) => {
@@ -279,7 +283,7 @@ export default function OrganizationSubject() {
   };
 
   const handleSave = () => {
-    setSavedEmployees(employees);
+    setSavedEmployees([...employees]); // 불변성 유지
     setIsCommitted(true);
   };
 
@@ -287,77 +291,6 @@ export default function OrganizationSubject() {
     setEmployees(savedEmployees);
     setIsCommitted(true);
   };
-
-  const renderTable = (list, type) => (
-    <div className={styles.listWrapper}>
-      <div className={styles.titleWrapper}>
-        <span className={styles.title}>
-          {type === 'target' ? '대상자' : '비대상자'} 목록
-        </span>
-      </div>
-      <div className={styles.tableWrapper}>
-        <div className={styles.filterWrapper}>
-          <div className={styles.filterButton}>
-            <TableOption
-              filterOption={filterOption}
-              sortOption={sortOption}
-              filters={optionState.filters[type]}
-              sortList={optionState.sortList[type]}
-              onSubmit={(submitted) => handleOptionSubmit(type, submitted)}
-            />
-          </div>
-          <div className={styles.excelWrapper}>
-            <Button size="large" label="엑셀다운로드" variant="secondary" />
-          </div>
-        </div>
-        <div className={styles.tables}>
-          <table>
-            <thead>
-              <tr>
-                <td className={styles.checkboxCell}>
-                  <CheckBox
-                    isChecked={list.every((e) => e.selected)}
-                    onClick={() => toggleAll(list)}
-                  />
-                </td>
-                <td>직번</td>
-                <td>성명</td>
-                <td>채용일자</td>
-                <td>평가등급</td>
-              </tr>
-            </thead>
-            <tbody>
-              {list.map((row) => (
-                <tr key={row.empId}>
-                  <td className={styles.checkboxCell}>
-                    <CheckBox
-                      isChecked={row.selected}
-                      onClick={() => toggleSelection(row.empId)}
-                    />
-                  </td>
-                  <td>{row.empId}</td>
-                  <td>{row.name}</td>
-                  <td>{row.hiredDate}</td>
-                  <td>{row.grade}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className={styles.paginationWrapper}>
-        <Pagination
-          currentPage={page[type]}
-          onPageChange={(p) => setPage((prev) => ({ ...prev, [type]: p }))}
-          rowsPerPage={rowsPerPage[type]}
-          onRowsPerPageChange={(val) => {
-            setRowsPerPage((prev) => ({ ...prev, [type]: val }));
-            setPage((prev) => ({ ...prev, [type]: 1 }));
-          }}
-        />
-      </div>
-    </div>
-  );
 
   const targets = getProcessedEmployees('target');
   const untargets = getProcessedEmployees('untarget');
@@ -381,7 +314,27 @@ export default function OrganizationSubject() {
       canMove
     >
       <div className={styles.contentWrapper}>
-        {renderTable(paginatedTargets, 'target')}
+        <EmployeeTable
+          title="대상자 목록"
+          filterOption={filterOption}
+          sortOption={sortOption}
+          employees={paginatedTargets}
+          filters={optionState.filters.target}
+          sortList={optionState.sortList.target}
+          onFilterSortChange={(submitted) =>
+            handleOptionSubmit('target', submitted)
+          }
+          page={page.target}
+          rowsPerPage={rowsPerPage.target}
+          onPageChange={(p) => setPage((prev) => ({ ...prev, target: p }))}
+          onRowsPerPageChange={(val) => {
+            setRowsPerPage((prev) => ({ ...prev, target: val }));
+            setPage((prev) => ({ ...prev, target: 1 }));
+          }}
+          toggleAll={toggleAll}
+          toggleSelection={toggleSelection}
+        />
+
         <div className={styles.controlWrapper}>
           <button
             type="button"
@@ -398,7 +351,27 @@ export default function OrganizationSubject() {
             {'<'}
           </button>
         </div>
-        {renderTable(paginatedUntargets, 'untarget')}
+
+        <EmployeeTable
+          title="비대상자 목록"
+          filterOption={filterOption}
+          sortOption={sortOption}
+          employees={paginatedUntargets}
+          filters={optionState.filters.untarget}
+          sortList={optionState.sortList.untarget}
+          onFilterSortChange={(submitted) =>
+            handleOptionSubmit('untarget', submitted)
+          }
+          page={page.untarget}
+          rowsPerPage={rowsPerPage.untarget}
+          onPageChange={(p) => setPage((prev) => ({ ...prev, untarget: p }))}
+          onRowsPerPageChange={(val) => {
+            setRowsPerPage((prev) => ({ ...prev, untarget: val }));
+            setPage((prev) => ({ ...prev, untarget: 1 }));
+          }}
+          toggleAll={toggleAll}
+          toggleSelection={toggleSelection}
+        />
       </div>
     </AdjustEditLayout>
   );

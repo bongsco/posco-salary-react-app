@@ -4,12 +4,14 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
+import ResultPage from '#pages/ResultPage';
 import AppLayout from '#layouts/AppLayout';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import RootLayout from '#layouts/RootLayout';
+import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
 
 const router = createBrowserRouter(
@@ -49,7 +51,7 @@ const router = createBrowserRouter(
           <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
-              <Route path="target" element={<OrganizationSubject />} />
+              <Route path="target" element={<AdjSubjectCriteriaPage />} />
               <Route
                 path="payment-rate"
                 element={
@@ -72,16 +74,7 @@ const router = createBrowserRouter(
               />
             </Route>
             <Route path="preparation">
-              <Route
-                path="target"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="../criteria/payband"
-                    nextStepPath="high-performance"
-                    stepPaths={['사전 작업', '대상자 편성']}
-                  />
-                }
-              />
+              <Route path="target" element={<OrganizationSubject />} />
               <Route
                 path="high-performance"
                 element={
@@ -104,15 +97,7 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="result"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="payband"
-                    stepPaths={['본 연봉조정', '조정 결과 미리보기']}
-                  />
-                }
-              />
+              <Route path="result" element={<ResultPage />} />
             </Route>
           </Route>
         </Route>

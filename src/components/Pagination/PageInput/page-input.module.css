@@ -11,6 +11,7 @@
   padding: 8px;
   position: relative;
   gap: 8px; /* ✅ 요소 간 간격 */
+  flex-shrink: 0; 
 }
 
 .input input {
