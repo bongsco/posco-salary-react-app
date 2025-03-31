@@ -21,6 +21,11 @@ export default function TestPage() {
             연봉조정등록/기준설정/보상지급률설정
           </Link>
         </li>
+        <li>
+          <Link to="/adjust/edit/0/annual/main/result">
+            연봉조정등록/본연봉조정/조정결과미리보기
+          </Link>
+        </li>
       </ul>
       <hr />
       <Stepper adjId={1} />

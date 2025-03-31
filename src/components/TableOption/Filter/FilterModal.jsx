@@ -185,11 +185,11 @@ function ValueSelector({
 
     return (
       <CustomDatePicker
-        selectedDate={selectedValue}
         onChange={(val) => dispatch({ type: 'SELECT_VALUE', payload: val })}
         customWidth="133px"
         hasError={isDuplicate}
         isSaved="true"
+        date={selectedValue}
       />
     );
   }
@@ -202,6 +202,10 @@ export default function FilterModal({
   onSubmit,
   onClose,
   prevFilters,
+  left,
+  right,
+  top,
+  bottom,
 }) {
   const [state, dispatch] = useReducer(
     (s, action) => reducer(s, action, option), // ✅ option 추가
@@ -221,6 +225,10 @@ export default function FilterModal({
         onSubmit?.(state.filters);
       }}
       onClose={onClose}
+      left={left}
+      right={right}
+      top={top}
+      bottom={bottom}
     >
       <span className={styles.title}>필터</span>
 
@@ -347,8 +355,16 @@ FilterModal.propTypes = {
       ).isRequired,
     }),
   ),
+  left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  right: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 FilterModal.defaultProps = {
   prevFilters: [],
+  left: 'auto',
+  right: 'auto',
+  top: 'auto',
+  bottom: 'auto',
 };

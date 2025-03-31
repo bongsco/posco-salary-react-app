@@ -50,23 +50,40 @@ function reducer(state, action) {
   }
 }
 
-export default function SortModal({ option, onSubmit, onClose, prevSortList }) {
+export default function SortModal({
+  option,
+  onSubmit,
+  onClose,
+  prevSortList,
+  left,
+  right,
+  top,
+  bottom,
+}) {
   const [state, dispatch] = useReducer(reducer, prevSortList, init);
 
-  const valueOptions =
-    state.selectedKey &&
-    !state.sortList.some((sort) => sort.key === state.selectedKey)
-      ? option.values
-      : []; // 이미 정렬 방식이 지정된 key면 선택지 없음
+  // 이미 sortList에 있는 key는 제외
+  const keyOptions = option.keys.filter(
+    (key) => !state.sortList.some((sort) => sort.key === key),
+  );
+
+  const valueOptions = state.selectedKey ? option.values : [];
 
   return (
-    <Modal onSubmit={() => onSubmit?.(state.sortList)} onClose={onClose}>
+    <Modal
+      onSubmit={() => onSubmit?.(state.sortList)}
+      onClose={onClose}
+      left={left}
+      right={right}
+      top={top}
+      bottom={bottom}
+    >
       <span className={styles.title}>정렬</span>
 
       <div className={styles.dropdownWrapper}>
         <Dropdown
           placeHolder="정렬 항목"
-          options={option.keys}
+          options={keyOptions}
           selectedValue={state.selectedKey}
           isOpen={state.isKeyOpen}
           onChange={(val) => dispatch({ type: 'SELECT_KEY', payload: val })}
@@ -127,8 +144,16 @@ SortModal.propTypes = {
       value: PropTypes.string.isRequired,
     }),
   ),
+  left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  right: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 SortModal.defaultProps = {
   prevSortList: [],
+  left: 'auto',
+  right: 'auto',
+  top: 'auto',
+  bottom: 'auto',
 };

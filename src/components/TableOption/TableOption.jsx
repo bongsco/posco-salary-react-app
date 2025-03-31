@@ -5,7 +5,13 @@ import FilterModal from './Filter';
 import SortModal from './Sort';
 import styles from './table-option.module.css';
 
-export default function TableOption({ filterOption, sortOption, onSubmit }) {
+export default function TableOption({
+  filterOption,
+  sortOption,
+  onSubmit,
+  filters,
+  sortList,
+}) {
   const [showFilter, setShowFilter] = useState(false);
   const [showSort, setShowSort] = useState(false);
 
@@ -15,7 +21,14 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
         <Button
           variant="secondary"
           size="round"
-          label="필터 추가 +"
+          label={
+            !filters || filters.length === 0
+              ? '필터 추가 +'
+              : `필터: ${filters
+                  .filter(({ value }) => value)
+                  .map(({ key }) => key)
+                  .join(', ')}`
+          }
           onClick={() => {
             setShowSort(false);
             setShowFilter(true);
@@ -24,19 +37,30 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
         {showFilter && (
           <FilterModal
             option={filterOption}
-            onSubmit={(filters) => {
-              onSubmit({ type: 'filter', payload: filters });
+            prevFilters={filters}
+            onSubmit={(newFilters) => {
+              onSubmit({ type: 'filter', payload: newFilters }); // ✅ 부모에서 관리
               setShowFilter(false);
             }}
             onClose={() => setShowFilter(false)}
+            left={0}
+            top="130%"
           />
         )}
       </div>
-      <div className={styles.filterOne}>
+
+      <div className={styles.filter}>
         <Button
           variant="secondary"
           size="round"
-          label="정렬: 연도, 월, 등록일 ↓"
+          label={
+            !sortList || sortList.length === 0
+              ? '정렬 추가 +'
+              : `정렬: ${sortList
+                  .filter(({ value }) => value)
+                  .map(({ key }) => key)
+                  .join(', ')}`
+          }
           onClick={() => {
             setShowFilter(false);
             setShowSort(true);
@@ -45,11 +69,14 @@ export default function TableOption({ filterOption, sortOption, onSubmit }) {
         {showSort && (
           <SortModal
             option={sortOption}
-            onSubmit={(sortList) => {
-              onSubmit({ type: 'sort', payload: sortList });
+            prevSortList={sortList}
+            onSubmit={(newSortList) => {
+              onSubmit({ type: 'sort', payload: newSortList }); // ✅ 부모에서 관리
               setShowSort(false);
             }}
             onClose={() => setShowSort(false)}
+            left={0}
+            top="130%"
           />
         )}
       </div>
@@ -75,5 +102,18 @@ TableOption.propTypes = {
     keys: PropTypes.arrayOf(PropTypes.string).isRequired,
     values: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.instanceOf(Date),
+        ]),
+      ).isRequired,
+    }),
+  ).isRequired,
+  sortList: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
