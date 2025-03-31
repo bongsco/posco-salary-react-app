@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styles from './high-organization-page.module.css';
 import FilterSort from './FilterSort';
 import HighOrganizationTable from './HighOrganizationTable';
@@ -187,9 +187,6 @@ function HighOrganizationPage() {
   /* 현재 페이지 수, 현재 테이블에 보여줄 데이터 수 */
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  /* Table에서 Pagination을 적용해서 보여줄 Data */
-  const [tableData, setTableData] = useState([]);
-
   /* Table에 적용되는 Filter, Sort 조건들을 저장하는 배열 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
@@ -204,60 +201,43 @@ function HighOrganizationPage() {
       setSorts(payload);
     }
   };
-
-  useEffect(() => {
-    /* 해당 useEffect 안에 있는 정렬, 페이징 알고리즘은 나중에 DB Query로 해결할 예정 */
+  const processTableData = useCallback(() => {
     /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
-
-    let filteredData = highOrganizationData;
-
-    // filters가 존재하고 비어있지 않으면 필터 적용
-    if (filters.length > 0) {
-      filteredData = highOrganizationData.filter((item) =>
-        filters.every(
-          ({ key, value }) =>
-            (value?.length ?? 0) === 0 ||
-            value?.includes(item[nameMapping[key]]),
-        ),
-      );
-    }
+    const filteredData = highOrganizationData.filter((item) =>
+      filters.every(({ key, value }) => {
+        const itemValue = String(item[nameMapping[key]]);
+        return (
+          (value?.length ?? 0) === 0 || value?.map(String).includes(itemValue)
+        );
+      }),
+    );
 
     const sortedData = [...filteredData];
-    // sorts가 존재하고 비어있지 않으면 정렬 적용
-    if (sorts.length > 0) {
-      sorts.forEach((sort) => {
-        const { key, value: order } = sort;
-        sortedData.sort((a, b) => {
-          let comparison = 1;
-
-          if (a[nameMapping[key]] < b[nameMapping[key]]) {
-            comparison = -1;
-          }
-
-          if (order === '내림차순') {
-            comparison *= -1; // 내림차순인 경우 순서 반전
-          }
-          return comparison;
-        });
+    sorts.forEach((sort) => {
+      const { key, value: order } = sort;
+      sortedData.sort((a, b) => {
+        let comparison = 1;
+        if (a[nameMapping[key]] < b[nameMapping[key]]) {
+          comparison = -1;
+        }
+        if (order === '내림차순') {
+          comparison *= -1;
+        }
+        return comparison;
       });
-    }
+    });
     /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
 
-    // 총 페이지 수 계산
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
 
-    // 현재 페이지가 유효한지 확인 후 조정
     if (currentPage > totalPages && totalPages !== 0) {
       setCurrentPage(totalPages || 1);
-    } else {
-      // 페이징 적용 후 데이터 설정
-      setTableData(
-        sortedData.slice(
-          (currentPage - 1) * rowsPerPage,
-          currentPage * rowsPerPage,
-        ),
-      );
     }
+
+    return sortedData.slice(
+      (currentPage - 1) * rowsPerPage,
+      currentPage * rowsPerPage,
+    );
   }, [highOrganizationData, currentPage, rowsPerPage, filters, sorts]);
 
   /* 페이지 수정 사항이 있는지 확인하는 함수 -> isCommitted에 사용 */
@@ -303,7 +283,7 @@ function HighOrganizationPage() {
             sortList={sorts}
           />
           <HighOrganizationTable
-            data={tableData}
+            data={processTableData()}
             checkedItems={checkedItems}
             currentPage={currentPage}
             rowsPerPage={rowsPerPage}

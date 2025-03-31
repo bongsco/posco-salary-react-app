@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '../../styles/table.css';
 import { useEffect, useState } from 'react';
 import PageNation from '#components/Pagination';
 import styles from './high-organization-page.module.css';
@@ -28,10 +27,14 @@ function HighOrganizationTable({
 
   /* Header에 Check를 하게 되면 현재 Table 요소들을 Check하게 하는 함수 */
   const handleHeaderCheckboxChange = (check) => {
-    const allEmpNums = data.map((row) => row.emp_num);
+    /* Check되지 않은 데이터만 추출 */
+    const uncheckedEmpNums = data
+      .filter((row) => !row.isChecked)
+      .map((row) => row.emp_num);
+
     setIsHeaderChecked(!check);
-    allEmpNums.forEach((empNum) => {
-      handleCheckBox(empNum, check); // prev 사용 대신 최신 상태 반영
+    uncheckedEmpNums.forEach((empNum) => {
+      handleCheckBox(empNum, check);
     });
   };
 
