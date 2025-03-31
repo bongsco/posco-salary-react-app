@@ -21,7 +21,14 @@ export default function TableOption({
         <Button
           variant="secondary"
           size="round"
-          label="필터 추가 +"
+          label={
+            !filters || filters.length === 0
+              ? '필터 추가 +'
+              : `필터: ${filters
+                  .filter(({ value }) => value)
+                  .map(({ key }) => key)
+                  .join(', ')}`
+          }
           onClick={() => {
             setShowSort(false);
             setShowFilter(true);
@@ -36,6 +43,8 @@ export default function TableOption({
               setShowFilter(false);
             }}
             onClose={() => setShowFilter(false)}
+            left={0}
+            top="130%"
           />
         )}
       </div>
@@ -44,7 +53,14 @@ export default function TableOption({
         <Button
           variant="secondary"
           size="round"
-          label="정렬: 연도, 월, 등록일 ↓"
+          label={
+            !sortList || sortList.length === 0
+              ? '정렬 추가 +'
+              : `정렬: ${sortList
+                  .filter(({ value }) => value)
+                  .map(({ key }) => key)
+                  .join(', ')}`
+          }
           onClick={() => {
             setShowFilter(false);
             setShowSort(true);
@@ -59,6 +75,8 @@ export default function TableOption({
               setShowSort(false);
             }}
             onClose={() => setShowSort(false)}
+            left={0}
+            top="130%"
           />
         )}
       </div>

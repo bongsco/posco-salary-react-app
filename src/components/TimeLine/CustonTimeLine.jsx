@@ -3,13 +3,7 @@ import PropTypes from 'prop-types';
 import '#styles/fonts.css';
 import styles from './time-line.module.css';
 
-export default function CustomTimeLine({
-  selectedIndex = 0,
-  data,
-  minDate,
-  maxDate,
-  onChange,
-}) {
+export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
   const baseColor = '#757575';
   const highlightColor = '#40afff';
 
@@ -26,17 +20,25 @@ export default function CustomTimeLine({
     .slice(0)
     .map((_, i) => (i === selectedIndex ? highlightColor : baseColor));
 
-  const generateMonthlyTicks = (start, end) => {
-    const ticks = [];
-    const current = new Date(start.getFullYear(), start.getMonth(), 1);
+  const startDates = data.map((item) => new Date(item[1]));
+  const endDates = data.map((item) => new Date(item[2]));
+
+  const minDate = new Date(Math.min(...startDates));
+  const maxDate = new Date(Math.max(...endDates));
+  const generateYearLabels = (start, end) => {
+    const years = [];
+    let current = start;
     while (current <= end) {
-      ticks.push(new Date(current));
-      current.setMonth(current.getMonth() + 1);
+      years.push(current);
+      current += 1;
     }
-    return ticks;
+    return years;
   };
 
-  const ticks = generateMonthlyTicks(minDate, maxDate);
+  const years = generateYearLabels(
+    minDate.getFullYear(),
+    maxDate.getFullYear(),
+  );
 
   return (
     <div className={`${styles['timeline-container']}`}>
@@ -54,7 +56,6 @@ export default function CustomTimeLine({
             minValue: minDate,
             maxValue: maxDate,
             format: 'M월',
-            ticks,
           },
           colors,
           alternatingRowStyle: false,
@@ -123,6 +124,7 @@ export default function CustomTimeLine({
                 }
               });
 
+              let count = 0;
               // ✅ "1월" 텍스트에만 년도 붙이기 & 폰트 바꾸기
               texts.forEach((textElOrigin, i) => {
                 const textEl = textElOrigin;
@@ -139,10 +141,11 @@ export default function CustomTimeLine({
 
                 if (
                   (rawText === '1월' || (i === 0 && rawText !== '12월')) &&
-                  ticks[i]
+                  years[count]
                 ) {
-                  const year = String(ticks[i].getFullYear()).slice(-2);
-                  textEl.textContent = `${year}년 ${rawText}`;
+                  const year = String(years[count]).slice(-2);
+                  textEl.textContent = `\`${year}.${rawText.replace('월', '')}`;
+                  count += 1;
                 }
               });
 
@@ -157,6 +160,10 @@ export default function CustomTimeLine({
                   svg.setAttribute('height', `${newHeight}`);
                   // svg 부모 div 스타일 높이도 맞춰줌
                   container.parentElement.style.height = `${newHeight}px`;
+                  texts.forEach((textElOrigin) => {
+                    const textEl = textElOrigin;
+                    textEl.setAttribute('y', gBox.height + 20);
+                  });
                 }
               } else {
                 const svg = svgs[1];
@@ -179,7 +186,7 @@ export default function CustomTimeLine({
                   });
 
                   if (scrollDiv) {
-                    scrollDiv.style.height = `${newHeight}`;
+                    // scrollDiv.style.height = `${newHeight}`;
                     scrollDiv.style.overflow = 'visible';
                     scrollDiv.style.overflowY = 'visible';
                   }
@@ -188,11 +195,7 @@ export default function CustomTimeLine({
                   svgs[0].setAttribute('height', `${newHeight}`);
                   texts.forEach((textElOrigin) => {
                     const textEl = textElOrigin;
-                    const currentY = textEl.getAttribute('y');
-                    if (currentY < 200 && newHeight > 200) {
-                      const newY = parseFloat(currentY) + newHeight - 200;
-                      textEl.setAttribute('y', newY);
-                    }
+                    textEl.setAttribute('y', gBox.height + 20);
                   });
                   // svg 부모 div 스타일 높이도 맞춰줌
                   container.parentElement.style.height = `${newHeight}px`;
@@ -217,8 +220,6 @@ CustomTimeLine.propTypes = {
       PropTypes.instanceOf(Date),
     ),
   ).isRequired,
-  minDate: PropTypes.instanceOf(Date).isRequired,
-  maxDate: PropTypes.instanceOf(Date).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

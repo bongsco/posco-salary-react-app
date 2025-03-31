@@ -5,7 +5,15 @@ import styles from '../modal.module.css';
 import Input from '#components/Input';
 import Dropdown from '#components/Dropdown';
 
-export default function RegisterModal({ option, onSubmit, onClose }) {
+export default function RegisterModal({
+  option,
+  onSubmit,
+  onClose,
+  left,
+  right,
+  top,
+  bottom,
+}) {
   const [title, setTitle] = useState('');
   const [adjustmentType, setAdjustmentType] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +22,10 @@ export default function RegisterModal({ option, onSubmit, onClose }) {
     <Modal
       onSubmit={() => onSubmit?.({ title, adjustmentType })}
       onClose={onClose}
+      left={left}
+      right={right}
+      top={top}
+      bottom={bottom}
     >
       <span className={styles.title}>연봉조정 등록</span>
 
@@ -54,4 +66,15 @@ RegisterModal.propTypes = {
   option: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  right: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
+
+RegisterModal.defaultProps = {
+  left: 'auto',
+  right: 'auto',
+  top: 'auto',
+  bottom: 'auto',
 };

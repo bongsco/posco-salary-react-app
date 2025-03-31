@@ -2,9 +2,25 @@ import PropTypes from 'prop-types';
 import styles from './modal.module.css';
 import Button from '#components/Button';
 
-export default function Modal({ children, onSubmit, onClose }) {
+export default function Modal({
+  left = 'auto',
+  right = 'auto',
+  top = 'auto',
+  bottom = 'auto',
+  children,
+  onSubmit,
+  onClose,
+}) {
   return (
-    <div className={styles.filters}>
+    <div
+      className={styles.filters}
+      style={{
+        left,
+        right,
+        top,
+        bottom,
+      }}
+    >
       {children}
       <div className={styles.buttonWrapper}>
         <Button
@@ -28,4 +44,15 @@ Modal.propTypes = {
   children: PropTypes.node.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  right: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
+
+Modal.defaultProps = {
+  left: 'auto',
+  right: 'auto',
+  top: 'auto',
+  bottom: 'auto',
 };

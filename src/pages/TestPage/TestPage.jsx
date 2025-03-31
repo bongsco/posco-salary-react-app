@@ -17,6 +17,11 @@ export default function TestPage() {
           </Link>
         </li>
         <li>
+          <Link to="/adjust/edit/0/annual/main/result">
+            연봉조정등록/본연봉조정/조정결과미리보기
+          </Link>
+        </li>
+        <li>
           <Link to="/adjust/edit/123/annual/main/payband">
             연봉조정등록/본연봉조정/Payband적용
           </Link>
