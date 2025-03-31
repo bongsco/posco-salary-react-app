@@ -4,7 +4,7 @@
 /* ✅ React Datepicker 전체 스타일 */
 /* ============================= */
 :global(.react-datepicker) {
-  background-color: var(--color-grayscale-white);
+  background-color: var(--color-background-general);
   padding: 8px;
   border-radius: 8px;
   font: var(--font-body-1r-pc);
@@ -20,12 +20,12 @@
 /* ✅ 달력 헤더 스타일 */
 /* ============================= */
 :global(.react-datepicker__header) {
-  background-color: var(--color-grayscale-white);
+  background-color: var(--color-background-general);
   border: none;
 }
 
 :global(h2.react-datepicker__current-month) {
-  font-size: var(--font-body-1r-pc);
+  font: var(--font-body-1r-pc);
   margin: 0;
   font-weight: normal;
   padding-bottom: 8px;
@@ -49,10 +49,10 @@
 /* ============================= */
 /* ✅ Hover 및 Keyboard 선택 스타일 */
 /* ============================= */
-:global(.react-datepicker__day:not([aria-disabled="true"]):hover),
-:global(.react-datepicker__month-text:not([aria-disabled="true"]):hover),
-:global(.react-datepicker__quarter-text:not([aria-disabled="true"]):hover),
-:global(.react-datepicker__year-text:not([aria-disabled="true"]):hover),
+:global(.react-datepicker__day:not([aria-disabled='true']):hover),
+:global(.react-datepicker__month-text:not([aria-disabled='true']):hover),
+:global(.react-datepicker__quarter-text:not([aria-disabled='true']):hover),
+:global(.react-datepicker__year-text:not([aria-disabled='true']):hover),
 :global(.react-datepicker__day--keyboard-selected),
 :global(.react-datepicker__month-text--keyboard-selected),
 :global(.react-datepicker__quarter-text--keyboard-selected),
@@ -88,42 +88,6 @@
   margin: 0;
 }
 
-/* ============================= */
-/* ✅ 입력 필드 스타일 */
-/* ============================= */
-:global(.react-datepicker__view-calendar-icon input) {
-  width: 225px;
-  height: 32px;
-  font-size: var(--font-caption-1r-pc);
-  color: var(--color-grayscale-5);
-  border-radius: 5px;
-  padding: 8px;
-  transition: border 0.3s ease;
-}
-
-/* ✅ saved 상태일 때 기존 테두리 유지 */
-.saved {
-  border: 1px solid var(--color-primary-lighter);
-}
-
-/* ✅ unsaved 상태일 때 초록색 테두리 */
-.unsaved {
-  border: 1px solid var(--color-system-ok);
-}
-
-.error {
-  border-color: var(--color-system-caution);
-}
-
-/* ✅ 에러 메시지 스타일 */
-.errorMessage {
-  color: var(--color-system-caution);
-  font: var(--font-caption-1r-pc);
-  margin-top: 6px;
-}
-
-
-
 /* ✅ 아이콘 정렬 */
 :global(.react-datepicker__input-container) {
   position: relative;
@@ -137,4 +101,30 @@
   height: 16px;
   cursor: pointer;
   fill: var(--color-primary-main);
+}
+
+:global(
+  .react-datepicker__input-container .react-datepicker__view-calendar-icon
+),
+:global(.react-datepicker-wrapper) {
+  width: 100%;
+  height: 100%;
+}
+
+:global(.react-datepicker-popper) {
+  transform: none !important;
+  left: 0 !important;
+  top: 40px !important;
+}
+
+:global(.react-datepicker__tab-loop) {
+  position: absolute;
+}
+
+:global(.react-datepicker__triangle) {
+  display: none;
+}
+
+:global(.react-datepicker__view-calendar-icon input) {
+  padding: 7.25px 8px;
 }

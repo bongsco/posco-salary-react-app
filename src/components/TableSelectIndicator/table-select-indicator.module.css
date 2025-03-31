@@ -1,0 +1,29 @@
+@import url('../../styles/global.css');
+
+.tableSelectIndicatorContainer {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 20px;
+}
+
+.selectedCountText {
+  flex-shrink: 0;
+  font: var(--font-caption-1b-pc);
+  color: var(--color-primary-dark);
+}
+
+.actionButton {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  font: var(--font-caption-1b-pc);
+  text-decoration: underline;
+  color: var(--color-primary-main);
+  cursor: pointer;
+}
+
+.actionButton:hover {
+  color: var(--color-primary-dark);
+}

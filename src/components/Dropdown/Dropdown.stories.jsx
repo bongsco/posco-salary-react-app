@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Dropdown from './Dropdown';
 
 export default {
-  title: 'UI/Form/Dropdown',
+  title: 'UI/Form/Inputs/Dropdown',
   component: Dropdown,
   tags: ['autodocs'],
   argTypes: {
@@ -12,14 +12,27 @@ export default {
     error: { control: 'boolean' },
     message: { control: 'text' },
     placeHolder: { control: 'text' },
+    customWidth: { control: 'text' },
+    minWidth: { control: 'text' },
+    maxWidth: { control: 'text' },
   },
   args: {
     onChange: fn(),
     message: '',
+    customWidth: '200px',
   },
 };
 
-function Template({ options, error, placeHolder, message, onChange }) {
+function Template({
+  options,
+  error,
+  placeHolder,
+  message,
+  onChange,
+  customWidth = null,
+  maxWidth = null,
+  minWidth = null,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
 
@@ -37,6 +50,9 @@ function Template({ options, error, placeHolder, message, onChange }) {
         onChange(newValue);
       }}
       onClick={() => setIsOpen((prev) => !prev)}
+      customWidth={customWidth}
+      minWidth={minWidth}
+      maxWidth={maxWidth}
     />
   );
 }
@@ -47,10 +63,16 @@ Template.propTypes = {
   placeHolder: PropTypes.string.isRequired,
   message: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  customWidth: PropTypes.number,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
 };
 
 Template.defaultProps = {
   message: '',
+  customWidth: null,
+  maxWidth: null,
+  minWidth: null,
 };
 
 export const Default = Template.bind();
