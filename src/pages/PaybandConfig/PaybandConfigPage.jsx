@@ -165,7 +165,9 @@ export default function PaybandConfigPage() {
       canMove
     >
       <div className={`${styles.page}`}>
-        <h2>Payband 상한, 하한 설정</h2>
+        <section>
+          <h2>Payband 상한, 하한 설정</h2>
+        </section>
         <p>직급별 연봉 조정 결과의 상한, 하한을 설정합니다.</p>
         <div className={`${styles.whole_table}`}>
           <div className={`${styles.table_side}`}>
