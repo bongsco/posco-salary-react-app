@@ -14,9 +14,11 @@ export default function TableSelectIndicator({
       <button type="button" className={styles.actionButton} onClick={onSelect}>
         전체 선택
       </button>
-      <button type="button" className={styles.actionButton} onClick={onClear}>
-        선택 취소
-      </button>
+      {checkedItemCount > 0 && (
+        <button type="button" className={styles.actionButton} onClick={onClear}>
+          선택 취소
+        </button>
+      )}
     </div>
   );
 }
