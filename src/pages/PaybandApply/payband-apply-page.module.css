@@ -61,3 +61,21 @@
   width: 100%;
   height: auto;
 }
+
+.table-bottom-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.table-left {
+  flex-shrink: 0;
+}
+
+.table-right {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

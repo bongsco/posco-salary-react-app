@@ -4,6 +4,7 @@ import PageNation from '#components/Pagination';
 import styles from './payband-apply-page.module.css';
 import PaybandApplyTableRow from './PaybandApplyTableRow';
 import CheckBox from '#components/CheckBox';
+import TableSelectIndicator from '#components/TableSelectIndicator';
 
 function PaybandApplyTable({
   type,
@@ -34,6 +35,18 @@ function PaybandApplyTable({
       });
 
       return newHeaderChecked;
+    });
+  };
+
+  const handleSelectAll = () => {
+    data.forEach((item) => {
+      if (!item.isChecked) handleCheckBox(item.emp_num);
+    });
+  };
+
+  const handleClearSelection = () => {
+    data.forEach((item) => {
+      if (item.isChecked) handleCheckBox(item.emp_num);
     });
   };
 
@@ -81,12 +94,23 @@ function PaybandApplyTable({
           })}
         </tbody>
       </table>
-      <PageNation
-        currentPage={currentPage}
-        rowsPerPage={rowsPerPage}
-        onPageChange={setCurrentPage}
-        onRowsPerPageChange={setRowsPerPage}
-      />
+      <div className={styles['table-bottom-control']}>
+        <div className={styles['table-left']}>
+          <TableSelectIndicator
+            checkedItemCount={checkedItems.length}
+            onSelect={handleSelectAll}
+            onClear={handleClearSelection}
+          />
+        </div>
+        <div className={styles['table-right']}>
+          <PageNation
+            currentPage={currentPage}
+            rowsPerPage={rowsPerPage}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+          />
+        </div>
+      </div>
     </div>
   );
 }
