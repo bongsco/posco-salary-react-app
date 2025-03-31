@@ -160,6 +160,10 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
                   svg.setAttribute('height', `${newHeight}`);
                   // svg 부모 div 스타일 높이도 맞춰줌
                   container.parentElement.style.height = `${newHeight}px`;
+                  texts.forEach((textElOrigin) => {
+                    const textEl = textElOrigin;
+                    textEl.setAttribute('y', gBox.height + 20);
+                  });
                 }
               } else {
                 const svg = svgs[1];
@@ -182,7 +186,7 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
                   });
 
                   if (scrollDiv) {
-                    scrollDiv.style.height = `${newHeight}`;
+                    // scrollDiv.style.height = `${newHeight}`;
                     scrollDiv.style.overflow = 'visible';
                     scrollDiv.style.overflowY = 'visible';
                   }
@@ -191,11 +195,7 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
                   svgs[0].setAttribute('height', `${newHeight}`);
                   texts.forEach((textElOrigin) => {
                     const textEl = textElOrigin;
-                    const currentY = textEl.getAttribute('y');
-                    if (currentY < 200 && newHeight > 200) {
-                      const newY = parseFloat(currentY) + newHeight - 200;
-                      textEl.setAttribute('y', newY);
-                    }
+                    textEl.setAttribute('y', gBox.height + 20);
                   });
                   // svg 부모 div 스타일 높이도 맞춰줌
                   container.parentElement.style.height = `${newHeight}px`;
