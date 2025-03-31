@@ -184,12 +184,19 @@ function reducer(state, action) {
       return { ...state, data: updated, isCommitted: isStillCommitted };
     }
 
-    case 'commit':
+    case 'commit': {
+      const cleared = state.data.map((item) => ({
+        ...item,
+        isChecked: false,
+      }));
+
       return {
         ...state,
-        backup: JSON.parse(JSON.stringify(state.data)),
+        data: cleared,
+        backup: JSON.parse(JSON.stringify(cleared)),
         isCommitted: true,
       };
+    }
 
     case 'rollback':
       return {
