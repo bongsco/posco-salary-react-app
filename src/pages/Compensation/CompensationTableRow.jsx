@@ -23,18 +23,20 @@ export default function CompensationTableRow({
   valueKey, // 'incrementRate' 또는 'provideRate' 지정
   selectedGrade, // NEW 행일 경우 선택된 드롭다운 값
   onSelectGrade, // 드롭다운 선택 시 호출되는 함수
-  isCommitted,
-  availableGradeOptions,
-  pendingDeleteRows,
-  isNewRow,
+  isCommitted, // 커밋된 상태인지 여부
+  availableGradeOptions, // 드롭다운에서 선택 가능한 직급 리스트
+  pendingDeleteRows, // 삭제 예약된 행의 직급 리스트
+  isNewRow, // 해당 행이 NEW 행인지 여부
 }) {
   const shouldShowDropdown = isNewRow && !isCommitted;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // 드롭다운 열기/닫기 토글
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
+  // 드롭다운 값 선택시 처리
   const handleDropdownSelect = (value) => {
     onSelectGrade(grade, value);
     setIsDropdownOpen(false);
@@ -42,8 +44,6 @@ export default function CompensationTableRow({
 
   // 삭제 예정 여부 판단
   const isMarkedForDeletion = pendingDeleteRows.includes(grade);
-
-  // 삭제 표시 스타일 클래스 적용
   const rowClass = isMarkedForDeletion ? styles.markedForDelete : '';
 
   // 직급 표시 영역: 드롭다운 또는 텍스트

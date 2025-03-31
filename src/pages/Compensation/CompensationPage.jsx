@@ -7,6 +7,7 @@ import CompensationSection from './CompensationSection';
 /* =============================
   🔹 초기 더미 데이터 정의
 ============================= */
+const selectedTargetGrades = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
 const initialRankRate = {
   P3: {
     S: { incrementRate: 0.8, provideRate: 400 },
@@ -171,24 +172,37 @@ function reducer(state, action) {
 export default function CompensationPage() {
   // ✅ 상태 정의
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // 상단 입력 필드의 유효성 상태
   const [errorState, setErrorState] = useState({
     eval_annual_salary_increment: false,
     eval_perform_provoide_rate: false,
   });
 
+  // 테이블 숫자 형식 유효성 오류 상태
   const [hasTypeError1, setHasTypeError1] = useState(false); // incrementRate 관련 에러
   const [hasTypeError2, setHasTypeError2] = useState(false); // provideRate 관련 에러
 
-  const [newGradeSelections, setNewGradeSelections] = useState({}); // NEW 행의 드롭다운 선택 값
+  // NEW 행의 키값을 추적하는 Set
+  const [newGradeSelections, setNewGradeSelections] = useState({});
+
+  // 모든 대상자 직급에 대해 설정이 완료되지 않았을 경우 표시할 경고 상태
   const [newRowKeys, setNewRowKeys] = useState(new Set());
 
-  // 이미 존재하는 직급 설정
+  // 모든 대상자 직급에 대해 설정이 완료되지 않았을 경우 표시할 경고 상태
+  const [showGradeMissingWarning, setShowGradeMissingWarning] = useState(false);
+
+  // 드롭다운에 표시할 직급 목록 계산
   const usedGrades = Object.keys(state.rankRate).filter(
     (grade) => !newRowKeys.has(grade),
-  );
-  const allGradeOptions = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
-  const availableGradeOptions = allGradeOptions.filter(
-    (g) => !usedGrades.includes(g),
+  ); // 기존에 설정된 직급 (NEW 행 제외)
+
+  // NEW 행에서 선택된 직급
+  const selectedGrades = Object.values(newGradeSelections);
+
+  // 드롭다운에서 선택 가능한 직급: 대상자 목록 중 아직 선택되지 않은 항목
+  const availableGradeOptions = selectedTargetGrades.filter(
+    (grade) => !usedGrades.includes(grade) && !selectedGrades.includes(grade),
   );
 
   // ✅ 커밋 시 초기화
@@ -203,6 +217,24 @@ export default function CompensationPage() {
       setNewRowKeys(new Set());
     }
   }, [state.isCommitted]);
+
+  // ✅ 드롭다운 선택만으로도 경고 메시지 자동 제거
+  useEffect(() => {
+    const configuredGrades = Object.keys(state.rankRate).filter(
+      (grade) => !newRowKeys.has(grade),
+    );
+
+    const selectedDropdownGrades = Object.values(newGradeSelections);
+    const allConfigured = [...configuredGrades, ...selectedDropdownGrades];
+
+    const isAllTargetGradesConfigured = selectedTargetGrades.every(
+      (targetGrade) => allConfigured.includes(targetGrade),
+    );
+
+    if (isAllTargetGradesConfigured) {
+      setShowGradeMissingWarning(false);
+    }
+  }, [state.rankRate, newGradeSelections, newRowKeys]);
 
   // ✅ 테이블 입력값 유효성 검사
   const validateTable = (nextData, key) => {
@@ -344,7 +376,7 @@ export default function CompensationPage() {
 
     const updatedRankRate = { ...state.rankRate };
 
-    // NEW → 선택된 grade로 변환 + 덮어쓰기
+    // 드롭다운 선택값 -> 실제 직급으로 반영
     newRowKeys.forEach((tempKey) => {
       const selected = newGradeSelections[tempKey];
       if (selected) {
@@ -353,12 +385,27 @@ export default function CompensationPage() {
       }
     });
 
+    // 대상자 직급 누락 여부 확인
+    const configuredGrades = Object.keys(updatedRankRate);
+    const unconfigured = selectedTargetGrades.filter(
+      (grade) => !configuredGrades.includes(grade),
+    );
+
+    // 누락된 직급이 있을 경우 저장 중단 + 경고 표시
+    if (unconfigured.length > 0) {
+      setShowGradeMissingWarning(true);
+      return;
+    }
+
     dispatch({
       type: 'Commit',
       payload: { updatedRankRate },
     });
 
+    // 상태 초기화
     setNewGradeSelections({});
+    setNewRowKeys(new Set());
+    setShowGradeMissingWarning(false);
   };
 
   // ✅ UI 렌더링
@@ -371,6 +418,7 @@ export default function CompensationPage() {
       onRollback={() => {
         dispatch({ type: 'Rollback' });
         setNewGradeSelections({});
+        setShowGradeMissingWarning(false);
       }}
       isCommitted={state.isCommitted}
     >
@@ -409,6 +457,7 @@ export default function CompensationPage() {
           availableGradeOptions={availableGradeOptions}
           pendingDeleteRows={state.pendingDeleteRows}
           isNewRow={(grade) => newRowKeys.has(grade)}
+          showGradeMissingWarning={showGradeMissingWarning}
         />
 
         <CompensationSection
@@ -445,6 +494,7 @@ export default function CompensationPage() {
           availableGradeOptions={availableGradeOptions}
           pendingDeleteRows={state.pendingDeleteRows}
           isNewRow={(grade) => newRowKeys.has(grade)}
+          showGradeMissingWarning={showGradeMissingWarning}
         />
       </div>
     </AdjustEditLayout>

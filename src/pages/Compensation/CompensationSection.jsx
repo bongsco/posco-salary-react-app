@@ -26,13 +26,14 @@ export default function CompensationSection({
   hasTypeError, // 테이블 내 숫자 형식 오류 여부
   newGradeSelections, // NEW 행들의 드롭다운 선택 상태
   onSelectGrade, // 드롭다운 선택시 호출되는 함수
-  checkedRows,
-  setCheckedRows,
-  onDeleteCheckedRows,
-  isCommitted,
-  availableGradeOptions,
-  pendingDeleteRows,
-  isNewRow,
+  checkedRows, // 선택된 행 상태
+  setCheckedRows, // 행 선택 상태 변경 핸들러
+  onDeleteCheckedRows, // 선택된 행 삭제 요청 핸들러
+  isCommitted, // 현재 상태가 커밋된 상태인지 여부
+  availableGradeOptions, // 드롭다운에 표시할 직급 옵션 목록
+  pendingDeleteRows, // 삭제 예약된 행 목록
+  isNewRow, // 해당 행이 NEW 행인지 여부를 판단하는 함수
+  showGradeMissingWarning, // 모든 대상자 직급에 대해 설정이 완료되지 않은 경우 표시할 경고
 }) {
   let inputMode = 'default';
 
@@ -80,6 +81,7 @@ export default function CompensationSection({
         availableGradeOptions={availableGradeOptions}
         pendingDeleteRows={pendingDeleteRows}
         isNewRow={isNewRow}
+        showGradeMissingWarning={showGradeMissingWarning}
       />
     </div>
   );
@@ -121,4 +123,5 @@ CompensationSection.propTypes = {
   availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   pendingDeleteRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   isNewRow: PropTypes.func.isRequired,
+  showGradeMissingWarning: PropTypes.bool.isRequired,
 };

@@ -22,13 +22,14 @@ export default function CompensationTable({
   hasTypeError, // 테이블 내 숫자 형식 오류 여부
   newGradeSelections, // NEW 행의 드롭다운 선택 상태
   onSelectGrade, // 드롭다운 선택 이벤트 핸들러
-  checkedRows,
-  setCheckedRows,
-  onDeleteCheckedRows,
-  isCommitted,
-  availableGradeOptions,
-  pendingDeleteRows,
-  isNewRow,
+  checkedRows, // 체크된 행 상태
+  setCheckedRows, // 체크박스 상태 변경 핸들러
+  onDeleteCheckedRows, // 삭제 버튼 클릭 핸들러
+  isCommitted, // 현재 상태가 저장된 상태인지 여부
+  availableGradeOptions, // 드롭다운에서 선택 가능한 직급 목록
+  pendingDeleteRows, // 삭제 예약된 행 목록
+  isNewRow, // 해당 행이 NEW인지 여부 판단하는 함수
+  showGradeMissingWarning, // 모든 대상 직급 설정이 완료되지 않았을 때 표시 플래그
 }) {
   // 개별 행 체크박스 토글 핸들러
   const handleCheck = (grade) => {
@@ -46,6 +47,7 @@ export default function CompensationTable({
         className={`${styles.tableHeaderWrapper} 
         ${Object.values(checkedRows).some((v) => v) ? styles.withMarginTop : ''}`}
       >
+        {/* 삭제 버튼: 체크된 행이 있거나 삭제 예정 행이 있을 때만 노출 */}
         <div className={styles.deleteButton}>
           {(Object.values(checkedRows).some((v) => v) ||
             pendingDeleteRows.length > 0) && (
@@ -60,6 +62,7 @@ export default function CompensationTable({
         <div className={styles.unitText}>단위 (%)</div>
       </div>
 
+      {/* 행 렌더링 */}
       <table className={styles.table}>
         <thead>
           <tr>
@@ -118,6 +121,13 @@ export default function CompensationTable({
           표에서 빈 값이나 잘못된 값을 수정해 주세요.
         </div>
       )}
+
+      {!hasTypeError && showGradeMissingWarning && (
+        <div className={styles.errorMessage}>
+          대상자에 대한 직급 보상 설정이 모두 완료되지 않았습니다. 나머지 직급에
+          대한 보상 설정을 추가해주세요.
+        </div>
+      )}
     </>
   );
 }
@@ -152,4 +162,5 @@ CompensationTable.propTypes = {
   availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   pendingDeleteRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   isNewRow: PropTypes.func.isRequired,
+  showGradeMissingWarning: PropTypes.bool.isRequired,
 };
