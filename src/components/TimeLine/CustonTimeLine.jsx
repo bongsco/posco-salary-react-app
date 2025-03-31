@@ -3,13 +3,7 @@ import PropTypes from 'prop-types';
 import '#styles/fonts.css';
 import styles from './time-line.module.css';
 
-export default function CustomTimeLine({
-  selectedIndex = 0,
-  data,
-  minDate,
-  maxDate,
-  onChange,
-}) {
+export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
   const baseColor = '#757575';
   const highlightColor = '#40afff';
 
@@ -26,19 +20,25 @@ export default function CustomTimeLine({
     .slice(0)
     .map((_, i) => (i === selectedIndex ? highlightColor : baseColor));
 
+  const startDates = data.map((item) => new Date(item[1]));
+  const endDates = data.map((item) => new Date(item[2]));
+
+  const minDate = new Date(Math.min(...startDates));
+  const maxDate = new Date(Math.max(...endDates));
   const generateYearLabels = (start, end) => {
     const years = [];
-    const startYear = start.getFullYear();
-    const endYear = end.getFullYear();
-
-    for (let year = startYear; year <= endYear; year += 1) {
-      years.push(year);
+    let current = start;
+    while (current <= end) {
+      years.push(current);
+      current += 1;
     }
-
     return years;
   };
 
-  const years = generateYearLabels(minDate, maxDate);
+  const years = generateYearLabels(
+    minDate.getFullYear(),
+    maxDate.getFullYear(),
+  );
 
   return (
     <div className={`${styles['timeline-container']}`}>
@@ -144,7 +144,7 @@ export default function CustomTimeLine({
                   years[count]
                 ) {
                   const year = String(years[count]).slice(-2);
-                  textEl.textContent = `${year}년 ${rawText}`;
+                  textEl.textContent = `\`${year}.${rawText.replace('월', '')}`;
                   count += 1;
                 }
               });
@@ -220,8 +220,6 @@ CustomTimeLine.propTypes = {
       PropTypes.instanceOf(Date),
     ),
   ).isRequired,
-  minDate: PropTypes.instanceOf(Date).isRequired,
-  maxDate: PropTypes.instanceOf(Date).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
