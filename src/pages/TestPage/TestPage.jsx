@@ -16,6 +16,11 @@ export default function TestPage() {
             연봉조정등록/기준설정/대상자기준설정
           </Link>
         </li>
+        <li>
+          <Link to="/adjust/edit/123/annual/main/payband">
+            연봉조정등록/본연봉조정/Payband적용
+          </Link>
+        </li>
       </ul>
       <hr />
       <Stepper adjId={1} />
