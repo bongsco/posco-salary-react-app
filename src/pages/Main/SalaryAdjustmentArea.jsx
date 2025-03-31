@@ -215,7 +215,7 @@ function SalaryAdjustmentArea() {
       creation_timestamp: new Date().toISOString().slice(0, 10),
       start_date: '2025-01-01',
       end_date: '2025-12-31',
-      creator: '한상진',
+      creator: data.title,
     };
 
     setSalaryAdjustmentData((prevData) => [sampleData, ...prevData]);
@@ -321,10 +321,6 @@ function SalaryAdjustmentArea() {
     setClickedRow(clickedRow === creationTimestamp ? null : creationTimestamp);
   };
 
-  const handleEditClick = (row) => {
-    console.log('Edit clicked for row:', row);
-  };
-
   const handleDeleteClick = (rowKey) => {
     setSalaryAdjustmentData((prevData) =>
       prevData.filter((item) => item.creation_timestamp !== rowKey),
@@ -410,7 +406,6 @@ function SalaryAdjustmentArea() {
           setRowsPerPage={setRowsPerPage}
           setCurrentPage={setCurrentPage}
           handleRowClick={handleRowClick}
-          handleEditClick={handleEditClick}
           handleDeleteClick={handleDeleteClick}
         />
       </div>

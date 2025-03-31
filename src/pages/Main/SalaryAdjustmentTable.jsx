@@ -12,7 +12,6 @@ function SalaryAdjustmentTable({
   setRowsPerPage,
   clickedRow,
   handleRowClick,
-  handleEditClick,
   handleDeleteClick,
 }) {
   return (
@@ -40,7 +39,6 @@ function SalaryAdjustmentTable({
               handleRowClick={(creationTimestamp) =>
                 handleRowClick(creationTimestamp, index)
               }
-              handleEditClick={handleEditClick}
               handleDeleteClick={handleDeleteClick}
             />
           ))}
@@ -75,7 +73,6 @@ SalaryAdjustmentTable.propTypes = {
   setRowsPerPage: PropTypes.func.isRequired,
   clickedRow: PropTypes.number.isRequired,
   handleRowClick: PropTypes.func.isRequired,
-  handleEditClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
 };
 

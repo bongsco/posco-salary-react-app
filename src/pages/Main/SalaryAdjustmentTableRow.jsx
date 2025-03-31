@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import State from '#components/State'; // State 컴포넌트 임포트
 import Stepper from '#components/Stepper'; // Stepper 컴포넌트 임포트
 import styles from './main-page.module.css'; // 스타일 임포트
@@ -8,7 +9,6 @@ function SalaryAdjustmentTableRow({
   row,
   clickedRow,
   handleRowClick,
-  handleEditClick,
   handleDeleteClick,
 }) {
   function getAdjustmentType(adjType) {
@@ -68,13 +68,14 @@ function SalaryAdjustmentTableRow({
         {clickedRow === row.creation_timestamp && (
           <td className={styles['button-cell']}>
             <div className={styles['button-container']}>
-              <button
-                type="button"
-                /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
-                onClick={() => handleEditClick(row.creation_timestamp)}
-                className={styles['edit-button']}
-                aria-label="편집"
-              />
+              <Link to="/adjust/edit/0/annual/criteria/target">
+                <button
+                  type="button"
+                  /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
+                  className={styles['edit-button']}
+                  aria-label="편집"
+                />
+              </Link>
               <button
                 type="button"
                 /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
@@ -110,7 +111,6 @@ SalaryAdjustmentTableRow.propTypes = {
   }).isRequired,
   clickedRow: PropTypes.string.isRequired,
   handleRowClick: PropTypes.func.isRequired,
-  handleEditClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
 };
 
