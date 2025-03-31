@@ -156,6 +156,10 @@ const initialState = {
   isCommitted: true,
 };
 
+function isSameData(data1, data2) {
+  return JSON.stringify(data1) === JSON.stringify(data2);
+}
+
 // 🔹 reducer 정의
 function reducer(state, action) {
   switch (action.type) {
@@ -165,7 +169,8 @@ function reducer(state, action) {
           ? { ...item, isChecked: !item.isChecked }
           : item,
       );
-      return { ...state, data: updated, isCommitted: false };
+      const isStillCommitted = isSameData(updated, state.backup);
+      return { ...state, data: updated, isCommitted: isStillCommitted };
     }
 
     case 'toggleGroup': {
@@ -175,7 +180,8 @@ function reducer(state, action) {
           ? { ...item, in_payband_use_group: value }
           : item,
       );
-      return { ...state, data: updated, isCommitted: false };
+      const isStillCommitted = isSameData(updated, state.backup);
+      return { ...state, data: updated, isCommitted: isStillCommitted };
     }
 
     case 'commit':

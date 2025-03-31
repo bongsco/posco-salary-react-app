@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '../../styles/table.css';
 import styles from './payband-apply-page.module.css';
 import Switch from '#components/Switch';
 import CheckBox from '#components/CheckBox';

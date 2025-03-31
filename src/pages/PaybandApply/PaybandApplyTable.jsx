@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '../../styles/table.css';
 import { useEffect, useState } from 'react';
 import PageNation from '#components/Pagination';
 import styles from './payband-apply-page.module.css';
@@ -56,7 +55,7 @@ function PaybandApplyTable({
             <td>직급</td>
             <td>평가등급</td>
             <td>기준연봉 월할액</td>
-            <td>상한 금액</td>
+            <td>{type === 'upper' ? '상한금액' : '하한금액'}</td>
             <td>Payband 적용</td>
             <td>비고</td>
           </tr>
