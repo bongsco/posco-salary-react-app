@@ -3,7 +3,6 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import CheckBox from '#components/CheckBox/CheckBox';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
-import '../../styles/table.css';
 import Button from '#components/Button';
 
 export default function PaybandConfigPage() {
