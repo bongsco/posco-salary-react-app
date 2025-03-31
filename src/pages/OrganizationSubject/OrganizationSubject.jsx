@@ -252,11 +252,25 @@ export default function OrganizationSubject() {
     return sorted;
   };
 
+  const hasIsTargetChanged = (current, saved) => {
+    return current.some((emp) => {
+      const savedEmp = saved.find((e) => e.empId === emp.empId);
+      return savedEmp && emp.isTarget !== savedEmp.isTarget;
+    });
+  };
+
   const toggleSelection = (id) => {
-    setEmployees((prev) =>
-      prev.map((e) => (e.empId === id ? { ...e, selected: !e.selected } : e)),
+    const updatedEmployees = employees.map((e) =>
+      e.empId === id ? { ...e, selected: !e.selected } : e,
     );
-    setIsCommitted(false);
+    setEmployees(updatedEmployees);
+
+    // isTarget 변경 여부 확인
+    if (hasIsTargetChanged(updatedEmployees, savedEmployees)) {
+      setIsCommitted(false);
+    } else {
+      setIsCommitted(true);
+    }
   };
 
   const toggleAll = (list) => {
@@ -268,18 +282,29 @@ export default function OrganizationSubject() {
           : e,
       ),
     );
-    setIsCommitted(false);
   };
 
   const move = (from, to) => {
-    setEmployees((prev) =>
-      prev.map((e) =>
-        e.selected && (from === 'target' ? e.isTarget : !e.isTarget)
-          ? { ...e, isTarget: to === 'target', selected: false }
-          : e,
-      ),
-    );
-    setIsCommitted(false);
+    let hasMoved = false;
+
+    const updatedEmployees = employees.map((e) => {
+      const shouldMove =
+        e.selected && (from === 'target' ? e.isTarget : !e.isTarget);
+      if (shouldMove) hasMoved = true;
+      return shouldMove
+        ? { ...e, isTarget: to === 'target', selected: false }
+        : e;
+    });
+
+    if (hasMoved) {
+      setEmployees(updatedEmployees);
+      // isTarget이 실제로 변경된 게 있으면 버튼 활성화
+      if (hasIsTargetChanged(updatedEmployees, savedEmployees)) {
+        setIsCommitted(false);
+      } else {
+        setIsCommitted(true);
+      }
+    }
   };
 
   const handleSave = () => {
