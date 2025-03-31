@@ -190,7 +190,7 @@ export default function OrganizationSubject() {
   const [employees, setEmployees] = useState(initialEmployees);
 
   const [savedEmployees, setSavedEmployees] = useState(initialEmployees);
-  const [isCommitted, setIsCommitted] = useState(false);
+  const [isCommitted, setIsCommitted] = useState(true);
 
   const handleOptionSubmit = (tableType, { type, payload }) => {
     if (type === 'filter') {
