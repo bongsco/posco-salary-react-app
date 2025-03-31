@@ -10,10 +10,6 @@ function FilterSort({
   filters,
   sortList,
 }) {
-  const excelDownloadButtonVariant = 'secondary';
-  const excelDownloadButtonSize = 'large';
-  const excelDownloadButtonLabel = '엑셀다운로드';
-
   return (
     <div className={styles['filter-sort-area']}>
       <div className={styles['left-group']}>
@@ -28,9 +24,9 @@ function FilterSort({
 
       <div className={styles['right-group']}>
         <Button
-          variant={excelDownloadButtonVariant}
-          size={excelDownloadButtonSize}
-          label={excelDownloadButtonLabel}
+          variant="secondary"
+          size="large"
+          label="엑셀다운로드"
           onClick={() => {}}
         />
       </div>
