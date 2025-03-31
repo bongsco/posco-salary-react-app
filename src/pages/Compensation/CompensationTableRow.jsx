@@ -26,11 +26,9 @@ export default function CompensationTableRow({
   isCommitted,
   availableGradeOptions,
   pendingDeleteRows,
+  isNewRow,
 }) {
-  // 해당 행이 NEW로 추가된 행인지 여부
-  const isNewRow = grade.startsWith('NEW');
   const shouldShowDropdown = isNewRow && !isCommitted;
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownToggle = () => {
@@ -140,6 +138,7 @@ CompensationTableRow.propTypes = {
   isCommitted: PropTypes.bool.isRequired,
   availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   pendingDeleteRows: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isNewRow: PropTypes.bool.isRequired,
 };
 
 CompensationTableRow.defaultProps = {

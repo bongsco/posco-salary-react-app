@@ -180,10 +180,11 @@ export default function CompensationPage() {
   const [hasTypeError2, setHasTypeError2] = useState(false); // provideRate 관련 에러
 
   const [newGradeSelections, setNewGradeSelections] = useState({}); // NEW 행의 드롭다운 선택 값
+  const [newRowKeys, setNewRowKeys] = useState(new Set());
 
   // 이미 존재하는 직급 설정
   const usedGrades = Object.keys(state.rankRate).filter(
-    (grade) => !grade.startsWith('NEW'),
+    (grade) => !newRowKeys.has(grade),
   );
   const allGradeOptions = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
   const availableGradeOptions = allGradeOptions.filter(
@@ -199,6 +200,7 @@ export default function CompensationPage() {
       });
       setHasTypeError1(false);
       setHasTypeError2(false);
+      setNewRowKeys(new Set());
     }
   }, [state.isCommitted]);
 
@@ -266,18 +268,21 @@ export default function CompensationPage() {
 
   // ✅ 행 추가 시
   const handleAddGradeRow = () => {
-    const newGrade = `NEW${Object.keys(state.rankRate).length + 1}`;
+    const newKey = `temp-${Date.now()}`;
+
+    setNewRowKeys((prev) => new Set(prev).add(newKey));
+
     dispatch({
       type: 'AddGradeRow',
-      payload: { grade: newGrade },
+      payload: { grade: newKey },
     });
 
     const nextData = {
       ...state.rankRate,
-      [newGrade]: {
+      [newKey]: {
         S: { incrementRate: '', provideRate: '' },
         A: { incrementRate: '', provideRate: '' },
-        BPlus: { incrementRate: '', provideRate: '' },
+        'B+': { incrementRate: '', provideRate: '' },
         B: { incrementRate: '', provideRate: '' },
         C: { incrementRate: '', provideRate: '' },
         D: { incrementRate: '', provideRate: '' },
@@ -293,10 +298,8 @@ export default function CompensationPage() {
       .filter(([, checked]) => checked)
       .map(([grade]) => grade);
 
-    const newRows = rowsToDelete.filter((grade) => grade.startsWith('NEW'));
-    const existingRows = rowsToDelete.filter(
-      (grade) => !grade.startsWith('NEW'),
-    );
+    const newRows = rowsToDelete.filter((grade) => newRowKeys.has(grade));
+    const existingRows = rowsToDelete.filter((grade) => !newRowKeys.has(grade));
 
     // NEW 행은 즉시 삭제
     const updated = { ...state.rankRate };
@@ -342,13 +345,11 @@ export default function CompensationPage() {
     const updatedRankRate = { ...state.rankRate };
 
     // NEW → 선택된 grade로 변환 + 덮어쓰기
-    Object.entries(updatedRankRate).forEach(([grade, ranks]) => {
-      if (grade.startsWith('NEW')) {
-        const selected = newGradeSelections[grade];
-        if (selected) {
-          updatedRankRate[selected] = ranks; // 덮어쓰기
-          delete updatedRankRate[grade];
-        }
+    newRowKeys.forEach((tempKey) => {
+      const selected = newGradeSelections[tempKey];
+      if (selected) {
+        updatedRankRate[selected] = updatedRankRate[tempKey];
+        delete updatedRankRate[tempKey];
       }
     });
 
@@ -407,6 +408,7 @@ export default function CompensationPage() {
           isCommitted={state.isCommitted}
           availableGradeOptions={availableGradeOptions}
           pendingDeleteRows={state.pendingDeleteRows}
+          isNewRow={(grade) => newRowKeys.has(grade)}
         />
 
         <CompensationSection
@@ -442,6 +444,7 @@ export default function CompensationPage() {
           isCommitted={state.isCommitted}
           availableGradeOptions={availableGradeOptions}
           pendingDeleteRows={state.pendingDeleteRows}
+          isNewRow={(grade) => newRowKeys.has(grade)}
         />
       </div>
     </AdjustEditLayout>

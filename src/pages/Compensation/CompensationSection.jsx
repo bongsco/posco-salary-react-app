@@ -32,6 +32,7 @@ export default function CompensationSection({
   isCommitted,
   availableGradeOptions,
   pendingDeleteRows,
+  isNewRow,
 }) {
   let inputMode = 'default';
 
@@ -77,7 +78,8 @@ export default function CompensationSection({
         onDeleteCheckedRows={onDeleteCheckedRows}
         isCommitted={isCommitted}
         availableGradeOptions={availableGradeOptions}
-        pendingDeleteRows={pendingDeleteRows} // 🔥 추가
+        pendingDeleteRows={pendingDeleteRows}
+        isNewRow={isNewRow}
       />
     </div>
   );
@@ -118,4 +120,5 @@ CompensationSection.propTypes = {
   isCommitted: PropTypes.bool.isRequired,
   availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   pendingDeleteRows: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isNewRow: PropTypes.func.isRequired,
 };

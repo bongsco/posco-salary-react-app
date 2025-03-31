@@ -28,6 +28,7 @@ export default function CompensationTable({
   isCommitted,
   availableGradeOptions,
   pendingDeleteRows,
+  isNewRow,
 }) {
   // 개별 행 체크박스 토글 핸들러
   const handleCheck = (grade) => {
@@ -93,6 +94,7 @@ export default function CompensationTable({
               isCommitted={isCommitted}
               availableGradeOptions={availableGradeOptions}
               pendingDeleteRows={pendingDeleteRows}
+              isNewRow={isNewRow(grade)}
             />
           ))}
 
@@ -149,4 +151,5 @@ CompensationTable.propTypes = {
   isCommitted: PropTypes.bool.isRequired,
   availableGradeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   pendingDeleteRows: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isNewRow: PropTypes.func.isRequired,
 };
