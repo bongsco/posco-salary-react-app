@@ -149,6 +149,21 @@ function HighOrganizationPage() {
   /* Checked Item들을 담는 배열 */
   const [checkedItems, setCheckedItems] = useState([]);
 
+  /* CheckBox 전체 선택, 취소 담당 함수 */
+  const checkAll = (isSelect) => {
+    if (isSelect) {
+      setCheckedItems(highOrganizationData.map((item) => item.emp_num));
+      setHighOrganizationData((prevData) =>
+        prevData.map((item) => ({ ...item, isChecked: true })),
+      );
+    } else {
+      setCheckedItems([]);
+      setHighOrganizationData((prevData) =>
+        prevData.map((item) => ({ ...item, isChecked: false })),
+      );
+    }
+  };
+
   /* Checkbox 선택시 CheckItem 배열 Update하고, Table Data에 Check 표시 */
   const handleCheckBox = (empNum, isChecked) => {
     const newCheckedState = !isChecked;
@@ -195,6 +210,7 @@ function HighOrganizationPage() {
     /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
 
     let filteredData = highOrganizationData;
+
     // filters가 존재하고 비어있지 않으면 필터 적용
     if (filters.length > 0) {
       filteredData = highOrganizationData.filter((item) =>
@@ -270,31 +286,35 @@ function HighOrganizationPage() {
       onRollback={handleCancel}
       isCommitted={!isModified()}
     >
-      <h2>대상자 목록</h2>
-      <p>
-        인사 평가 등급이 부여된 인원의 보상 지급률 적용 여부를 최종 결정합니다.
-        <br />각 인원의 최종 평가 차등 연봉 인상률 및 경영 성과금 지급률을
-        확인할 수 있습니다.
-      </p>
-      <div className={styles['high-organization-area']}>
-        <FilterSort
-          filterOptions={filterOptions}
-          sortOptions={sortOptions}
-          onSubmit={handleFilterSortModal}
-          filters={filters}
-          sortList={sorts}
-        />
-        <HighOrganizationTable
-          data={tableData}
-          checkedItems={checkedItems}
-          currentPage={currentPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          setCurrentPage={setCurrentPage}
-          handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
-          handleCheckBox={handleCheckBox}
-        />
-      </div>
+      <section className={styles.section}>
+        <h2>대상자 목록</h2>
+        <p>
+          인사 평가 등급이 부여된 인원의 보상 지급률 적용 여부를 최종
+          결정합니다.
+          <br />각 인원의 최종 평가 차등 연봉 인상률 및 경영 성과금 지급률을
+          확인할 수 있습니다.
+        </p>
+        <div className={styles['high-organization-area']}>
+          <FilterSort
+            filterOptions={filterOptions}
+            sortOptions={sortOptions}
+            onSubmit={handleFilterSortModal}
+            filters={filters}
+            sortList={sorts}
+          />
+          <HighOrganizationTable
+            data={tableData}
+            checkedItems={checkedItems}
+            currentPage={currentPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            setCurrentPage={setCurrentPage}
+            handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
+            handleCheckBox={handleCheckBox}
+            checkAll={checkAll}
+          />
+        </div>
+      </section>
     </AdjustEditLayout>
   );
 }

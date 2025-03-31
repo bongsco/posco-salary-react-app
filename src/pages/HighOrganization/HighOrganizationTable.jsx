@@ -5,6 +5,7 @@ import PageNation from '#components/Pagination';
 import styles from './high-organization-page.module.css';
 import HighOrganizationTableRow from './HighOrganizationTableRow';
 import CheckBox from '#components/CheckBox';
+import TableSelectIndicator from '#components/TableSelectIndicator';
 
 function HighOrganizationTable({
   data,
@@ -15,6 +16,7 @@ function HighOrganizationTable({
   setRowsPerPage,
   handleHighPerformGroupSwitch,
   handleCheckBox,
+  checkAll,
 }) {
   /* Table Box의 헤더 체크 상태 관리 */
   const [isHeaderChecked, setIsHeaderChecked] = useState(false);
@@ -25,17 +27,11 @@ function HighOrganizationTable({
   }, [data, checkedItems]);
 
   /* Header에 Check를 하게 되면 현재 Table 요소들을 Check하게 하는 함수 */
-  const handleHeaderCheckboxChange = () => {
-    setIsHeaderChecked((prev) => {
-      const newHeaderChecked = !prev;
-      /* 현재 Table에 표시되는 데이터 */
-      const allEmpNums = data.map((row) => row.emp_num);
-      /* 현재 Table에 표시되는 데이터에 대해서 CheckBox 표시 수정 */
-      allEmpNums.forEach((empNum) => {
-        handleCheckBox(empNum, prev);
-      });
-
-      return newHeaderChecked;
+  const handleHeaderCheckboxChange = (check) => {
+    const allEmpNums = data.map((row) => row.emp_num);
+    setIsHeaderChecked(!check);
+    allEmpNums.forEach((empNum) => {
+      handleCheckBox(empNum, check); // prev 사용 대신 최신 상태 반영
     });
   };
 
@@ -74,12 +70,19 @@ function HighOrganizationTable({
           ))}
         </tbody>
       </table>
-      <PageNation
-        currentPage={currentPage}
-        rowsPerPage={rowsPerPage}
-        onPageChange={setCurrentPage}
-        onRowsPerPageChange={setRowsPerPage}
-      />
+      <div className={styles.tableBottom}>
+        <TableSelectIndicator
+          checkedItemCount={checkedItems.length}
+          onSelect={() => checkAll(true)}
+          onClear={() => checkAll(false)}
+        />
+        <PageNation
+          currentPage={currentPage}
+          rowsPerPage={rowsPerPage}
+          onPageChange={setCurrentPage}
+          onRowsPerPageChange={setRowsPerPage}
+        />
+      </div>
     </div>
   );
 }
@@ -103,6 +106,7 @@ HighOrganizationTable.propTypes = {
   setRowsPerPage: PropTypes.func.isRequired,
   handleHighPerformGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
+  checkAll: PropTypes.func.isRequired,
 };
 
 export default HighOrganizationTable;

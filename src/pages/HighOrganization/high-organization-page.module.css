@@ -1,5 +1,12 @@
 @import url('../../styles/global.css');
 
+.section {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .high-organization-area {
   display: flex;
   width: 100%;
@@ -75,4 +82,12 @@
   top: 120%;
   position: absolute;
   z-index: 10;
+}
+
+.tableBottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
 }
