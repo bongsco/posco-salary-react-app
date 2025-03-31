@@ -1,7 +1,11 @@
 import { useReducer, useState } from 'react';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './organization-subject.module.css';
-import EmployeeTable from '#pages/OrganizationSubject/EmployeeTable';
+import Button from '#components/Button';
+import CheckBox from '#components/CheckBox';
+import Pagination from '#components/Pagination';
+import TableOption from '#components/TableOption';
+import TableSelectIndicator from '#components/TableSelectIndicator';
 
 const filterOption = {
   평가등급: {
@@ -32,7 +36,7 @@ const initialEmployees = [
   {
     empId: 'pd0a001',
     name: '홍길동',
-    hiredDate: '24.03.03',
+    hiredDate: '24.03.04',
     grade: 'A',
     isTarget: true,
     selected: false,
@@ -40,7 +44,7 @@ const initialEmployees = [
   {
     empId: 'pd0a002',
     name: '홍길동',
-    hiredDate: '24.03.03',
+    hiredDate: '24.03.05',
     grade: 'B',
     isTarget: true,
     selected: false,
@@ -48,7 +52,7 @@ const initialEmployees = [
   {
     empId: 'pd0a003',
     name: '홍길동',
-    hiredDate: '24.03.03',
+    hiredDate: '24.03.06',
     grade: 'C',
     isTarget: true,
     selected: false,
@@ -56,7 +60,7 @@ const initialEmployees = [
   {
     empId: 'pd0a004',
     name: '홍길동',
-    hiredDate: '24.03.03',
+    hiredDate: '24.03.09',
     grade: 'D',
     isTarget: true,
     selected: false,
@@ -64,7 +68,31 @@ const initialEmployees = [
   {
     empId: 'pd0a005',
     name: '홍길동',
-    hiredDate: '24.03.03',
+    hiredDate: '24.03.08',
+    grade: 'D',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'pd0a006',
+    name: '홍길동',
+    hiredDate: '24.03.08',
+    grade: 'D',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'pd0a007',
+    name: '홍길동',
+    hiredDate: '24.03.10',
+    grade: 'D',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    empId: 'pd0a008',
+    name: '홍길동',
+    hiredDate: '24.03.10',
     grade: 'D',
     isTarget: true,
     selected: false,
@@ -234,20 +262,21 @@ export default function OrganizationSubject() {
     );
 
     // 정렬 적용
-    const sorted = optionState.sortList[type].reduce((prev, { key, value }) => {
-      return prev.slice().sort((a, b) => {
+    const sorted = filtered.slice().sort((a, b) =>
+      optionState.sortList[type].reduce((acc, { key, value }) => {
+        // 이미 차이가 발생한 경우 다음 조건 비교 안함
+        if (acc !== 0) return acc;
+
         const aVal = eValueForKey(a, key) ?? '';
         const bVal = eValueForKey(b, key) ?? '';
 
-        return value === '오름차순'
-          ? String(aVal).localeCompare(String(bVal), undefined, {
-              numeric: true,
-            })
-          : String(bVal).localeCompare(String(aVal), undefined, {
-              numeric: true,
-            });
-      });
-    }, filtered);
+        const comparison = String(aVal).localeCompare(String(bVal), undefined, {
+          numeric: true,
+        });
+
+        return value === '오름차순' ? comparison : -comparison;
+      }, 0),
+    );
 
     return sorted;
   };
@@ -365,29 +394,79 @@ export default function OrganizationSubject() {
       canMove
     >
       <div className={styles.contentWrapper}>
-        <EmployeeTable
-          title="대상자 목록"
-          filterOption={filterOption}
-          sortOption={sortOption}
-          employees={paginatedTargets}
-          filters={optionState.filters.target}
-          sortList={optionState.sortList.target}
-          onFilterSortChange={(submitted) =>
-            handleOptionSubmit('target', submitted)
-          }
-          page={page.target}
-          rowsPerPage={rowsPerPage.target}
-          onPageChange={(p) => setPage((prev) => ({ ...prev, target: p }))}
-          onRowsPerPageChange={(val) => {
-            setRowsPerPage((prev) => ({ ...prev, target: val }));
-            setPage((prev) => ({ ...prev, target: 1 }));
-          }}
-          toggleAll={toggleAll}
-          toggleSelection={toggleSelection}
-          checkedItemCount={getCheckedItemCount('target')}
-          onSelectAll={() => onSelectAll('target')}
-          onClearSelection={() => onClearSelection('target')}
-        />
+        <section className={styles.listWrapper}>
+          <div className={styles.titleWrapper}>
+            <h2>대상자 목록록</h2>
+          </div>
+          <div className={styles.tableWrapper}>
+            <div className={styles.filterWrapper}>
+              <div className={styles.filterButton}>
+                <TableOption
+                  filterOption={filterOption}
+                  sortOption={sortOption}
+                  filters={optionState.filters.target}
+                  sortList={optionState.sortList.target}
+                  onSubmit={(submitted) =>
+                    handleOptionSubmit('target', submitted)
+                  }
+                />
+              </div>
+              <div className={styles.excelWrapper}>
+                <Button size="large" label="엑셀다운로드" variant="secondary" />
+              </div>
+            </div>
+            <div className={styles.tables}>
+              <table>
+                <thead>
+                  <tr>
+                    <td className={styles.checkboxCell}>
+                      <CheckBox
+                        isChecked={paginatedTargets.every((e) => e.selected)}
+                        onClick={() => toggleAll(paginatedTargets)}
+                      />
+                    </td>
+                    <td>직번</td>
+                    <td>성명</td>
+                    <td>채용일자</td>
+                    <td>평가등급</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedTargets.map((row) => (
+                    <tr key={row.empId}>
+                      <td className={styles.checkboxCell}>
+                        <CheckBox
+                          isChecked={row.selected}
+                          onClick={() => toggleSelection(row.empId)}
+                        />
+                      </td>
+                      <td>{row.empId}</td>
+                      <td>{row.name}</td>
+                      <td>{row.hiredDate}</td>
+                      <td>{row.grade}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className={styles.paginationWrapper}>
+            <TableSelectIndicator
+              checkedItemCount={getCheckedItemCount('target')}
+              onSelect={() => onSelectAll('target')}
+              onClear={() => onClearSelection('target')}
+            />
+            <Pagination
+              currentPage={page.target}
+              onPageChange={(p) => setPage((prev) => ({ ...prev, target: p }))}
+              rowsPerPage={rowsPerPage.target}
+              onRowsPerPageChange={(val) => {
+                setRowsPerPage((prev) => ({ ...prev, target: val }));
+                setPage((prev) => ({ ...prev, target: 1 }));
+              }}
+            />
+          </div>
+        </section>
 
         <div className={styles.controlWrapper}>
           <button
@@ -406,29 +485,81 @@ export default function OrganizationSubject() {
           </button>
         </div>
 
-        <EmployeeTable
-          title="비대상자 목록"
-          filterOption={filterOption}
-          sortOption={sortOption}
-          employees={paginatedUntargets}
-          filters={optionState.filters.untarget}
-          sortList={optionState.sortList.untarget}
-          onFilterSortChange={(submitted) =>
-            handleOptionSubmit('untarget', submitted)
-          }
-          page={page.untarget}
-          rowsPerPage={rowsPerPage.untarget}
-          onPageChange={(p) => setPage((prev) => ({ ...prev, untarget: p }))}
-          onRowsPerPageChange={(val) => {
-            setRowsPerPage((prev) => ({ ...prev, untarget: val }));
-            setPage((prev) => ({ ...prev, untarget: 1 }));
-          }}
-          toggleAll={toggleAll}
-          toggleSelection={toggleSelection}
-          checkedItemCount={getCheckedItemCount('untarget')}
-          onSelectAll={() => onSelectAll('untarget')}
-          onClearSelection={() => onClearSelection('untarget')}
-        />
+        <section className={styles.listWrapper}>
+          <div className={styles.titleWrapper}>
+            <h2>대상자 목록록</h2>
+          </div>
+          <div className={styles.tableWrapper}>
+            <div className={styles.filterWrapper}>
+              <div className={styles.filterButton}>
+                <TableOption
+                  filterOption={filterOption}
+                  sortOption={sortOption}
+                  filters={optionState.filters.untarget}
+                  sortList={optionState.sortList.untarget}
+                  onSubmit={(submitted) =>
+                    handleOptionSubmit('untarget', submitted)
+                  }
+                />
+              </div>
+              <div className={styles.excelWrapper}>
+                <Button size="large" label="엑셀다운로드" variant="secondary" />
+              </div>
+            </div>
+            <div className={styles.tables}>
+              <table>
+                <thead>
+                  <tr>
+                    <td className={styles.checkboxCell}>
+                      <CheckBox
+                        isChecked={paginatedUntargets.every((e) => e.selected)}
+                        onClick={() => toggleAll(paginatedUntargets)}
+                      />
+                    </td>
+                    <td>직번</td>
+                    <td>성명</td>
+                    <td>채용일자</td>
+                    <td>평가등급</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedUntargets.map((row) => (
+                    <tr key={row.empId}>
+                      <td className={styles.checkboxCell}>
+                        <CheckBox
+                          isChecked={row.selected}
+                          onClick={() => toggleSelection(row.empId)}
+                        />
+                      </td>
+                      <td>{row.empId}</td>
+                      <td>{row.name}</td>
+                      <td>{row.hiredDate}</td>
+                      <td>{row.grade}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className={styles.paginationWrapper}>
+            <TableSelectIndicator
+              checkedItemCount={getCheckedItemCount('untarget')}
+              onSelect={() => onSelectAll('untarget')}
+              onClear={() => onClearSelection('untarget')}
+            />
+            <Pagination
+              currentPage={page.untarget}
+              onPageChange={(p) =>
+                setPage((prev) => ({ ...prev, untarget: p }))
+              }
+              rowsPerPage={rowsPerPage.untarget}
+              onRowsPerPageChange={(val) => {
+                setRowsPerPage((prev) => ({ ...prev, untarget: val }));
+                setPage((prev) => ({ ...prev, untarget: 1 }));
+              }}
+            />
+          </div>
+        </section>
       </div>
     </AdjustEditLayout>
   );
