@@ -17,6 +17,11 @@ export default function TestPage() {
           </Link>
         </li>
         <li>
+          <Link to="/adjust/edit/123/annual/criteria/payment-rate">
+            연봉조정등록/기준설정/보상지급률설정
+          </Link>
+        </li>
+        <li>
           <Link to="/adjust/edit/0/annual/criteria/payband">
             연봉조정등록/기준설정/payband설정
           </Link>
