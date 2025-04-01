@@ -123,7 +123,6 @@ const sortOptions = {
   values: ['오름차순', '내림차순'],
 };
 
-
 function HighOrganizationPage() {
   /* 현재 수정하고 있는 테이블 데이터 */
   const [highOrganizationData, setHighOrganizationData] = useState(
