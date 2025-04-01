@@ -108,34 +108,28 @@ export default function PaybandConfigPage() {
         return action.payload;
 
       case 'changeWithIndex': {
-        const updatedPayband = { ...action.payband };
-        let changedPart = 'lowerBound';
-        if (action.payband.upperBound !== action.upperBound) {
-          // 상한을 바꿈
-          changedPart = 'upperBound';
-        }
-        const opposite =
-          changedPart === 'lowerBound' ? 'upperBound' : 'lowerBound';
+        const updatedPayband = {
+          ...action.payband,
+          upperBound: action.upperBound,
+          lowerBound: action.lowerBound,
+        };
 
-        updatedPayband[changedPart] = action[changedPart];
-        updatedPayband.modified[changedPart] = !(
-          action.originItem &&
-          action[changedPart] === action.originItem[changedPart]
+        updatedPayband.modified.upperBound = !(
+          action.upperBound === action.originItem.upperBound
+        );
+        updatedPayband.modified.lowerBound = !(
+          action.lowerBound === action.originItem.lowerBound
         );
 
+        updatedPayband.error.upperBound = hasError(action.upperBound);
+        updatedPayband.error.lowerBound = hasError(action.lowerBound);
         if (
-          hasError(action[changedPart]) ||
-          updatedPayband.lowerBound > updatedPayband.upperBound
+          updatedPayband.lowerBound >= updatedPayband.upperBound &&
+          !updatedPayband.error.upperBound &&
+          !updatedPayband.error.lowerBound
         ) {
-          updatedPayband.error[changedPart] = true;
-        } else {
-          updatedPayband.error[changedPart] = false;
-          if (
-            updatedPayband.error[opposite] &&
-            !hasError(updatedPayband[opposite])
-          ) {
-            updatedPayband.error[opposite] = false;
-          }
+          updatedPayband.error.upperBound = true;
+          updatedPayband.error.lowerBound = true;
         }
 
         return state.map((pb, i) => (i === action.idx ? updatedPayband : pb));
@@ -223,7 +217,7 @@ export default function PaybandConfigPage() {
                       lowerBound: min,
                       upperBound: max,
                       idx: index,
-                      originItem: !item.id ? null : receivedPayband[index],
+                      originItem: receivedPayband[index],
                       payband: item,
                     });
                   }}
