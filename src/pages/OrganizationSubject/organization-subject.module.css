@@ -22,7 +22,7 @@
 }
 
 .titleWrapper {
-  padding: 8px 8px 8px 16px;
+  padding: 8px 8px 8px 0px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -153,17 +153,18 @@
   padding: 8px;
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
   align-self: stretch;
   flex-wrap: wrap; 
-  /* flex-shrink: 0; */
+  flex-shrink: 0;
   position: relative;
 }
 
 @media (max-width: 1579px) {
   .paginationWrapper {
-    justify-content: flex-end; /* ✅ 우측 정렬 */
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-end;
   }
 }
 
