@@ -10,7 +10,7 @@ function SalaryAdjustmentTable({
   setCurrentPage,
   rowsPerPage,
   setRowsPerPage,
-  clickedRow,
+  selectedIndex,
   handleRowClick,
   handleDeleteClick,
 }) {
@@ -35,10 +35,9 @@ function SalaryAdjustmentTable({
               /* 나중에 table key로 id 값을 넘길 예정 */
               key={row.creation_timestamp}
               row={row}
-              clickedRow={clickedRow}
-              handleRowClick={(creationTimestamp) =>
-                handleRowClick(creationTimestamp, index)
-              }
+              index={index}
+              selectedIndex={selectedIndex}
+              handleRowClick={() => handleRowClick(index)}
               handleDeleteClick={handleDeleteClick}
             />
           ))}
@@ -71,7 +70,7 @@ SalaryAdjustmentTable.propTypes = {
   setCurrentPage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   setRowsPerPage: PropTypes.func.isRequired,
-  clickedRow: PropTypes.number.isRequired,
+  selectedIndex: PropTypes.number.isRequired,
   handleRowClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
 };

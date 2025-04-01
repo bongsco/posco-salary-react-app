@@ -23,14 +23,6 @@ function FilterSort({
     setIsRegisterModalOpen(false);
   };
 
-  const excelDownloadButtonVariant = 'secondary';
-  const excelDownloadButtonSize = 'large';
-  const excelDownloadButtonLabel = '엑셀다운로드';
-
-  const salaryAdjustmentAddButtonVariant = 'primary';
-  const salaryAdjustmentAddButtonSize = 'large';
-  const salaryAdjustmentAddButtonLabel = '새 연봉 조정 등록';
-
   return (
     <div className={styles['filter-sort-area']}>
       <div className={styles['left-group']}>
@@ -44,16 +36,12 @@ function FilterSort({
       </div>
 
       <div className={styles['right-group']}>
-        <Button
-          variant={excelDownloadButtonVariant}
-          size={excelDownloadButtonSize}
-          label={excelDownloadButtonLabel}
-        />
+        <Button variant="secondary" size="large" label="엑셀다운로드" />
         <div className={styles['button-modal']}>
           <Button
-            variant={salaryAdjustmentAddButtonVariant}
-            size={salaryAdjustmentAddButtonSize}
-            label={salaryAdjustmentAddButtonLabel}
+            variant="primary"
+            size="large"
+            label="새 연봉 조정 등록"
             onClick={handleRegisterClick}
           />
           {isRegisterModalOpen && (

@@ -184,12 +184,10 @@ function SalaryAdjustmentArea() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   /* Table에서 Pagination을 적용해서 보여줄 Data */
   const [tableData, setTableData] = useState([]);
-  /* 테이블에서 클릭한 조정 차수 정보 */
-  const [clickedRow, setClickedRow] = useState(null);
   /* Filter, Sort 조건 저장 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
-  /* Timeline에서 선택한 Index */
+  /* Timeline에서 선택한 Index 겸   /* 테이블에서 클릭한 조정 차수 정보 */
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   // TableOption에 onSubmit시 동작하는 함수 */
@@ -221,49 +219,11 @@ function SalaryAdjustmentArea() {
     setSalaryAdjustmentData((prevData) => [sampleData, ...prevData]);
   };
 
-  // const processTableData = useCallback(() => {
-  //   /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
-  //   const filteredData = salaryAdjustmentData.filter((item) =>
-  //     filters.every(({ key, value }) => {
-  //       const itemValue = String(item[nameMapping[key]]);
-  //       return (
-  //         (value?.length ?? 0) === 0 || value?.map(String).includes(itemValue)
-  //       );
-  //     }),
-  //   );
-
-  //   const sortedData = [...filteredData];
-  //   sorts.forEach((sort) => {
-  //     const { key, value: order } = sort;
-  //     sortedData.sort((a, b) => {
-  //       let comparison = 1;
-  //       if (a[nameMapping[key]] < b[nameMapping[key]]) {
-  //         comparison = -1;
-  //       }
-  //       if (order === '내림차순') {
-  //         comparison *= -1;
-  //       }
-  //       return comparison;
-  //     });
-  //   });
-  //   /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
-
-  //   const totalPages = Math.ceil(sortedData.length / rowsPerPage);
-  //   if (currentPage > totalPages && totalPages !== 0) {
-  //     setCurrentPage(totalPages || 1);
-  //   } else {
-  //     setTableData(
-  //       sortedData.slice(
-  //         (currentPage - 1) * rowsPerPage,
-  //         currentPage * rowsPerPage,
-  //       ),
-  //     );
-  //   }
-  // }, [salaryAdjustmentData, currentPage, rowsPerPage, filters, sorts]);
-
   useEffect(() => {
     /* 해당 useEffect 안에 있는 정렬, 페이징 알고리즘은 나중에 DB Query로 해결할 예정 */
     /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
+    setSelectedIndex(null);
+
     let filteredData = salaryAdjustmentData;
 
     // filters가 존재하고 비어있지 않으면 필터 적용
@@ -313,12 +273,9 @@ function SalaryAdjustmentArea() {
     }
   }, [salaryAdjustmentData, currentPage, rowsPerPage, filters, sorts]);
 
-  const handleRowClick = (creationTimestamp, index) => {
-    // 나중에 조정차수ID로 값 변경 예정
-    /* 클릭을 하면 setSelectedIndex값을 변경하고, Table행에도 추가 */
-    setSelectedIndex(clickedRow === creationTimestamp ? null : index);
-    /* 같은 행을 누르면 원래 Table 형태로 전환(null), 다른 행을 누르면 그 행에 Stepper 추가 */
-    setClickedRow(clickedRow === creationTimestamp ? null : creationTimestamp);
+  /* 테이블이나 Timeline에서 데이터를 클릭하면 setSelectedIndex값을 변경 */
+  const handleSelectedIndex = (index) => {
+    setSelectedIndex(selectedIndex === index ? null : index);
   };
 
   const handleDeleteClick = (rowKey) => {
@@ -328,14 +285,6 @@ function SalaryAdjustmentArea() {
   };
 
   /* TimeLine과 관련된 함수들 */
-  /* TimeLine 클릭 시 호출 */
-  const clickTimeline = (index) => {
-    setSelectedIndex(selectedIndex === index ? null : index);
-    setClickedRow(
-      selectedIndex === index ? null : tableData[index].creation_timestamp,
-    );
-  };
-
   /* TableData에 속한 데이터들의 start_date, end_date를 Timeline 형식에 맞게 변환하는 함수 */
   function transformTableDataForTimeLine(td) {
     return td.map((item) => {
@@ -374,7 +323,8 @@ function SalaryAdjustmentArea() {
             sortOptions={sortOptions}
             filters={filters}
             sortList={sorts}
-            onSubmit={handleFilterSortModal}
+            onTableOptionSubmit={handleFilterSortModal}
+            onRegisterSubmit={handleRegisterModal}
           />
           <NoDataTable type="logic" />
         </div>
@@ -387,7 +337,7 @@ function SalaryAdjustmentArea() {
       <TimeLine
         selectedIndex={selectedIndex}
         data={transformedData}
-        onChange={clickTimeline}
+        onChange={handleSelectedIndex}
       />
       <div className={styles['salary-adjustment-list']}>
         <FilterSort
@@ -402,10 +352,10 @@ function SalaryAdjustmentArea() {
           data={tableData}
           currentPage={currentPage}
           rowsPerPage={rowsPerPage}
-          clickedRow={clickedRow}
+          selectedIndex={selectedIndex}
           setRowsPerPage={setRowsPerPage}
           setCurrentPage={setCurrentPage}
-          handleRowClick={handleRowClick}
+          handleRowClick={handleSelectedIndex}
           handleDeleteClick={handleDeleteClick}
         />
       </div>

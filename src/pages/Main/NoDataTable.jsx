@@ -15,10 +15,6 @@ function NoDataTable({ type, onRegisterSubmit = () => {} }) {
     setIsRegisterModalOpen(false);
   };
 
-  const addButtonVariant = 'primary';
-  const addButtonSize = 'medium';
-  const addButtonLabel = '새 연봉 조정 등록';
-
   return (
     <div className={styles['salary-adjustment-table-area']}>
       <table className={styles['salary-adjustment-table']}>
@@ -48,9 +44,9 @@ function NoDataTable({ type, onRegisterSubmit = () => {} }) {
                       연봉 조정 내역이 없습니다.
                     </div>
                     <Button
-                      variant={addButtonVariant}
-                      size={addButtonSize}
-                      label={addButtonLabel}
+                      variant="primary"
+                      size="medium"
+                      label="새 연봉 조정 등록"
                       onClick={handleRegisterClick}
                     />
                     {isRegisterModalOpen && (

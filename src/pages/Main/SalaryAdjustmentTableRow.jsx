@@ -7,7 +7,8 @@ import styles from './main-page.module.css'; // 스타일 임포트
 
 function SalaryAdjustmentTableRow({
   row,
-  clickedRow,
+  index,
+  selectedIndex,
   handleRowClick,
   handleDeleteClick,
 }) {
@@ -45,10 +46,10 @@ function SalaryAdjustmentTableRow({
     /* 나중에 key값은 조정차수ID로 변경 예정 */
     <Fragment key={row.creation_timestamp}>
       <tr
-        onClick={() => handleRowClick(row.creation_timestamp)}
+        onClick={() => handleRowClick(index)}
         key={row.creation_timestamp}
         className={`${styles['table-body']} ${
-          clickedRow === row.creation_timestamp ? styles['selected-row'] : ''
+          selectedIndex === index ? styles['selected-row'] : ''
         }`}
       >
         <td className={styles['column-year']}>{row.year}</td>
@@ -65,7 +66,7 @@ function SalaryAdjustmentTableRow({
         <td className={styles['column-work-step']}>{row.work_step}</td>
         <td className={styles['column-date']}>{row.creation_timestamp}</td>
         <td className={styles['column-creator']}>{row.creator}</td>
-        {clickedRow === row.creation_timestamp && (
+        {selectedIndex === index && (
           <td className={styles['button-cell']}>
             <div className={styles['button-container']}>
               <Link to="/adjust/edit/0/annual/criteria/target">
@@ -87,7 +88,7 @@ function SalaryAdjustmentTableRow({
           </td>
         )}
       </tr>
-      {clickedRow === row.creation_timestamp && (
+      {selectedIndex === index && (
         <tr>
           <td colSpan="8" className={styles.stepper}>
             <Stepper adjId={1} />
@@ -109,7 +110,8 @@ SalaryAdjustmentTableRow.propTypes = {
     interface_use: PropTypes.bool.isRequired,
     creator: PropTypes.string.isRequired,
   }).isRequired,
-  clickedRow: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+  selectedIndex: PropTypes.string.isRequired,
   handleRowClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
 };
