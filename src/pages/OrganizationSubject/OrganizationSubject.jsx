@@ -194,10 +194,6 @@ const parseHiredDateToDate = (str) => {
   return new Date(normalized);
 };
 
-const eValueForKey = (e, key) => {
-  return e[key] ?? '';
-};
-
 export default function OrganizationSubject() {
   const [optionState, dispatchOption] = useReducer(
     optionReducer,
@@ -232,8 +228,8 @@ export default function OrganizationSubject() {
         const optionType = filterOption[key]?.optionType;
         if (!optionType) return prev;
 
-        return prev.filter((e) => {
-          const targetValue = eValueForKey(e, key);
+        return prev.filter(() => {
+          const targetValue = key;
 
           if (optionType === 'date') {
             const inputDate = new Date(value[0]);
