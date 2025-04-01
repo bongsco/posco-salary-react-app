@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '../../styles/table.css';
 import SalaryAdjustmentTableRow from './SalaryAdjustmentTableRow';
 import PageNation from '#components/Pagination';
 import styles from './main-page.module.css';
@@ -33,7 +32,7 @@ function SalaryAdjustmentTable({
           {data.map((row, index) => (
             <SalaryAdjustmentTableRow
               /* 나중에 table key로 id 값을 넘길 예정 */
-              key={row.creation_timestamp}
+              key={row['등록일']}
               row={row}
               index={index}
               selectedIndex={selectedIndex}
@@ -56,14 +55,16 @@ function SalaryAdjustmentTable({
 SalaryAdjustmentTable.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      creation_timestamp: PropTypes.string.isRequired,
-      year: PropTypes.number.isRequired,
-      month: PropTypes.number.isRequired,
-      order_number: PropTypes.number.isRequired,
-      adj_type: PropTypes.string.isRequired,
-      work_step: PropTypes.string.isRequired,
-      interface_use: PropTypes.bool.isRequired,
-      creator: PropTypes.string.isRequired,
+      년도: PropTypes.number.isRequired,
+      월구분: PropTypes.number.isRequired,
+      조정종류: PropTypes.string.isRequired,
+      차수: PropTypes.number.isRequired,
+      통합인사반영여부: PropTypes.bool.isRequired,
+      진행단계: PropTypes.string.isRequired,
+      등록일: PropTypes.string.isRequired,
+      '연봉 시작일': PropTypes.string.isRequired,
+      '연봉 종료일': PropTypes.string.isRequired,
+      등록자: PropTypes.string.isRequired,
     }),
   ).isRequired,
   currentPage: PropTypes.number.isRequired,

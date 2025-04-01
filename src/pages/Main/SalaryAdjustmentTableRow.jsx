@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import State from '#components/State'; // State 컴포넌트 임포트
-import Stepper from '#components/Stepper'; // Stepper 컴포넌트 임포트
-import styles from './main-page.module.css'; // 스타일 임포트
+import State from '#components/State';
+import Stepper from '#components/Stepper';
+import styles from './main-page.module.css';
 
 function SalaryAdjustmentTableRow({
   row,
@@ -39,23 +39,23 @@ function SalaryAdjustmentTableRow({
     return { status: 'warning', text: '미반영' };
   }
 
-  const statusInfo = getStatus(row.work_step);
-  const interfaceUse = getInterfaceUse(row.interface_use);
+  const statusInfo = getStatus(row['진행단계']);
+  const interfaceUse = getInterfaceUse(row['통합인사반영여부']);
 
   return (
     /* 나중에 key값은 조정차수ID로 변경 예정 */
-    <Fragment key={row.creation_timestamp}>
+    <Fragment key={row['등록일']}>
       <tr
         onClick={() => handleRowClick(index)}
-        key={row.creation_timestamp}
+        key={row['등록일']}
         className={`${styles['table-body']} ${
           selectedIndex === index ? styles['selected-row'] : ''
         }`}
       >
-        <td className={styles['column-year']}>{row.year}</td>
-        <td className={styles['column-month']}>{row.month}</td>
+        <td className={styles['column-year']}>{row['년도']}</td>
+        <td className={styles['column-month']}>{row['월구분']}</td>
         <td className={styles['column-adj-type']}>
-          {row.order_number}차 {getAdjustmentType(row.adj_type)}
+          {row['차수']}차 {getAdjustmentType(row['조정종류'])}
         </td>
         <td className={styles['column-status']}>
           <State status={statusInfo.status} text={statusInfo.text} />
@@ -63,9 +63,9 @@ function SalaryAdjustmentTableRow({
         <td className={styles['column-interface']}>
           <State status={interfaceUse.status} text={interfaceUse.text} />
         </td>
-        <td className={styles['column-work-step']}>{row.work_step}</td>
-        <td className={styles['column-date']}>{row.creation_timestamp}</td>
-        <td className={styles['column-creator']}>{row.creator}</td>
+        <td className={styles['column-work-step']}>{row['진행단계']}</td>
+        <td className={styles['column-date']}>{row['등록일']}</td>
+        <td className={styles['column-creator']}>{row['등록자']}</td>
         {selectedIndex === index && (
           <td className={styles['button-cell']}>
             <div className={styles['button-container']}>
@@ -80,7 +80,7 @@ function SalaryAdjustmentTableRow({
               <button
                 type="button"
                 /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
-                onClick={() => handleDeleteClick(row.creation_timestamp)}
+                onClick={() => handleDeleteClick(row['등록일'])}
                 className={styles['delete-button']}
                 aria-label="삭제"
               />
@@ -101,14 +101,16 @@ function SalaryAdjustmentTableRow({
 
 SalaryAdjustmentTableRow.propTypes = {
   row: PropTypes.shape({
-    creation_timestamp: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    order_number: PropTypes.number.isRequired,
-    adj_type: PropTypes.string.isRequired,
-    work_step: PropTypes.string.isRequired,
-    interface_use: PropTypes.bool.isRequired,
-    creator: PropTypes.string.isRequired,
+    년도: PropTypes.number.isRequired,
+    월구분: PropTypes.number.isRequired,
+    조정종류: PropTypes.string.isRequired,
+    차수: PropTypes.number.isRequired,
+    통합인사반영여부: PropTypes.bool.isRequired,
+    진행단계: PropTypes.string.isRequired,
+    등록일: PropTypes.string.isRequired,
+    '연봉 시작일': PropTypes.string.isRequired,
+    '연봉 종료일': PropTypes.string.isRequired,
+    등록자: PropTypes.string.isRequired,
   }).isRequired,
   index: PropTypes.number.isRequired,
   selectedIndex: PropTypes.string.isRequired,
