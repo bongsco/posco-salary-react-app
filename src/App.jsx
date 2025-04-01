@@ -10,6 +10,10 @@ import RootLayout from '#layouts/RootLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import MainPage from '#pages/Main';
+import PaybandConfigPage from '#pages/PaybandConfig';
+import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
+import OrganizationSubject from '#pages/OrganizationSubject';
 import HighOrganizationPage from '#pages/HighOrganization';
 
 const router = createBrowserRouter(
@@ -32,12 +36,7 @@ const router = createBrowserRouter(
           <AppLayout title="계산식 관리" breadCrumbs={['계산식 관리']} />
         }
       />
-      <Route
-        path="adjust/list"
-        element={
-          <AppLayout title="연봉조정 조회" breadCrumbs={['조정', '조회']} />
-        }
-      />
+      <Route path="adjust/list" element={<MainPage />} />
       <Route path="adjust/edit">
         <Route
           index
@@ -49,15 +48,7 @@ const router = createBrowserRouter(
           <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
-              <Route
-                path="target"
-                element={
-                  <AdjustEditLayout
-                    nextStepPath="payment-rate"
-                    stepPaths={['기준 설정', '대상자 기준 설정']}
-                  />
-                }
-              />
+              <Route path="target" element={<AdjSubjectCriteriaPage />} />
               <Route
                 path="payment-rate"
                 element={
@@ -68,28 +59,10 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="payband"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="payment-rate"
-                    nextStepPath="../preparation/target"
-                    stepPaths={['기준 설정', 'Payband 설정']}
-                  />
-                }
-              />
+              <Route path="payband" element={<PaybandConfigPage />} />
             </Route>
             <Route path="preparation">
-              <Route
-                path="target"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="../criteria/payband"
-                    nextStepPath="high-performance"
-                    stepPaths={['사전 작업', '대상자 편성']}
-                  />
-                }
-              />
+              <Route path="target" element={<OrganizationSubject />} />
               <Route
                 path="high-performance"
                 element={<HighOrganizationPage />}
