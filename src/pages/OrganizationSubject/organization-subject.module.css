@@ -161,7 +161,7 @@
   position: relative;
 }
 
-@media (max-width: 1444px) {
+@media (max-width: 1579px) {
   .paginationWrapper {
     justify-content: flex-end; /* ✅ 우측 정렬 */
   }
