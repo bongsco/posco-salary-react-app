@@ -21,16 +21,16 @@ function HighOrganizationTable({
   const [isHeaderChecked, setIsHeaderChecked] = useState(false);
 
   useEffect(() => {
-    const allChecked = data.every((row) => checkedItems.includes(row.emp_num));
+    const allChecked = data.every((row) => checkedItems.includes(row['직번']));
     setIsHeaderChecked(allChecked);
   }, [data, checkedItems]);
 
   /* Header에 Check를 하게 되면 현재 Table 요소들을 Check하게 하는 함수 */
   const handleHeaderCheckboxChange = (check) => {
-    /* Check되지 않은 데이터만 추출 */
+    /* Check 상태가 다른 데이터만 추출 */
     const uncheckedEmpNums = data
-      .filter((row) => !row.isChecked)
-      .map((row) => row.emp_num);
+      .filter((row) => row.isChecked === check)
+      .map((row) => row['직번']);
 
     setIsHeaderChecked(!check);
     uncheckedEmpNums.forEach((empNum) => {
@@ -64,7 +64,7 @@ function HighOrganizationTable({
         <tbody>
           {data.map((row) => (
             <HighOrganizationTableRow
-              key={row.emp_num}
+              key={row['직번']}
               item={row}
               checkedItems={checkedItems}
               handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
@@ -94,12 +94,12 @@ HighOrganizationTable.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       isChecked: PropTypes.bool.isRequired,
-      emp_num: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      dep_name: PropTypes.string.isRequired,
-      grade_name: PropTypes.string.isRequired,
-      rank_name: PropTypes.string.isRequired,
-      in_high_perform_group: PropTypes.bool.isRequired,
+      직번: PropTypes.string.isRequired,
+      직원성명: PropTypes.string.isRequired,
+      부서명: PropTypes.string.isRequired,
+      직급명: PropTypes.string.isRequired,
+      등급코드: PropTypes.string.isRequired,
+      '고성과조직 가산 대상 여부': PropTypes.bool.isRequired,
     }),
   ).isRequired,
   checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,

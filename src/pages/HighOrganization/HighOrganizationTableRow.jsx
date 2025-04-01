@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '../../styles/table.css';
 import styles from './high-organization-page.module.css';
 import Switch from '#components/Switch';
 import CheckBox from '#components/CheckBox';
@@ -30,56 +29,58 @@ function HighOrganizationTableRow({
   handleCheckBox,
 }) {
   return (
-    <tr key={item.emp_num} className={`${styles['table-row']}`}>
+    <tr key={item['직번']} className={`${styles['table-row']}`}>
       <td>
         <div className={`${styles['check-box']}`}>
           <CheckBox
             isChecked={item.isChecked}
-            onClick={() => handleCheckBox(item.emp_num, item.isChecked)}
+            onClick={() => handleCheckBox(item['직번'], item.isChecked)}
           />
         </div>
       </td>
-      <td>{item.emp_num}</td>
-      <td>{item.name}</td>
-      <td>{item.dep_name}</td>
-      <td>{item.grade_name}</td>
-      <td>{item.rank_name}</td>
+      <td>{item['직번']}</td>
+      <td>{item['직원성명']}</td>
+      <td>{item['부서명']}</td>
+      <td>{item['직급명']}</td>
+      <td>{item['등급코드']}</td>
       <td>
         <div className={styles['switch-area']}>
           <p
             className={`${styles['switch-text']} ${
-              item.in_high_perform_group ? styles.target : styles['non-target']
+              item['고성과조직 가산 대상 여부']
+                ? styles.target
+                : styles['non-target']
             }`}
           >
-            {item.in_high_perform_group ? '대상' : '미대상'}
+            {item['고성과조직 가산 대상 여부'] ? '대상' : '미대상'}
           </p>
           <Switch
-            isOn={item.in_high_perform_group}
+            isOn={item['고성과조직 가산 대상 여부']}
             onClick={() => {
               /* Checkbox에 선택된 데이터이면 CheckItems를 넘겨주고, 아니면 해당 Item만 넘겨줌 */
-              const targetEmpNums = checkedItems.includes(item.emp_num)
+              const targetEmpNums = checkedItems.includes(item['직번'])
                 ? checkedItems
-                : [item.emp_num];
+                : [item['직번']];
               handleHighPerformGroupSwitch(
                 targetEmpNums,
-                !item.in_high_perform_group,
+                !item['고성과조직 가산 대상 여부'],
               );
             }}
           />
         </div>
       </td>
       <td>
-        {item.in_high_perform_group
-          ? salaryPerRank[item.rank_name].eval_diff_increment +
+        {item['고성과조직 가산 대상 여부']
+          ? salaryPerRank[item['등급코드']].eval_diff_increment +
             evalAnnualSalaryIncrement
-          : salaryPerRank[item.rank_name].eval_diff_increment}
+          : salaryPerRank[item['등급코드']].eval_diff_increment}
         %
       </td>
       <td>
-        {item.in_high_perform_group
-          ? salaryPerRank[item.rank_name].eval_diff_bonus +
+        {item['고성과조직 가산 대상 여부']
+          ? salaryPerRank[item['등급코드']].eval_diff_bonus +
             evalPerformProvideRate
-          : salaryPerRank[item.rank_name].eval_diff_bonus}
+          : salaryPerRank[item['등급코드']].eval_diff_bonus}
         %
       </td>
     </tr>
@@ -90,12 +91,12 @@ HighOrganizationTableRow.propTypes = {
   item: PropTypes.arrayOf(
     PropTypes.shape({
       isChecked: PropTypes.bool.isRequired,
-      emp_num: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      dep_name: PropTypes.string.isRequired,
-      grade_name: PropTypes.string.isRequired,
-      rank_name: PropTypes.string.isRequired,
-      in_high_perform_group: PropTypes.bool.isRequired,
+      직번: PropTypes.string.isRequired,
+      직원성명: PropTypes.string.isRequired,
+      부서명: PropTypes.string.isRequired,
+      직급명: PropTypes.string.isRequired,
+      등급코드: PropTypes.string.isRequired,
+      '고성과조직 가산 대상 여부': PropTypes.bool.isRequired,
     }),
   ).isRequired,
   checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,

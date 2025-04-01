@@ -8,102 +8,92 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 const initialHighOrganizationData = [
   {
     isChecked: false,
-    emp_num: 'Pd000111',
-    name: '홍',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'S',
-    in_high_perform_group: false,
+    직번: 'Pd000111',
+    직원성명: '홍',
+    부서명: '에너지조선마케팅실 산기플랜트팀',
+    직급명: 'P6',
+    등급코드: 'S',
+    '고성과조직 가산 대상 여부': false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000222',
-    name: '홍길',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'A',
-    in_high_perform_group: true,
+    직번: 'Pd000222',
+    직원성명: '홍길',
+    부서명: '에너지조선마케팅실 산기플랜트팀',
+    직급명: 'P6',
+    등급코드: 'A',
+    '고성과조직 가산 대상 여부': true,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000333',
-    name: '홍길동',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'B',
-    in_high_perform_group: true,
+    직번: 'Pd000333',
+    직원성명: '홍길동',
+    부서명: '에너지조선마케팅실 산기플랜트팀',
+    직급명: 'P6',
+    등급코드: 'B',
+    '고성과조직 가산 대상 여부': true,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000444',
-    name: '홍길동김',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'S',
-    in_high_perform_group: false,
+    직번: 'Pd000444',
+    직원성명: '홍길동김',
+    부서명: '에너지조선마케팅실 산기플랜트팀',
+    직급명: 'P6',
+    등급코드: 'S',
+    '고성과조직 가산 대상 여부': false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000555',
-    name: '홍길동김박',
-    dep_name: '철강IT그룹 ERP개발섹션',
-    grade_name: 'P6',
-    rank_name: 'B',
-    in_high_perform_group: false,
+    직번: 'Pd000555',
+    직원성명: '홍길동김박',
+    부서명: '철강IT그룹 ERP개발섹션',
+    직급명: 'P6',
+    등급코드: 'B',
+    '고성과조직 가산 대상 여부': false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000666',
-    name: '홍길동김박이',
-    dep_name: '철강IT그룹 ERP개발섹션',
-    grade_name: 'P6',
-    rank_name: 'A',
-    in_high_perform_group: false,
+    직번: 'Pd000666',
+    직원성명: '홍길동김박이',
+    부서명: '철강IT그룹 ERP개발섹션',
+    직급명: 'P6',
+    등급코드: 'A',
+    '고성과조직 가산 대상 여부': false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000777',
-    name: '한길동김',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'A',
-    in_high_perform_group: false,
+    직번: 'Pd000777',
+    직원성명: '한길동김',
+    부서명: '에너지조선마케팅실 산기플랜트팀',
+    직급명: 'P6',
+    등급코드: 'A',
+    '고성과조직 가산 대상 여부': false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000888',
-    name: '김치박',
-    dep_name: '철강IT그룹 ERP개발섹션',
-    grade_name: 'P6',
-    rank_name: 'A',
-    in_high_perform_group: false,
+    직번: 'Pd000888',
+    직원성명: '김치박',
+    부서명: '철강IT그룹 ERP개발섹션',
+    직급명: 'P6',
+    등급코드: 'A',
+    '고성과조직 가산 대상 여부': false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000999',
-    name: '홍동박',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'A',
-    in_high_perform_group: false,
+    직번: 'Pd000999',
+    직원성명: '홍동박',
+    부서명: '에너지조선마케팅실 산기플랜트팀',
+    직급명: 'P6',
+    등급코드: 'A',
+    '고성과조직 가산 대상 여부': false,
   },
 ];
-
-/* Sample Data랑 테이블 컬럼 Mapping을 위한 임시 변수 */
-const nameMapping = {
-  이름: 'name',
-  직번: 'emp_num',
-  부서: 'dep_name',
-  직급: 'grade_name',
-  평가등급: 'rank_name',
-  고성과조직가산율: 'in_high_perform_group',
-};
 
 /* Filter Option에 대한 Sample Data */
 const filterOptions = {
   직번: { optionType: 'text', initialValue: '' },
-  이름: {
-    optionType: 'dropdown',
+  직원성명: {
+    onType: 'dropdown',
     options: ['홍', '홍길', '홍길동', '홍길동김'],
     currentSelectedValue: '',
   },
@@ -139,8 +129,8 @@ function HighOrganizationPage() {
   const handleHighPerformGroupSwitch = (empNumsArray, isOn) => {
     setHighOrganizationData((prevData) => {
       return prevData.map((item) =>
-        empNumsArray.includes(item.emp_num)
-          ? { ...item, in_high_perform_group: isOn }
+        empNumsArray.includes(item['직번'])
+          ? { ...item, '고성과조직 가산 대상 여부': isOn }
           : item,
       );
     });
@@ -152,7 +142,7 @@ function HighOrganizationPage() {
   /* CheckBox 전체 선택, 취소 담당 함수 */
   const checkAll = (isSelect) => {
     if (isSelect) {
-      setCheckedItems(highOrganizationData.map((item) => item.emp_num));
+      setCheckedItems(highOrganizationData.map((item) => item['직번']));
       setHighOrganizationData((prevData) =>
         prevData.map((item) => ({ ...item, isChecked: true })),
       );
@@ -177,7 +167,7 @@ function HighOrganizationPage() {
     // 기존 Sample Data에 Check 표시
     setHighOrganizationData((prevData) => {
       return prevData.map((item) =>
-        item.emp_num === empNum
+        item['직번'] === empNum
           ? { ...item, isChecked: newCheckedState }
           : item,
       );
@@ -205,7 +195,7 @@ function HighOrganizationPage() {
     /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
     const filteredData = highOrganizationData.filter((item) =>
       filters.every(({ key, value }) => {
-        const itemValue = String(item[nameMapping[key]]);
+        const itemValue = String(item[key]);
         return (
           (value?.length ?? 0) === 0 || value?.map(String).includes(itemValue)
         );
@@ -217,7 +207,7 @@ function HighOrganizationPage() {
       const { key, value: order } = sort;
       sortedData.sort((a, b) => {
         let comparison = 1;
-        if (a[nameMapping[key]] < b[nameMapping[key]]) {
+        if (a[key] < b[key]) {
           comparison = -1;
         }
         if (order === '내림차순') {
@@ -227,9 +217,7 @@ function HighOrganizationPage() {
       });
     });
     /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
-
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
-
     if (currentPage > totalPages && totalPages !== 0) {
       setCurrentPage(totalPages || 1);
     }
@@ -244,8 +232,8 @@ function HighOrganizationPage() {
   const isModified = () => {
     return highOrganizationData.some(
       (item, index) =>
-        item.in_high_perform_group !==
-        prevHighOrganizationData[index].in_high_perform_group,
+        item['고성과조직 가산 대상 여부'] !==
+        prevHighOrganizationData[index]['고성과조직 가산 대상 여부'],
     );
   };
 
