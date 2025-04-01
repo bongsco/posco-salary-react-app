@@ -3,6 +3,7 @@ import styles from './high-organization-page.module.css';
 import FilterSort from './FilterSort';
 import HighOrganizationTable from './HighOrganizationTable';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import sortObject from '#utils/sortObject';
 
 /* Sample Data */
 const initialHighOrganizationData = [
@@ -191,6 +192,7 @@ function HighOrganizationPage() {
       setSorts(payload);
     }
   };
+
   const processTableData = useCallback(() => {
     /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
     const filteredData = highOrganizationData.filter((item) =>
@@ -202,20 +204,23 @@ function HighOrganizationPage() {
       }),
     );
 
-    const sortedData = [...filteredData];
-    sorts.forEach((sort) => {
-      const { key, value: order } = sort;
-      sortedData.sort((a, b) => {
-        let comparison = 1;
-        if (a[key] < b[key]) {
-          comparison = -1;
-        }
-        if (order === '내림차순') {
-          comparison *= -1;
-        }
-        return comparison;
-      });
-    });
+    console.log(sorts);
+
+    const sortedData = sortObject(filteredData, sorts);
+    // const sortedData = [...filteredData];
+    // sorts.forEach((sort) => {
+    //   const { key, value: order } = sort;
+    //   sortedData.sort((a, b) => {
+    //     let comparison = 1;
+    //     if (a[key] < b[key]) {
+    //       comparison = -1;
+    //     }
+    //     if (order === '내림차순') {
+    //       comparison *= -1;
+    //     }
+    //     return comparison;
+    //   });
+    // });
     /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
     if (currentPage > totalPages && totalPages !== 0) {

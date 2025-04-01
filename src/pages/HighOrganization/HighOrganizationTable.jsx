@@ -51,14 +51,20 @@ function HighOrganizationTable({
                 />
               </div>
             </td>
-            <td>직번</td>
-            <td>성명</td>
-            <td>부서</td>
-            <td>직급</td>
-            <td>평가등급</td>
-            <td>고성과조직가산</td>
-            <td>평가차등연봉인상율</td>
-            <td>평가차등경영성과금지급률</td>
+            <td className={styles['column-emp-num']}>직번</td>
+            <td className={styles['column-name']}>성명</td>
+            <td className={styles['column-dep']}>부서</td>
+            <td className={styles['column-grade']}>직급</td>
+            <td className={styles['column-rank']}>평가등급</td>
+            <td className={styles['column-high-organization']}>
+              고성과조직가산
+            </td>
+            <td className={styles['column-perform-add-payment']}>
+              평가차등연봉인상율
+            </td>
+            <td className={styles['column-emp-num']}>
+              평가차등경영성과금지급률
+            </td>
           </tr>
         </thead>
         <tbody>

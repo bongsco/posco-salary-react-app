@@ -38,12 +38,12 @@ function HighOrganizationTableRow({
           />
         </div>
       </td>
-      <td>{item['직번']}</td>
-      <td>{item['직원성명']}</td>
-      <td>{item['부서명']}</td>
-      <td>{item['직급명']}</td>
-      <td>{item['등급코드']}</td>
-      <td>
+      <td className={styles['column-emp-num']}>{item['직번']}</td>
+      <td className={styles['column-name']}>{item['직원성명']}</td>
+      <td className={styles['column-dep']}>{item['부서명']}</td>
+      <td className={styles['column-grade']}>{item['직급명']}</td>
+      <td className={styles['column-rank']}>{item['등급코드']}</td>
+      <td className={styles['column-high-organization']}>
         <div className={styles['switch-area']}>
           <p
             className={`${styles['switch-text']} ${
@@ -69,14 +69,14 @@ function HighOrganizationTableRow({
           />
         </div>
       </td>
-      <td>
+      <td className={styles['column-perform-add-payment']}>
         {item['고성과조직 가산 대상 여부']
           ? salaryPerRank[item['등급코드']].eval_diff_increment +
             evalAnnualSalaryIncrement
           : salaryPerRank[item['등급코드']].eval_diff_increment}
         %
       </td>
-      <td>
+      <td className={styles['column-emp-num']}>
         {item['고성과조직 가산 대상 여부']
           ? salaryPerRank[item['등급코드']].eval_diff_bonus +
             evalPerformProvideRate

@@ -31,10 +31,10 @@
 }
 
 .high-organization-table-area {
+  width: 100%;
   gap: 0px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
 }
 
 .high-organization-table {
@@ -91,4 +91,17 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
+}
+
+.column-emp-num,
+.column-name,
+.column-grade,
+.column-rank,
+.column-high-organization,
+.column-perform-add-payment {
+  white-space: nowrap;
+}
+
+.column-dep {
+  min-width: 60px;
 }
