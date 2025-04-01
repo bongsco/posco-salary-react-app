@@ -7,7 +7,7 @@
  * @param {inputObject[]} list
  * @param {{
  *   key: keyof inputObject;
- *   order: 'ASC' | 'DESC';
+ *   order: '오름차순' | '내림차순';
  * }[]} options
  * @returns {inputObject[]}
  */
@@ -25,7 +25,7 @@ export default function sortObject(list, options) {
       if (typeof value1 === 'string' && typeof value2 === 'string') {
         const sort = value1.localeCompare(value2);
 
-        if (order === 'ASC') {
+        if (order === '오름차순') {
           return sort;
         }
 
@@ -34,7 +34,7 @@ export default function sortObject(list, options) {
 
       // number
       if (typeof value1 === 'number' && typeof value2 === 'number') {
-        return order === 'ASC' ? value1 - value2 : value2 - value1;
+        return order === '오름차순' ? value1 - value2 : value2 - value1;
       }
 
       return 0;
