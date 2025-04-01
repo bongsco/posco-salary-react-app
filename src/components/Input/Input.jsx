@@ -9,12 +9,25 @@ function Input({
   value = '',
   customWidth = null,
   customHeight = null,
+  maxWidth = null,
+  minWidth = null,
+  maxHeight = null,
+  minHeight = null,
   onChange,
 }) {
+  const customStyle = {
+    width: customWidth,
+    height: customHeight,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
+  };
+
   return (
     <div
       className={`${inputStyles.container} ${inputStyles[mode]}`}
-      style={{ width: customWidth, height: customHeight }}
+      style={customStyle}
     >
       <input
         id={id}
@@ -23,7 +36,7 @@ function Input({
         className={inputStyles.input}
         placeholder={placeholder}
         onChange={onChange}
-        style={{ width: customWidth, height: customHeight }}
+        style={customStyle}
       />
       {label && <span className={inputStyles.message}>{label}</span>}
     </div>
@@ -37,6 +50,10 @@ Input.defaultProps = {
   customWidth: null,
   customHeight: null,
   placeholder: null,
+  maxWidth: null,
+  minWidth: null,
+  maxHeight: null,
+  minHeight: null,
 };
 
 Input.propTypes = {
@@ -48,6 +65,10 @@ Input.propTypes = {
   customWidth: PropTypes.string,
   customHeight: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
+  maxHeight: PropTypes.string,
+  minHeight: PropTypes.string,
 };
 
 export default Input;

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { fn } from '@storybook/test';
+
 import FilterModal from '#components/TableOption/Filter';
 import RegisterModal from '#components/Modal/Register';
 import SortModal from '#components/TableOption/Sort';
