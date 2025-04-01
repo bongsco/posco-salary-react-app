@@ -228,9 +228,8 @@ export default function OrganizationSubject() {
         const optionType = filterOption[key]?.optionType;
         if (!optionType) return prev;
 
-        return prev.filter(() => {
-          const targetValue = key;
-
+        return prev.filter((e) => {
+          const targetValue = e[key];
           if (optionType === 'date') {
             const inputDate = new Date(value[0]);
             const empDate = parseHiredDateToDate(targetValue);
@@ -247,7 +246,6 @@ export default function OrganizationSubject() {
       initial,
     );
 
-    // 정렬 적용
     const sorted = sortObject(filtered, optionState.sortList[type]);
 
     return sorted;
@@ -378,9 +376,10 @@ export default function OrganizationSubject() {
                   sortOption={sortOption}
                   filters={optionState.filters.target}
                   sortList={optionState.sortList.target}
-                  onSubmit={(submitted) =>
-                    handleOptionSubmit('target', submitted)
-                  }
+                  onSubmit={(submitted) => {
+                    console.log(submitted);
+                    handleOptionSubmit('target', submitted);
+                  }}
                 />
               </div>
               <div className={styles.excelWrapper}>
