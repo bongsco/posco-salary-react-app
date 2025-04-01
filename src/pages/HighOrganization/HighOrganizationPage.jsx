@@ -98,7 +98,7 @@ const filterOptions = {
     options: ['홍', '홍길', '홍길동', '홍길동김'],
     currentSelectedValue: '',
   },
-  부서: {
+  부서명: {
     optionType: 'dropdown',
     options: ['에너지조선마케팅실 산기플랜트팀', '철강IT그룹 ERP개발섹션'],
     initialValue: '',
