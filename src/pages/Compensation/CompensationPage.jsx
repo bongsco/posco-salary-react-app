@@ -53,18 +53,29 @@ function reducer(state, action) {
   switch (action.type) {
     case 'ChangeRankRate': {
       const { grade, rank, key, value } = action.payload;
-      const updated = {
-        ...state.rankRate,
-        [grade]: {
-          ...state.rankRate[grade],
-          [rank]: {
-            ...state.rankRate[grade]?.[rank],
-            [key]: value,
+
+      const existingGrade = state.rankRate[grade] ?? {};
+      const existingRank = existingGrade[rank] ?? {
+        incrementRate: 0,
+        provideRate: 0,
+      };
+
+      return {
+        ...state,
+        rankRate: {
+          ...state.rankRate,
+          [grade]: {
+            ...existingGrade,
+            [rank]: {
+              ...existingRank,
+              [key]: value,
+            },
           },
         },
+        isCommitted: false,
       };
-      return { ...state, rankRate: updated, isCommitted: false };
     }
+
     case 'ChangeAdjInfo': {
       const { key, value } = action.payload;
       return {
@@ -172,8 +183,6 @@ export default function CompensationPage() {
       type: 'ChangeRankRate',
       payload: { grade, rank, key, value: nextValue },
     });
-
-    // validateTable는 useEffect에서 처리
   };
 
   const handleAdjustmentChange = (key, e) => {

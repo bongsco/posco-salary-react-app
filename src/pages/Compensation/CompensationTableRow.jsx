@@ -29,7 +29,7 @@ export default function CompensationTableRow({
 
         return (
           <td
-            key={`${grade}-${rank}`}
+            key={`${grade}-${rank}-${valueKey}`} // key 확실히 유니크하게
             className={isChanged ? styles.changedCell : styles.inputCell}
           >
             <div className={styles.table_cell}>
