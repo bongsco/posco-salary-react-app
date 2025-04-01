@@ -11,8 +11,10 @@ import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import MainPage from '#pages/Main';
+import PaybandConfigPage from '#pages/PaybandConfig';
 import RootLayout from '#layouts/RootLayout';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
+import OrganizationSubject from '#pages/OrganizationSubject';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,28 +59,10 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="payband"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="payment-rate"
-                    nextStepPath="../preparation/target"
-                    stepPaths={['기준 설정', 'Payband 설정']}
-                  />
-                }
-              />
+              <Route path="payband" element={<PaybandConfigPage />} />
             </Route>
             <Route path="preparation">
-              <Route
-                path="target"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="../criteria/payband"
-                    nextStepPath="high-performance"
-                    stepPaths={['사전 작업', '대상자 편성']}
-                  />
-                }
-              />
+              <Route path="target" element={<OrganizationSubject />} />
               <Route
                 path="high-performance"
                 element={
