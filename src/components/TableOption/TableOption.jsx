@@ -57,7 +57,7 @@ export default function TableOption({
             !sortList || sortList.length === 0
               ? '정렬 추가 +'
               : `정렬: ${sortList
-                  .filter(({ value }) => value)
+                  .filter(({ order }) => order)
                   .map(({ key }) => key)
                   .join(', ')}`
           }

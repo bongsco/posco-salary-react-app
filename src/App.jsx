@@ -14,6 +14,7 @@ import MainPage from '#pages/Main';
 import PaybandConfigPage from '#pages/PaybandConfig';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
+import CompensationPage from '#pages/Compensation';
 import HighOrganizationPage from '#pages/HighOrganization';
 
 const router = createBrowserRouter(
@@ -49,16 +50,7 @@ const router = createBrowserRouter(
           <Route path="annual">
             <Route path="criteria">
               <Route path="target" element={<AdjSubjectCriteriaPage />} />
-              <Route
-                path="payment-rate"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="target"
-                    nextStepPath="payband"
-                    stepPaths={['기준 설정', '보상지급률 설정']}
-                  />
-                }
-              />
+              <Route path="payment-rate" element={<CompensationPage />} />
               <Route path="payband" element={<PaybandConfigPage />} />
             </Route>
             <Route path="preparation">
