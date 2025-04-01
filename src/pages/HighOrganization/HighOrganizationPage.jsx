@@ -112,9 +112,17 @@ const filterOptions = {
 
 /* Sort Option에 대한 Sample Data */
 const sortOptions = {
-  keys: ['이름', '직번', '부서', '직급', '평가등급', '고성과조직가산'],
+  keys: [
+    '직원성명',
+    '직번',
+    '부서명',
+    '직급명',
+    '등급코드',
+    '고성과조직 가산 대상 여부',
+  ],
   values: ['오름차순', '내림차순'],
 };
+
 
 function HighOrganizationPage() {
   /* 현재 수정하고 있는 테이블 데이터 */
