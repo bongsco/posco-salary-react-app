@@ -213,7 +213,7 @@ function SalaryAdjustmentArea() {
       creation_timestamp: new Date().toISOString().slice(0, 10),
       start_date: '2025-01-01',
       end_date: '2025-12-31',
-      creator: data.title,
+      creator: '한상진',
     };
 
     setSalaryAdjustmentData((prevData) => [sampleData, ...prevData]);
