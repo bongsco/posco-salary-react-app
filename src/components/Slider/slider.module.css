@@ -6,14 +6,17 @@
   padding: 0 8px;
   justify-content: space-between;
   align-items: center;
-  max-width: 514px;
+  min-width: 300px;
   gap: 8px;
 }
 
 .slider_value {
-  width: 5%;
+  width: 10%;
   font: var(--font-caption-2b-pc);
   color: var(--color-primary-darker);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 :global(.range-slider__thumb[data-lower]) {

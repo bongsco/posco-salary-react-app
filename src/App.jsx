@@ -10,6 +10,7 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import PaybandConfigPage from '#pages/PaybandConfig';
 import RootLayout from '#layouts/RootLayout';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
@@ -62,16 +63,7 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="payband"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="payment-rate"
-                    nextStepPath="../preparation/target"
-                    stepPaths={['기준 설정', 'Payband 설정']}
-                  />
-                }
-              />
+              <Route path="payband" element={<PaybandConfigPage />} />
             </Route>
             <Route path="preparation">
               <Route path="target" element={<OrganizationSubject />} />
