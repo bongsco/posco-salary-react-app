@@ -33,7 +33,7 @@ function reducer(state, action) {
           ...state,
           sortList: [
             ...state.sortList,
-            { key: state.selectedKey, value: state.selectedValue },
+            { key: state.selectedKey, order: state.selectedValue },
           ],
           selectedKey: null,
           selectedValue: null,
@@ -113,9 +113,9 @@ export default function SortModal({
 
       <div className={styles.filterWrapper}>
         {state.sortList.map((sort, index) => (
-          <div key={`${sort.key}-${sort.value}`} className={styles.filter}>
+          <div key={`${sort.key}-${sort.order}`} className={styles.filter}>
             <span className={styles.filterName}>
-              {sort.key} : {sort.value}
+              {sort.key} : {sort.order}
             </span>
             <button
               type="button"
@@ -141,7 +141,7 @@ SortModal.propTypes = {
   prevSortList: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
+      order: PropTypes.string.isRequired,
     }),
   ),
   left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
