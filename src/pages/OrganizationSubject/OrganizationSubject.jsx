@@ -377,7 +377,6 @@ export default function OrganizationSubject() {
                   filters={optionState.filters.target}
                   sortList={optionState.sortList.target}
                   onSubmit={(submitted) => {
-                    console.log(submitted);
                     handleOptionSubmit('target', submitted);
                   }}
                 />
