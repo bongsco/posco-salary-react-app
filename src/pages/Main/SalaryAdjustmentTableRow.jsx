@@ -12,36 +12,6 @@ function SalaryAdjustmentTableRow({
   handleRowClick,
   handleDeleteClick,
 }) {
-  function getAdjustmentType(adjType) {
-    if (adjType === 'ANNUAL_SALARY_ADJUSTMENT') {
-      return '정기 연봉조정';
-    }
-    if (adjType === 'BASE_UP') {
-      return 'Base Up';
-    }
-    return '승진자 연봉조정';
-  }
-
-  function getStatus(workStepText) {
-    if (workStepText === '완료') {
-      return { status: 'complete', text: '완료' };
-    }
-    if (workStepText !== null && workStepText !== '조치필요') {
-      return { status: 'working', text: '작업중' };
-    }
-    return { status: 'warning', text: '조치필요' };
-  }
-
-  function getInterfaceUse(interfaceUse) {
-    if (interfaceUse) {
-      return { status: 'complete', text: '완료' };
-    }
-    return { status: 'warning', text: '미반영' };
-  }
-
-  const statusInfo = getStatus(row['진행단계']);
-  const interfaceUse = getInterfaceUse(row['통합인사반영여부']);
-
   return (
     /* 나중에 key값은 조정차수ID로 변경 예정 */
     <Fragment key={row['등록일']}>
@@ -54,16 +24,19 @@ function SalaryAdjustmentTableRow({
       >
         <td className={styles['column-year']}>{row['년도']}</td>
         <td className={styles['column-month']}>{row['월구분']}</td>
-        <td className={styles['column-adj-type']}>
-          {row['차수']}차 {getAdjustmentType(row['조정종류'])}
-        </td>
+        <td className={styles['column-adj-type']}>{row['조정제목']}</td>
         <td className={styles['column-status']}>
-          <State status={statusInfo.status} text={statusInfo.text} />
+          <State
+            status={row['통합인사반영여부'].status}
+            text={row['통합인사반영여부'].text}
+          />
         </td>
         <td className={styles['column-interface']}>
-          <State status={interfaceUse.status} text={interfaceUse.text} />
+          <State status={row['진행단계'].status} text={row['진행단계'].text} />
         </td>
-        <td className={styles['column-work-step']}>{row['진행단계']}</td>
+        <td className={styles['column-work-step']}>
+          {row['진행단계'].caption}
+        </td>
         <td className={styles['column-date']}>{row['등록일']}</td>
         <td className={styles['column-creator']}>{row['등록자']}</td>
         {selectedIndex === index && (
@@ -103,6 +76,7 @@ SalaryAdjustmentTableRow.propTypes = {
   row: PropTypes.shape({
     년도: PropTypes.number.isRequired,
     월구분: PropTypes.number.isRequired,
+    조정제목: PropTypes.string.isRequired,
     조정종류: PropTypes.string.isRequired,
     차수: PropTypes.number.isRequired,
     통합인사반영여부: PropTypes.bool.isRequired,
