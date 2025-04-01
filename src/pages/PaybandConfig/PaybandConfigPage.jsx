@@ -191,41 +191,42 @@ export default function PaybandConfigPage() {
       <div className={`${styles.page}`}>
         <section>
           <h2>Payband 상한, 하한 설정</h2>
+
+          <p>직급별 연봉 조정 결과의 상한, 하한을 설정합니다.</p>
+          <div className={`${styles.whole_table}`}>
+            <div className={`${styles.table_side}`}>단위: %</div>
+            <table className={`${styles.table}`}>
+              <thead>
+                <tr>
+                  <td>직급</td>
+                  <td>하한</td>
+                  <td>상한</td>
+                  <td>
+                    <div />
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                {state.map((item, index) => (
+                  <PaybandTableRow
+                    key={item.grade}
+                    item={item}
+                    onChange={(min, max) => {
+                      dispatch({
+                        type: 'changeWithIndex',
+                        lowerBound: min,
+                        upperBound: max,
+                        idx: index,
+                        originItem: receivedPayband[index],
+                        payband: item,
+                      });
+                    }}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
-        <p>직급별 연봉 조정 결과의 상한, 하한을 설정합니다.</p>
-        <div className={`${styles.whole_table}`}>
-          <div className={`${styles.table_side}`}>단위: %</div>
-          <table className={`${styles.table}`}>
-            <thead>
-              <tr>
-                <td>직급</td>
-                <td>하한</td>
-                <td>상한</td>
-                <td>
-                  <div />
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              {state.map((item, index) => (
-                <PaybandTableRow
-                  key={item.grade}
-                  item={item}
-                  onChange={(min, max) => {
-                    dispatch({
-                      type: 'changeWithIndex',
-                      lowerBound: min,
-                      upperBound: max,
-                      idx: index,
-                      originItem: receivedPayband[index],
-                      payband: item,
-                    });
-                  }}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
       </div>
     </AdjustEditLayout>
   );
