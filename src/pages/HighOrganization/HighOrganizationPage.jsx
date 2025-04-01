@@ -94,7 +94,7 @@ const initialHighOrganizationData = [
 const filterOptions = {
   직번: { optionType: 'text', initialValue: '' },
   직원성명: {
-    onType: 'dropdown',
+    optionType: 'dropdown',
     options: ['홍', '홍길', '홍길동', '홍길동김'],
     currentSelectedValue: '',
   },
@@ -103,7 +103,7 @@ const filterOptions = {
     options: ['에너지조선마케팅실 산기플랜트팀', '철강IT그룹 ERP개발섹션'],
     initialValue: '',
   },
-  평가등급: {
+  등급코드: {
     optionType: 'dropdown',
     options: ['S', 'A', 'B'],
     initialValue: '',
