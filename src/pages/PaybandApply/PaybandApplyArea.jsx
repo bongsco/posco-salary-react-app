@@ -4,6 +4,7 @@ import styles from './payband-apply-page.module.css';
 import PaybandApplyTable from './PaybandApplyTable';
 import Button from '#components/Button';
 import TableOption from '#components/TableOption';
+import sortObject from '#utils/sortObject';
 
 function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
   const [filters, setFilters] = useState([]);
@@ -45,8 +46,12 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
   };
 
   const handleTableOptionSubmit = ({ type, payload }) => {
-    if (type === 'filter') setFilters(payload);
-    if (type === 'sort') setSortList(payload);
+    if (type === 'filter') {
+      setFilters(payload);
+    }
+    if (type === 'sort') {
+      setSortList(payload);
+    }
   };
 
   const getSortedUniqueValues = (array, key) =>
@@ -103,23 +108,8 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
       });
     });
 
-    const lastSort = sortList[sortList.length - 1];
-    if (lastSort) {
-      const { key } = lastSort;
-      const isAsc = lastSort.value === '오름차순';
-
-      filtered = [...filtered].sort((a, b) => {
-        const aVal = a[key];
-        const bVal = b[key];
-
-        if (typeof aVal === 'number' && typeof bVal === 'number') {
-          return isAsc ? aVal - bVal : bVal - aVal;
-        }
-
-        return isAsc
-          ? String(aVal).localeCompare(String(bVal))
-          : String(bVal).localeCompare(String(aVal));
-      });
+    if (sortList.length > 0) {
+      filtered = sortObject([...filtered], sortList);
     }
 
     const start = (currentPage - 1) * rowsPerPage;
@@ -143,13 +133,12 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
               boundType === 'upper' ? '상한금액' : '하한금액',
             ],
             values: ['오름차순', '내림차순'],
-            filters,
-            sortList,
           }}
           onSubmit={handleTableOptionSubmit}
           filters={filters.filter(({ value }) => value && value.length > 0)}
-          sortList={sortList.filter(({ value }) => value)}
+          sortList={sortList}
         />
+
         <Button variant="secondary" size="large" label="엑셀다운로드" />
       </div>
       <PaybandApplyTable

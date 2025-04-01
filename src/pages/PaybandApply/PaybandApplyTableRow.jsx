@@ -25,7 +25,7 @@ function PaybandApplyTableRow({
         </div>
       </td>
       <td className={styles['no-wrap']}>{item.직번}</td>
-      <td className={styles['no-wrap']}>{item.이름}</td>
+      <td className={styles['no-wrap']}>{item.성명}</td>
       <td className={styles['department-cell']}>{item.부서}</td>
       <td className={styles['no-wrap']}>{item.직급}</td>
       <td className={styles['no-wrap']}>{item.평가등급}</td>
@@ -65,7 +65,7 @@ PaybandApplyTableRow.propTypes = {
   type: PropTypes.oneOf(['upper', 'lower']).isRequired,
   item: PropTypes.shape({
     직번: PropTypes.string.isRequired,
-    이름: PropTypes.string.isRequired,
+    성명: PropTypes.string.isRequired,
     부서: PropTypes.string.isRequired,
     직급: PropTypes.string.isRequired,
     평가등급: PropTypes.string.isRequired,

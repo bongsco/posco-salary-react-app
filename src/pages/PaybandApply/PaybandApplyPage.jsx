@@ -7,7 +7,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd200111',
-    이름: '홍',
+    성명: '홍',
     부서: '에너지조선마케팅실 해양플랜트팀',
     직급: 'P6',
     평가등급: 'B+',
@@ -19,7 +19,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd060222',
-    이름: '홍길',
+    성명: '홍길',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P6',
     평가등급: 'A',
@@ -31,7 +31,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd070333',
-    이름: '홍길동',
+    성명: '홍길동',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P6',
     평가등급: 'A',
@@ -43,7 +43,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd000444',
-    이름: '홍길동김',
+    성명: '홍길동김',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P6',
     평가등급: 'S',
@@ -55,7 +55,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd200555',
-    이름: '홍길동김박',
+    성명: '홍길동김박',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P3',
     평가등급: 'A',
@@ -67,7 +67,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd030666',
-    이름: '홍길동김박이',
+    성명: '홍길동김박이',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P6',
     평가등급: 'A',
@@ -79,7 +79,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd000777',
-    이름: '한길동김',
+    성명: '한길동김',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P2',
     평가등급: 'A',
@@ -91,7 +91,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd300888',
-    이름: '김치박',
+    성명: '김치박',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P2',
     평가등급: 'S',
@@ -103,7 +103,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd100999',
-    이름: '홍동박',
+    성명: '홍동박',
     부서: '에너지조선마케팅실 해양플랜트팀',
     직급: 'P1',
     평가등급: 'A',
@@ -115,7 +115,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd201000',
-    이름: '홍동박',
+    성명: '홍동박',
     부서: '에너지조선마케팅실 해양플랜트팀',
     직급: 'P6',
     평가등급: 'A',
@@ -127,7 +127,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd001001',
-    이름: '홍동박',
+    성명: '홍동박',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P1',
     평가등급: 'C',
@@ -139,7 +139,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd001002',
-    이름: '홍동박',
+    성명: '홍동박',
     부서: '에너지조선마케팅실 산기플랜트팀',
     직급: 'P3',
     평가등급: 'B',
@@ -151,7 +151,7 @@ const initialPaybandApplyData = [
   {
     isChecked: false,
     직번: 'Pd501003',
-    이름: '홍동박',
+    성명: '홍동박',
     부서: '에너지조선마케팅실 해양플랜트팀',
     직급: 'P4',
     평가등급: 'D',
