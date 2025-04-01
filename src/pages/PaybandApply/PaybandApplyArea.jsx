@@ -147,6 +147,8 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
             sortList,
           }}
           onSubmit={handleTableOptionSubmit}
+          filters={filters.filter(({ value }) => value && value.length > 0)}
+          sortList={sortList.filter(({ value }) => value)}
         />
         <Button variant="secondary" size="large" label="엑셀다운로드" />
       </div>
