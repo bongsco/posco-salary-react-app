@@ -4,10 +4,8 @@ import styles from './compensation-page.module.css';
 import CompensationTable from './CompensationTable';
 import Input from '#components/Input';
 
-/* 선택된 직급 목록 */
 const selectedGrade = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
 
-/* 기본 등급 데이터 (0으로 초기화) */
 const defaultRank = {
   S: { incrementRate: 0, provideRate: 0 },
   A: { incrementRate: 0, provideRate: 0 },
@@ -17,7 +15,6 @@ const defaultRank = {
   D: { incrementRate: 0, provideRate: 0 },
 };
 
-/* 초기 데이터 */
 const initialRankRate = {
   P3: {
     S: { incrementRate: 0.8, provideRate: 400 },
@@ -99,7 +96,6 @@ function reducer(state, action) {
   }
 }
 
-/* 누락된 직급 및 평가등급을 0으로 채워주는 함수 */
 const getDisplayData = (rawData) => {
   return selectedGrade.reduce((acc, grade) => {
     const base = JSON.parse(JSON.stringify(defaultRank));
@@ -120,8 +116,37 @@ export default function CompensationPage() {
     eval_perform_provide_rate: false,
   });
 
-  const [hasTypeError1, setHasTypeError1] = useState(false);
-  const [hasTypeError2, setHasTypeError2] = useState(false);
+  const [hasIncrementRateError, setHasIncrementRateError] = useState(false);
+  const [hasProvideRateError, setHasProvideRateError] = useState(false);
+
+  const validateTable = (data) => {
+    let hasIncrementError = false;
+    let hasProvideError = false;
+
+    Object.values(data).forEach((ranks) => {
+      Object.values(ranks).forEach((values) => {
+        const { incrementRate, provideRate } = values;
+
+        const incInvalid =
+          incrementRate === undefined ||
+          incrementRate === '' ||
+          typeof incrementRate === 'string' ||
+          Number.isNaN(Number(incrementRate));
+
+        const provInvalid =
+          provideRate === undefined ||
+          provideRate === '' ||
+          typeof provideRate === 'string' ||
+          Number.isNaN(Number(provideRate));
+
+        if (incInvalid) hasIncrementError = true;
+        if (provInvalid) hasProvideError = true;
+      });
+    });
+
+    setHasIncrementRateError(hasIncrementError);
+    setHasProvideRateError(hasProvideError);
+  };
 
   useEffect(() => {
     if (state.isCommitted) {
@@ -129,44 +154,26 @@ export default function CompensationPage() {
         eval_annual_salary_increment: false,
         eval_perform_provide_rate: false,
       });
-      setHasTypeError1(false);
-      setHasTypeError2(false);
+      setHasIncrementRateError(false);
+      setHasProvideRateError(false);
     }
   }, [state.isCommitted]);
 
-  const validateTable = (nextData, key) => {
-    const hasInvalid = Object.values(nextData).some((ranks) =>
-      Object.values(ranks).some((values) => {
-        const value = values[key];
-        return typeof value === 'string' || value === '' || Number.isNaN(value);
-      }),
-    );
-    if (key === 'incrementRate') setHasTypeError1(hasInvalid);
-    else if (key === 'provideRate') setHasTypeError2(hasInvalid);
-  };
+  useEffect(() => {
+    validateTable(state.rankRate);
+  }, [state.rankRate]);
 
   const handleInputChange = (grade, rank, key, e) => {
     const input = e.target.value.trim();
     const isValidNumber = /^-?\d+(\.\d+)?$/.test(input);
     const nextValue = isValidNumber ? Number(input) : input;
 
-    const nextRankRate = {
-      ...state.rankRate,
-      [grade]: {
-        ...state.rankRate[grade],
-        [rank]: {
-          ...state.rankRate[grade]?.[rank],
-          [key]: nextValue,
-        },
-      },
-    };
-
     dispatch({
       type: 'ChangeRankRate',
       payload: { grade, rank, key, value: nextValue },
     });
 
-    validateTable(nextRankRate, key);
+    // validateTable는 useEffect에서 처리
   };
 
   const handleAdjustmentChange = (key, e) => {
@@ -184,8 +191,8 @@ export default function CompensationPage() {
 
   const handleCommit = () => {
     const hasAnyError =
-      hasTypeError1 ||
-      hasTypeError2 ||
+      hasIncrementRateError ||
+      hasProvideRateError ||
       errorState.eval_annual_salary_increment ||
       errorState.eval_perform_provide_rate;
 
@@ -257,7 +264,7 @@ export default function CompensationPage() {
             originalData={originalDisplayData}
             onChange={handleInputChange}
             valueKey="incrementRate"
-            hasTypeError={hasTypeError1}
+            hasError={hasIncrementRateError}
           />
         </section>
 
@@ -293,7 +300,7 @@ export default function CompensationPage() {
             originalData={originalDisplayData}
             onChange={handleInputChange}
             valueKey="provideRate"
-            hasTypeError={hasTypeError2}
+            hasError={hasProvideRateError}
           />
         </section>
       </div>

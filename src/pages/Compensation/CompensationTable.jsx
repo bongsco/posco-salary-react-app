@@ -7,7 +7,7 @@ export default function CompensationTable({
   originalData,
   onChange,
   valueKey,
-  hasTypeError,
+  hasError,
 }) {
   return (
     <>
@@ -41,7 +41,7 @@ export default function CompensationTable({
         </tbody>
       </table>
 
-      {hasTypeError && (
+      {hasError && (
         <div className={styles.errorMessage}>
           표에서 빈 값이나 잘못된 값을 수정해 주세요.
         </div>
@@ -63,5 +63,5 @@ CompensationTable.propTypes = {
   originalData: PropTypes.objectOf(PropTypes.objectOf(RateShape)).isRequired,
   onChange: PropTypes.func.isRequired,
   valueKey: PropTypes.oneOf(['incrementRate', 'provideRate']).isRequired,
-  hasTypeError: PropTypes.bool.isRequired,
+  hasError: PropTypes.bool.isRequired,
 };
