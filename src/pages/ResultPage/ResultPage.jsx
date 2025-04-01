@@ -4,7 +4,6 @@ import styles from './result-page.module.css';
 import PageNation from '#components/Pagination';
 import ResultTableRow from './ResultTableRow';
 import FilterSort from './FilterSort';
-import '../../styles/table.css';
 import Card from './Card';
 import sortObject from '#utils/sortObject';
 
