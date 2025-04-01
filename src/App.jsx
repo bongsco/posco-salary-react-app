@@ -10,6 +10,8 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
+import MainPage from '#pages/Main';
+import PaybandConfigPage from '#pages/PaybandConfig';
 import PaybandApplyPage from '#pages/PaybandApply';
 import RootLayout from '#layouts/RootLayout';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
@@ -35,12 +37,7 @@ const router = createBrowserRouter(
           <AppLayout title="계산식 관리" breadCrumbs={['계산식 관리']} />
         }
       />
-      <Route
-        path="adjust/list"
-        element={
-          <AppLayout title="연봉조정 조회" breadCrumbs={['조정', '조회']} />
-        }
-      />
+      <Route path="adjust/list" element={<MainPage />} />
       <Route path="adjust/edit">
         <Route
           index
@@ -63,16 +60,7 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="payband"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="payment-rate"
-                    nextStepPath="../preparation/target"
-                    stepPaths={['기준 설정', 'Payband 설정']}
-                  />
-                }
-              />
+              <Route path="payband" element={<PaybandConfigPage />} />
             </Route>
             <Route path="preparation">
               <Route path="target" element={<OrganizationSubject />} />
