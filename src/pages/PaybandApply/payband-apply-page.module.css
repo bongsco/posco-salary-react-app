@@ -79,3 +79,14 @@
   justify-content: flex-end;
   align-items: center;
 }
+
+.no-wrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.department-cell {
+  min-width: 100px;
+  white-space: normal;
+}

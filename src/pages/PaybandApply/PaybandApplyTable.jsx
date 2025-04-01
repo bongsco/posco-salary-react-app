@@ -17,37 +17,27 @@ function PaybandApplyTable({
   handlePaybandApplyGroupSwitch,
   handleCheckBox,
   originalData,
+  handleSelectAll,
+  handleClearSelection,
+  dispatch,
 }) {
-  const [isHeaderChecked, setIsHeaderChecked] = useState(false); // Header 체크박스 상태
+  const [isHeaderChecked, setIsHeaderChecked] = useState(false);
 
   useEffect(() => {
     const allChecked = data.every((row) => checkedItems.includes(row.emp_num));
     setIsHeaderChecked(allChecked);
   }, [data, checkedItems]);
 
+  // ✅ 헤더 체크박스 클릭 시 — boundType에 해당하는 전체 행 선택/해제
   const handleHeaderCheckboxChange = () => {
-    setIsHeaderChecked((prev) => {
-      const newHeaderChecked = !prev;
-      const allEmpNums = data.map((row) => row.emp_num);
-      /* 현재 Table에 표시되는 애들에 대해서 CheckBox 표시 바꾸기 */
-      allEmpNums.forEach((empNum) => {
-        handleCheckBox(empNum);
-      });
+    const shouldCheck = !isHeaderChecked;
 
-      return newHeaderChecked;
+    dispatch({
+      type: 'setAllChecked',
+      payload: { value: shouldCheck, boundType: type },
     });
-  };
 
-  const handleSelectAll = () => {
-    data.forEach((item) => {
-      if (!item.isChecked) handleCheckBox(item.emp_num);
-    });
-  };
-
-  const handleClearSelection = () => {
-    data.forEach((item) => {
-      if (item.isChecked) handleCheckBox(item.emp_num);
-    });
+    setIsHeaderChecked(shouldCheck);
   };
 
   return (
@@ -56,22 +46,23 @@ function PaybandApplyTable({
         <thead>
           <tr>
             <td>
-              <div className={`${styles['check-box']}`}>
+              <div className={styles['check-box']}>
                 <CheckBox
                   isChecked={isHeaderChecked}
-                  onClick={() => handleHeaderCheckboxChange(isHeaderChecked)}
+                  onClick={handleHeaderCheckboxChange}
                 />
               </div>
             </td>
-            <td>직번</td>
-            <td>성명</td>
-            <td>부서</td>
-            <td>직급</td>
-            <td>평가등급</td>
-            <td>기준연봉 월할액</td>
-            <td>{type === 'upper' ? '상한금액' : '하한금액'}</td>
-            <td>Payband 적용</td>
-            <td>비고</td>
+            <td className={styles['no-wrap']}>직번</td>
+            <td className={styles['no-wrap']}>성명</td>
+            <td className={styles['no-wrap']}>부서</td>
+            <td className={styles['no-wrap']}>직급</td>
+            <td className={styles['no-wrap']}>평가등급</td>
+            <td className={styles['no-wrap']}>기준연봉 월할액</td>
+            <td className={styles['no-wrap']}>
+              {type === 'upper' ? '상한금액' : '하한금액'}
+            </td>
+            <td className={styles['no-wrap']}>Payband 적용</td>
           </tr>
         </thead>
         <tbody>
@@ -82,7 +73,7 @@ function PaybandApplyTable({
 
             return (
               <PaybandApplyTableRow
-                key={row.id}
+                key={row.emp_num}
                 item={row}
                 originalItem={originalItem}
                 type={type}
@@ -117,8 +108,8 @@ function PaybandApplyTable({
 
 PaybandApplyTable.propTypes = {
   type: PropTypes.oneOf(['upper', 'lower']).isRequired,
-  data: PropTypes.arrayOf().isRequired,
-  checkedItems: PropTypes.arrayOf().isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentPage: PropTypes.number.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
@@ -126,6 +117,9 @@ PaybandApplyTable.propTypes = {
   handlePaybandApplyGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
   originalData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleSelectAll: PropTypes.func.isRequired,
+  handleClearSelection: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default PaybandApplyTable;

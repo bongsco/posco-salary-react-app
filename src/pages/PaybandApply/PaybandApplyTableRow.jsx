@@ -16,27 +16,29 @@ function PaybandApplyTableRow({
     item.in_payband_use_group !== originalItem.in_payband_use_group;
 
   return (
-    <tr key={item.emp_num} className={`${styles['table-row']}`}>
+    <tr key={item.emp_num} className={styles['table-row']}>
       <td>
-        <div className={`${styles['check-box']}`}>
+        <div className={styles['check-box']}>
           <CheckBox
             isChecked={item.isChecked}
             onClick={() => handleCheckBox(item.emp_num)}
           />
         </div>
       </td>
-      <td>{item.emp_num}</td>
-      <td>{item.name}</td>
-      <td>{item.dep_name}</td>
-      <td>{item.grade_name}</td>
-      <td>{item.rank_name}</td>
-      <td>{item.std_salary.toLocaleString()}</td>
-      <td>
+      <td className={styles['no-wrap']}>{item.emp_num}</td>
+      <td className={styles['no-wrap']}>{item.name}</td>
+      <td className={styles['department-cell']}>{item.dep_name}</td>
+      <td className={styles['no-wrap']}>{item.grade_name}</td>
+      <td className={styles['no-wrap']}>{item.rank_name}</td>
+      <td className={styles['no-wrap']}>{item.std_salary.toLocaleString()}</td>
+      <td className={styles['no-wrap']}>
         {type === 'upper'
           ? item.upper_limit_price.toLocaleString()
           : item.lower_limit_price.toLocaleString()}
       </td>
-      <td className={isModified ? styles.changedCell : ''}>
+      <td
+        className={`${styles['no-wrap']} ${isModified ? styles.changedCell : ''}`}
+      >
         <div className={styles['switch-area']}>
           <p
             className={`${styles['switch-text']} ${
@@ -59,7 +61,6 @@ function PaybandApplyTableRow({
           />
         </div>
       </td>
-      <td>{item.remarks}</td>
     </tr>
   );
 }
