@@ -25,7 +25,7 @@
 }
 
 :global(h2.react-datepicker__current-month) {
-  font-size: var(--font-body-1r-pc);
+  font: var(--font-body-1r-pc);
   margin: 0;
   font-weight: normal;
   padding-bottom: 8px;
