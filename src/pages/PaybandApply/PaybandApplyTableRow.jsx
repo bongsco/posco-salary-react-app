@@ -12,29 +12,28 @@ function PaybandApplyTableRow({
   originalItem,
 }) {
   const isModified =
-    originalItem &&
-    item.in_payband_use_group !== originalItem.in_payband_use_group;
+    originalItem && item.Payband적용 !== originalItem.Payband적용;
 
   return (
-    <tr key={item.emp_num} className={styles['table-row']}>
+    <tr key={item.직번} className={styles['table-row']}>
       <td>
         <div className={styles['check-box']}>
           <CheckBox
             isChecked={item.isChecked}
-            onClick={() => handleCheckBox(item.emp_num)}
+            onClick={() => handleCheckBox(item.직번)}
           />
         </div>
       </td>
-      <td className={styles['no-wrap']}>{item.emp_num}</td>
-      <td className={styles['no-wrap']}>{item.name}</td>
-      <td className={styles['department-cell']}>{item.dep_name}</td>
-      <td className={styles['no-wrap']}>{item.grade_name}</td>
-      <td className={styles['no-wrap']}>{item.rank_name}</td>
-      <td className={styles['no-wrap']}>{item.std_salary.toLocaleString()}</td>
+      <td className={styles['no-wrap']}>{item.직번}</td>
+      <td className={styles['no-wrap']}>{item.이름}</td>
+      <td className={styles['department-cell']}>{item.부서}</td>
+      <td className={styles['no-wrap']}>{item.직급}</td>
+      <td className={styles['no-wrap']}>{item.평가등급}</td>
+      <td className={styles['no-wrap']}>{item.기준연봉.toLocaleString()}</td>
       <td className={styles['no-wrap']}>
         {type === 'upper'
-          ? item.upper_limit_price.toLocaleString()
-          : item.lower_limit_price.toLocaleString()}
+          ? item.상한금액.toLocaleString()
+          : item.하한금액.toLocaleString()}
       </td>
       <td
         className={`${styles['no-wrap']} ${isModified ? styles.changedCell : ''}`}
@@ -42,21 +41,18 @@ function PaybandApplyTableRow({
         <div className={styles['switch-area']}>
           <p
             className={`${styles['switch-text']} ${
-              item.in_payband_use_group ? styles.target : styles['non-target']
+              item.Payband적용 ? styles.target : styles['non-target']
             }`}
           >
-            {item.in_payband_use_group ? '적용' : '미적용'}
+            {item.Payband적용 ? '적용' : '미적용'}
           </p>
           <Switch
-            isOn={item.in_payband_use_group}
+            isOn={item.Payband적용}
             onClick={() => {
-              const targetEmpNums = checkedItems.includes(item.emp_num)
+              const targetEmpNums = checkedItems.includes(item.직번)
                 ? checkedItems
-                : [item.emp_num];
-              handlePaybandApplyGroupSwitch(
-                targetEmpNums,
-                !item.in_payband_use_group,
-              );
+                : [item.직번];
+              handlePaybandApplyGroupSwitch(targetEmpNums, !item.Payband적용);
             }}
           />
         </div>
@@ -67,13 +63,24 @@ function PaybandApplyTableRow({
 
 PaybandApplyTableRow.propTypes = {
   type: PropTypes.oneOf(['upper', 'lower']).isRequired,
-  item: PropTypes.arrayOf().isRequired,
+  item: PropTypes.shape({
+    직번: PropTypes.string.isRequired,
+    이름: PropTypes.string.isRequired,
+    부서: PropTypes.string.isRequired,
+    직급: PropTypes.string.isRequired,
+    평가등급: PropTypes.string.isRequired,
+    기준연봉: PropTypes.number.isRequired,
+    상한금액: PropTypes.number.isRequired,
+    하한금액: PropTypes.number.isRequired,
+    Payband적용: PropTypes.bool.isRequired,
+    isChecked: PropTypes.bool.isRequired,
+  }).isRequired,
   checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   handlePaybandApplyGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
   originalItem: PropTypes.shape({
-    emp_num: PropTypes.string,
-    in_payband_use_group: PropTypes.bool,
+    직번: PropTypes.string,
+    Payband적용: PropTypes.bool,
   }).isRequired,
 };
 

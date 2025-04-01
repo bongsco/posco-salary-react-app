@@ -24,11 +24,10 @@ function PaybandApplyTable({
   const [isHeaderChecked, setIsHeaderChecked] = useState(false);
 
   useEffect(() => {
-    const allChecked = data.every((row) => checkedItems.includes(row.emp_num));
+    const allChecked = data.every((row) => checkedItems.includes(row.직번));
     setIsHeaderChecked(allChecked);
   }, [data, checkedItems]);
 
-  // ✅ 헤더 체크박스 클릭 시 — boundType에 해당하는 전체 행 선택/해제
   const handleHeaderCheckboxChange = () => {
     const shouldCheck = !isHeaderChecked;
 
@@ -67,13 +66,11 @@ function PaybandApplyTable({
         </thead>
         <tbody>
           {data.map((row) => {
-            const originalItem = originalData.find(
-              (o) => o.emp_num === row.emp_num,
-            );
+            const originalItem = originalData.find((o) => o.직번 === row.직번);
 
             return (
               <PaybandApplyTableRow
-                key={row.emp_num}
+                key={row.직번}
                 item={row}
                 originalItem={originalItem}
                 type={type}

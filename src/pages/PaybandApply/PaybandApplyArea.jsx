@@ -5,22 +5,6 @@ import PaybandApplyTable from './PaybandApplyTable';
 import Button from '#components/Button';
 import TableOption from '#components/TableOption';
 
-// 🔁 한글 → 실제 데이터 필드명 매핑
-const convertKeyToField = (key) => {
-  const map = {
-    직번: 'emp_num',
-    성명: 'name',
-    부서: 'dep_name',
-    직급: 'grade_name',
-    평가등급: 'rank_name',
-    기준연봉: 'std_salary',
-    상한금액: 'upper_limit_price',
-    하한금액: 'lower_limit_price',
-    Payband적용: 'in_payband_use_group',
-  };
-  return map[key] || key;
-};
-
 function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
   const [filters, setFilters] = useState([]);
   const [sortList, setSortList] = useState([]);
@@ -44,7 +28,7 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
 
   const checkedItems = data
     .filter((item) => item.isChecked)
-    .map((item) => item.emp_num);
+    .map((item) => item.직번);
 
   const handleSelectAll = () => {
     dispatch({
@@ -65,15 +49,12 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
     if (type === 'sort') setSortList(payload);
   };
 
-  // 🔁 옵션 생성 함수
   const getSortedUniqueValues = (array, key) =>
     [...new Set(array.map((item) => item[key]))].sort();
 
   const getPaybandOptions = (array) =>
     [
-      ...new Set(
-        array.map((item) => (item.in_payband_use_group ? '적용' : '미적용')),
-      ),
+      ...new Set(array.map((item) => (item.Payband적용 ? '적용' : '미적용'))),
     ].sort();
 
   const filterOption = useMemo(
@@ -83,17 +64,17 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
       부서: {
         optionType: 'dropdown',
         initialValue: '',
-        options: getSortedUniqueValues(originalData, 'dep_name'),
+        options: getSortedUniqueValues(originalData, '부서'),
       },
       직급: {
         optionType: 'dropdown',
         initialValue: '',
-        options: getSortedUniqueValues(originalData, 'grade_name'),
+        options: getSortedUniqueValues(originalData, '직급'),
       },
       평가등급: {
         optionType: 'dropdown',
         initialValue: '',
-        options: getSortedUniqueValues(originalData, 'rank_name'),
+        options: getSortedUniqueValues(originalData, '평가등급'),
       },
       Payband적용: {
         optionType: 'dropdown',
@@ -107,32 +88,29 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
   useEffect(() => {
     let filtered = [...data];
 
-    // ✅ 필터 적용
     filters.forEach(({ key, value }) => {
       if (!value || value.length === 0) return;
 
       filtered = filtered.filter((item) => {
-        const field = convertKeyToField(key);
         let itemValue;
-        if (field === 'in_payband_use_group') {
-          itemValue = item[field] ? '적용' : '미적용';
+        if (key === 'Payband적용') {
+          itemValue = item[key] ? '적용' : '미적용';
         } else {
-          itemValue = item[field];
+          itemValue = item[key];
         }
 
         return value.includes(itemValue);
       });
     });
 
-    // ✅ 정렬 적용 (마지막 정렬 기준만 사용)
     const lastSort = sortList[sortList.length - 1];
     if (lastSort) {
-      const field = convertKeyToField(lastSort.key);
+      const { key } = lastSort;
       const isAsc = lastSort.value === '오름차순';
 
       filtered = [...filtered].sort((a, b) => {
-        const aVal = a[field];
-        const bVal = b[field];
+        const aVal = a[key];
+        const bVal = b[key];
 
         if (typeof aVal === 'number' && typeof bVal === 'number') {
           return isAsc ? aVal - bVal : bVal - aVal;
@@ -144,7 +122,6 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
       });
     }
 
-    // ✅ 페이지 적용
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     setTableData(filtered.slice(start, end));

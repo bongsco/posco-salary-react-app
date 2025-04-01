@@ -6,163 +6,162 @@ import PaybandApplyArea from './PaybandApplyArea';
 const initialPaybandApplyData = [
   {
     isChecked: false,
-    emp_num: 'Pd200111',
-    name: '홍',
-    dep_name: '에너지조선마케팅실 해양플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'B+',
-    std_salary: 75000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd200111',
+    이름: '홍',
+    부서: '에너지조선마케팅실 해양플랜트팀',
+    직급: 'P6',
+    평가등급: 'B+',
+    기준연봉: 75000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd060222',
-    name: '홍길',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'A',
-    std_salary: 55000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd060222',
+    이름: '홍길',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P6',
+    평가등급: 'A',
+    기준연봉: 55000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd070333',
-    name: '홍길동',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'A',
-    std_salary: 54000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd070333',
+    이름: '홍길동',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P6',
+    평가등급: 'A',
+    기준연봉: 54000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000444',
-    name: '홍길동김',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'S',
-    std_salary: 55300000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd000444',
+    이름: '홍길동김',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P6',
+    평가등급: 'S',
+    기준연봉: 55300000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd200555',
-    name: '홍길동김박',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P3',
-    rank_name: 'A',
-    std_salary: 58000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd200555',
+    이름: '홍길동김박',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P3',
+    평가등급: 'A',
+    기준연봉: 58000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd030666',
-    name: '홍길동김박이',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'A',
-    std_salary: 13000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd030666',
+    이름: '홍길동김박이',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P6',
+    평가등급: 'A',
+    기준연봉: 13000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd000777',
-    name: '한길동김',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P2',
-    rank_name: 'A',
-    std_salary: 10200000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd000777',
+    이름: '한길동김',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P2',
+    평가등급: 'A',
+    기준연봉: 10200000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd300888',
-    name: '김치박',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P2',
-    rank_name: 'S',
-    std_salary: 15300000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: false,
+    직번: 'Pd300888',
+    이름: '김치박',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P2',
+    평가등급: 'S',
+    기준연봉: 15300000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: false,
   },
   {
     isChecked: false,
-    emp_num: 'Pd100999',
-    name: '홍동박',
-    dep_name: '에너지조선마케팅실 해양플랜트팀',
-    grade_name: 'P1',
-    rank_name: 'A',
-    std_salary: 39000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: true,
+    직번: 'Pd100999',
+    이름: '홍동박',
+    부서: '에너지조선마케팅실 해양플랜트팀',
+    직급: 'P1',
+    평가등급: 'A',
+    기준연봉: 39000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: true,
   },
   {
     isChecked: false,
-    emp_num: 'Pd201000',
-    name: '홍동박',
-    dep_name: '에너지조선마케팅실 해양플랜트팀',
-    grade_name: 'P6',
-    rank_name: 'A',
-    std_salary: 18000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: true,
+    직번: 'Pd201000',
+    이름: '홍동박',
+    부서: '에너지조선마케팅실 해양플랜트팀',
+    직급: 'P6',
+    평가등급: 'A',
+    기준연봉: 18000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: true,
   },
   {
     isChecked: false,
-    emp_num: 'Pd001001',
-    name: '홍동박',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P1',
-    rank_name: 'C',
-    std_salary: 11000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: true,
+    직번: 'Pd001001',
+    이름: '홍동박',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P1',
+    평가등급: 'C',
+    기준연봉: 11000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: true,
   },
   {
     isChecked: false,
-    emp_num: 'Pd001002',
-    name: '홍동박',
-    dep_name: '에너지조선마케팅실 산기플랜트팀',
-    grade_name: 'P3',
-    rank_name: 'B',
-    std_salary: 12000000,
-    upper_limit_price: 70000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: true,
+    직번: 'Pd001002',
+    이름: '홍동박',
+    부서: '에너지조선마케팅실 산기플랜트팀',
+    직급: 'P3',
+    평가등급: 'B',
+    기준연봉: 12000000,
+    상한금액: 70000000,
+    하한금액: 20000000,
+    Payband적용: true,
   },
   {
     isChecked: false,
-    emp_num: 'Pd501003',
-    name: '홍동박',
-    dep_name: '에너지조선마케팅실 해양플랜트팀',
-    grade_name: 'P4',
-    rank_name: 'D',
-    std_salary: 64000000,
-    upper_limit_price: 50000000,
-    lower_limit_price: 20000000,
-    in_payband_use_group: true,
+    직번: 'Pd501003',
+    이름: '홍동박',
+    부서: '에너지조선마케팅실 해양플랜트팀',
+    직급: 'P4',
+    평가등급: 'D',
+    기준연봉: 64000000,
+    상한금액: 50000000,
+    하한금액: 20000000,
+    Payband적용: true,
   },
 ];
 
-// 🔹 초기 상태
 const initialState = {
   data: initialPaybandApplyData,
   backup: initialPaybandApplyData,
@@ -173,12 +172,11 @@ function isSameData(data1, data2) {
   return JSON.stringify(data1) === JSON.stringify(data2);
 }
 
-// 🔹 reducer 정의
 function reducer(state, action) {
   switch (action.type) {
     case 'toggleCheck': {
       const updated = state.data.map((item) =>
-        item.emp_num === action.payload.empNum
+        item.직번 === action.payload.empNum
           ? { ...item, isChecked: !item.isChecked }
           : item,
       );
@@ -189,21 +187,18 @@ function reducer(state, action) {
     case 'toggleGroup': {
       const { empNums, value } = action.payload;
       const updated = state.data.map((item) =>
-        empNums.includes(item.emp_num)
-          ? { ...item, in_payband_use_group: value }
-          : item,
+        empNums.includes(item.직번) ? { ...item, Payband적용: value } : item,
       );
       const isStillCommitted = isSameData(updated, state.backup);
       return { ...state, data: updated, isCommitted: isStillCommitted };
     }
 
-    // 🔹 전체 선택 / 선택 해제 처리
     case 'setAllChecked': {
       const { value, boundType } = action.payload;
 
       const updated = state.data.map((item) => {
-        const isUpper = item.std_salary > item.upper_limit_price;
-        const isLower = item.std_salary < item.lower_limit_price;
+        const isUpper = item.기준연봉 > item.상한금액;
+        const isLower = item.기준연봉 < item.하한금액;
 
         const isTarget =
           (boundType === 'upper' && isUpper) ||
@@ -242,16 +237,15 @@ function reducer(state, action) {
   }
 }
 
-// 🔹 페이지 컴포넌트
 function PaybandApplyPage() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const filteredUpperData = state.data.filter(
-    (item) => item.std_salary > item.upper_limit_price,
+    (item) => item.기준연봉 > item.상한금액,
   );
 
   const filteredLowerData = state.data.filter(
-    (item) => item.std_salary < item.lower_limit_price,
+    (item) => item.기준연봉 < item.하한금액,
   );
 
   return (
