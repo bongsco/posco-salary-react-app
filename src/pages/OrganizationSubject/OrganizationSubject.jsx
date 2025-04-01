@@ -6,6 +6,7 @@ import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
 import TableOption from '#components/TableOption';
 import TableSelectIndicator from '#components/TableSelectIndicator';
+import sortObject from '#utils/sortObject';
 
 const filterOption = {
   평가등급: {
@@ -34,130 +35,130 @@ const sortOption = {
 
 const initialEmployees = [
   {
-    empId: 'pd0a001',
-    name: '홍길동',
-    hiredDate: '24.03.04',
-    grade: 'A',
+    직번: 'pd0a001',
+    성명: '홍길동',
+    채용일자: '24.03.04',
+    평가등급: 'A',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'pd0a002',
-    name: '홍길동',
-    hiredDate: '24.03.05',
-    grade: 'B',
+    직번: 'pd0a002',
+    성명: '홍길동',
+    채용일자: '24.03.05',
+    평가등급: 'B',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'pd0a003',
-    name: '홍길동',
-    hiredDate: '24.03.06',
-    grade: 'C',
+    직번: 'pd0a003',
+    성명: '홍길동',
+    채용일자: '24.03.06',
+    평가등급: 'C',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'pd0a004',
-    name: '홍길동',
-    hiredDate: '24.03.09',
-    grade: 'D',
+    직번: 'pd0a004',
+    성명: '홍길동',
+    채용일자: '24.03.09',
+    평가등급: 'D',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'pd0a005',
-    name: '홍길동',
-    hiredDate: '24.03.08',
-    grade: 'D',
+    직번: 'pd0a005',
+    성명: '홍길동',
+    채용일자: '24.03.08',
+    평가등급: 'D',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'pd0a006',
-    name: '홍길동',
-    hiredDate: '24.03.08',
-    grade: 'D',
+    직번: 'pd0a006',
+    성명: '홍길동',
+    채용일자: '24.03.08',
+    평가등급: 'D',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'pd0a007',
-    name: '홍길동',
-    hiredDate: '24.03.10',
-    grade: 'D',
+    직번: 'pd0a007',
+    성명: '홍길동',
+    채용일자: '24.03.10',
+    평가등급: 'D',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'pd0a008',
-    name: '홍길동',
-    hiredDate: '24.03.10',
-    grade: 'D',
+    직번: 'pd0a008',
+    성명: '홍길동',
+    채용일자: '24.03.10',
+    평가등급: 'D',
     isTarget: true,
     selected: false,
   },
   {
-    empId: 'gh0a001',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'A',
+    직번: 'gh0a001',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'A',
     isTarget: false,
     selected: false,
   },
   {
-    empId: 'gh0a002',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'B',
+    직번: 'gh0a002',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'B',
     isTarget: false,
     selected: false,
   },
   {
-    empId: 'gh0a003',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'C',
+    직번: 'gh0a003',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'C',
     isTarget: false,
     selected: false,
   },
   {
-    empId: 'gh0a004',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'D',
+    직번: 'gh0a004',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'D',
     isTarget: false,
     selected: false,
   },
   {
-    empId: 'gh0a005',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'A',
+    직번: 'gh0a005',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'A',
     isTarget: false,
     selected: false,
   },
   {
-    empId: 'gh0a006',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'B',
+    직번: 'gh0a006',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'B',
     isTarget: false,
     selected: false,
   },
   {
-    empId: 'gh0a007',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'C',
+    직번: 'gh0a007',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'C',
     isTarget: false,
     selected: false,
   },
   {
-    empId: 'gh0a008',
-    name: '이도현',
-    hiredDate: '24.03.03',
-    grade: 'D',
+    직번: 'gh0a008',
+    성명: '이도현',
+    채용일자: '24.03.03',
+    평가등급: 'D',
     isTarget: false,
     selected: false,
   },
@@ -194,18 +195,7 @@ const parseHiredDateToDate = (str) => {
 };
 
 const eValueForKey = (e, key) => {
-  switch (key) {
-    case '직번':
-      return e.empId;
-    case '성명':
-      return e.name;
-    case '채용일자':
-      return e.hiredDate;
-    case '평가등급':
-      return e.grade;
-    default:
-      return '';
-  }
+  return e[key] ?? '';
 };
 
 export default function OrganizationSubject() {
@@ -262,35 +252,21 @@ export default function OrganizationSubject() {
     );
 
     // 정렬 적용
-    const sorted = filtered.slice().sort((a, b) =>
-      optionState.sortList[type].reduce((acc, { key, value }) => {
-        // 이미 차이가 발생한 경우 다음 조건 비교 안함
-        if (acc !== 0) return acc;
-
-        const aVal = eValueForKey(a, key) ?? '';
-        const bVal = eValueForKey(b, key) ?? '';
-
-        const comparison = String(aVal).localeCompare(String(bVal), undefined, {
-          numeric: true,
-        });
-
-        return value === '오름차순' ? comparison : -comparison;
-      }, 0),
-    );
+    const sorted = sortObject(filtered, optionState.sortList[type]);
 
     return sorted;
   };
 
   const hasIsTargetChanged = (current, saved) => {
     return current.some((emp) => {
-      const savedEmp = saved.find((e) => e.empId === emp.empId);
+      const savedEmp = saved.find((e) => e.직번 === emp.직번);
       return savedEmp && emp.isTarget !== savedEmp.isTarget;
     });
   };
 
   const toggleSelection = (id) => {
     const updatedEmployees = employees.map((e) =>
-      e.empId === id ? { ...e, selected: !e.selected } : e,
+      e.직번 === id ? { ...e, selected: !e.selected } : e,
     );
     setEmployees(updatedEmployees);
 
@@ -306,7 +282,7 @@ export default function OrganizationSubject() {
     const shouldSelectAll = !list.every((e) => e.selected);
     setEmployees((prev) =>
       prev.map((e) =>
-        list.some((row) => row.empId === e.empId)
+        list.some((row) => row.직번 === e.직번)
           ? { ...e, selected: shouldSelectAll }
           : e,
       ),
@@ -396,7 +372,7 @@ export default function OrganizationSubject() {
       <div className={styles.contentWrapper}>
         <section className={styles.listWrapper}>
           <div className={styles.titleWrapper}>
-            <h2>대상자 목록록</h2>
+            <h2>대상자 목록</h2>
           </div>
           <div className={styles.tableWrapper}>
             <div className={styles.filterWrapper}>
@@ -433,17 +409,17 @@ export default function OrganizationSubject() {
                 </thead>
                 <tbody>
                   {paginatedTargets.map((row) => (
-                    <tr key={row.empId}>
+                    <tr key={row.직번}>
                       <td className={styles.checkboxCell}>
                         <CheckBox
                           isChecked={row.selected}
-                          onClick={() => toggleSelection(row.empId)}
+                          onClick={() => toggleSelection(row.직번)}
                         />
                       </td>
-                      <td>{row.empId}</td>
-                      <td>{row.name}</td>
-                      <td>{row.hiredDate}</td>
-                      <td>{row.grade}</td>
+                      <td>{row.직번}</td>
+                      <td>{row.성명}</td>
+                      <td>{row.채용일자}</td>
+                      <td>{row.평가등급}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -487,7 +463,7 @@ export default function OrganizationSubject() {
 
         <section className={styles.listWrapper}>
           <div className={styles.titleWrapper}>
-            <h2>대상자 목록록</h2>
+            <h2>비대상자 목록</h2>
           </div>
           <div className={styles.tableWrapper}>
             <div className={styles.filterWrapper}>
@@ -524,17 +500,17 @@ export default function OrganizationSubject() {
                 </thead>
                 <tbody>
                   {paginatedUntargets.map((row) => (
-                    <tr key={row.empId}>
+                    <tr key={row.직번}>
                       <td className={styles.checkboxCell}>
                         <CheckBox
                           isChecked={row.selected}
-                          onClick={() => toggleSelection(row.empId)}
+                          onClick={() => toggleSelection(row.직번)}
                         />
                       </td>
-                      <td>{row.empId}</td>
-                      <td>{row.name}</td>
-                      <td>{row.hiredDate}</td>
-                      <td>{row.grade}</td>
+                      <td>{row.직번}</td>
+                      <td>{row.성명}</td>
+                      <td>{row.채용일자}</td>
+                      <td>{row.평가등급}</td>
                     </tr>
                   ))}
                 </tbody>
