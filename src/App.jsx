@@ -12,6 +12,7 @@ import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import RootLayout from '#layouts/RootLayout';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
+import OrganizationSubject from '#pages/OrganizationSubject';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -73,16 +74,7 @@ const router = createBrowserRouter(
               />
             </Route>
             <Route path="preparation">
-              <Route
-                path="target"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="../criteria/payband"
-                    nextStepPath="high-performance"
-                    stepPaths={['사전 작업', '대상자 편성']}
-                  />
-                }
-              />
+              <Route path="target" element={<OrganizationSubject />} />
               <Route
                 path="high-performance"
                 element={
