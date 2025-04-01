@@ -204,23 +204,8 @@ function HighOrganizationPage() {
       }),
     );
 
-    console.log(sorts);
-
     const sortedData = sortObject(filteredData, sorts);
-    // const sortedData = [...filteredData];
-    // sorts.forEach((sort) => {
-    //   const { key, value: order } = sort;
-    //   sortedData.sort((a, b) => {
-    //     let comparison = 1;
-    //     if (a[key] < b[key]) {
-    //       comparison = -1;
-    //     }
-    //     if (order === '내림차순') {
-    //       comparison *= -1;
-    //     }
-    //     return comparison;
-    //   });
-    // });
+
     /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
     if (currentPage > totalPages && totalPages !== 0) {
