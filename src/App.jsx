@@ -4,18 +4,18 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
-import ResultPage from '#pages/ResultPage';
 import AppLayout from '#layouts/AppLayout';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import RootLayout from '#layouts/RootLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import MainPage from '#pages/Main';
 import PaybandConfigPage from '#pages/PaybandConfig';
-import RootLayout from '#layouts/RootLayout';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
 import CompensationPage from '#pages/Compensation';
+import HighOrganizationPage from '#pages/HighOrganization';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,13 +57,7 @@ const router = createBrowserRouter(
               <Route path="target" element={<OrganizationSubject />} />
               <Route
                 path="high-performance"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="target"
-                    nextStepPath="../main/payband"
-                    stepPaths={['사전 작업', '고성과조직 가산 대상 여부 설정']}
-                  />
-                }
+                element={<HighOrganizationPage />}
               />
             </Route>
             <Route path="main">
@@ -77,7 +71,15 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route path="result" element={<ResultPage />} />
+              <Route
+                path="result"
+                element={
+                  <AdjustEditLayout
+                    prevStepPath="payband"
+                    stepPaths={['본 연봉조정', '조정 결과 미리보기']}
+                  />
+                }
+              />
             </Route>
           </Route>
         </Route>
