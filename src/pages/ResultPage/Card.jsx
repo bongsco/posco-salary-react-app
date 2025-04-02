@@ -29,13 +29,13 @@ function Card({ item }) {
         </div>
         <div className={styles['card-body']}>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']}`}>
-            {item.empNum}
+            {item['직번']}
           </div>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']}`}>
-            {item.name}
+            {item['성명']}
           </div>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']}`}>
-            {item.grade}
+            {item['직급']}
           </div>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']}`}>
             {item.position}
@@ -59,12 +59,12 @@ function Card({ item }) {
           <div
             className={`${styles['card-2-detail-big']} ${styles['card-cell']}`}
           >
-            {item.departmentName}
+            {item['부서']}
           </div>
           <div
             className={`${styles['card-2-detail-small']} ${styles['card-cell']}`}
           >
-            {item.rank}
+            {item['평가']}
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@ function Card({ item }) {
             {item.salaryBefore.toLocaleString()}
           </div>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']} `}>
-            {item.salaryAfter.toLocaleString()}
+            {item['기준연봉'].toLocaleString()}
           </div>
           <div
             className={`${styles['card-4-detail']} ${styles['card-cell']} ${styles.blur}`}
@@ -141,7 +141,7 @@ function Card({ item }) {
             {item.totalSalaryBefore.toLocaleString()}
           </div>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']} `}>
-            {item.totalSalaryAfter.toLocaleString()}
+            {item['계약연봉'].toLocaleString()}
           </div>
         </div>
       </div>
@@ -151,20 +151,20 @@ function Card({ item }) {
 
 Card.propTypes = {
   item: PropTypes.shape({
-    empNum: PropTypes.string,
-    name: PropTypes.string,
-    grade: PropTypes.string,
+    직번: PropTypes.string,
+    성명: PropTypes.string,
+    직급: PropTypes.string,
     position: PropTypes.string,
-    departmentName: PropTypes.string,
-    rank: PropTypes.string,
+    부서: PropTypes.string,
+    평가: PropTypes.string,
     salaryIncrementRate: PropTypes.number,
     bonusIncretmentRate: PropTypes.number,
     stdSalaryIncrementRate: PropTypes.number,
     payband: PropTypes.string,
     salaryBefore: PropTypes.number,
-    salaryAfter: PropTypes.number,
+    기준연봉: PropTypes.number,
     totalSalaryBefore: PropTypes.number,
-    totalSalaryAfter: PropTypes.number,
+    계약연봉: PropTypes.number,
   }).isRequired,
 };
 
