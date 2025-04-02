@@ -47,7 +47,12 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
               steps.PRE.filter((detailStep) => detailStep.state === 'DONE')
                 .length === steps.PRE.length
             }
-            detailSteps={steps.PRE}
+            detailSteps={steps.PRE.map(({ id, text, state, date }) => ({
+              id,
+              text,
+              state: presentWorkingStepId === id ? 'WORKING' : state,
+              date,
+            }))}
           />
           <div className={styles.between}>
             <hr className={styles.hr} />
@@ -58,10 +63,15 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
         <Step
           title={constants.MAIN}
           isComplete={
-            steps.CRITERIA.filter((detailStep) => detailStep.state === 'DONE')
+            steps.MAIN.filter((detailStep) => detailStep.state === 'DONE')
               .length === steps.MAIN.length
           }
-          detailSteps={steps.MAIN}
+          detailSteps={steps.MAIN.map(({ id, text, state, date }) => ({
+            id,
+            text,
+            state: presentWorkingStepId === id ? 'WORKING' : state,
+            date,
+          }))}
         />
       )}
     </div>
