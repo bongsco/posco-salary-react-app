@@ -431,6 +431,7 @@ export default function ResultPage() {
       stepPaths={['본 연봉조정', '조정 결과 미리보기']}
       isCommitted
       canMove
+      stepId="ANNUAL_MAIN_RESULT_000"
     >
       <h2>정기 연봉 조정 결과</h2>
       <div className={styles['table-container']}>

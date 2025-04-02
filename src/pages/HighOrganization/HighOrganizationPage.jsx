@@ -250,6 +250,7 @@ function HighOrganizationPage() {
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommitted={!isModified()}
+      stepId="ANNUAL_MAIN_HIGH_PERFORMANCE_000"
     >
       <section className={styles.section}>
         <h2>대상자 목록</h2>

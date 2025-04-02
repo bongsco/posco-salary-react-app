@@ -10,7 +10,7 @@ const constants = {
   MAIN: '본 연봉조정',
 };
 
-export default function Stepper({ adjId }) {
+export default function Stepper({ adjId, presentWorkingStepId }) {
   const [steps, setSteps] = useState({});
 
   useEffect(() => {
@@ -27,7 +27,12 @@ export default function Stepper({ adjId }) {
               steps.CRITERIA.filter((detailStep) => detailStep.state === 'DONE')
                 .length === steps.CRITERIA.length
             }
-            detailSteps={steps.CRITERIA}
+            detailSteps={steps.CRITERIA.map(({ id, text, state, date }) => ({
+              id,
+              text,
+              state: presentWorkingStepId === id ? 'WORKING' : state,
+              date,
+            }))}
           />
           <div className={styles.between}>
             <hr className={styles.hr} />
@@ -65,4 +70,5 @@ export default function Stepper({ adjId }) {
 
 Stepper.propTypes = {
   adjId: PropTypes.number.isRequired,
+  presentWorkingStepId: PropTypes.number.isRequired,
 };

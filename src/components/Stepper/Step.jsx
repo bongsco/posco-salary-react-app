@@ -9,7 +9,7 @@ import CheckBadgeIcon from './badge-check.svg';
  *   detailSteps: {
  *     id: number;
  *     text: string;
- *     isDone: boolean;
+ *     state: 'WORKING' | 'UNDONE' | 'DONE';
  *     date?: string;
  *   }[]
  * }} props
@@ -27,13 +27,8 @@ export default function Step({ title, isComplete, detailSteps }) {
       </div>
 
       <ul className={styles.list}>
-        {detailSteps.map((detailStep) => (
-          <DetailStep
-            key={detailStep.id}
-            text={detailStep.text}
-            state={detailStep.isDone}
-            date={detailStep.date}
-          />
+        {detailSteps.map(({ id, text, state, date }) => (
+          <DetailStep key={id} text={text} state={state} date={date} />
         ))}
       </ul>
     </div>
@@ -56,7 +51,7 @@ Step.propTypes = {
 // TODO: Track location to check working step
 function DetailStep({ text, state, date = null }) {
   return (
-    <li className={`${styles.item} ${styles[state ? 'complete' : 'undone']}`}>
+    <li className={`${styles.item} ${styles[state]}`}>
       <div className={styles.bullet} />
       <div className={`${styles.itemContent} ${date ? styles.noDate : ''}`}>
         <div className={styles.itemText}>{text}</div>
@@ -72,6 +67,6 @@ DetailStep.defaultProps = {
 
 DetailStep.propTypes = {
   text: PropTypes.string.isRequired,
-  state: PropTypes.oneOf(['complete', 'working', 'undone']).isRequired,
+  state: PropTypes.oneOf(['DONE', 'WORKING', 'UNDONE']).isRequired,
   date: PropTypes.string,
 };
