@@ -16,6 +16,7 @@ import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
 import CompensationPage from '#pages/Compensation';
 import HighOrganizationPage from '#pages/HighOrganization';
+import ResultPage from '#pages/ResultPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -71,15 +72,7 @@ const router = createBrowserRouter(
                   />
                 }
               />
-              <Route
-                path="result"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="payband"
-                    stepPaths={['본 연봉조정', '조정 결과 미리보기']}
-                  />
-                }
-              />
+              <Route path="result" element={<ResultPage />} />
             </Route>
           </Route>
         </Route>
