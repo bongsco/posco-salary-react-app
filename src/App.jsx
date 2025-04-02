@@ -5,13 +5,13 @@ import {
   Route,
 } from 'react-router-dom';
 import AppLayout from '#layouts/AppLayout';
-import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import RootLayout from '#layouts/RootLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import MainPage from '#pages/Main';
 import PaybandConfigPage from '#pages/PaybandConfig';
+import PaybandApplyPage from '#pages/PaybandApply';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
 import CompensationPage from '#pages/Compensation';
@@ -62,16 +62,7 @@ const router = createBrowserRouter(
               />
             </Route>
             <Route path="main">
-              <Route
-                path="payband"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="../preparation/high-performance"
-                    nextStepPath="result"
-                    stepPaths={['본 연봉조정', 'Payband 적용']}
-                  />
-                }
-              />
+              <Route path="payband" element={<PaybandApplyPage />} />
               <Route path="result" element={<ResultPage />} />
             </Route>
           </Route>
