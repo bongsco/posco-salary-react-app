@@ -13,13 +13,19 @@ const AdjustContext = createContext();
 export function AdjustProvider() {
   const [adjust, setAdjust] = useState({});
   const { id } = useParams();
+  const [presentWorkingStepId, setPresentWorkingStepId] = useState(null);
 
   useEffect(() => {
     setAdjust(getMockAdjust(id));
   }, [id]);
 
   return (
-    <AdjustContext.Provider value={useMemo(() => ({ adjust }), [adjust])}>
+    <AdjustContext.Provider
+      value={useMemo(
+        () => ({ adjust, presentWorkingStepId, setPresentWorkingStepId }),
+        [adjust, presentWorkingStepId],
+      )}
+    >
       <Outlet />
     </AdjustContext.Provider>
   );

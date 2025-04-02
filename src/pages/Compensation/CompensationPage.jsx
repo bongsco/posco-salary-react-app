@@ -241,6 +241,7 @@ export default function CompensationPage() {
       onCommit={handleCommit}
       onRollback={() => dispatch({ type: 'Rollback' })}
       isCommitted={state.isCommitted}
+      stepId="ANNUAL_CRITERIA_PAYMENT_RATE_000"
     >
       <div className={styles.container}>
         {/* 연봉 인상률 설정 */}

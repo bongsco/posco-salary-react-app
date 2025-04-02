@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import Button from '#components/Button';
 import AppLayout from '#layouts/AppLayout';
@@ -17,8 +17,13 @@ export default function AdjustEditLayout({
   onRollback = () => {},
   isCommitted,
   canMove = true,
+  stepId,
 }) {
-  const { adjust } = useAdjustContext();
+  const { adjust, setPresentWorkingStepId } = useAdjustContext();
+
+  useEffect(() => {
+    setPresentWorkingStepId(stepId);
+  }, [stepId, setPresentWorkingStepId]);
 
   const { renderPrompt } = useBlocker(
     ({ currentLocation, nextLocation }) => {
@@ -38,7 +43,7 @@ export default function AdjustEditLayout({
       breadCrumbs={['조정', '등록', adjust.title, ...stepPaths]}
     >
       <div className={styles.stepperContainer}>
-        <Stepper adjId={1} />
+        <Stepper adjId={1} presentWorkingStepId={stepId} />
       </div>
       {children}
       <hr />
@@ -84,6 +89,7 @@ AdjustEditLayout.propTypes = {
   onRollback: PropTypes.func,
   isCommitted: PropTypes.bool,
   canMove: PropTypes.bool,
+  stepId: PropTypes.string.isRequired,
 };
 
 AdjustEditLayout.defaultProps = {

@@ -30,15 +30,15 @@
   height: 27px;
 }
 
-.complete {
+.DONE {
   color: var(--color-primary-dark);
 }
 
-.working {
+.WORKING {
   color: var(--color-primary-main);
 }
 
-.undone {
+.UNDONE {
   color: var(--color-grayscale-6);
 }
 
