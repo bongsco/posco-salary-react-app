@@ -54,7 +54,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00111',
+    직번: 'pd00111',
     직원성명: '홍길동',
     부서명: '에너지조선마케팅실 산기플랜트팀',
     직급명: 'P6',
@@ -63,7 +63,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00222',
+    직번: 'pd00222',
     직원성명: '김길호',
     부서명: '에너지조선마케팅실 산기플랜트팀',
     직급명: 'P6',
@@ -72,7 +72,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00333',
+    직번: 'pd00333',
     직원성명: '서지현',
     부서명: '에너지조선마케팅실 산기플랜트팀',
     직급명: 'P6',
@@ -81,7 +81,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00444',
+    직번: 'pd00444',
     직원성명: '장수민',
     부서명: '에너지조선마케팅실 산기플랜트팀',
     직급명: 'P6',
@@ -90,7 +90,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00555',
+    직번: 'pd00555',
     직원성명: '이창진',
     부서명: 'IT사업실 ERP개발섹션',
     직급명: 'P6',
@@ -99,7 +99,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00666',
+    직번: 'pd00666',
     직원성명: '손서원',
     부서명: 'IT사업실 ERP개발섹션',
     직급명: 'P6',
@@ -108,7 +108,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00777',
+    직번: 'pd00777',
     직원성명: '이장우',
     부서명: '에너지조선마케팅실 산기플랜트팀',
     직급명: 'P6',
@@ -117,7 +117,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00888',
+    직번: 'pd00888',
     직원성명: '한다연',
     부서명: 'IT사업실 ERP개발섹션',
     직급명: 'P6',
@@ -126,7 +126,7 @@ const initialHighOrganizationData = [
   },
   {
     isChecked: false,
-    직번: 'Pd00999',
+    직번: 'pd00999',
     직원성명: '이기문',
     부서명: '에너지조선마케팅실 산기플랜트팀',
     직급명: 'P6',
