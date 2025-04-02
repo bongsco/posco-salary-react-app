@@ -396,7 +396,7 @@ export default function OrganizationSubject() {
 
   return (
     <AdjustEditLayout
-      prevStepPath="../criteria/payment-rate"
+      prevStepPath="../criteria/payband"
       nextStepPath="high-performance"
       stepPaths={['사전 작업', '대상자 편성']}
       onCommit={handleSave}
