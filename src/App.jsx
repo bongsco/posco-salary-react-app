@@ -5,7 +5,6 @@ import {
   Route,
 } from 'react-router-dom';
 import AppLayout from '#layouts/AppLayout';
-import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import RootLayout from '#layouts/RootLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
@@ -17,6 +16,7 @@ import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
 import CompensationPage from '#pages/Compensation';
 import HighOrganizationPage from '#pages/HighOrganization';
+import ResultPage from '#pages/ResultPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
