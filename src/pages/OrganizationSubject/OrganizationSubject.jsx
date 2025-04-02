@@ -35,8 +35,49 @@ const sortOption = {
 
 const initialEmployees = [
   {
+    직번: 'pd09486',
+    성명: '김서영',
+    채용일자: '24.05.26',
+    평가등급: 'S',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    직번: 'pd08455',
+    성명: '김종하',
+    채용일자: '24.05.26',
+    평가등급: 'A',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    직번: 'pd08206',
+    성명: '김현아',
+    채용일자: '24.05.26',
+    평가등급: 'B+',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    직번: 'pd07195',
+    성명: '이은재',
+    채용일자: '24.05.26',
+    평가등급: 'B',
+    isTarget: true,
+    selected: false,
+  },
+  {
+    직번: 'pd04274',
+    성명: '한상진',
+    채용일자: '24.05.26',
+    평가등급: 'C',
+    isTarget: true,
+    selected: false,
+  },
+  /// 우리 데이터터
+  {
     직번: 'pd0a001',
-    성명: '홍길동',
+    성명: '이은서',
     채용일자: '24.03.04',
     평가등급: 'A',
     isTarget: true,
@@ -44,7 +85,7 @@ const initialEmployees = [
   },
   {
     직번: 'pd0a002',
-    성명: '홍길동',
+    성명: '이현우',
     채용일자: '24.03.05',
     평가등급: 'B',
     isTarget: true,
@@ -52,7 +93,7 @@ const initialEmployees = [
   },
   {
     직번: 'pd0a003',
-    성명: '홍길동',
+    성명: '이도윤',
     채용일자: '24.03.06',
     평가등급: 'C',
     isTarget: true,
@@ -60,7 +101,7 @@ const initialEmployees = [
   },
   {
     직번: 'pd0a004',
-    성명: '홍길동',
+    성명: '이채은',
     채용일자: '24.03.09',
     평가등급: 'D',
     isTarget: true,
@@ -68,7 +109,7 @@ const initialEmployees = [
   },
   {
     직번: 'pd0a005',
-    성명: '홍길동',
+    성명: '이주호',
     채용일자: '24.03.08',
     평가등급: 'D',
     isTarget: true,
@@ -76,7 +117,7 @@ const initialEmployees = [
   },
   {
     직번: 'pd0a006',
-    성명: '홍길동',
+    성명: '박이서',
     채용일자: '24.03.08',
     평가등급: 'D',
     isTarget: true,
@@ -84,7 +125,7 @@ const initialEmployees = [
   },
   {
     직번: 'pd0a007',
-    성명: '홍길동',
+    성명: '정은채',
     채용일자: '24.03.10',
     평가등급: 'D',
     isTarget: true,
@@ -92,7 +133,7 @@ const initialEmployees = [
   },
   {
     직번: 'pd0a008',
-    성명: '홍길동',
+    성명: '윤시하',
     채용일자: '24.03.10',
     평가등급: 'D',
     isTarget: true,
@@ -100,31 +141,31 @@ const initialEmployees = [
   },
   {
     직번: 'gh0a001',
-    성명: '이도현',
-    채용일자: '24.03.03',
+    성명: '김하윤',
+    채용일자: '22.01.12',
     평가등급: 'A',
     isTarget: false,
     selected: false,
   },
   {
     직번: 'gh0a002',
-    성명: '이도현',
-    채용일자: '24.03.03',
+    성명: '이준호',
+    채용일자: '23.07.03',
     평가등급: 'B',
     isTarget: false,
     selected: false,
   },
   {
     직번: 'gh0a003',
-    성명: '이도현',
-    채용일자: '24.03.03',
+    성명: '박서연',
+    채용일자: '24.11.12',
     평가등급: 'C',
     isTarget: false,
     selected: false,
   },
   {
     직번: 'gh0a004',
-    성명: '이도현',
+    성명: '최민재',
     채용일자: '24.03.03',
     평가등급: 'D',
     isTarget: false,
@@ -132,7 +173,7 @@ const initialEmployees = [
   },
   {
     직번: 'gh0a005',
-    성명: '이도현',
+    성명: '정예린',
     채용일자: '24.03.03',
     평가등급: 'A',
     isTarget: false,
@@ -140,7 +181,7 @@ const initialEmployees = [
   },
   {
     직번: 'gh0a006',
-    성명: '이도현',
+    성명: '한도윤',
     채용일자: '24.03.03',
     평가등급: 'B',
     isTarget: false,
@@ -148,7 +189,7 @@ const initialEmployees = [
   },
   {
     직번: 'gh0a007',
-    성명: '이도현',
+    성명: '윤서진',
     채용일자: '24.03.03',
     평가등급: 'C',
     isTarget: false,
@@ -156,7 +197,7 @@ const initialEmployees = [
   },
   {
     직번: 'gh0a008',
-    성명: '이도현',
+    성명: '강지후',
     채용일자: '24.03.03',
     평가등급: 'D',
     isTarget: false,
