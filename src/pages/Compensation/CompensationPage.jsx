@@ -7,32 +7,15 @@ import Input from '#components/Input';
 const selectedGrade = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
 
 const defaultRank = {
-  S: { incrementRate: 0, provideRate: 0 },
-  A: { incrementRate: 0, provideRate: 0 },
-  'B+': { incrementRate: 0, provideRate: 0 },
-  B: { incrementRate: 0, provideRate: 0 },
-  C: { incrementRate: 0, provideRate: 0 },
-  D: { incrementRate: 0, provideRate: 0 },
+  S: { incrementRate: 5.0, provideRate: 400 },
+  A: { incrementRate: 4.5, provideRate: 350 },
+  'B+': { incrementRate: 4.2, provideRate: 300 },
+  B: { incrementRate: 3.7, provideRate: 250 },
+  C: { incrementRate: 3.2, provideRate: 200 },
+  D: { incrementRate: 2.7, provideRate: 150 },
 };
 
-const initialRankRate = {
-  P3: {
-    S: { incrementRate: 0.8, provideRate: 400 },
-    A: { incrementRate: 0.8, provideRate: 400 },
-    'B+': { incrementRate: 0.8, provideRate: 400 },
-    B: { incrementRate: 0.8, provideRate: 400 },
-    C: { incrementRate: 0.8, provideRate: 400 },
-    D: { incrementRate: 0.8, provideRate: 400 },
-  },
-  P4: {
-    S: { incrementRate: 0.6, provideRate: 350 },
-    A: { incrementRate: 0.6, provideRate: 350 },
-    'B+': { incrementRate: 0.6, provideRate: 350 },
-    B: { incrementRate: 0.6, provideRate: 350 },
-    C: { incrementRate: 0.6, provideRate: 350 },
-    D: { incrementRate: 0.6, provideRate: 350 },
-  },
-};
+const initialRankRate = {};
 
 const initialAdjInfo = {
   eval_annual_salary_increment: 0.2,

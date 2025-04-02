@@ -54,7 +54,7 @@ export default function PaybandTableRow({ item, onChange }) {
           max={item.upperBound}
           minLowerBound={0}
           maxUpperBound={200}
-          step={10}
+          step={1}
           onChange={(min, max) => {
             onChange(min, max);
           }}
