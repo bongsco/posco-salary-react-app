@@ -4,12 +4,12 @@ import styles from './result-page.module.css';
 function ResultTableRow({ item }) {
   return (
     <tr>
-      <td className={styles['table-medium-cell']}>{item.empNum}</td>
-      <td className={styles['table-small-cell']}>{item.name}</td>
-      <td className={styles['table-small-cell']}>{item.grade}</td>
+      <td className={styles['table-medium-cell']}>{item['직번']}</td>
+      <td className={styles['table-small-cell']}>{item['성명']}</td>
+      <td className={styles['table-small-cell']}>{item['직급']}</td>
       <td className={styles['table-small-cell']}>{item.position}</td>
-      <td className={styles['table-large-cell']}>{item.departmentName}</td>
-      <td className={styles['table-small-cell']}>{item.rank}</td>
+      <td className={styles['table-large-cell']}>{item['부서']}</td>
+      <td className={styles['table-small-cell']}>{item['평가']}</td>
       <td className={styles['table-small-cell']}>
         {item.salaryIncrementRate}%
       </td>
@@ -24,33 +24,33 @@ function ResultTableRow({ item }) {
         {item.salaryBefore.toLocaleString()}
       </td>
       <td className={styles['table-large-cell']}>
-        {item.salaryAfter.toLocaleString()}
+        {item['기준연봉'].toLocaleString()}
       </td>
       <td className={styles['table-large-cell']}>
         {item.totalSalaryBefore.toLocaleString()}
       </td>
       <td className={styles['table-large-cell']}>
-        {item.totalSalaryAfter.toLocaleString()}
+        {item['계약연봉'].toLocaleString()}
       </td>
     </tr>
   );
 }
 ResultTableRow.propTypes = {
   item: PropTypes.shape({
-    empNum: PropTypes.string,
-    name: PropTypes.string,
-    grade: PropTypes.string,
+    직번: PropTypes.string,
+    성명: PropTypes.string,
+    직급: PropTypes.string,
     position: PropTypes.string,
-    departmentName: PropTypes.string,
-    rank: PropTypes.string,
+    부서: PropTypes.string,
+    평가: PropTypes.string,
     salaryIncrementRate: PropTypes.number,
     bonusIncretmentRate: PropTypes.number,
     stdSalaryIncrementRate: PropTypes.number,
     payband: PropTypes.string,
     salaryBefore: PropTypes.number,
-    salaryAfter: PropTypes.number,
+    기준연봉: PropTypes.number,
     totalSalaryBefore: PropTypes.number,
-    totalSalaryAfter: PropTypes.number,
+    계약연봉: PropTypes.number,
   }).isRequired,
 };
 

@@ -4,18 +4,19 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
-import ResultPage from '#pages/ResultPage';
 import AppLayout from '#layouts/AppLayout';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import RootLayout from '#layouts/RootLayout';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import MainPage from '#pages/Main';
 import PaybandConfigPage from '#pages/PaybandConfig';
 import PaybandApplyPage from '#pages/PaybandApply';
-import RootLayout from '#layouts/RootLayout';
 import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
 import OrganizationSubject from '#pages/OrganizationSubject';
+import CompensationPage from '#pages/Compensation';
+import HighOrganizationPage from '#pages/HighOrganization';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,29 +51,14 @@ const router = createBrowserRouter(
           <Route path="annual">
             <Route path="criteria">
               <Route path="target" element={<AdjSubjectCriteriaPage />} />
-              <Route
-                path="payment-rate"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="target"
-                    nextStepPath="payband"
-                    stepPaths={['기준 설정', '보상지급률 설정']}
-                  />
-                }
-              />
+              <Route path="payment-rate" element={<CompensationPage />} />
               <Route path="payband" element={<PaybandConfigPage />} />
             </Route>
             <Route path="preparation">
               <Route path="target" element={<OrganizationSubject />} />
               <Route
                 path="high-performance"
-                element={
-                  <AdjustEditLayout
-                    prevStepPath="target"
-                    nextStepPath="../main/payband"
-                    stepPaths={['사전 작업', '고성과조직 가산 대상 여부 설정']}
-                  />
-                }
+                element={<HighOrganizationPage />}
               />
             </Route>
             <Route path="main">

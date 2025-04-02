@@ -1,0 +1,107 @@
+@import url('../../styles/global.css');
+@import url('../../styles/table.css');
+
+.section {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.high-organization-area {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-sort-area {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.left-group {
+  display: flex;
+  gap: 4px;
+}
+
+.right-group {
+  display: flex;
+}
+
+.high-organization-table-area {
+  width: 100%;
+  gap: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.high-organization-table {
+  width: 100%;
+}
+
+.check-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.switch-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  gap: 6px;
+}
+
+.switch-text {
+  width: 40px;
+  font: var(--font-caption-2r-pc);
+  text-align: right;
+}
+
+.switch-text.target {
+  color: var(--color-primary-dark);
+}
+
+.switch-text.non-target {
+  color: var(--color-primary-darkest);
+}
+
+.table-row {
+  width: 100%;
+  height: auto;
+}
+
+.button-modal {
+  position: relative;
+}
+
+.modal {
+  top: 120%;
+  position: absolute;
+  z-index: 10;
+}
+
+.tableBottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.column-emp-num,
+.column-name,
+.column-grade,
+.column-rank,
+.column-high-organization,
+.column-perform-add-payment {
+  white-space: nowrap;
+}
+
+.column-dep {
+  min-width: 60px;
+}
