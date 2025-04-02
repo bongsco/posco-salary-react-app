@@ -13,9 +13,17 @@ const salaryPerRank = {
     eval_diff_increment: 4.5,
     eval_diff_bonus: 350,
   },
-  B: {
-    eval_diff_increment: 4.0,
+  'B+': {
+    eval_diff_increment: 4.2,
     eval_diff_bonus: 300,
+  },
+  B: {
+    eval_diff_increment: 3.7,
+    eval_diff_bonus: 250,
+  },
+  C: {
+    eval_diff_increment: 3.2,
+    eval_diff_bonus: 200,
   },
 };
 /* DB에서 가져올 값 : 고성과조직 가산율 정보 */
@@ -71,8 +79,13 @@ function HighOrganizationTableRow({
       </td>
       <td className={styles['column-perform-add-payment']}>
         {item['고성과조직 가산 대상 여부']
-          ? salaryPerRank[item['등급코드']].eval_diff_increment +
-            evalAnnualSalaryIncrement
+          ? (
+              salaryPerRank[item['등급코드']].eval_diff_increment +
+              evalAnnualSalaryIncrement +
+              (salaryPerRank[item['등급코드']].eval_diff_increment *
+                evalAnnualSalaryIncrement) /
+                100
+            ).toFixed(2)
           : salaryPerRank[item['등급코드']].eval_diff_increment}
         %
       </td>
