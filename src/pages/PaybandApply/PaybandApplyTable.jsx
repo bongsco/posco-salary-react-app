@@ -30,10 +30,10 @@ function PaybandApplyTable({
 
   const handleHeaderCheckboxChange = () => {
     const shouldCheck = !isHeaderChecked;
-
+    const empNums = data.map((item) => item.직번);
     dispatch({
       type: 'setAllChecked',
-      payload: { value: shouldCheck, boundType: type },
+      payload: { value: shouldCheck, type, empNums },
     });
 
     setIsHeaderChecked(shouldCheck);

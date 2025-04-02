@@ -180,8 +180,18 @@ function reducer(state, action) {
           ? { ...item, isChecked: !item.isChecked }
           : item,
       );
+
+      const updatedCheckedItems = updated
+        .filter((item) => item.isChecked)
+        .map((item) => item.직번); // isChecked가 true인 직번만 포함
+
       const isStillCommitted = isSameData(updated, state.backup);
-      return { ...state, data: updated, isCommitted: isStillCommitted };
+      return {
+        ...state,
+        data: updated,
+        checkedItems: updatedCheckedItems,
+        isCommitted: isStillCommitted,
+      };
     }
 
     case 'toggleGroup': {
@@ -194,21 +204,23 @@ function reducer(state, action) {
     }
 
     case 'setAllChecked': {
-      const { value, boundType } = action.payload;
+      const { value, empNums } = action.payload;
 
-      const updated = state.data.map((item) => {
-        const isUpper = item.기준연봉 > item.상한금액;
-        const isLower = item.기준연봉 < item.하한금액;
+      const updated = state.data.map((item) =>
+        empNums.includes(item.직번) ? { ...item, isChecked: value } : item,
+      );
 
-        const isTarget =
-          (boundType === 'upper' && isUpper) ||
-          (boundType === 'lower' && isLower);
-
-        return isTarget ? { ...item, isChecked: value } : item;
-      });
+      const updatedCheckedItems = updated
+        .filter((item) => item.isChecked)
+        .map((item) => item.직번);
 
       const isStillCommitted = isSameData(updated, state.backup);
-      return { ...state, data: updated, isCommitted: isStillCommitted };
+      return {
+        ...state,
+        data: updated,
+        checkedItems: updatedCheckedItems,
+        isCommitted: isStillCommitted,
+      };
     }
 
     case 'commit': {
@@ -240,10 +252,12 @@ function reducer(state, action) {
 function PaybandApplyPage() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // 기준연봉이 상한금액보다 높은 데이터
   const filteredUpperData = state.data.filter(
     (item) => item.기준연봉 > item.상한금액,
   );
 
+  // 기준연봉이 하한금액보다 낮은 데이터
   const filteredLowerData = state.data.filter(
     (item) => item.기준연봉 < item.하한금액,
   );

@@ -32,16 +32,18 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
     .map((item) => item.직번);
 
   const handleSelectAll = () => {
+    const empNums = data.map((item) => item.직번); // 현재 테이블의 데이터만 선택
     dispatch({
       type: 'setAllChecked',
-      payload: { value: true, boundType },
+      payload: { value: true, empNums },
     });
   };
 
   const handleClearSelection = () => {
+    const empNums = data.map((item) => item.직번); // 현재 테이블의 데이터만 선택 취소
     dispatch({
       type: 'setAllChecked',
-      payload: { value: false, boundType },
+      payload: { value: false, empNums },
     });
   };
 
