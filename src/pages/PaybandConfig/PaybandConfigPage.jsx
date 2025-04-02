@@ -8,9 +8,9 @@ export default function PaybandConfigPage() {
   const [receivedPayband, setReceivedPayband] = useState([
     {
       id: 1,
-      grade: 'P3',
-      upperBound: 70,
-      lowerBound: 30,
+      grade: 'P1',
+      upperBound: 103,
+      lowerBound: 70,
       modified: {
         lowerBound: false,
         upperBound: false,
@@ -22,9 +22,9 @@ export default function PaybandConfigPage() {
     },
     {
       id: 2,
-      grade: 'P1',
-      upperBound: 170,
-      lowerBound: 20,
+      grade: 'P2',
+      upperBound: 103,
+      lowerBound: 80,
       modified: {
         lowerBound: false,
         upperBound: false,
@@ -36,9 +36,9 @@ export default function PaybandConfigPage() {
     },
     {
       id: 3,
-      grade: 'P2',
-      upperBound: 80,
-      lowerBound: 10,
+      grade: 'P3',
+      upperBound: 105,
+      lowerBound: 90,
       modified: {
         lowerBound: false,
         upperBound: false,
@@ -51,8 +51,8 @@ export default function PaybandConfigPage() {
     {
       id: 4,
       grade: 'P4',
-      upperBound: 80,
-      lowerBound: 10,
+      upperBound: 105,
+      lowerBound: 95,
       modified: {
         lowerBound: false,
         upperBound: false,
@@ -65,8 +65,8 @@ export default function PaybandConfigPage() {
     {
       id: 5,
       grade: 'P5',
-      upperBound: 80,
-      lowerBound: 10,
+      upperBound: 107,
+      lowerBound: 95,
       modified: {
         lowerBound: false,
         upperBound: false,
@@ -79,8 +79,8 @@ export default function PaybandConfigPage() {
     {
       id: 6,
       grade: 'P6',
-      upperBound: 80,
-      lowerBound: 10,
+      upperBound: 107,
+      lowerBound: 100,
       modified: {
         lowerBound: false,
         upperBound: false,

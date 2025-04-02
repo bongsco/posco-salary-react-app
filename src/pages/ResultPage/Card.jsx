@@ -78,7 +78,7 @@ function Card({ item }) {
           <div
             className={`${styles['card-4-detail']} ${styles['card-title-cell']}`}
           >
-            평차금인상률
+            성과금지급률
           </div>
           <div
             className={`${styles['card-4-detail']} ${styles['card-title-cell']}`}
@@ -96,7 +96,7 @@ function Card({ item }) {
             {item.salaryIncrementRate}%
           </div>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']}`}>
-            {item.bonusIncretmentRate}%
+            {item.bonusRate}%
           </div>
           <div className={`${styles['card-4-detail']} ${styles['card-cell']}`}>
             {item.stdSalaryIncrementRate}%
@@ -158,7 +158,7 @@ Card.propTypes = {
     부서: PropTypes.string,
     평가: PropTypes.string,
     salaryIncrementRate: PropTypes.number,
-    bonusIncretmentRate: PropTypes.number,
+    bonusRate: PropTypes.number,
     stdSalaryIncrementRate: PropTypes.number,
     payband: PropTypes.string,
     salaryBefore: PropTypes.number,
