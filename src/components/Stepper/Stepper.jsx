@@ -13,16 +13,15 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
 
   return (
     <div className={styles.stepper}>
-      {steps?.['기준 설정'] && (
+      {steps?.기준설정 && (
         <>
           <Step
-            title="기준 설정"
+            title="기준설정"
             isComplete={
-              steps['기준 설정'].filter(
-                (detailStep) => detailStep.state === 'DONE',
-              ).length === steps['기준 설정'].length
+              steps.기준설정.filter((detailStep) => detailStep.state === 'DONE')
+                .length === steps.기준설정.length
             }
-            detailSteps={steps['기준 설정'].map(
+            detailSteps={steps.기준설정.map(
               ({ id, text, state, date, url }) => ({
                 id,
                 text,
@@ -37,16 +36,16 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
           </div>
         </>
       )}
-      {steps?.['사전 작업'] && (
+      {steps?.사전작업 && (
         <>
           <Step
-            title="사전 작업"
+            title="사전작업"
             isComplete={
               steps['사전 작업'].filter(
                 (detailStep) => detailStep.state === 'DONE',
-              ).length === steps['사전 작업'].length
+              ).length === steps.사전작업.length
             }
-            detailSteps={steps['사전 작업'].map(
+            detailSteps={steps.사전작업.map(
               ({ id, text, state, date, url }) => ({
                 id,
                 text,
@@ -61,15 +60,14 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
           </div>
         </>
       )}
-      {steps?.['본 연봉조정'] && (
+      {steps.본연봉조정 && (
         <Step
-          title="본 연봉조정"
+          title="본연봉조정"
           isComplete={
-            steps['본 연봉조정'].filter(
-              (detailStep) => detailStep.state === 'DONE',
-            ).length === steps['본 연봉조정'].length
+            steps.본연봉조정.filter((detailStep) => detailStep.state === 'DONE')
+              .length === steps.본연봉조정.length
           }
-          detailSteps={steps['본 연봉조정'].map(
+          detailSteps={steps.본연봉조정.map(
             ({ id, text, state, date, url }) => ({
               id,
               text,

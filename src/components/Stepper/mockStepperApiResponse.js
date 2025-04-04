@@ -1,6 +1,6 @@
 export default {
   1: {
-    '기준 설정': [
+    기준설정: [
       {
         id: 'ANNUAL_CRITERIA_TARGET_000', // adj_info_step.id
         text: '대상자 기준 설정',
@@ -22,7 +22,7 @@ export default {
         url: 'annual/criteria/payband',
       },
     ],
-    '사전 작업': [
+    사전작업: [
       {
         id: 'ANNUAL_PRE_TARGET_000',
         text: '대상자 편성',
@@ -36,7 +36,7 @@ export default {
         url: 'annual/preparation/high-performance',
       },
     ],
-    '본 연봉조정': [
+    본연s봉조정: [
       {
         id: 'ANNUAL_MAIN_PAYBAND_000',
         text: 'Payband 적용',
