@@ -23,11 +23,12 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
               ).length === steps['기준 설정'].length
             }
             detailSteps={steps['기준 설정'].map(
-              ({ id, text, state, date }) => ({
+              ({ id, text, state, date, url }) => ({
                 id,
                 text,
                 state: presentWorkingStepId === id ? 'WORKING' : state,
                 date,
+                url,
               }),
             )}
           />
@@ -46,11 +47,12 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
               ).length === steps['사전 작업'].length
             }
             detailSteps={steps['사전 작업'].map(
-              ({ id, text, state, date }) => ({
+              ({ id, text, state, date, url }) => ({
                 id,
                 text,
                 state: presentWorkingStepId === id ? 'WORKING' : state,
                 date,
+                url,
               }),
             )}
           />
@@ -68,11 +70,12 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
             ).length === steps['본 연봉조정'].length
           }
           detailSteps={steps['본 연봉조정'].map(
-            ({ id, text, state, date }) => ({
+            ({ id, text, state, date, url }) => ({
               id,
               text,
               state: presentWorkingStepId === id ? 'WORKING' : state,
               date,
+              url,
             }),
           )}
         />

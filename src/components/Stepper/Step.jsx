@@ -12,7 +12,7 @@ import CheckBadgeIcon from './badge-check.svg';
  *     text: string;
  *     state: 'WORKING' | 'UNDONE' | 'DONE';
  *     date?: string;
- *     href: string;
+ *     url: string;
  *   }[]
  * }} props
  */
