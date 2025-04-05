@@ -36,7 +36,7 @@ export default {
         url: 'annual/preparation/high-performance',
       },
     ],
-    본연s봉조정: [
+    본연봉조정: [
       {
         id: 'ANNUAL_MAIN_PAYBAND_000',
         text: 'Payband 적용',

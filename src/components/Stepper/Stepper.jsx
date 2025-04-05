@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import Step from './Step';
 import styles from './stepper.module.css';
 import mockStepperApiResponse from './mockStepperApiResponse';
 
-export default function Stepper({ adjId, presentWorkingStepId }) {
+export default function Stepper({ adjId }) {
   const [steps, setSteps] = useState({});
+  const location = useLocation();
 
   useEffect(() => {
     setSteps(mockStepperApiResponse[adjId]);
@@ -25,7 +27,7 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
               ({ id, text, state, date, url }) => ({
                 id,
                 text,
-                state: presentWorkingStepId === id ? 'WORKING' : state,
+                state: location.pathname.includes(url) ? 'WORKING' : state,
                 date,
                 url,
               }),
@@ -41,15 +43,14 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
           <Step
             title="사전작업"
             isComplete={
-              steps['사전 작업'].filter(
-                (detailStep) => detailStep.state === 'DONE',
-              ).length === steps.사전작업.length
+              steps.사전작업.filter((detailStep) => detailStep.state === 'DONE')
+                .length === steps.사전작업.length
             }
             detailSteps={steps.사전작업.map(
               ({ id, text, state, date, url }) => ({
                 id,
                 text,
-                state: presentWorkingStepId === id ? 'WORKING' : state,
+                state: location.pathname.includes(url) ? 'WORKING' : state,
                 date,
                 url,
               }),
@@ -71,7 +72,7 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
             ({ id, text, state, date, url }) => ({
               id,
               text,
-              state: presentWorkingStepId === id ? 'WORKING' : state,
+              state: location.pathname.includes(url) ? 'WORKING' : state,
               date,
               url,
             }),
@@ -84,5 +85,4 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
 
 Stepper.propTypes = {
   adjId: PropTypes.number.isRequired,
-  presentWorkingStepId: PropTypes.number.isRequired,
 };
