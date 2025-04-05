@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import Button from '#components/Button';
 import AppLayout from '#layouts/AppLayout';
