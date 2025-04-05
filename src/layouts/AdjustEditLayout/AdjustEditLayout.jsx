@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import Button from '#components/Button';
 import AppLayout from '#layouts/AppLayout';
@@ -19,11 +18,7 @@ export default function AdjustEditLayout({
   canMove = true,
   stepId,
 }) {
-  const { adjust, setPresentWorkingStepId } = useAdjustContext();
-
-  useEffect(() => {
-    setPresentWorkingStepId(stepId);
-  }, [stepId, setPresentWorkingStepId]);
+  const { adjust } = useAdjustContext();
 
   const { renderPrompt } = useBlocker(
     ({ currentLocation, nextLocation }) => {

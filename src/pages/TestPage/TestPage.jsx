@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import Stepper from '#components/Stepper';
 import AppLayout from '#layouts/AppLayout';
 
 export default function TestPage() {
@@ -48,11 +47,6 @@ export default function TestPage() {
         </li>
       </ul>
       <hr />
-      <Stepper adjId={1} />
-      <hr />
-      <Stepper adjId={2} />
-      <hr />
-      <Stepper adjId={3} />
     </AppLayout>
   );
 }

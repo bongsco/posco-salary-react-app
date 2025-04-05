@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styles from './step.module.css';
 import CheckBadgeIcon from './badge-check.svg';
 
@@ -11,6 +12,7 @@ import CheckBadgeIcon from './badge-check.svg';
  *     text: string;
  *     state: 'WORKING' | 'UNDONE' | 'DONE';
  *     date?: string;
+ *     url: string;
  *   }[]
  * }} props
  */
@@ -27,8 +29,14 @@ export default function Step({ title, isComplete, detailSteps }) {
       </div>
 
       <ul className={styles.list}>
-        {detailSteps.map(({ id, text, state, date }) => (
-          <DetailStep key={id} text={text} state={state} date={date} />
+        {detailSteps.map(({ id, text, state, date, url }) => (
+          <DetailStep
+            key={id}
+            text={text}
+            state={state}
+            date={date}
+            url={url}
+          />
         ))}
       </ul>
     </div>
@@ -49,14 +57,17 @@ Step.propTypes = {
 };
 
 // TODO: Track location to check working step
-function DetailStep({ text, state, date = null }) {
+function DetailStep({ text, state, date = null, url }) {
   return (
     <li className={`${styles.item} ${styles[state]}`}>
       <div className={styles.bullet} />
-      <div className={`${styles.itemContent} ${date ? styles.noDate : ''}`}>
+      <Link
+        className={`${styles.itemContent} ${date ? styles.noDate : ''}`}
+        to={`../../../${url}`}
+      >
         <div className={styles.itemText}>{text}</div>
         {date && <span className={styles.date}>{date}</span>}
-      </div>
+      </Link>
     </li>
   );
 }
@@ -67,6 +78,7 @@ DetailStep.defaultProps = {
 
 DetailStep.propTypes = {
   text: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
   state: PropTypes.oneOf(['DONE', 'WORKING', 'UNDONE']).isRequired,
   date: PropTypes.string,
 };

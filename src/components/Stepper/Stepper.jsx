@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import Step from './Step';
 import styles from './stepper.module.css';
 import mockStepperApiResponse from './mockStepperApiResponse';
 
-const constants = {
-  CRITERIA: '기준 설정',
-  PRE: '사전 작업',
-  MAIN: '본 연봉조정',
-};
-
-export default function Stepper({ adjId, presentWorkingStepId }) {
+export default function Stepper({ adjId }) {
   const [steps, setSteps] = useState({});
+  const location = useLocation();
 
   useEffect(() => {
     setSteps(mockStepperApiResponse[adjId]);
@@ -19,59 +15,68 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
 
   return (
     <div className={styles.stepper}>
-      {steps?.CRITERIA && (
+      {steps?.기준설정 && (
         <>
           <Step
-            title={constants.CRITERIA}
+            title="기준설정"
             isComplete={
-              steps.CRITERIA.filter((detailStep) => detailStep.state === 'DONE')
-                .length === steps.CRITERIA.length
+              steps.기준설정.filter((detailStep) => detailStep.state === 'DONE')
+                .length === steps.기준설정.length
             }
-            detailSteps={steps.CRITERIA.map(({ id, text, state, date }) => ({
-              id,
-              text,
-              state: presentWorkingStepId === id ? 'WORKING' : state,
-              date,
-            }))}
+            detailSteps={steps.기준설정.map(
+              ({ id, text, state, date, url }) => ({
+                id,
+                text,
+                state: location.pathname.includes(url) ? 'WORKING' : state,
+                date,
+                url,
+              }),
+            )}
           />
           <div className={styles.between}>
             <hr className={styles.hr} />
           </div>
         </>
       )}
-      {steps?.PRE && (
+      {steps?.사전작업 && (
         <>
           <Step
-            title={constants.PRE}
+            title="사전작업"
             isComplete={
-              steps.PRE.filter((detailStep) => detailStep.state === 'DONE')
-                .length === steps.PRE.length
+              steps.사전작업.filter((detailStep) => detailStep.state === 'DONE')
+                .length === steps.사전작업.length
             }
-            detailSteps={steps.PRE.map(({ id, text, state, date }) => ({
-              id,
-              text,
-              state: presentWorkingStepId === id ? 'WORKING' : state,
-              date,
-            }))}
+            detailSteps={steps.사전작업.map(
+              ({ id, text, state, date, url }) => ({
+                id,
+                text,
+                state: location.pathname.includes(url) ? 'WORKING' : state,
+                date,
+                url,
+              }),
+            )}
           />
           <div className={styles.between}>
             <hr className={styles.hr} />
           </div>
         </>
       )}
-      {steps?.MAIN && (
+      {steps.본연봉조정 && (
         <Step
-          title={constants.MAIN}
+          title="본연봉조정"
           isComplete={
-            steps.MAIN.filter((detailStep) => detailStep.state === 'DONE')
-              .length === steps.MAIN.length
+            steps.본연봉조정.filter((detailStep) => detailStep.state === 'DONE')
+              .length === steps.본연봉조정.length
           }
-          detailSteps={steps.MAIN.map(({ id, text, state, date }) => ({
-            id,
-            text,
-            state: presentWorkingStepId === id ? 'WORKING' : state,
-            date,
-          }))}
+          detailSteps={steps.본연봉조정.map(
+            ({ id, text, state, date, url }) => ({
+              id,
+              text,
+              state: location.pathname.includes(url) ? 'WORKING' : state,
+              date,
+              url,
+            }),
+          )}
         />
       )}
     </div>
@@ -80,5 +85,4 @@ export default function Stepper({ adjId, presentWorkingStepId }) {
 
 Stepper.propTypes = {
   adjId: PropTypes.number.isRequired,
-  presentWorkingStepId: PropTypes.number.isRequired,
 };

@@ -60,9 +60,16 @@
 }
 
 .itemContent {
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  color: inherit;
+}
+
+.itemContent:visited {
+  text-decoration: none;
+  color: inherit;
 }
 
 .itemText {
