@@ -42,7 +42,7 @@ function SalaryAdjustmentTableRow({
         {selectedIndex === index && (
           <td className={styles['button-cell']}>
             <div className={styles['button-container']}>
-              <Link to="/adjust/edit/0/annual/criteria/target">
+              <Link to="/adjust/edit/0/annual/criteria/subject">
                 <button
                   type="button"
                   /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */

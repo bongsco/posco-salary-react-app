@@ -2,11 +2,11 @@ export default {
   1: {
     기준설정: [
       {
-        id: 'ANNUAL_CRITERIA_TARGET_000', // adj_info_step.id
+        id: 'ANNUAL_CRITERIA_SUBJECT_000', // adj_info_step.id
         text: '대상자 기준 설정',
         state: 'UNDONE',
         date: '2023-03-03 00:00:00',
-        url: 'annual/criteria/target',
+        url: 'annual/criteria/subject',
       },
       {
         id: 'ANNUAL_CRITERIA_PAYMENT_RATE_000',
@@ -24,10 +24,10 @@ export default {
     ],
     사전작업: [
       {
-        id: 'ANNUAL_PRE_TARGET_000',
+        id: 'ANNUAL_PRE_SUBJECT_000',
         text: '대상자 편성',
         state: 'UNDONE',
-        url: 'annual/preparation/target',
+        url: 'annual/preparation/subject',
       },
       {
         id: 'ANNUAL_PRE_HIGH_PERFORMANCE_000',

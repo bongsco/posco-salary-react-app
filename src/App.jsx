@@ -50,12 +50,12 @@ const router = createBrowserRouter(
           <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
-              <Route path="target" element={<AdjSubjectCriteriaPage />} />
+              <Route path="subject" element={<AdjSubjectCriteriaPage />} />
               <Route path="payment-rate" element={<CompensationPage />} />
               <Route path="payband" element={<PaybandConfigPage />} />
             </Route>
             <Route path="preparation">
-              <Route path="target" element={<OrganizationSubject />} />
+              <Route path="subject" element={<OrganizationSubject />} />
               <Route
                 path="high-performance"
                 element={<HighOrganizationPage />}
