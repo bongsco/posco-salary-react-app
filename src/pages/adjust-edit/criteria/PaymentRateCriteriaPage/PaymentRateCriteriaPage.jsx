@@ -17,6 +17,7 @@ const defaultRank = {
   D: { incrementRate: 2.7, provideRate: 150 },
 };
 
+// TODO: 초깃값 설정 방식 개선 필요
 const initialRankRate = {};
 
 const initialAdjInfo = {
