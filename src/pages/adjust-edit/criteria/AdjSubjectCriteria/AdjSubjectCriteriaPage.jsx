@@ -4,6 +4,7 @@ import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
 import PaymentSelection from './PaymentSelection';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import '#styles/global.css';
 
 export default function AdjSubjectCriteriaPage() {
   const initialDateValues = {

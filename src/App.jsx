@@ -10,13 +10,13 @@ import { AdjustProvider } from '#contexts/AdjustContext';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import MainPage from '#pages/Main';
-import PaybandConfigPage from '#pages/adjust-edit/PaybandConfig';
-import PaybandApplyPage from '#pages/adjust-edit/PaybandApply';
-import AdjSubjectCriteriaPage from '#pages/adjust-edit/AdjSubjectCriteria';
-import OrganizationSubject from '#pages/adjust-edit/OrganizationSubject';
-import CompensationPage from '#pages/adjust-edit/Compensation';
-import HighOrganizationPage from '#pages/adjust-edit/HighOrganization';
-import ResultPage from '#pages/adjust-edit/ResultPage';
+import PaybandConfigPage from '#pages/adjust-edit/criteria/PaybandConfig';
+import PaybandApplyPage from '#pages/adjust-edit/main/PaybandApply';
+import AdjSubjectCriteriaPage from '#pages/adjust-edit/criteria/AdjSubjectCriteria';
+import OrganizationSubject from '#pages/adjust-edit/preparation/OrganizationSubject';
+import CompensationPage from '#pages/adjust-edit/criteria/Compensation';
+import HighOrganizationPage from '#pages/adjust-edit/preparation/HighOrganization';
+import ResultPage from '#pages/adjust-edit/main/ResultPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

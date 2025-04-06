@@ -3,6 +3,8 @@ import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import styles from './compensation-page.module.css';
 import CompensationTable from './CompensationTable';
 import Input from '#components/Input';
+import '#styles/global.css';
+import '#styles/table.css';
 
 const selectedGrade = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
 

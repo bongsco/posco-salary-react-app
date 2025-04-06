@@ -7,6 +7,8 @@ import Pagination from '#components/Pagination';
 import TableOption from '#components/TableOption';
 import TableSelectIndicator from '#components/TableSelectIndicator';
 import sortObject from '#utils/sortObject';
+import '#styles/global.css';
+import '#styles/table.css';
 
 const filterOption = {
   평가등급: {

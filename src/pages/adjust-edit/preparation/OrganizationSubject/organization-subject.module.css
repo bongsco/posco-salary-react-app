@@ -1,6 +1,3 @@
-@import url('../../../styles/table.css');
-@import url('../../../styles/global.css');
-
 .contentWrapper {
   display: flex;
   flex-direction: row;

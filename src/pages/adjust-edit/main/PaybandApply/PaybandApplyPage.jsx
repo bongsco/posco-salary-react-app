@@ -1,6 +1,8 @@
 import { useReducer } from 'react';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import PaybandApplyArea from './PaybandApplyArea';
+import '#styles/global.css';
+import '#styles/table.css';
 
 // 🔹 초기 데이터
 const initialPaybandApplyData = [

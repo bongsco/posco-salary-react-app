@@ -1,8 +1,9 @@
 import { useState, useMemo, useReducer } from 'react';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
-
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-config-page.module.css';
+import '#styles/global.css';
+import '#styles/table.css';
 
 export default function PaybandConfigPage() {
   const [receivedPayband, setReceivedPayband] = useState([

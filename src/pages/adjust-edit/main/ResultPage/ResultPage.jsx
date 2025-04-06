@@ -6,6 +6,8 @@ import ResultTableRow from './ResultTableRow';
 import FilterSort from './FilterSort';
 import Card from './Card';
 import sortObject from '#utils/sortObject';
+import '#styles/global.css';
+import '#styles/table.css';
 
 export default function ResultPage() {
   const [result] = useState([

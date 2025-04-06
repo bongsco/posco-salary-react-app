@@ -4,6 +4,8 @@ import FilterSort from './FilterSort';
 import HighOrganizationTable from './HighOrganizationTable';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import sortObject from '#utils/sortObject';
+import '#styles/global.css';
+import '#styles/table.css';
 
 /* Sample Data */
 const initialHighOrganizationData = [
