@@ -1,7 +1,7 @@
-import { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import Modal from '../../Modal/Modal';
+import { useReducer } from 'react';
 import Dropdown from '#components/Dropdown';
+import Modal from '../../Modal/Modal';
 import styles from '../../Modal/modal.module.css';
 
 const init = (prevSortList) => ({

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import Button from '#components/Button';
 import FilterModal from './Filter';
 import SortModal from './Sort';

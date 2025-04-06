@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import styles from './category.module.css';
 import Icon, { icons } from '#components/SideBar/Icon';
-import CategoryChevron from './CategoryChevron';
 import SubMenu from '../SubMenu/SubMenu';
+import CategoryChevron from './CategoryChevron';
+import styles from './category.module.css';
 
 function Category({ icon, text, onClick, isOpen, children }) {
   return (

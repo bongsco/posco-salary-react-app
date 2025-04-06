@@ -1,5 +1,4 @@
 import { fn } from '@storybook/test';
-
 import SubMenu from './SubMenu';
 
 export default {

@@ -1,11 +1,10 @@
-import React from 'react';
-
 import PropTypes from 'prop-types';
+import React from 'react';
 import styles from './icon.module.css';
 import CardIconSvg from './icons/CardIconSvg';
+import GearIconSvg from './icons/GearIconSvg';
 import HomeIconSvg from './icons/HomeIconSvg';
 import PersonIconSvg from './icons/PersonIconSvg';
-import GearIconSvg from './icons/GearIconSvg';
 
 export const icons = {
   home: <HomeIconSvg />,

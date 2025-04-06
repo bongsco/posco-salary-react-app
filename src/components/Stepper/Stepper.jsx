@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Step from './Step';
-import styles from './stepper.module.css';
 import mockStepperApiResponse from './mockStepperApiResponse';
+import styles from './stepper.module.css';
 
 export default function Stepper({ adjId }) {
   const [steps, setSteps] = useState({});

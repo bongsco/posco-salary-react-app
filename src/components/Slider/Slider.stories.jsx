@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { fn } from '@storybook/test';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import CustomSlider from './CustomSlider';
 
 export default {

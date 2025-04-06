@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import PropTypes from 'prop-types';
 import styles from './slider.module.css';
 
 export default function CustomSlider({

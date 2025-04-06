@@ -1,7 +1,6 @@
 import { fn } from '@storybook/test';
-
-import Item from './Item';
 import { icons } from '#components/SideBar/Icon';
+import Item from './Item';
 
 export default {
   title: 'Layout/SideBar/Item',

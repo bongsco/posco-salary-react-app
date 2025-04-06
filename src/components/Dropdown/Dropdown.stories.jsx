@@ -1,6 +1,6 @@
 import { fn } from '@storybook/test';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import Dropdown from './Dropdown';
 
 export default {

@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import Dropdown from '#components/Dropdown';
+import Input from '#components/Input';
 import Modal from '../Modal';
 import styles from '../modal.module.css';
-import Input from '#components/Input';
-import Dropdown from '#components/Dropdown';
 
 export default function RegisterModal({
   option,

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import styles from './step.module.css';
 import CheckBadgeIcon from './badge-check.svg';
+import styles from './step.module.css';
 
 /**
  * @param {{

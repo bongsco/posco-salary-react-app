@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import SideBar, { Category, Item, SubItem } from '#components/SideBar';
 import NavBar from '#components/NavBar';
-import styles from './root-layout.module.css';
 import NavItem from '#components/NavBar/NavItem';
+import SideBar, { Category, Item, SubItem } from '#components/SideBar';
+import styles from './root-layout.module.css';
 
 const initialSideBarState = {
   sideBar: true,

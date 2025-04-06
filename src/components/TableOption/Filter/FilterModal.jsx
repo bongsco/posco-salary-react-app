@@ -1,10 +1,10 @@
-import { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import Modal from '../../Modal/Modal';
-import styles from '../../Modal/modal.module.css';
+import { useReducer } from 'react';
+import CustomDatePicker from '#components/DatePicker';
 import Dropdown from '#components/Dropdown';
 import Input from '#components/Input';
-import CustomDatePicker from '#components/DatePicker';
+import Modal from '../../Modal/Modal';
+import styles from '../../Modal/modal.module.css';
 
 const init = (prevFilters) => ({
   selectedKey: null,
