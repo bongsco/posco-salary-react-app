@@ -405,7 +405,6 @@ export default function OrganizationSubject() {
       onRollback={handleCancel}
       isCommitted={isCommitted}
       canMove
-      stepId="ANNUAL_PRE_TARGET_000"
     >
       <div className={styles.contentWrapper}>
         <section className={styles.listWrapper}>

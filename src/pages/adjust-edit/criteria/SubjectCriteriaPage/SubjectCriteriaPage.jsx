@@ -342,7 +342,6 @@ export default function SubjectCriteriaPage() {
       onRollback={handleCancel}
       isCommitted={!isModified}
       nextStepPath="payment-rate"
-      stepId="ANNUAL_CRITERIA_TARGET_000"
     >
       <div>
         <div className={styles.content}>

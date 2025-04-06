@@ -272,7 +272,6 @@ function PaybandApplyPage() {
       onCommit={() => dispatch({ type: 'commit' })}
       onRollback={() => dispatch({ type: 'rollback' })}
       isCommitted={state.isCommitted}
-      stepId="ANNUAL_MAIN_PAYBAND_000"
     >
       <h1>상한 초과자 Payband 적용 여부 설정</h1>
       <PaybandApplyArea

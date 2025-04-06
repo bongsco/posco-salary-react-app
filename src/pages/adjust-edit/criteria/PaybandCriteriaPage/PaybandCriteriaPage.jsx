@@ -188,7 +188,6 @@ export default function PaybandCriteriaPage() {
       }}
       isCommitted={!needSave}
       canMove
-      stepId="ANNUAL_CRITERIA_PAYBAND_000"
     >
       <div className={`${styles.page}`}>
         <section>
