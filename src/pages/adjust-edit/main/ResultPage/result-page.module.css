@@ -40,7 +40,7 @@
 
 .table-area {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: scroll;
 }
 .table {
   border-collapse: collapse;

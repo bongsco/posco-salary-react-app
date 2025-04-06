@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import styles from './result-page.module.css';
+import '#styles/global.css';
+import '#styles/table.css';
 
 function ResultTableRow({ item }) {
   return (

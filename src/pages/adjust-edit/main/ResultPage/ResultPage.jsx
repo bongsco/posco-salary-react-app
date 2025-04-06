@@ -1,13 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
-import AdjustEditLayout from '#layouts/AdjustEditLayout';
-import styles from './result-page.module.css';
+import { useEffect, useMemo, useState } from 'react';
 import PageNation from '#components/Pagination';
-import ResultTableRow from './ResultTableRow';
-import FilterSort from './FilterSort';
-import Card from './Card';
+import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import sortObject from '#utils/sortObject';
-import '#styles/global.css';
-import '#styles/table.css';
+import Card from './Card';
+import FilterSort from './FilterSort';
+import ResultTableRow from './ResultTableRow';
+import styles from './result-page.module.css';
 
 export default function ResultPage() {
   const [result] = useState([

@@ -1,7 +1,7 @@
 import { useReducer, useState } from 'react';
 import Switch from '#components/Switch';
-import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import CustomTimeLine from '#components/TimeLine';
+import AdjustEditLayout from '#layouts/AdjustEditLayout';
 
 export default function TestEditPage() {
   const initialState = {
