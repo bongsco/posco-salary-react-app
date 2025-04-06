@@ -1,5 +1,5 @@
-@import url('../../styles/table.css');
-@import url('../../styles/global.css');
+@import url('../../../styles/table.css');
+@import url('../../../styles/global.css');
 
 .contentWrapper {
   display: flex;
@@ -155,7 +155,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-self: stretch;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   flex-shrink: 0;
   position: relative;
 }

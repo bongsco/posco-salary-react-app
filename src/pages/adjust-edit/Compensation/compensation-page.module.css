@@ -1,5 +1,5 @@
-@import '../../styles/global.css';
-@import '../../styles/table.css';
+@import '../../../styles/global.css';
+@import '../../../styles/table.css';
 
 .container {
   display: flex;
