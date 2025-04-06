@@ -4,5 +4,9 @@
   "tabWidth": 2,
   "useTabs": false,
   "trailingComma": "all",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "importOrder": ["^#(?!styles)(.*)$", "^[./]", "^#styles\/.*$"],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

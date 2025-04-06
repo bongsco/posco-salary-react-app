@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
 import { fn } from '@storybook/test';
-
-import FilterModal from '#components/TableOption/Filter';
-import RegisterModal from '#components/Modal/Register';
-import SortModal from '#components/TableOption/Sort';
+import PropTypes from 'prop-types';
 import Modal from '#components/Modal/Modal';
+import RegisterModal from '#components/Modal/Register';
+import FilterModal from '#components/TableOption/Filter';
+import SortModal from '#components/TableOption/Sort';
 
 function Template({
   type,

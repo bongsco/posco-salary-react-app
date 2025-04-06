@@ -1,22 +1,22 @@
 // router.jsx
 import {
+  Route,
   createBrowserRouter,
   createRoutesFromElements,
-  Route,
 } from 'react-router-dom';
+import { AdjustProvider } from '#contexts/AdjustContext';
 import AppLayout from '#layouts/AppLayout';
 import RootLayout from '#layouts/RootLayout';
-import { AdjustProvider } from '#contexts/AdjustContext';
+import MainPage from '#pages/MainPage';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
-import MainPage from '#pages/Main';
-import PaybandConfigPage from '#pages/PaybandConfig';
-import PaybandApplyPage from '#pages/PaybandApply';
-import AdjSubjectCriteriaPage from '#pages/AdjSubjectCriteria';
-import OrganizationSubject from '#pages/OrganizationSubject';
-import CompensationPage from '#pages/Compensation';
-import HighOrganizationPage from '#pages/HighOrganization';
-import ResultPage from '#pages/ResultPage';
+import PaybandCriteriaPage from '#pages/adjust-edit/criteria/PaybandCriteriaPage';
+import PaymentRateCriteriaPage from '#pages/adjust-edit/criteria/PaymentRateCriteriaPage';
+import SubjectCriteriaPage from '#pages/adjust-edit/criteria/SubjectCriteriaPage';
+import PaybandApplyPage from '#pages/adjust-edit/main/PaybandApplyPage';
+import ResultPage from '#pages/adjust-edit/main/ResultPage';
+import HpoApplyPage from '#pages/adjust-edit/preparation/HpoApplyPage';
+import SubjectAssignPage from '#pages/adjust-edit/preparation/SubjectAssignPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,16 +50,16 @@ const router = createBrowserRouter(
           <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
-              <Route path="target" element={<AdjSubjectCriteriaPage />} />
-              <Route path="payment-rate" element={<CompensationPage />} />
-              <Route path="payband" element={<PaybandConfigPage />} />
+              <Route path="subject" element={<SubjectCriteriaPage />} />
+              <Route
+                path="payment-rate"
+                element={<PaymentRateCriteriaPage />}
+              />
+              <Route path="payband" element={<PaybandCriteriaPage />} />
             </Route>
             <Route path="preparation">
-              <Route path="target" element={<OrganizationSubject />} />
-              <Route
-                path="high-performance"
-                element={<HighOrganizationPage />}
-              />
+              <Route path="subject" element={<SubjectAssignPage />} />
+              <Route path="high-performance" element={<HpoApplyPage />} />
             </Route>
             <Route path="main">
               <Route path="payband" element={<PaybandApplyPage />} />

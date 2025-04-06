@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import inputStyles from '#styles/input.module.css';
 import styles from './dropdown.module.css';
+import inputStyles from '#styles/input.module.css';
 
 export default function Dropdown({
   error = false,

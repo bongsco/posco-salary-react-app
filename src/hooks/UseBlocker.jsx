@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useBlocker as useBlockerCore, useLocation } from 'react-router-dom';
-import styles from './use-blocker.module.css';
 import Button from '#components/Button';
+import styles from './use-blocker.module.css';
 
 const useBlocker = (when, alertOptions) => {
   const {

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { fn } from '@storybook/test';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import Input from './Input';
 
 export default {

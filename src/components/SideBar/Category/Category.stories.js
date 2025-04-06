@@ -1,7 +1,6 @@
 import { fn } from '@storybook/test';
-
-import Category from './Category';
 import { icons } from '#components/SideBar/Icon';
+import Category from './Category';
 
 export default {
   title: 'Layout/SideBar/Category',

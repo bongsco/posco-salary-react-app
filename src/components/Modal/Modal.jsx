@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import styles from './modal.module.css';
 import Button from '#components/Button';
+import styles from './modal.module.css';
 
 export default function Modal({
   left = 'auto',

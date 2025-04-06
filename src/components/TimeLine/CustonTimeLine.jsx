@@ -1,7 +1,7 @@
-import Chart from 'react-google-charts';
 import PropTypes from 'prop-types';
-import '#styles/fonts.css';
+import Chart from 'react-google-charts';
 import styles from './time-line.module.css';
+import '#styles/fonts.css';
 
 export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
   const baseColor = '#757575';

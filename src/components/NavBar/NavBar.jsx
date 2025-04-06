@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import styles from './navbar.module.css';
-import MenuTab from './icons/MenuTab';
 import Logo from './icons/Logo';
+import MenuTab from './icons/MenuTab';
+import styles from './navbar.module.css';
 
 export default function NavBar({ children, toggleSidebar }) {
   return (
