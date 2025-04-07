@@ -16,7 +16,6 @@ export default function AdjustEditLayout({
   onRollback = () => {},
   isCommitted,
   canMove = true,
-  errors = null,
 }) {
   const { adjust } = useAdjustContext();
 
@@ -36,7 +35,6 @@ export default function AdjustEditLayout({
         stepPaths.length > 0 ? stepPaths[stepPaths.length - 1] : adjust.title
       }
       breadCrumbs={['조정', '등록', adjust.title, ...stepPaths]}
-      errors={errors}
     >
       <div className={styles.stepperContainer}>
         <Stepper adjId={1} />
@@ -85,12 +83,6 @@ AdjustEditLayout.propTypes = {
   onRollback: PropTypes.func,
   isCommitted: PropTypes.bool,
   canMove: PropTypes.bool,
-  errors: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      message: PropTypes.string,
-    }),
-  ),
 };
 
 AdjustEditLayout.defaultProps = {
@@ -100,5 +92,4 @@ AdjustEditLayout.defaultProps = {
   onRollback: () => {},
   isCommitted: true,
   canMove: true,
-  errors: null,
 };
