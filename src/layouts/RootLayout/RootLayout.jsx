@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import NavItem from '#components/NavBar/NavItem';
 import SideBar, { Category, Item, SubItem } from '#components/SideBar';
+import { ErrorHandlerProvider } from '#contexts/ErrorHandlerContext';
 import styles from './root-layout.module.css';
 
 const initialSideBarState = {
@@ -118,7 +119,9 @@ export default function RootLayout() {
           </SideBar>
         </div>
         <div className={styles.content}>
-          <Outlet />
+          <ErrorHandlerProvider>
+            <Outlet />
+          </ErrorHandlerProvider>
         </div>
       </div>
     </div>

@@ -4,11 +4,12 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  flex-shrink: 0;
   background-color: var(--color-system-caution);
   color: var(--color-background-general);
   padding: 20px 28px;
   border-radius: 10px;
-  width: 544px;
+  width: 100%;
   min-height: 82px;
   height: fit-content;
   gap: 10px;
