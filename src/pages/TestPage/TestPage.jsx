@@ -1,9 +1,26 @@
 import { Link } from 'react-router-dom';
+import Button from '#components/Button';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AppLayout from '#layouts/AppLayout';
+import createErrorNotice from '#utils/error';
 
 export default function TestPage() {
+  const { addError } = useErrorHandlerContext();
+
   return (
     <AppLayout title="테스트 페이지 Test Page" breadCrumbs={['테스트']}>
+      <Button
+        size="small"
+        label="오류 추가"
+        onClick={() =>
+          addError(
+            createErrorNotice(
+              '테스트 오류 제목',
+              '테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용',
+            ),
+          )
+        }
+      />
       <p>
         This page is for the test.
         <br />
