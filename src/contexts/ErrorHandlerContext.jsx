@@ -7,18 +7,15 @@ import {
   useState,
 } from 'react';
 import Notice from '#components/Notice';
-import createErrorNotice from '#utils/error';
 
 const ErrorHandlerContext = createContext();
 
 export function ErrorHandlerProvider({ children }) {
   const [errors, setErrors] = useState({});
 
-  const addError = (title, message, id) => {
-    const error = createErrorNotice(title, message, id);
-    setErrors((prevErrors) => ({ ...prevErrors, [error.id]: error }));
-
-    return error.id;
+  const addError = (title, message, id = crypto.randomUUID()) => {
+    setErrors((prevErrors) => ({ ...prevErrors, [id]: { title, message } }));
+    return id;
   };
 
   const removeError = useCallback(
