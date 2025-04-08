@@ -30,7 +30,6 @@ jobs:
       - name: Build React App
         env:
           REACT_APP_API_URL: ${{ secrets.API_URL }}
-          NODE_ENV: development
         run: PUBLIC_URL=/pr-${{github.event.pull_request.number}}/ npm run build
 
       - name: Configure AWS Credentials

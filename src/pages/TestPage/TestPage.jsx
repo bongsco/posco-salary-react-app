@@ -11,7 +11,7 @@ export default function TestPage() {
     // 파싱 시도를 하고 에러를 던집니다.
     if (!res?.ok) {
       addError(
-        `Sent Request to /api/notfound ${process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_URL : ''} and the connection refused.`,
+        `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
         'error message',
         'CONNECTION_REFUSED',
       );
