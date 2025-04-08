@@ -26,13 +26,13 @@ function SalaryAdjustmentTableRow({
         <td className={styles['column-month']}>{row['월구분']}</td>
         <td className={styles['column-adj-type']}>{row['조정제목']}</td>
         <td className={styles['column-status']}>
+          <State status={row['진행단계'].status} text={row['진행단계'].text} />
+        </td>
+        <td className={styles['column-interface']}>
           <State
             status={row['통합인사반영여부'].status}
             text={row['통합인사반영여부'].text}
           />
-        </td>
-        <td className={styles['column-interface']}>
-          <State status={row['진행단계'].status} text={row['진행단계'].text} />
         </td>
         <td className={styles['column-work-step']}>
           {row['진행단계'].caption}
