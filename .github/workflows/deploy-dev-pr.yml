@@ -27,9 +27,12 @@ jobs:
       - name: Install Dependencies
         run: npm --force ci
 
+      - name: Setup .env
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.API_URL }}" >> .env
+          echo "NODE_ENV=development" >> .env
+
       - name: Build React App
-        env:
-          REACT_APP_API_URL: ${{ secrets.API_URL }}
         run: PUBLIC_URL=/pr-${{github.event.pull_request.number}}/ npm run build
 
       - name: Configure AWS Credentials
