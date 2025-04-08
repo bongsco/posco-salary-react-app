@@ -6,5 +6,11 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
   "editor.useTabStops": false,
-  "javascript.preferences.importModuleSpecifier": "non-relative"
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "files.exclude": {
+    "**/node_modules/.cache": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/.cache/**": true
+  }
 }

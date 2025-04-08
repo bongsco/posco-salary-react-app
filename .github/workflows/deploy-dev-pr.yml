@@ -28,6 +28,8 @@ jobs:
         run: npm --force ci
 
       - name: Build React App
+        env:
+          REACT_APP_API_URL: ${{ secrets.API_URL }}
         run: PUBLIC_URL=/pr-${{github.event.pull_request.number}}/ npm run build
 
       - name: Configure AWS Credentials
