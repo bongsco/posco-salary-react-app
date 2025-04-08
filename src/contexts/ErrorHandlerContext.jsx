@@ -1,19 +1,32 @@
 import PropTypes from 'prop-types';
-import { createContext, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import Notice from '#components/Notice';
 
 const ErrorHandlerContext = createContext();
 
 export function ErrorHandlerProvider({ children }) {
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
-  const addError = (error) => {
-    setErrors((prevErrors) => [...prevErrors, error]);
+  const addError = (title, message, id = crypto.randomUUID()) => {
+    setErrors((prevErrors) => ({ ...prevErrors, [id]: { title, message } }));
+    return id;
   };
 
-  const removeError = (id) => {
-    setErrors((prevErrors) => prevErrors.filter((e) => e.id !== id));
-  };
+  const removeError = useCallback(
+    (id) => {
+      const newErrors = { ...errors };
+      delete newErrors[id];
+
+      setErrors(newErrors);
+    },
+    [errors],
+  );
 
   const clearErrors = () => {
     setErrors([]);
@@ -21,14 +34,17 @@ export function ErrorHandlerProvider({ children }) {
 
   return (
     <ErrorHandlerContext.Provider
-      value={useMemo(() => ({ errors, addError, clearErrors }), [errors])}
+      value={useMemo(
+        () => ({ errors, addError, clearErrors, removeError }),
+        [errors, removeError],
+      )}
     >
-      {errors.map((error) => (
+      {Object.keys(errors).map((errorId) => (
         <Notice
-          key={error.id}
-          title={error.title}
-          message={error.message}
-          onClose={() => removeError(error.id)}
+          key={errorId}
+          title={errors[errorId].title}
+          message={errors[errorId].message}
+          onClose={() => removeError(errorId)}
         />
       ))}
       {children}

@@ -1,26 +1,28 @@
 import { Link } from 'react-router-dom';
-import Button from '#components/Button';
+import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AppLayout from '#layouts/AppLayout';
-import createErrorNotice from '#utils/error';
 
 export default function TestPage() {
   const { addError } = useErrorHandlerContext();
+  const { data } = useSWR('/api/notfound', async (url) => {
+    const res = await fetch(url);
+    // 상태 코드가 200-299 범위가 아니더라도,
+    // 파싱 시도를 하고 에러를 던집니다.
+    if (!res?.ok) {
+      addError(
+        `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+        'error message',
+        'CONNECTION_REFUSED',
+      );
+    }
+
+    return res.json();
+  });
 
   return (
     <AppLayout title="테스트 페이지 Test Page" breadCrumbs={['테스트']}>
-      <Button
-        size="small"
-        label="오류 추가"
-        onClick={() =>
-          addError(
-            createErrorNotice(
-              '테스트 오류 제목',
-              '테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용 테스트 오류 내용',
-            ),
-          )
-        }
-      />
+      <p>{data}</p>
       <p>
         This page is for the test.
         <br />
