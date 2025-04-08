@@ -1,18 +1,25 @@
 import PropTypes from 'prop-types';
 import { createContext, useContext, useMemo, useState } from 'react';
 import Notice from '#components/Notice';
+import createErrorNotice from '#utils/error';
 
 const ErrorHandlerContext = createContext();
 
 export function ErrorHandlerProvider({ children }) {
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
-  const addError = (error) => {
-    setErrors((prevErrors) => [...prevErrors, error]);
+  const addError = (title, message, id) => {
+    const error = createErrorNotice(title, message, id);
+    setErrors((prevErrors) => ({ ...prevErrors, [error.id]: error }));
+
+    return error.id;
   };
 
   const removeError = (id) => {
-    setErrors((prevErrors) => prevErrors.filter((e) => e.id !== id));
+    const newErrors = { ...errors };
+    delete newErrors[id];
+
+    setErrors(newErrors);
   };
 
   const clearErrors = () => {
@@ -21,14 +28,17 @@ export function ErrorHandlerProvider({ children }) {
 
   return (
     <ErrorHandlerContext.Provider
-      value={useMemo(() => ({ errors, addError, clearErrors }), [errors])}
+      value={useMemo(
+        () => ({ errors, addError, clearErrors, removeError }),
+        [errors],
+      )}
     >
-      {errors.map((error) => (
+      {Object.keys(errors).map((errorId) => (
         <Notice
-          key={error.id}
-          title={error.title}
-          message={error.message}
-          onClose={() => removeError(error.id)}
+          key={errorId}
+          title={errors[errorId].title}
+          message={errors[errorId].message}
+          onClose={() => removeError(errorId)}
         />
       ))}
       {children}
