@@ -1,5 +1,11 @@
 import PropTypes from 'prop-types';
-import { createContext, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import Notice from '#components/Notice';
 import createErrorNotice from '#utils/error';
 
@@ -15,12 +21,15 @@ export function ErrorHandlerProvider({ children }) {
     return error.id;
   };
 
-  const removeError = (id) => {
-    const newErrors = { ...errors };
-    delete newErrors[id];
+  const removeError = useCallback(
+    (id) => {
+      const newErrors = { ...errors };
+      delete newErrors[id];
 
-    setErrors(newErrors);
-  };
+      setErrors(newErrors);
+    },
+    [errors],
+  );
 
   const clearErrors = () => {
     setErrors([]);
@@ -30,7 +39,7 @@ export function ErrorHandlerProvider({ children }) {
     <ErrorHandlerContext.Provider
       value={useMemo(
         () => ({ errors, addError, clearErrors, removeError }),
-        [errors],
+        [errors, removeError],
       )}
     >
       {Object.keys(errors).map((errorId) => (
