@@ -1,4 +1,6 @@
 import { useMemo, useReducer, useState } from 'react';
+import useSWR from 'swr';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
@@ -7,6 +9,8 @@ import styles from './subject-criteria-page.module.css';
 import '#styles/global.css';
 
 export default function SubjectCriteriaPage() {
+  const { addError } = useErrorHandlerContext();
+
   const initialDateValues = {
     baseDate: null,
     expStartDate: null,
@@ -242,6 +246,102 @@ export default function SubjectCriteriaPage() {
 
   const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
 
+  const { data } = useSWR(
+    '/api/adjust/1/criteria/subject',
+    async (url) => {
+      const res = await fetch(url);
+      if (!res.ok) {
+        addError(
+          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+          'error message',
+          'CONNECTION_REFUSED',
+        );
+      }
+      return res.json();
+    },
+    {
+      onSuccess: (response) => {
+        // 날짜 초기화
+        dispatchDate({
+          type: 'SET_PREVIOUS',
+          payload: {
+            baseDate: response.baseDate,
+            expStartDate: response.expStartDate,
+            expEndDate: response.expEndDate,
+          },
+        });
+        dispatchDate({ type: 'RESET_TO_PREVIOUS' });
+
+        // 직급 초기화 (전체 선택 계산 포함)
+        const allChecked = response.payments.every((p) => p.checked);
+        const newPayments = {};
+        response.payments.forEach((p) => {
+          newPayments[p.name] = p.checked;
+        });
+        newPayments['전체'] = allChecked;
+
+        dispatchPayment({ type: 'SET_PREVIOUS', payload: newPayments });
+        dispatchPayment({ type: 'RESET_TO_PREVIOUS' });
+
+        // 등급 초기화
+        const makeEmptyGradeStructure = () => ({
+          all: false,
+          P: {
+            all: false,
+            P1: false,
+            P2: false,
+            P3: false,
+            P4: false,
+            P5: false,
+            P6: false,
+            P7: false,
+          },
+          R: { all: false, R1: false, R2: false, R3: false },
+          A: { all: false, A1: false, A2: false, A3: false },
+          D: { all: false, D1: false, D2: false, D3: false },
+          G: { all: false, G1: false, G2: false, G3: false },
+          O: { all: false, O1: false, O2: false, O3: false },
+          E: {
+            all: false,
+            E2: false,
+            E3: false,
+            E4: false,
+            E5: false,
+            E6: false,
+          },
+        });
+
+        const parsedGrades = makeEmptyGradeStructure();
+        response.grades.forEach(({ name, checked }) => {
+          const category = name.charAt(0);
+          if (parsedGrades[category]?.[name] !== undefined) {
+            parsedGrades[category][name] = checked;
+          }
+        });
+
+        // 그룹 및 전체 계산
+        Object.entries(parsedGrades).forEach(([category, group]) => {
+          if (category === 'all') return;
+          parsedGrades[category].all = Object.entries(group)
+            .filter(([k]) => k !== 'all')
+            .every(([, v]) => v === true);
+        });
+
+        parsedGrades.all = Object.entries(parsedGrades)
+          .filter(([k]) => k !== 'all')
+          .flatMap(([, group]) =>
+            Object.entries(group)
+              .filter(([k]) => k !== 'all')
+              .map(([, v]) => v),
+          )
+          .every((v) => v === true);
+
+        dispatchGrade({ type: 'SET_PREVIOUS', payload: parsedGrades });
+        dispatchGrade({ type: 'RESET_TO_PREVIOUS' });
+      },
+    },
+  );
+
   const isModified = useMemo(() => {
     const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
     return !(
@@ -316,17 +416,70 @@ export default function SubjectCriteriaPage() {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setHasTriedSubmit(true);
     if (!formValidation.isValid) return;
 
-    dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
-    dispatchPayment({ type: 'SET_PREVIOUS', payload: paymentState.current });
-    dispatchGrade({ type: 'SET_PREVIOUS', payload: gradeState.current });
+    try {
+      // ✅ gradeSelections: name → id 매핑을 위한 gradeDtos 필요 (data.grades 사용)
+      const gradeSelections = {};
+      data.grades.forEach(({ id, name }) => {
+        const category = name.charAt(0);
+        const checked = gradeState.current?.[category]?.[name];
+        if (checked !== undefined) {
+          gradeSelections[id] = checked;
+        }
+      });
 
-    dispatchDate({ type: 'MARK_ALL_COMMITTED' });
-    dispatchPayment({ type: 'MARK_ALL_COMMITTED' });
-    dispatchGrade({ type: 'MARK_ALL_COMMITTED' });
+      // ✅ paymentSelections: name → id 매핑 (data.payments 사용)
+      const paymentSelections = {};
+      data.payments.forEach(({ id, name }) => {
+        if (name === '전체') return; // ❌ 전체는 제외
+        const checked = paymentState.current?.[name];
+        if (typeof checked === 'boolean') {
+          paymentSelections[String(id)] = checked;
+        }
+      });
+
+      // ✅ PATCH payload 구성
+      const patchBody = {
+        baseDate: dateState.current.baseDate,
+        exceptionStartDate: dateState.current.expStartDate,
+        exceptionEndDate: dateState.current.expEndDate,
+        gradeSelections,
+        paymentSelections,
+      };
+
+      console.log(JSON.stringify(patchBody));
+
+      // ✅ PATCH 요청
+      const res = await fetch('/api/adjust/1/criteria/subject', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(patchBody),
+      });
+
+      if (!res.ok) {
+        throw new Error('PATCH 요청 실패');
+      }
+
+      // 성공 시 상태 commit
+      dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
+      dispatchPayment({ type: 'SET_PREVIOUS', payload: paymentState.current });
+      dispatchGrade({ type: 'SET_PREVIOUS', payload: gradeState.current });
+
+      dispatchDate({ type: 'MARK_ALL_COMMITTED' });
+      dispatchPayment({ type: 'MARK_ALL_COMMITTED' });
+      dispatchGrade({ type: 'MARK_ALL_COMMITTED' });
+    } catch (error) {
+      addError(
+        '기준정보 저장 중 오류가 발생했습니다.',
+        error.message,
+        'PATCH_ERROR',
+      );
+    }
   };
 
   const handleCancel = () => {
