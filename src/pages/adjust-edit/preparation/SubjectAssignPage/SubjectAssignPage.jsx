@@ -249,8 +249,12 @@ export default function OrganizationSubject() {
           body: JSON.stringify({ changedSubjectUseEmployee }),
         });
 
-        if (!res.ok) {
-          throw new Error('대상자 정보 저장 실패');
+        if (!res?.ok) {
+          addError(
+            `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+            'error message',
+            'CONNECTION_REFUSED',
+          );
         }
       }
 
