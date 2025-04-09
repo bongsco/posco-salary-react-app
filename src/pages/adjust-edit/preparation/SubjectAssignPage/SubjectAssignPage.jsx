@@ -1,9 +1,11 @@
 import { useReducer, useState } from 'react';
+import useSWR from 'swr';
 import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
 import TableOption from '#components/TableOption';
 import TableSelectIndicator from '#components/TableSelectIndicator';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import sortObject from '#utils/sortObject';
 import styles from './subject-assign-page.module.css';
@@ -35,177 +37,177 @@ const sortOption = {
   values: ['오름차순', '내림차순'],
 };
 
-const initialEmployees = [
-  {
-    직번: 'pd09486',
-    성명: '김서영',
-    채용일자: '24.05.26',
-    평가등급: 'S',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd08455',
-    성명: '김종하',
-    채용일자: '24.05.26',
-    평가등급: 'A',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd08206',
-    성명: '김현아',
-    채용일자: '24.05.26',
-    평가등급: 'B+',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd07195',
-    성명: '이은재',
-    채용일자: '24.05.26',
-    평가등급: 'B',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd04274',
-    성명: '한상진',
-    채용일자: '24.05.26',
-    평가등급: 'C',
-    isTarget: true,
-    selected: false,
-  },
-  /// 우리 데이터터
-  {
-    직번: 'pd0a001',
-    성명: '이은서',
-    채용일자: '24.03.04',
-    평가등급: 'A',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a002',
-    성명: '이현우',
-    채용일자: '24.03.05',
-    평가등급: 'B',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a003',
-    성명: '이도윤',
-    채용일자: '24.03.06',
-    평가등급: 'C',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a004',
-    성명: '이채은',
-    채용일자: '24.03.09',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a005',
-    성명: '이주호',
-    채용일자: '24.03.08',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a006',
-    성명: '박이서',
-    채용일자: '24.03.08',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a007',
-    성명: '정은채',
-    채용일자: '24.03.10',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a008',
-    성명: '윤시하',
-    채용일자: '24.03.10',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'gh0a001',
-    성명: '김하윤',
-    채용일자: '22.01.12',
-    평가등급: 'A',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a002',
-    성명: '이준호',
-    채용일자: '23.07.03',
-    평가등급: 'B',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a003',
-    성명: '박서연',
-    채용일자: '24.11.12',
-    평가등급: 'C',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a004',
-    성명: '최민재',
-    채용일자: '24.03.03',
-    평가등급: 'D',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a005',
-    성명: '정예린',
-    채용일자: '24.03.03',
-    평가등급: 'A',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a006',
-    성명: '한도윤',
-    채용일자: '24.03.03',
-    평가등급: 'B',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a007',
-    성명: '윤서진',
-    채용일자: '24.03.03',
-    평가등급: 'C',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a008',
-    성명: '강지후',
-    채용일자: '24.03.03',
-    평가등급: 'D',
-    isTarget: false,
-    selected: false,
-  },
-];
+// const initialEmployees = [
+//   {
+//     직번: 'pd09486',
+//     성명: '김서영',
+//     채용일자: '24.05.26',
+//     평가등급: 'S',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd08455',
+//     성명: '김종하',
+//     채용일자: '24.05.26',
+//     평가등급: 'A',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd08206',
+//     성명: '김현아',
+//     채용일자: '24.05.26',
+//     평가등급: 'B+',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd07195',
+//     성명: '이은재',
+//     채용일자: '24.05.26',
+//     평가등급: 'B',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd04274',
+//     성명: '한상진',
+//     채용일자: '24.05.26',
+//     평가등급: 'C',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   /// 우리 데이터터
+//   {
+//     직번: 'pd0a001',
+//     성명: '이은서',
+//     채용일자: '24.03.04',
+//     평가등급: 'A',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd0a002',
+//     성명: '이현우',
+//     채용일자: '24.03.05',
+//     평가등급: 'B',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd0a003',
+//     성명: '이도윤',
+//     채용일자: '24.03.06',
+//     평가등급: 'C',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd0a004',
+//     성명: '이채은',
+//     채용일자: '24.03.09',
+//     평가등급: 'D',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd0a005',
+//     성명: '이주호',
+//     채용일자: '24.03.08',
+//     평가등급: 'D',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd0a006',
+//     성명: '박이서',
+//     채용일자: '24.03.08',
+//     평가등급: 'D',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd0a007',
+//     성명: '정은채',
+//     채용일자: '24.03.10',
+//     평가등급: 'D',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'pd0a008',
+//     성명: '윤시하',
+//     채용일자: '24.03.10',
+//     평가등급: 'D',
+//     isTarget: true,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a001',
+//     성명: '김하윤',
+//     채용일자: '22.01.12',
+//     평가등급: 'A',
+//     isTarget: false,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a002',
+//     성명: '이준호',
+//     채용일자: '23.07.03',
+//     평가등급: 'B',
+//     isTarget: false,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a003',
+//     성명: '박서연',
+//     채용일자: '24.11.12',
+//     평가등급: 'C',
+//     isTarget: false,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a004',
+//     성명: '최민재',
+//     채용일자: '24.03.03',
+//     평가등급: 'D',
+//     isTarget: false,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a005',
+//     성명: '정예린',
+//     채용일자: '24.03.03',
+//     평가등급: 'A',
+//     isTarget: false,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a006',
+//     성명: '한도윤',
+//     채용일자: '24.03.03',
+//     평가등급: 'B',
+//     isTarget: false,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a007',
+//     성명: '윤서진',
+//     채용일자: '24.03.03',
+//     평가등급: 'C',
+//     isTarget: false,
+//     selected: false,
+//   },
+//   {
+//     직번: 'gh0a008',
+//     성명: '강지후',
+//     채용일자: '24.03.03',
+//     평가등급: 'D',
+//     isTarget: false,
+//     selected: false,
+//   },
+// ];
 
 const initialOptionState = {
   filters: { target: [], untarget: [] },
@@ -232,22 +234,71 @@ const optionReducer = (state, action) => {
   }
 };
 
+// "2023-01-30" → "23.01.30" 형식 변환 함수
+function formatHireDate(dateStr) {
+  const date = new Date(dateStr);
+  const yy = String(date.getFullYear()).slice(2);
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yy}.${mm}.${dd}`;
+}
+
+function convertEmployeeDto(dto) {
+  return {
+    id: dto.employeeId, // 🔥 여기에 추가!
+    직번: dto.empNum,
+    성명: dto.name,
+    채용일자: formatHireDate(dto.hireDate),
+    평가등급: dto.rankName,
+    isTarget: dto.subjectUse === true,
+    selected: false,
+  };
+}
+
 const parseHiredDateToDate = (str) => {
   const normalized = `20${str.replace(/\./g, '-')}`;
   return new Date(normalized);
 };
 
 export default function OrganizationSubject() {
+  const { addError } = useErrorHandlerContext();
+
   const [optionState, dispatchOption] = useReducer(
     optionReducer,
     initialOptionState,
   );
   const [page, setPage] = useState({ target: 1, untarget: 1 });
   const [rowsPerPage, setRowsPerPage] = useState({ target: 5, untarget: 5 });
-  const [employees, setEmployees] = useState(initialEmployees);
+  const [employees, setEmployees] = useState([]);
 
-  const [savedEmployees, setSavedEmployees] = useState(initialEmployees);
+  const [savedEmployees, setSavedEmployees] = useState([]);
   const [isCommitted, setIsCommitted] = useState(true);
+
+  useSWR(
+    '/api/adjust/1/preparation/employees',
+    async (url) => {
+      const res = await fetch(url);
+      // 상태 코드가 200-299 범위가 아니더라도,
+      // 파싱 시도를 하고 에러를 던집니다.
+      if (!res?.ok) {
+        addError(
+          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+          'error message',
+          'CONNECTION_REFUSED',
+        );
+      }
+
+      const data = await res.json();
+      console.log(data);
+      return data.map(convertEmployeeDto);
+    },
+    {
+      onSuccess: (response) => {
+        setEmployees(response);
+        setSavedEmployees(response);
+      },
+    },
+  );
 
   const handleOptionSubmit = (tableType, { type, payload }) => {
     if (type === 'filter') {
@@ -349,9 +400,39 @@ export default function OrganizationSubject() {
     }
   };
 
-  const handleSave = () => {
-    setSavedEmployees([...employees]); // 불변성 유지
-    setIsCommitted(true);
+  const handleSave = async () => {
+    // 변경된 직원만 추려서 PATCH 요청 보내기
+    const changedSubjectUseEmployee = employees
+      .filter((emp) => {
+        const original = savedEmployees.find((e) => e.직번 === emp.직번);
+        return original && emp.isTarget !== original.isTarget;
+      })
+      .map((emp) => ({
+        employeeId: emp.id, // 이건 convertEmployeeDto에서 추가한 값
+        subjectUse: emp.isTarget,
+      }));
+
+    try {
+      if (changedSubjectUseEmployee.length > 0) {
+        const res = await fetch('/api/adjust/1/preparation/employees', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ changedSubjectUseEmployee }),
+        });
+
+        if (!res.ok) {
+          throw new Error('대상자 정보 저장 실패');
+        }
+      }
+
+      // 💾 성공 시 상태 동기화
+      setSavedEmployees([...employees]);
+      setIsCommitted(true);
+    } catch (e) {
+      addError('대상자 저장 중 오류가 발생했습니다.', e.message, 'PATCH_ERROR');
+    }
   };
 
   const handleCancel = () => {
@@ -387,6 +468,7 @@ export default function OrganizationSubject() {
 
   const targets = getProcessedEmployees('target');
   const untargets = getProcessedEmployees('untarget');
+
   const paginatedTargets = targets.slice(
     (page.target - 1) * rowsPerPage.target,
     page.target * rowsPerPage.target,
@@ -395,6 +477,11 @@ export default function OrganizationSubject() {
     (page.untarget - 1) * rowsPerPage.untarget,
     page.untarget * rowsPerPage.untarget,
   );
+
+  console.log('📦 rowsPerPage.target:', rowsPerPage.target);
+  console.log('📦 page.target:', page.target);
+  console.log('📦 전체 대상자 수:', targets.length);
+  console.log('📦 현재 페이지 대상자:', paginatedTargets);
 
   return (
     <AdjustEditLayout
