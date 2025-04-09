@@ -11,40 +11,6 @@ import '#styles/global.css';
 export default function SubjectCriteriaPage() {
   const { addError } = useErrorHandlerContext();
 
-  const initialDateValues = {
-    baseDate: null,
-    expStartDate: null,
-    expEndDate: null,
-  };
-  const initialPayments = {
-    전체: false,
-    연봉직: false,
-    '비서직(정규)': false,
-    '비서직(계약)': false,
-    별정직: false,
-    계약직: false,
-    '임시직(시간)': false,
-    '임시직(일)': false,
-    임원: false,
-  };
-  const initialGrades = {
-    all: false,
-    P: {
-      all: false,
-      P1: false,
-      P2: false,
-      P3: false,
-      P4: false,
-      P5: false,
-      P6: false,
-    },
-    R: { all: false, R1: false, R2: false, R3: false },
-    A: { all: false, A1: false, A2: false, A3: false },
-    O: { all: false, O1: false, O2: false, O3: false },
-    D: { all: false, D1: false, D2: false, D3: false },
-    G: { all: false, G1: false, G2: false, G3: false },
-  };
-
   const structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
 
   const setAllTrue = (obj) => {
@@ -147,6 +113,42 @@ export default function SubjectCriteriaPage() {
     };
   }
 
+  function makeGradeStructureFromData(grades) {
+    const structure = { all: false };
+
+    grades.forEach(({ name, checked }) => {
+      const group = name.charAt(0);
+      if (!structure[group]) {
+        structure[group] = { all: false };
+      }
+      structure[group][name] = checked;
+    });
+
+    // 그룹별 all 계산
+    Object.entries(structure).forEach(([group, grade]) => {
+      if (group === 'all') return;
+      const gradeValues = Object.entries(grade)
+        .filter(([k]) => k !== 'all')
+        .map(([, v]) => v);
+      structure[group].all =
+        gradeValues.length > 0 && gradeValues.every(Boolean);
+    });
+
+    // 전체 all 계산
+    const allChecked = Object.entries(structure)
+      .filter(([k]) => k !== 'all')
+      .flatMap(([, group]) =>
+        Object.entries(group)
+          .filter(([k]) => k !== 'all')
+          .map(([, v]) => v),
+      )
+      .every((v) => v === true);
+
+    structure.all = allChecked;
+
+    return structure;
+  }
+
   function criteriaReducer(state, action) {
     const { type, payload } = action;
 
@@ -230,17 +232,17 @@ export default function SubjectCriteriaPage() {
 
   const [dateState, dispatchDate] = useReducer(
     criteriaReducer,
-    initialDateValues,
+    {},
     createInitialState,
   );
   const [paymentState, dispatchPayment] = useReducer(
     criteriaReducer,
-    initialPayments,
+    {},
     createInitialState,
   );
   const [gradeState, dispatchGrade] = useReducer(
     criteriaReducer,
-    initialGrades,
+    {},
     createInitialState,
   );
 
@@ -283,48 +285,12 @@ export default function SubjectCriteriaPage() {
         dispatchPayment({ type: 'SET_PREVIOUS', payload: newPayments });
         dispatchPayment({ type: 'RESET_TO_PREVIOUS' });
 
-        // 등급 초기화
-        const makeEmptyGradeStructure = () => ({
-          all: false,
-          P: {
-            all: false,
-            P1: false,
-            P2: false,
-            P3: false,
-            P4: false,
-            P5: false,
-            P6: false,
-            P7: false,
-          },
-          R: { all: false, R1: false, R2: false, R3: false },
-          A: { all: false, A1: false, A2: false, A3: false },
-          D: { all: false, D1: false, D2: false, D3: false },
-          G: { all: false, G1: false, G2: false, G3: false },
-          O: { all: false, O1: false, O2: false, O3: false },
-          E: {
-            all: false,
-            E2: false,
-            E3: false,
-            E4: false,
-            E5: false,
-            E6: false,
-          },
-        });
-
-        const parsedGrades = makeEmptyGradeStructure();
+        const parsedGrades = makeGradeStructureFromData(response.grades);
         response.grades.forEach(({ name, checked }) => {
           const category = name.charAt(0);
           if (parsedGrades[category]?.[name] !== undefined) {
             parsedGrades[category][name] = checked;
           }
-        });
-
-        // 그룹 및 전체 계산
-        Object.entries(parsedGrades).forEach(([category, group]) => {
-          if (category === 'all') return;
-          parsedGrades[category].all = Object.entries(group)
-            .filter(([k]) => k !== 'all')
-            .every(([, v]) => v === true);
         });
 
         parsedGrades.all = Object.entries(parsedGrades)
