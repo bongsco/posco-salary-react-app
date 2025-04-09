@@ -416,8 +416,6 @@ export default function SubjectCriteriaPage() {
         paymentSelections,
       };
 
-      console.log(JSON.stringify(patchBody));
-
       // ✅ PATCH 요청
       const res = await fetch('/api/adjust/1/criteria/subject', {
         method: 'PATCH',
