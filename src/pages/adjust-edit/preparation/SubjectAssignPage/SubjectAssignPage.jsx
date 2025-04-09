@@ -289,7 +289,6 @@ export default function OrganizationSubject() {
       }
 
       const data = await res.json();
-      console.log(data);
       return data.map(convertEmployeeDto);
     },
     {
@@ -477,11 +476,6 @@ export default function OrganizationSubject() {
     (page.untarget - 1) * rowsPerPage.untarget,
     page.untarget * rowsPerPage.untarget,
   );
-
-  console.log('📦 rowsPerPage.target:', rowsPerPage.target);
-  console.log('📦 page.target:', page.target);
-  console.log('📦 전체 대상자 수:', targets.length);
-  console.log('📦 현재 페이지 대상자:', paginatedTargets);
 
   return (
     <AdjustEditLayout
