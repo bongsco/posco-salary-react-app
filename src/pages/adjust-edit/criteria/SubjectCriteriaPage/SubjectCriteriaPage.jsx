@@ -1,5 +1,5 @@
 import { useMemo, useReducer, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import DateSelection from './DateSelection';
@@ -253,11 +253,10 @@ export default function SubjectCriteriaPage() {
     async (url) => {
       const res = await fetch(url);
       if (!res.ok) {
-        addError(
-          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-          'error message',
-          'CONNECTION_REFUSED',
-        );
+        const errorData = await res.json();
+
+        // 제목 내용 ID
+        addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
       }
       return res.json();
     },
@@ -429,6 +428,9 @@ export default function SubjectCriteriaPage() {
         throw new Error('PATCH 요청 실패');
       }
 
+      // ✅ 최신 데이터 다시 받아오기
+      await mutate('/api/adjust/1/criteria/subject');
+
       // 성공 시 상태 commit
       dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
       dispatchPayment({ type: 'SET_PREVIOUS', payload: paymentState.current });
@@ -438,11 +440,7 @@ export default function SubjectCriteriaPage() {
       dispatchPayment({ type: 'MARK_ALL_COMMITTED' });
       dispatchGrade({ type: 'MARK_ALL_COMMITTED' });
     } catch (error) {
-      addError(
-        '기준정보 저장 중 오류가 발생했습니다.',
-        error.message,
-        'PATCH_ERROR',
-      );
+      addError(error.status, error.message, 'CRITERIA_ERROR');
     }
   };
 
