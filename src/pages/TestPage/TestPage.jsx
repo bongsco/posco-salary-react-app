@@ -2,16 +2,17 @@ import { Link } from 'react-router-dom';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AppLayout from '#layouts/AppLayout';
+import fetchApi from '#utils/fetch';
 
 export default function TestPage() {
   const { addError } = useErrorHandlerContext();
-  useSWR('/api/notfound', async (url) => {
-    const res = await fetch(url);
+  useSWR('/notfound', async (url) => {
+    const res = await fetchApi(url);
     // 상태 코드가 200-299 범위가 아니더라도,
     // 파싱 시도를 하고 에러를 던집니다.
     if (!res?.ok) {
       addError(
-        `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+        `Sent Request to /notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
         'error message',
         'CONNECTION_REFUSED',
       );
