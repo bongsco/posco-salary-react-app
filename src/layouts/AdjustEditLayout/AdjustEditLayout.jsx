@@ -17,7 +17,7 @@ export default function AdjustEditLayout({
   isCommitted,
   canMove = true,
 }) {
-  const { getTitle } = useAdjustContext();
+  const { adjust } = useAdjustContext();
 
   const { renderPrompt } = useBlocker(
     ({ currentLocation, nextLocation }) => {
@@ -32,9 +32,9 @@ export default function AdjustEditLayout({
   return (
     <AppLayout
       title={
-        stepPaths.length > 0 ? stepPaths[stepPaths.length - 1] : getTitle()
+        stepPaths.length > 0 ? stepPaths[stepPaths.length - 1] : adjust.title
       }
-      breadCrumbs={['조정', '등록', getTitle(), ...stepPaths]}
+      breadCrumbs={['조정', '등록', adjust.title, ...stepPaths]}
     >
       <div className={styles.stepperContainer}>
         <Stepper adjId={1} />
