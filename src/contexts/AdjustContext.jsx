@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import fetchApi from '#utils/fetch';
 
 const AdjustContext = createContext();
 
@@ -10,9 +11,9 @@ export function AdjustProvider() {
   const { id } = useParams();
 
   const { data: adjust } = useSWR(
-    `/api/adjust/${id}`,
+    `/adjust/${id}`,
     async (url) => {
-      const res = await fetch(url, {
+      const res = await fetchApi(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

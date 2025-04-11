@@ -7,6 +7,7 @@ import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useBlocker from '#hooks/UseBlocker';
 import AppLayout from '#layouts/AppLayout';
+import fetchApi from '#utils/fetch';
 import styles from './adjust-edit-layout.module.css';
 
 export default function AdjustEditLayout({
@@ -22,9 +23,9 @@ export default function AdjustEditLayout({
   const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
   const { data: stepperData, mutate } = useSWR(
-    `/api/stepper/${adjust.adjustId}`,
+    `/stepper/${adjust.adjustId}`,
     async (url) => {
-      const res = await fetch(url);
+      const res = await fetchApi(url);
 
       if (!res?.ok) {
         addError(
