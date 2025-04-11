@@ -5,7 +5,7 @@ import AppLayout from '#layouts/AppLayout';
 
 export default function TestPage() {
   const { addError } = useErrorHandlerContext();
-  const { data } = useSWR('/api/notfound', async (url) => {
+  useSWR('/api/notfound', async (url) => {
     const res = await fetch(url);
     // 상태 코드가 200-299 범위가 아니더라도,
     // 파싱 시도를 하고 에러를 던집니다.
@@ -22,7 +22,6 @@ export default function TestPage() {
 
   return (
     <AppLayout title="테스트 페이지 Test Page" breadCrumbs={['테스트']}>
-      <p>{data}</p>
       <p>
         This page is for the test.
         <br />
