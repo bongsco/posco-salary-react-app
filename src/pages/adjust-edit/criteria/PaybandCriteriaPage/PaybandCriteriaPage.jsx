@@ -137,8 +137,8 @@ export default function PaybandCriteriaPage() {
             paybandCriteriaModifyDetailList: changedPayband,
           };
 
-          const res = await fetch(
-            `/api/adjust/${adjust.adjustId}/criteria/payband`,
+          const res = await fetchApi(
+            `/adjust/${adjust.adjustId}/criteria/payband`,
             {
               method: 'PATCH',
               headers: {
