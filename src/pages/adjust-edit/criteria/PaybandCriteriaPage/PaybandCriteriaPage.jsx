@@ -1,5 +1,6 @@
 import { useMemo, useReducer, useState } from 'react';
 import useSWR from 'swr';
+import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import PaybandTableRow from './PaybandTableRow';
@@ -9,6 +10,7 @@ import '#styles/table.css';
 
 export default function PaybandCriteriaPage() {
   const { addError } = useErrorHandlerContext();
+  const { adjust } = useAdjustContext();
   const [receivedPayband, setReceivedPayband] = useState([]);
 
   const hasError = (value) => {
@@ -62,10 +64,8 @@ export default function PaybandCriteriaPage() {
     ...structuredClone(receivedPayband),
   ]);
 
-  const adjustId = 2;
-
   useSWR(
-    `/api/adjust/${adjustId}/criteria/payband`,
+    adjust?.adjustId ? `/api/adjust/${adjust.adjustId}/criteria/payband` : null,
     async (url) => {
       const res = await fetch(url);
       if (!res?.ok) {
@@ -136,13 +136,16 @@ export default function PaybandCriteriaPage() {
             paybandCriteriaModifyDetailList: changedPayband,
           };
 
-          const res = await fetch(`/api/adjust/${adjustId}/criteria/payband`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
+          const res = await fetch(
+            `/api/adjust/${adjust.adjustId}/criteria/payband`,
+            {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(patchBody),
             },
-            body: JSON.stringify(patchBody),
-          });
+          );
 
           if (!res.ok) {
             throw new Error('PATCH 요청 실패');
