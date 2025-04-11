@@ -4,7 +4,6 @@ import PageNation from '#components/Pagination';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
-import sortObject from '#utils/sortObject';
 import Card from './Card';
 import FilterSort from './FilterSort';
 import ResultTableRow from './ResultTableRow';
@@ -13,23 +12,132 @@ import styles from './result-page.module.css';
 export default function ResultPage() {
   const { addError } = useErrorHandlerContext();
   const { adjust } = useAdjustContext();
-  const [result, setResult] = useState([]);
 
   /* 현재 페이지 수, 현재 테이블에 보여줄 데이터 수 */
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const [tableMode, setTableMode] = useState(true);
-  const [totalPages, setTotalPages] = useState(1);
+  // const [totalPages, setTotalPages] = useState(1);
 
-  const params = new URLSearchParams({
-    pageNumber: String(currentPage),
-    pageSize: String(rowsPerPage),
-  });
+  /* Filter Option에 대한 Sample Data */
+  const filterOptions = {
+    직번: { optionType: 'text', initialValue: '' },
+    성명: { optionType: 'text', initialValue: '' },
+    직급: {
+      optionType: 'dropdown',
+      options: [
+        'R3',
+        'R2',
+        'R1',
+        'P7',
+        'P6',
+        'P5',
+        'P4',
+        'P3',
+        'P2',
+        'P1',
+        'O3',
+        'O2',
+        'O1',
+        'G3',
+        'G2',
+        'G1',
+        'E6',
+        'E5',
+        'E4',
+        'E3',
+        'E2',
+        'D3',
+        'D2',
+        'D1',
+        'A3',
+        'A2',
+        'A1',
+      ],
+      initialValue: '',
+    },
+    부서: { optionType: 'text', initialValue: '' },
+    평가: {
+      optionType: 'dropdown',
+      options: ['S', 'A', 'B+', 'B', 'C', 'D'],
+      initialValue: '',
+    },
+  };
+
+  /* Sort Option에 대한 Sample Data */
+  const sortOptions = {
+    keys: ['성명', '직번', '부서', '직급', '평가', '기준연봉', '계약연봉'],
+    values: ['오름차순', '내림차순'],
+  };
+
+  /* Table에 적용되는 Filter, Sort 조건들을 저장하는 배열 */
+  const [filters, setFilters] = useState([]);
+  const [sorts, setSorts] = useState([]);
+
+  // TableOption에 onSubmit시 동작하는 함수 */
+  const handleFilterSortModal = (data) => {
+    const { type, payload } = data;
+
+    if (type === 'filter') {
+      setFilters(payload);
+    } else if (type === 'sort') {
+      setSorts(payload);
+    }
+  };
+
+  const paramString = useMemo(() => {
+    const mapping = {
+      성명: 'name',
+      직번: 'empNum',
+      직급: 'gradeName',
+      부서: 'departmentName',
+      평가: 'rankCode',
+      기준연봉: 'stdSalary',
+      계약연봉: 'totalSalary',
+    };
+
+    const params = new URLSearchParams();
+
+    params.append('pageNumber', String(currentPage));
+    params.append('pageSize', String(rowsPerPage));
+
+    const mappedSorts = sorts.map((sort) => {
+      const mappedKey = mapping[sort.key] ?? sort.key;
+      return { [mappedKey]: sort.order };
+    });
+    params.append('sorts', JSON.stringify(mappedSorts));
+
+    filters.forEach((filter) => {
+      if (!filter.value) return;
+
+      switch (filter.key) {
+        case '직번':
+          params.append('filterEmpNum', filter.value);
+          break;
+        case '성명':
+          params.append('filterName', filter.value);
+          break;
+        case '직급':
+          params.append('filterGrade', filter.value);
+          break;
+        case '부서':
+          params.append('filterDepartment', filter.value);
+          break;
+        case '평가':
+          params.append('filterRank', filter.value);
+          break;
+        default:
+          break;
+      }
+    });
+
+    return params.toString();
+  }, [currentPage, rowsPerPage, sorts, filters]);
 
   useSWR(
     adjust?.adjustId
-      ? `/api/adjust/${adjust.adjustId}/main/annual-adj?${params}`
+      ? `/api/adjust/${adjust.adjustId}/main/annual-adj?${paramString}`
       : null,
     async (url) => {
       const res = await fetch(url);
@@ -50,9 +158,9 @@ export default function ResultPage() {
             position: item.positionName,
             부서: item.depName,
             평가: item.rankCode,
-            salaryIncrementRate: item.salaryIncrementRate,
+            salaryIncrementRate: item.salaryIncrementRate?.toFixed(2),
             bonusRate: item.bonusMultiplier,
-            stdSalaryIncrementRate: item.stdSalaryIncrementRate,
+            stdSalaryIncrementRate: item.stdSalaryIncrementRate?.toFixed(2),
             payband: item.payband,
             salaryBefore: item.salaryBefore ?? 0,
             기준연봉: item.stdSalary ?? 0,
@@ -61,92 +169,12 @@ export default function ResultPage() {
           }))
           .sort((a, b) => a.id - b.id);
 
-        setResult(recievedResults);
+        setTableData(recievedResults);
         setCurrentPage(response.pageNumber);
-        setTotalPages(response.totalPages);
+        // setTotalPages(response.totalPages);
       },
     },
   );
-
-  /* Filter Option에 대한 Sample Data */
-  const filterOptions = useMemo(
-    () => ({
-      직번: { optionType: 'text', initialValue: '' },
-      성명: { optionType: 'text', initialValue: '' },
-      직급: {
-        optionType: 'dropdown',
-        options: [...new Set(result.map((item) => item['직급']))],
-        initialValue: '',
-      },
-      부서: {
-        optionType: 'dropdown',
-        options: [...new Set(result.map((item) => item['부서']))],
-        initialValue: '',
-      },
-      평가: {
-        optionType: 'dropdown',
-        options: [...new Set(result.map((item) => item['평가']))],
-        initialValue: '',
-      },
-    }),
-    [result],
-  );
-
-  /* Sort Option에 대한 Sample Data */
-  const sortOptions = {
-    keys: ['성명', '직번', '부서', '직급', '평가', '기준연봉', '계약연봉'],
-    values: ['오름차순', '내림차순'],
-  };
-
-  /* Table에 적용되는 Filter, Sort 조건들을 저장하는 배열 */
-  const [filters, setFilters] = useState([]);
-  const [sorts, setSorts] = useState([]);
-  // TableOption에 onSubmit시 동작하는 함수 */
-  const handleFilterSortModal = (data) => {
-    const { type, payload } = data;
-
-    if (type === 'filter') {
-      setFilters(payload);
-    } else if (type === 'sort') {
-      setSorts(payload);
-    }
-  };
-  useEffect(() => {
-    /* Sample Data랑 테이블 컬럼 Mapping을 위한 임시 변수 */
-
-    /* 해당 useEffect 안에 있는 정렬, 페이징 알고리즘은 나중에 DB Query로 해결할 예정 */
-    /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
-
-    let filteredData = result;
-    // filters가 존재하고 비어있지 않으면 필터 적용
-    if (filters.length > 0) {
-      filteredData = result.filter((item) =>
-        filters.every(({ key, value }) => {
-          if (key === '성명' || key === '직번') {
-            return (value?.length ?? 0) === 0 || item[key].includes(value);
-          }
-          return (value?.length ?? 0) === 0 || value?.includes(item[key]);
-        }),
-      );
-    }
-    const sortedData = sortObject(filteredData, sorts);
-
-    /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
-    // 총 페이지 수 계산
-
-    // 현재 페이지가 유효한지 확인 후 조정
-    if (currentPage > totalPages && totalPages !== 0) {
-      setCurrentPage(totalPages || 1);
-    } else {
-      // 페이징 적용 후 데이터 설정
-      setTableData(
-        sortedData.slice(
-          (currentPage - 1) * rowsPerPage,
-          currentPage * rowsPerPage,
-        ),
-      );
-    }
-  }, [result, currentPage, rowsPerPage, filters, sorts, totalPages]);
 
   useEffect(() => {
     if (!tableMode) {
