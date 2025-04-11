@@ -20,7 +20,7 @@ export default function Step({ title, isComplete, detailSteps }) {
   return (
     <div className={styles.step}>
       <div
-        className={`${styles.titleContainer} ${isComplete ? styles.complete : ''}`}
+        className={`${styles.titleContainer} ${isComplete ? styles.complete : styles.incomplete}`}
       >
         {isComplete && (
           <img src={CheckBadgeIcon} alt="완료 아이콘" className={styles.icon} />
