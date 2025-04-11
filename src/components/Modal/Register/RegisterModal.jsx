@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import CustomDatePicker from '#components/DatePicker';
 import Dropdown from '#components/Dropdown';
-import Input from '#components/Input';
 import Modal from '../Modal';
 import styles from '../modal.module.css';
 
@@ -14,13 +14,14 @@ export default function RegisterModal({
   top,
   bottom,
 }) {
-  const [title, setTitle] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [adjustmentType, setAdjustmentType] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Modal
-      onSubmit={() => onSubmit?.({ title, adjustmentType })}
+      onSubmit={() => onSubmit?.({ adjustmentType, startDate, endDate })}
       onClose={onClose}
       left={left}
       right={right}
@@ -30,20 +31,7 @@ export default function RegisterModal({
       <span className={styles.title}>연봉조정 등록</span>
 
       <div className={styles.registerWrapper}>
-        <span className={styles.label}>조정 제목</span>
-        <Input
-          id="adjustment-title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="조정 제목을 입력하세요"
-          mode="default"
-          customWidth={213}
-          customHeight={32}
-        />
-      </div>
-
-      <div className={styles.registerWrapper}>
-        <span className={styles.label}>조정 유형</span>
+        <span className={styles.label}>조정유형</span>
         <Dropdown
           placeHolder="조정 유형 선택"
           options={option}
@@ -56,6 +44,26 @@ export default function RegisterModal({
           onClick={() => setIsOpen((prev) => !prev)}
           customWidth="213px"
           error={false}
+        />
+      </div>
+
+      <div className={styles.registerWrapper}>
+        <span className={styles.label}>시작일자</span>
+        <CustomDatePicker
+          isSaved="true"
+          customWidth="213px"
+          date={startDate}
+          onChange={(date) => setStartDate(date)}
+        />
+      </div>
+
+      <div className={styles.registerWrapper}>
+        <span className={styles.label}>종료일자</span>
+        <CustomDatePicker
+          isSaved="true"
+          customWidth="213px"
+          date={endDate}
+          onChange={(date) => setEndDate(date)}
         />
       </div>
     </Modal>
