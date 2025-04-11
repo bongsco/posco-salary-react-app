@@ -5,6 +5,7 @@ import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
 import TableOption from '#components/TableOption';
 import TableSelectIndicator from '#components/TableSelectIndicator';
+import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import sortObject from '#utils/sortObject';
@@ -89,6 +90,7 @@ const parseHiredDateToDate = (str) => {
 };
 
 export default function OrganizationSubject() {
+  const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
 
   const [optionState, dispatchOption] = useReducer(
@@ -103,7 +105,9 @@ export default function OrganizationSubject() {
   const [isCommitted, setIsCommitted] = useState(true);
 
   useSWR(
-    '/api/adjust/1/preparation/employees',
+    adjust?.adjustId
+      ? `/api/adjust/${adjust.adjustId}/preparation/employees`
+      : null,
     async (url) => {
       const res = await fetch(url);
       // 상태 코드가 200-299 범위가 아니더라도,
@@ -241,13 +245,16 @@ export default function OrganizationSubject() {
 
     try {
       if (changedSubjectUseEmployee.length > 0) {
-        const res = await fetch('/api/adjust/1/preparation/employees', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
+        const res = await fetch(
+          `/api/adjust/${adjust.adjustId}/preparation/employees`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ changedSubjectUseEmployee }),
           },
-          body: JSON.stringify({ changedSubjectUseEmployee }),
-        });
+        );
 
         if (!res?.ok) {
           addError(
