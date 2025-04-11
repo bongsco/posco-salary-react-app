@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import fetchApi from '#utils/fetch';
 
 const AdjustContext = createContext();
 
@@ -10,9 +11,9 @@ export function AdjustProvider() {
   const { id } = useParams();
 
   const { data: adjust } = useSWR(
-    `/api/adjust/${id}`,
+    `/adjust/${id}`,
     async (url) => {
-      const res = await fetch(url, {
+      const res = await fetchApi(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -22,12 +23,12 @@ export function AdjustProvider() {
       if (!res.ok) {
         addError(
           `연봉조정 정보 조회 실패 (${res.status} ${res.statusText})`,
-          `네트워크 상태 및 접근 경로의 연봉조정 ID 등이 유효한지 확인해 주시기 바랍니다.`,
+          `네트워크 상태 및 접근 경로의 연봉조정 ID(${id}) 등이 유효한지 확인해 주시기 바랍니다.`,
           'ADJUST_ID_FETCH_ERROR',
         );
 
         return {
-          id,
+          adjustId: id,
           title: null,
         };
       }
@@ -39,6 +40,7 @@ export function AdjustProvider() {
     },
     {
       fallbackData: {
+        adjustId: id,
         title: '로드 중...',
       },
     },
@@ -54,7 +56,7 @@ export function AdjustProvider() {
 /**
  * @returns {{
  *   adjust: {
- *     id: number;
+ *     adjustId: number;
  *     title: string | null;
  *   }
  * }}

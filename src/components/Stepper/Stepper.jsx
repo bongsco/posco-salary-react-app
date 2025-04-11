@@ -1,82 +1,81 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Step from './Step';
-import mockStepperApiResponse from './mockStepperApiResponse';
 import styles from './stepper.module.css';
 
-export default function Stepper({ adjId }) {
-  const [steps, setSteps] = useState({});
+/**
+ * @typedef {Object} step
+ * @property {number} id
+ * @property {string} text
+ * @property {'DONE' | 'UNDONE'} state
+ * @property {string} [date]
+ * @property {string} url
+ */
+
+/**
+ * @param {{
+ *   stepperData: {
+ *     CRITERIA: step[];
+ *     PREPARATION: step[];
+ *     MAIN: step[];
+ *   };
+ * }} props
+ * @returns {{React.JSX.Element}}
+ */
+export default function Stepper({ stepperData }) {
   const location = useLocation();
 
-  useEffect(() => {
-    setSteps(mockStepperApiResponse[adjId]);
-  }, [adjId]);
+  const mapper = ({ id, text, state, date, url }) => ({
+    id,
+    text,
+    state: location.pathname.includes(url) ? 'WORKING' : state,
+    date,
+    url,
+  });
 
   return (
     <div className={styles.stepper}>
-      {steps?.기준설정 && (
+      {stepperData?.CRITERIA && (
         <>
           <Step
-            title="기준설정"
+            title="기준 설정"
             isComplete={
-              steps.기준설정.filter((detailStep) => detailStep.state === 'DONE')
-                .length === steps.기준설정.length
+              stepperData.CRITERIA.filter(
+                (detailStep) => detailStep.state === 'DONE',
+              ).length === stepperData.CRITERIA.length
             }
-            detailSteps={steps.기준설정.map(
-              ({ id, text, state, date, url }) => ({
-                id,
-                text,
-                state: location.pathname.includes(url) ? 'WORKING' : state,
-                date,
-                url,
-              }),
-            )}
+            detailSteps={stepperData.CRITERIA.map(mapper)}
           />
           <div className={styles.between}>
             <hr className={styles.hr} />
           </div>
         </>
       )}
-      {steps?.사전작업 && (
+      {stepperData?.PREPARATION && (
         <>
           <Step
-            title="사전작업"
+            title="사전 작업"
             isComplete={
-              steps.사전작업.filter((detailStep) => detailStep.state === 'DONE')
-                .length === steps.사전작업.length
+              stepperData.PREPARATION.filter(
+                (detailStep) => detailStep.state === 'DONE',
+              ).length === stepperData.PREPARATION.length
             }
-            detailSteps={steps.사전작업.map(
-              ({ id, text, state, date, url }) => ({
-                id,
-                text,
-                state: location.pathname.includes(url) ? 'WORKING' : state,
-                date,
-                url,
-              }),
-            )}
+            detailSteps={stepperData.PREPARATION.map(mapper)}
           />
           <div className={styles.between}>
             <hr className={styles.hr} />
           </div>
         </>
       )}
-      {steps.본연봉조정 && (
+      {stepperData?.MAIN && (
         <Step
-          title="본연봉조정"
+          title="본 연봉조정"
           isComplete={
-            steps.본연봉조정.filter((detailStep) => detailStep.state === 'DONE')
-              .length === steps.본연봉조정.length
+            stepperData.MAIN.filter((detailStep) => detailStep.state === 'DONE')
+              .length === stepperData.MAIN.length
           }
-          detailSteps={steps.본연봉조정.map(
-            ({ id, text, state, date, url }) => ({
-              id,
-              text,
-              state: location.pathname.includes(url) ? 'WORKING' : state,
-              date,
-              url,
-            }),
-          )}
+          detailSteps={stepperData.MAIN.map(mapper)}
         />
       )}
     </div>
@@ -84,5 +83,30 @@ export default function Stepper({ adjId }) {
 }
 
 Stepper.propTypes = {
-  adjId: PropTypes.number.isRequired,
+  stepperData: PropTypes.shape({
+    CRITERIA: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+        state: PropTypes.string.isRequired,
+        date: PropTypes.date,
+      }),
+    ),
+    PREPARATION: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+        state: PropTypes.string.isRequired,
+        date: PropTypes.date,
+      }),
+    ),
+    MAIN: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+        state: PropTypes.string.isRequired,
+        date: PropTypes.date,
+      }),
+    ),
+  }).isRequired,
 };
