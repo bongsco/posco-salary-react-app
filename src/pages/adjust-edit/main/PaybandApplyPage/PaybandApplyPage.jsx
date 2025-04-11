@@ -1,5 +1,6 @@
 import { useMemo, useReducer } from 'react';
 import useSWR from 'swr';
+import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import PaybandApplyArea from './PaybandApplyArea';
@@ -80,11 +81,13 @@ function reducer(state, action) {
 }
 
 function PaybandApplyPage() {
-  const adjustId = 2;
+  const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
 
   const { data: apiData } = useSWR(
-    `/api/adjust/${adjustId}/main/payband/subjects`,
+    adjust?.adjustId
+      ? `/api/adjust/${adjust.adjustId}/main/payband/subjects`
+      : null,
     async (url) => {
       const res = await fetch(url);
       if (!res.ok) {
@@ -159,7 +162,7 @@ function PaybandApplyPage() {
 
     try {
       if (updatedSubjects.length > 0) {
-        await fetch(`/api/adjust/${adjustId}/main/payband/subjects`, {
+        await fetch(`/api/adjust/${adjust.adjustId}/main/payband/subjects`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

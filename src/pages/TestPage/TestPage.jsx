@@ -22,7 +22,7 @@ export default function TestPage() {
 
   return (
     <AppLayout title="테스트 페이지 Test Page" breadCrumbs={['테스트']}>
-      <p>{data}</p>
+      <p>{JSON.stringify(data)}</p>
       <p>
         This page is for the test.
         <br />
