@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import useSWR from 'swr';
 import Button from '#components/Button';
 import Stepper from '#components/Stepper';
 import { useAdjustContext } from '#contexts/AdjustContext';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useBlocker from '#hooks/UseBlocker';
 import AppLayout from '#layouts/AppLayout';
 import styles from './adjust-edit-layout.module.css';
@@ -18,6 +20,30 @@ export default function AdjustEditLayout({
   canMove = true,
 }) {
   const { adjust } = useAdjustContext();
+  const { addError } = useErrorHandlerContext();
+  const { data: stepperData, mutate } = useSWR(
+    `/api/stepper/${adjust.adjustId}`,
+    async (url) => {
+      const res = await fetch(url);
+
+      if (!res?.ok) {
+        addError(
+          `연봉조정 단계 정보 조회 실패 (${res.status} ${res.statusText})`,
+          `네트워크 상태 및 접근 경로의 연봉조정 ID(${adjust.adjustId}) 등이 유효한지 확인해 주시기 바랍니다.`,
+          'ADJUST_STEP_FETCH_ERROR',
+        );
+
+        return {
+          CRITERIA: [],
+          PREPARATION: [],
+          MAIN: [],
+        };
+      }
+
+      const json = await res.json();
+      return json.steps;
+    },
+  );
 
   const { renderPrompt } = useBlocker(
     ({ currentLocation, nextLocation }) => {
@@ -37,7 +63,7 @@ export default function AdjustEditLayout({
       breadCrumbs={['조정', '등록', adjust.title, ...stepPaths]}
     >
       <div className={styles.stepperContainer}>
-        <Stepper adjId={1} />
+        <Stepper stepperData={stepperData} />
       </div>
       {children}
       <hr />
@@ -48,7 +74,10 @@ export default function AdjustEditLayout({
               variant="secondary"
               size="small"
               label="저장"
-              onClick={onCommit}
+              onClick={() => {
+                onCommit();
+                mutate();
+              }}
             />
             <Button
               variant="secondary"
