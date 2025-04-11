@@ -4,6 +4,7 @@ import PageNation from '#components/Pagination';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import fetchApi from '#utils/fetch';
 import Card from './Card';
 import FilterSort from './FilterSort';
 import ResultTableRow from './ResultTableRow';
@@ -18,7 +19,7 @@ export default function ResultPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const [tableMode, setTableMode] = useState(true);
-  // const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   /* Filter Option에 대한 Sample Data */
   const filterOptions = {
@@ -137,10 +138,10 @@ export default function ResultPage() {
 
   useSWR(
     adjust?.adjustId
-      ? `/api/adjust/${adjust.adjustId}/main/annual-adj?${paramString}`
+      ? `/adjust/${adjust.adjustId}/main/annual-adj?${paramString}`
       : null,
     async (url) => {
-      const res = await fetch(url);
+      const res = await fetchApi(url);
       if (!res?.ok) {
         const errorData = await res.json();
         addError(errorData.status, errorData.message, 'MAIN_ERROR');
@@ -170,8 +171,12 @@ export default function ResultPage() {
           .sort((a, b) => a.id - b.id);
 
         setTableData(recievedResults);
-        setCurrentPage(response.pageNumber);
-        // setTotalPages(response.totalPages);
+        const safePage = Math.max(
+          1,
+          Math.min(response.pageNumber, response.totalPages),
+        );
+        setCurrentPage(safePage);
+        setTotalPages(response.totalPages);
       },
     },
   );
@@ -249,9 +254,14 @@ export default function ResultPage() {
           <PageNation
             currentPage={currentPage}
             rowsPerPage={rowsPerPage}
-            onPageChange={setCurrentPage}
+            onPageChange={(page) => {
+              if (page >= 1 && page <= totalPages) {
+                setCurrentPage(page);
+              }
+            }}
             onRowsPerPageChange={setRowsPerPage}
             pageOptions={tableMode ? [5, 10, 20, 50] : [12, 24, 36]}
+            totalPage={totalPages}
           />
         </div>
       </div>
