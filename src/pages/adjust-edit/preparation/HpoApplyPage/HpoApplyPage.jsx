@@ -205,7 +205,10 @@ function HpoApplyPage() {
       }),
     );
 
-    const sortedData = sortObject(filteredData ?? [], sorts);
+    const sortedData = sortObject(
+      filteredData ?? [],
+      sorts?.length ? sorts : [{ key: 'employeeId', order: '오름차순' }],
+    );
 
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
     if (currentPage > totalPages && totalPages !== 0) {
