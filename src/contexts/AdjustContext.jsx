@@ -1,25 +1,50 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
-
-function getMockAdjust(id) {
-  return {
-    id,
-    title: `2025 1차 정기연봉조정 (더미데이터, ID ${id})`,
-  };
-}
+import useSWR from 'swr';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 
 const AdjustContext = createContext();
 
 export function AdjustProvider() {
-  const [adjust, setAdjust] = useState({});
+  const { addError } = useErrorHandlerContext();
   const { id } = useParams();
+  const { data: adjust } = useSWR(
+    `/api/adjust/${id}`,
+    async (url) => {
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-  useEffect(() => {
-    setAdjust(getMockAdjust(id));
-  }, [id]);
+      if (!res.ok) {
+        addError(
+          `연봉조정 정보 조회 실패 (${res.status} ${res.statusText})`,
+          `네트워크 상태 및 접근 경로를 확인해 주시기 바랍니다.`,
+          'ADJUST_ID_FETCH_ERROR',
+        );
+
+        return null;
+      }
+
+      return res.json();
+    },
+    {
+      fallbackData: {
+        title: '로드 중...',
+      },
+    },
+  );
+
+  const getTitle = useCallback(() => {
+    return adjust?.title;
+  }, [adjust]);
 
   return (
-    <AdjustContext.Provider value={useMemo(() => ({ adjust }), [adjust])}>
+    <AdjustContext.Provider
+      value={useMemo(() => ({ adjust, getTitle }), [adjust, getTitle])}
+    >
       <Outlet />
     </AdjustContext.Provider>
   );
