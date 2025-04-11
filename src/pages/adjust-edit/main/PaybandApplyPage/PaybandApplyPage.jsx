@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import fetchApi from '#utils/fetch';
 import PaybandApplyArea from './PaybandApplyArea';
 import '#styles/global.css';
 import '#styles/table.css';
@@ -86,10 +87,10 @@ function PaybandApplyPage() {
 
   const { data: apiData } = useSWR(
     adjust?.adjustId
-      ? `/api/adjust/${adjust.adjustId}/main/payband/subjects`
+      ? `/adjust/${adjust.adjustId}/main/payband/subjects`
       : null,
     async (url) => {
-      const res = await fetch(url);
+      const res = await fetchApi(url);
       if (!res.ok) {
         addError(
           `Sent Request to ${url} (${process.env.REACT_APP_API_URL}) and the connection refused.`,
@@ -162,7 +163,7 @@ function PaybandApplyPage() {
 
     try {
       if (updatedSubjects.length > 0) {
-        await fetch(`/api/adjust/${adjust.adjustId}/main/payband/subjects`, {
+        await fetchApi(`/adjust/${adjust.adjustId}/main/payband/subjects`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
