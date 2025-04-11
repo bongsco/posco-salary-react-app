@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import fetchApi from '#utils/fetch';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-criteria-page.module.css';
 import '#styles/global.css';
@@ -65,9 +66,9 @@ export default function PaybandCriteriaPage() {
   ]);
 
   useSWR(
-    adjust?.adjustId ? `/api/adjust/${adjust.adjustId}/criteria/payband` : null,
+    adjust?.adjustId ? `/adjust/${adjust.adjustId}/criteria/payband` : null,
     async (url) => {
-      const res = await fetch(url);
+      const res = await fetchApi(url);
       if (!res?.ok) {
         const errorData = await res.json();
         addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
