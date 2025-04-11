@@ -12,6 +12,7 @@ function FilterSort({
   sortList,
   tableMode,
   setTableMode,
+  onClickExcelDownloadButton,
 }) {
   const excelDownloadButtonVariant = 'secondary';
   const excelDownloadButtonSize = 'large';
@@ -42,7 +43,9 @@ function FilterSort({
           variant={excelDownloadButtonVariant}
           size={excelDownloadButtonSize}
           label={excelDownloadButtonLabel}
-          onClick={() => {}}
+          onClick={() => {
+            onClickExcelDownloadButton();
+          }}
         />
       </div>
     </div>
@@ -57,6 +60,7 @@ FilterSort.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   tableMode: PropTypes.bool.isRequired,
   setTableMode: PropTypes.func.isRequired,
+  onClickExcelDownloadButton: PropTypes.func.isRequired,
 };
 
 export default FilterSort;

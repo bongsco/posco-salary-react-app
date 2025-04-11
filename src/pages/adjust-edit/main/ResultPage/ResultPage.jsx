@@ -205,6 +205,22 @@ export default function ResultPage() {
           sortList={sorts}
           tableMode={tableMode}
           setTableMode={setTableMode}
+          onClickExcelDownloadButton={async () => {
+            const params = new URLSearchParams({
+              adjustId: adjust.adjustId,
+              pageType: 'adjustResult',
+            });
+            const res = await fetchApi(
+              `/adjust/excel/download?${params.toString()}`,
+            );
+            if (!res.ok) {
+              throw new Error('GET 요청 실패');
+            }
+            // const blob = await res.blob();
+            // const fileName = `bongsco_adjustResult_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+            // saveAs(blob, fileName);
+          }}
         />
         <div className={styles['table-area']}>
           {tableMode && (
