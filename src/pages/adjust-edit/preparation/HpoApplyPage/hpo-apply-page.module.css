@@ -95,7 +95,8 @@
 .column-grade,
 .column-rank,
 .column-high-organization,
-.column-perform-add-payment {
+.column-perform-add-payment,
+.column-bonus-multiplier {
   white-space: nowrap;
 }
 

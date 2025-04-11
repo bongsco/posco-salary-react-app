@@ -16,6 +16,8 @@ function HighOrganizationTable({
   handleHighPerformGroupSwitch,
   handleCheckBox,
   checkAll,
+  salaryIncrementByRank,
+  hpoSalaryInfo,
 }) {
   /* Table Box의 헤더 체크 상태 관리 */
   const [isHeaderChecked, setIsHeaderChecked] = useState(false);
@@ -62,7 +64,7 @@ function HighOrganizationTable({
             <td className={styles['column-perform-add-payment']}>
               평가차등연봉인상율
             </td>
-            <td className={styles['column-emp-num']}>
+            <td className={styles['column-bonus-multiplier']}>
               평가차등경영성과금지급률
             </td>
           </tr>
@@ -75,6 +77,8 @@ function HighOrganizationTable({
               checkedItems={checkedItems}
               handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
               handleCheckBox={handleCheckBox}
+              salaryIncrementByRank={salaryIncrementByRank}
+              hpoSalaryInfo={hpoSalaryInfo}
             />
           ))}
         </tbody>
@@ -101,10 +105,10 @@ HighOrganizationTable.propTypes = {
     PropTypes.shape({
       isChecked: PropTypes.bool.isRequired,
       직번: PropTypes.string.isRequired,
-      직원성명: PropTypes.string.isRequired,
+      성명: PropTypes.string.isRequired,
       부서명: PropTypes.string.isRequired,
       직급명: PropTypes.string.isRequired,
-      등급코드: PropTypes.string.isRequired,
+      평가등급: PropTypes.string.isRequired,
       '고성과조직 가산 대상 여부': PropTypes.bool.isRequired,
     }),
   ).isRequired,
@@ -116,6 +120,18 @@ HighOrganizationTable.propTypes = {
   handleHighPerformGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
   checkAll: PropTypes.func.isRequired,
+  salaryIncrementByRank: PropTypes.objectOf(
+    PropTypes.objectOf(
+      PropTypes.shape({
+        salaryIncrementRate: PropTypes.number.isRequired,
+        bonusMultiplier: PropTypes.number.isRequired,
+      }),
+    ),
+  ).isRequired,
+  hpoSalaryInfo: PropTypes.shape({
+    hpoSalaryIncrementRate: PropTypes.number.isRequired,
+    hpoBonusMultiplier: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default HighOrganizationTable;

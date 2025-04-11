@@ -4,37 +4,13 @@ import Switch from '#components/Switch';
 import styles from './hpo-apply-page.module.css';
 
 /* DB에서 가져올 값 : 평가차등 가산율 정보 */
-const salaryPerRank = {
-  S: {
-    eval_diff_increment: 5.0,
-    eval_diff_bonus: 400,
-  },
-  A: {
-    eval_diff_increment: 4.5,
-    eval_diff_bonus: 350,
-  },
-  'B+': {
-    eval_diff_increment: 4.2,
-    eval_diff_bonus: 300,
-  },
-  B: {
-    eval_diff_increment: 3.7,
-    eval_diff_bonus: 250,
-  },
-  C: {
-    eval_diff_increment: 3.2,
-    eval_diff_bonus: 200,
-  },
-};
-/* DB에서 가져올 값 : 고성과조직 가산율 정보 */
-const evalAnnualSalaryIncrement = 2.0;
-const evalPerformProvideRate = 100;
-
 function HighOrganizationTableRow({
   item,
   checkedItems,
   handleHighPerformGroupSwitch,
   handleCheckBox,
+  salaryIncrementByRank,
+  hpoSalaryInfo,
 }) {
   return (
     <tr key={item['직번']} className={`${styles['table-row']}`}>
@@ -47,10 +23,10 @@ function HighOrganizationTableRow({
         </div>
       </td>
       <td className={styles['column-emp-num']}>{item['직번']}</td>
-      <td className={styles['column-name']}>{item['직원성명']}</td>
+      <td className={styles['column-name']}>{item['성명']}</td>
       <td className={styles['column-dep']}>{item['부서명']}</td>
       <td className={styles['column-grade']}>{item['직급명']}</td>
-      <td className={styles['column-rank']}>{item['등급코드']}</td>
+      <td className={styles['column-rank']}>{item['평가등급']}</td>
       <td className={styles['column-high-organization']}>
         <div className={styles['switch-area']}>
           <p
@@ -80,20 +56,24 @@ function HighOrganizationTableRow({
       <td className={styles['column-perform-add-payment']}>
         {item['고성과조직 가산 대상 여부']
           ? (
-              salaryPerRank[item['등급코드']].eval_diff_increment +
-              evalAnnualSalaryIncrement +
-              (salaryPerRank[item['등급코드']].eval_diff_increment *
-                evalAnnualSalaryIncrement) /
+              salaryIncrementByRank[item['직급명']][item['평가등급']]
+                .salaryIncrementRate +
+              hpoSalaryInfo.hpoSalaryIncrementRate +
+              (salaryIncrementByRank[item['직급명']][item['평가등급']]
+                .salaryIncrementRate *
+                hpoSalaryInfo.hpoSalaryIncrementRate) /
                 100
             ).toFixed(2)
-          : salaryPerRank[item['등급코드']].eval_diff_increment}
+          : salaryIncrementByRank[item['직급명']][item['평가등급']]
+              .salaryIncrementRate}
         %
       </td>
-      <td className={styles['column-emp-num']}>
+      <td className={styles['column-bonus-multiplier']}>
         {item['고성과조직 가산 대상 여부']
-          ? salaryPerRank[item['등급코드']].eval_diff_bonus +
-            evalPerformProvideRate
-          : salaryPerRank[item['등급코드']].eval_diff_bonus}
+          ? salaryIncrementByRank[item['직급명']][item['평가등급']]
+              .bonusMultiplier + hpoSalaryInfo.hpoBonusMultiplier
+          : salaryIncrementByRank[item['직급명']][item['평가등급']]
+              .bonusMultiplier}
         %
       </td>
     </tr>
@@ -105,16 +85,28 @@ HighOrganizationTableRow.propTypes = {
     PropTypes.shape({
       isChecked: PropTypes.bool.isRequired,
       직번: PropTypes.string.isRequired,
-      직원성명: PropTypes.string.isRequired,
+      성명: PropTypes.string.isRequired,
       부서명: PropTypes.string.isRequired,
       직급명: PropTypes.string.isRequired,
-      등급코드: PropTypes.string.isRequired,
+      평가등급: PropTypes.string.isRequired,
       '고성과조직 가산 대상 여부': PropTypes.bool.isRequired,
     }),
   ).isRequired,
   checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleHighPerformGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
+  salaryIncrementByRank: PropTypes.objectOf(
+    PropTypes.objectOf(
+      PropTypes.shape({
+        salaryIncrementRate: PropTypes.number.isRequired,
+        bonusMultiplier: PropTypes.number.isRequired,
+      }),
+    ),
+  ).isRequired,
+  hpoSalaryInfo: PropTypes.shape({
+    hpoSalaryIncrementRate: PropTypes.number.isRequired,
+    hpoBonusMultiplier: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default HighOrganizationTableRow;
