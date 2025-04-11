@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './page-input.module.css';
 
 export default function PageInput({ currentPage, onPageChange, totalPage }) {
-  const [inputValue, setInputValue] = useState(currentPage.toString());
+  const [inputValue, setInputValue] = useState(currentPage);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -25,6 +25,10 @@ export default function PageInput({ currentPage, onPageChange, totalPage }) {
     setInputValue(currentPage.toString());
   };
 
+  useEffect(() => {
+    setInputValue(currentPage.toString());
+  }, [currentPage]);
+
   return (
     <div className={styles.input}>
       <div>페이지</div>
@@ -32,7 +36,7 @@ export default function PageInput({ currentPage, onPageChange, totalPage }) {
         type="number"
         min={1}
         max={totalPage}
-        value={currentPage}
+        value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
