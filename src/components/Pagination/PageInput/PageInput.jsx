@@ -16,17 +16,17 @@ export default function PageInput({ currentPage, onPageChange, totalPage }) {
       if (!Number.isNaN(parsed) && parsed >= 1 && parsed <= totalPage) {
         onPageChange(parsed);
       } else {
-        setInputValue(currentPage.toString()); // 잘못된 입력은 되돌리기
+        setInputValue(currentPage); // 잘못된 입력은 되돌리기
       }
     }
   };
 
   const handleBlur = () => {
-    setInputValue(currentPage.toString());
+    setInputValue(currentPage);
   };
 
   useEffect(() => {
-    setInputValue(currentPage.toString());
+    setInputValue(currentPage);
   }, [currentPage]);
 
   return (
