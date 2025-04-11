@@ -1,5 +1,6 @@
 import { useMemo, useReducer, useState } from 'react';
 import useSWR, { mutate } from 'swr';
+import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import DateSelection from './DateSelection';
@@ -9,6 +10,7 @@ import styles from './subject-criteria-page.module.css';
 import '#styles/global.css';
 
 export default function SubjectCriteriaPage() {
+  const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
 
   const structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -249,7 +251,8 @@ export default function SubjectCriteriaPage() {
   const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
 
   const { data } = useSWR(
-    '/api/adjust/1/criteria/subject',
+    adjust?.adjustId ? `/api/adjust/${adjust.adjustId}/criteria/subject` : null,
+
     async (url) => {
       const res = await fetch(url);
       if (!res.ok) {
@@ -416,13 +419,16 @@ export default function SubjectCriteriaPage() {
       };
 
       // ✅ PATCH 요청
-      const res = await fetch('/api/adjust/1/criteria/subject', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetch(
+        `/api/adjust/${adjust.adjustId}/criteria/subject`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(patchBody),
         },
-        body: JSON.stringify(patchBody),
-      });
+      );
 
       if (!res.ok) {
         throw new Error('PATCH 요청 실패');
