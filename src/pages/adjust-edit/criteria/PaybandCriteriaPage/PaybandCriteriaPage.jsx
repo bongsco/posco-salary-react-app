@@ -1,4 +1,6 @@
 import { useMemo, useReducer, useState } from 'react';
+import useSWR from 'swr';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-criteria-page.module.css';
@@ -6,92 +8,8 @@ import '#styles/global.css';
 import '#styles/table.css';
 
 export default function PaybandCriteriaPage() {
-  const [receivedPayband, setReceivedPayband] = useState([
-    {
-      id: 1,
-      grade: 'P1',
-      upperBound: 103,
-      lowerBound: 70,
-      modified: {
-        lowerBound: false,
-        upperBound: false,
-      },
-      error: {
-        lowerBound: false,
-        upperBound: false,
-      },
-    },
-    {
-      id: 2,
-      grade: 'P2',
-      upperBound: 103,
-      lowerBound: 80,
-      modified: {
-        lowerBound: false,
-        upperBound: false,
-      },
-      error: {
-        lowerBound: false,
-        upperBound: false,
-      },
-    },
-    {
-      id: 3,
-      grade: 'P3',
-      upperBound: 105,
-      lowerBound: 90,
-      modified: {
-        lowerBound: false,
-        upperBound: false,
-      },
-      error: {
-        lowerBound: false,
-        upperBound: false,
-      },
-    },
-    {
-      id: 4,
-      grade: 'P4',
-      upperBound: 105,
-      lowerBound: 95,
-      modified: {
-        lowerBound: false,
-        upperBound: false,
-      },
-      error: {
-        lowerBound: false,
-        upperBound: false,
-      },
-    },
-    {
-      id: 5,
-      grade: 'P5',
-      upperBound: 107,
-      lowerBound: 95,
-      modified: {
-        lowerBound: false,
-        upperBound: false,
-      },
-      error: {
-        lowerBound: false,
-        upperBound: false,
-      },
-    },
-    {
-      id: 6,
-      grade: 'P6',
-      upperBound: 107,
-      lowerBound: 100,
-      modified: {
-        lowerBound: false,
-        upperBound: false,
-      },
-      error: {
-        lowerBound: false,
-        upperBound: false,
-      },
-    },
-  ]);
+  const { addError } = useErrorHandlerContext();
+  const [receivedPayband, setReceivedPayband] = useState([]);
 
   const hasError = (value) => {
     return (
@@ -144,10 +62,53 @@ export default function PaybandCriteriaPage() {
     ...structuredClone(receivedPayband),
   ]);
 
+  const adjustId = 2;
+
+  useSWR(
+    `/api/adjust/${adjustId}/criteria/payband`,
+    async (url) => {
+      const res = await fetch(url);
+      if (!res?.ok) {
+        const errorData = await res.json();
+        addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
+      }
+
+      return res.json();
+    },
+    {
+      onSuccess: (response) => {
+        const updatedPayband = response.paybandCriteriaConfigs
+          .map((item) => ({
+            ...item,
+            modified: {
+              lowerBound: false,
+              upperBound: false,
+            },
+            error: {
+              lowerBound: false,
+              upperBound: false,
+            },
+          }))
+          .sort((a, b) => a.id - b.id);
+
+        setReceivedPayband(updatedPayband);
+
+        dispatch({
+          type: 'updatePayband',
+          payload: structuredClone(updatedPayband),
+        });
+      },
+    },
+  );
+
   const changedPayband = useMemo(() => {
-    return state.filter(
-      (pb) => pb.modified.lowerBound || pb.modified.upperBound,
-    );
+    return state
+      .filter((pb) => pb.modified.lowerBound || pb.modified.upperBound)
+      .map((pb) => ({
+        id: pb.id,
+        lowerBound: pb.lowerBound,
+        upperBound: pb.upperBound,
+      }));
   }, [state]);
 
   // const [createdPayband, setCreatedPayband] = useState([]);
@@ -161,9 +122,8 @@ export default function PaybandCriteriaPage() {
       prevStepPath="payment-rate"
       nextStepPath="../preparation/subject"
       stepPaths={['기준 설정', 'Payband 설정']}
-      onCommit={() => {
+      onCommit={async () => {
         if (state.every((pb) => !pb.error.upperBound && !pb.error.lowerBound)) {
-          // 백엔드로 삭제 api
           const cleanPayband = state.map((item) => ({
             ...item,
             modified: {
@@ -172,11 +132,24 @@ export default function PaybandCriteriaPage() {
             },
           }));
 
-          // 백엔드로 changedPayband 보냄
-          setReceivedPayband(structuredClone(cleanPayband));
-          dispatch({ type: 'updatePayband', payload: cleanPayband });
+          const patchBody = {
+            paybandCriteriaModifyDetailList: changedPayband,
+          };
 
-          // setCreatedPayband([]);
+          const res = await fetch(`/api/adjust/${adjustId}/criteria/payband`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(patchBody),
+          });
+
+          if (!res.ok) {
+            throw new Error('PATCH 요청 실패');
+          } else {
+            setReceivedPayband(structuredClone(cleanPayband));
+            dispatch({ type: 'updatePayband', payload: cleanPayband });
+          }
         }
       }}
       onRollback={() => {
@@ -184,7 +157,6 @@ export default function PaybandCriteriaPage() {
           type: 'updatePayband',
           payload: structuredClone(receivedPayband),
         });
-        // setCreatedPayband([]);
       }}
       isCommitted={!needSave}
       canMove
