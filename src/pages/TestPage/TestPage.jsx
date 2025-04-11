@@ -30,37 +30,37 @@ export default function TestPage() {
       </p>
       <ul>
         <li>
-          <Link to="/adjust/edit/0/annual/criteria/subject">
+          <Link to="/adjust/edit/1/annual/criteria/subject">
             연봉조정등록/기준설정/대상자기준설정
           </Link>
         </li>
         <li>
-          <Link to="/adjust/edit/123/annual/criteria/payment-rate">
+          <Link to="/adjust/edit/1/annual/criteria/payment-rate">
             연봉조정등록/기준설정/보상지급률설정
           </Link>
         </li>
         <li>
-          <Link to="/adjust/edit/0/annual/criteria/payband">
+          <Link to="/adjust/edit/1/annual/criteria/payband">
             연봉조정등록/기준설정/payband설정
           </Link>
         </li>
         <li>
-          <Link to="/adjust/edit/0/annual/preparation/subject">
+          <Link to="/adjust/edit/1/annual/preparation/subject">
             연봉조정등록/사전작업/대상자편성
           </Link>
         </li>
         <li>
-          <Link to="/adjust/edit/0/annual/preparation/high-performance">
+          <Link to="/adjust/edit/1/annual/preparation/high-performance">
             연봉조정등록/본연봉조정/고성과조직가산대상여부
           </Link>
         </li>
         <li>
-          <Link to="/adjust/edit/0/annual/main/result">
+          <Link to="/adjust/edit/1/annual/main/result">
             연봉조정등록/본연봉조정/조정결과미리보기
           </Link>
         </li>
         <li>
-          <Link to="/adjust/edit/123/annual/main/payband">
+          <Link to="/adjust/edit/1/annual/main/payband">
             연봉조정등록/본연봉조정/Payband적용
           </Link>
         </li>
