@@ -31,8 +31,7 @@ function SalaryAdjustmentTable({
         <tbody>
           {data.map((row, index) => (
             <AdjustTableRow
-              /* 나중에 table key로 id 값을 넘길 예정 */
-              key={row['등록일']}
+              key={row.id}
               row={row}
               index={index}
               selectedIndex={selectedIndex}
@@ -55,6 +54,7 @@ function SalaryAdjustmentTable({
 SalaryAdjustmentTable.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.number.isRequired,
       년도: PropTypes.number.isRequired,
       월구분: PropTypes.number.isRequired,
       조정제목: PropTypes.string.isRequired,
@@ -66,6 +66,7 @@ SalaryAdjustmentTable.propTypes = {
       '연봉 시작일': PropTypes.string.isRequired,
       '연봉 종료일': PropTypes.string.isRequired,
       등록자: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
     }),
   ).isRequired,
   currentPage: PropTypes.number.isRequired,

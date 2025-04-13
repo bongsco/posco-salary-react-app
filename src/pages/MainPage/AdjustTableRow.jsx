@@ -14,7 +14,7 @@ function SalaryAdjustmentTableRow({
 }) {
   return (
     /* 나중에 key값은 조정차수ID로 변경 예정 */
-    <Fragment key={row['등록일']}>
+    <Fragment key={row.id}>
       <tr
         onClick={() => handleRowClick(index)}
         key={row['등록일']}
@@ -42,18 +42,16 @@ function SalaryAdjustmentTableRow({
         {selectedIndex === index && (
           <td className={styles['button-cell']}>
             <div className={styles['button-container']}>
-              <Link to="/adjust/edit/0/annual/criteria/subject">
+              <Link to={`/adjust/edit/${row.id}/${row.url}`}>
                 <button
                   type="button"
-                  /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
                   className={styles['edit-button']}
                   aria-label="편집"
                 />
               </Link>
               <button
                 type="button"
-                /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
-                onClick={() => handleDeleteClick(row['등록일'])}
+                onClick={() => handleDeleteClick(row.id)}
                 className={styles['delete-button']}
                 aria-label="삭제"
               />
@@ -74,6 +72,7 @@ function SalaryAdjustmentTableRow({
 
 SalaryAdjustmentTableRow.propTypes = {
   row: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     년도: PropTypes.number.isRequired,
     월구분: PropTypes.number.isRequired,
     조정제목: PropTypes.string.isRequired,
@@ -85,6 +84,7 @@ SalaryAdjustmentTableRow.propTypes = {
     '연봉 시작일': PropTypes.string.isRequired,
     '연봉 종료일': PropTypes.string.isRequired,
     등록자: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
   }).isRequired,
   index: PropTypes.number.isRequired,
   selectedIndex: PropTypes.string.isRequired,
