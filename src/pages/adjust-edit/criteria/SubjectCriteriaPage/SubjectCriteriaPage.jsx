@@ -252,7 +252,7 @@ export default function SubjectCriteriaPage() {
   const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
 
   const { data } = useSWR(
-    adjust?.adjustId ? `/api/adjust/${adjust.adjustId}/criteria/subject` : null,
+    adjust?.adjustId ? `/adjust/${adjust.adjustId}/criteria/subject` : null,
 
     async (url) => {
       const res = await fetchApi(url);
@@ -421,7 +421,7 @@ export default function SubjectCriteriaPage() {
 
       // ✅ PATCH 요청
       const res = await fetchApi(
-        `/api/adjust/${adjust.adjustId}/criteria/subject`,
+        `/adjust/${adjust.adjustId}/criteria/subject`,
         {
           method: 'PATCH',
           headers: {
