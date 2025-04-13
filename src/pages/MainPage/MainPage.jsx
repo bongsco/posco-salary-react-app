@@ -33,8 +33,9 @@ function MainPage() {
   /* Filter, Sort 조건 저장 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
-  /* Timeline에서 선택한 Index 겸   /* 테이블에서 클릭한 조정 차수 정보 */
+  /* Timeline에서 선택한 Index 겸 테이블에서 클릭한 조정 차수 정보 */
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [stepperInfo, setStepperInfo] = useState(null);
 
   /* Data 불러오기 */
   // const serializeFilterOrSort = (arr) => {
@@ -199,20 +200,52 @@ function MainPage() {
     setSelectedIndex(null);
   }, [salaryAdjustmentData, currentPage, rowsPerPage, filters, sorts]);
 
-  /* 테이블이나 Timeline에서 데이터를 클릭하면 setSelectedIndex값을 변경 */
-  const handleSelectedIndex = (index) => {
+  /* 테이블이나 Timeline에서 데이터를 클릭하면 setSelectedIndex값 변경 & Stepper 정보 가져오기 */
+  const handleSelectedIndex = async (adjustId, index) => {
     setSelectedIndex(selectedIndex === index ? null : index);
+
+    const stepperResponse = await fetchApi(`/stepper/${adjustId}`);
+    if (!stepperResponse || !stepperResponse.ok) {
+      // 응답이 없거나 응답 상태가 'ok'가 아닐 경우 에러 처리
+      addError(
+        `Stepper 정보를 가져오는데, 실패했습니다. stepperResponse.status`,
+        '서버 처리 중 오류가 발생했습니다.',
+        'REGISTER_SERVER_ERROR',
+      );
+      return;
+    }
+    const stepperResJson = await stepperResponse.json();
+    /* Step Table의 Url 컬럼에는 adjustId가 반영되지 않았으므로, url앞에 adjustId 추가 */
+    const modifiedStepsData = Object.fromEntries(
+      Object.entries(stepperResJson.steps).map(([categoryKey, stepsArray]) => {
+        const currentSteps = Array.isArray(stepsArray) ? stepsArray : [];
+
+        const modifiedStepsArray = currentSteps.map((step) => {
+          if (step && typeof step.url !== 'undefined') {
+            return {
+              ...step,
+              url: `${adjustId}/${step.url}`,
+            };
+          }
+          return step;
+        });
+
+        return [categoryKey, modifiedStepsArray];
+      }),
+    );
+
+    setStepperInfo(modifiedStepsData);
   };
 
-  const handleDeleteClick = async (tableId) => {
+  const handleDeleteClick = async (adjustId) => {
     try {
-      const res = await fetchApi(`/adjust/${tableId}`, {
+      const res = await fetchApi(`/adjust/${adjustId}`, {
         method: 'DELETE',
       });
 
       if (!res.ok) {
         addError(
-          `항목 삭제 중 오류 발생 (ID: ${tableId}, Status: ${res.status})`,
+          `항목 삭제 중 오류 발생 (ID: ${adjustId}, Status: ${res.status})`,
           '서버 응답 없음',
           'DELETE_ERROR',
         );
@@ -222,7 +255,7 @@ function MainPage() {
       await mutate(`/adjust/list?${queryParams}`);
     } catch (error) {
       addError(
-        `항목 삭제 중 예외 발생 (ID: ${tableId})`,
+        `항목 삭제 중 예외 발생 (ID: ${adjustId})`,
         error.message || '알 수 없는 네트워크 오류',
         'NETWORK_ERROR',
       );
@@ -316,6 +349,7 @@ function MainPage() {
             setCurrentPage={setCurrentPage}
             handleRowClick={handleSelectedIndex}
             handleDeleteClick={handleDeleteClick}
+            stepperInfo={stepperInfo}
           />
         </div>
       </div>

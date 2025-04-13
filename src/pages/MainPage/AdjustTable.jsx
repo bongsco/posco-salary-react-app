@@ -12,6 +12,7 @@ function SalaryAdjustmentTable({
   selectedIndex,
   handleRowClick,
   handleDeleteClick,
+  stepperInfo,
 }) {
   return (
     <div className={styles['salary-adjustment-table-area']}>
@@ -35,8 +36,9 @@ function SalaryAdjustmentTable({
               row={row}
               index={index}
               selectedIndex={selectedIndex}
-              handleRowClick={() => handleRowClick(index)}
+              handleRowClick={handleRowClick}
               handleDeleteClick={handleDeleteClick}
+              stepperInfo={stepperInfo}
             />
           ))}
         </tbody>
@@ -76,6 +78,7 @@ SalaryAdjustmentTable.propTypes = {
   selectedIndex: PropTypes.number.isRequired,
   handleRowClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
+  stepperInfo: PropTypes.shape.isRequired,
 };
 
 export default SalaryAdjustmentTable;

@@ -11,12 +11,15 @@ function SalaryAdjustmentTableRow({
   selectedIndex,
   handleRowClick,
   handleDeleteClick,
+  stepperInfo,
 }) {
+  /* Stepper API 요청하기 */
+
   return (
     /* 나중에 key값은 조정차수ID로 변경 예정 */
     <Fragment key={row.id}>
       <tr
-        onClick={() => handleRowClick(index)}
+        onClick={() => handleRowClick(row.id, index)}
         key={row['등록일']}
         className={`${styles['table-body']} ${
           selectedIndex === index ? styles['selected-row'] : ''
@@ -62,7 +65,7 @@ function SalaryAdjustmentTableRow({
       {selectedIndex === index && (
         <tr>
           <td colSpan="8" className={styles.stepper}>
-            <Stepper adjId={1} />
+            <Stepper stepperData={stepperInfo} />
           </td>
         </tr>
       )}
@@ -90,6 +93,7 @@ SalaryAdjustmentTableRow.propTypes = {
   selectedIndex: PropTypes.string.isRequired,
   handleRowClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
+  stepperInfo: PropTypes.shape.isRequired,
 };
 
 export default SalaryAdjustmentTableRow;
