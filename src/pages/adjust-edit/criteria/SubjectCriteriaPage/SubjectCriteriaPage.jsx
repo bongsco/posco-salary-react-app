@@ -436,7 +436,7 @@ export default function SubjectCriteriaPage() {
       }
 
       // ✅ 최신 데이터 다시 받아오기
-      await mutate('/api/adjust/1/criteria/subject');
+      await mutate(`/adjust/${adjust.adjustId}/criteria/subject`);
 
       // 성공 시 상태 commit
       dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
