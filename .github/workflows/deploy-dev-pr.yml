@@ -30,7 +30,7 @@ jobs:
       - name: Setup .env
         run: |
           echo "REACT_APP_API_URL=${{ vars.API_URL_DEV }}" >> .env
-          echo "NODE_ENV=development" >> .env
+          echo "NODE_ENV=production" >> .env
 
       - name: Build React App
         run: PUBLIC_URL=/pr-${{github.event.pull_request.number}}/ npm run build

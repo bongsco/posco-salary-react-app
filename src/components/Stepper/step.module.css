@@ -17,12 +17,18 @@
 
   width: auto;
   text-align: center;
+}
+
+.incomplete {
   color: var(--color-grayscale-6);
+}
+
+.complete {
+  color: var(--color-primary-dark);
 }
 
 .title {
   font: var(--font-subtitle-2b-pc);
-  color: inherit;
 }
 
 .icon {
