@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useRef, useState } from 'react';
 import useSWR from 'swr';
 import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
@@ -8,6 +8,7 @@ import TableSelectIndicator from '#components/TableSelectIndicator';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import styles from './subject-assign-page.module.css';
 import '#styles/global.css';
@@ -106,10 +107,10 @@ export default function OrganizationSubject() {
 
   useSWR(
     adjust?.adjustId
-      ? `/api/adjust/${adjust.adjustId}/preparation/employees`
+      ? `/adjust/${adjust.adjustId}/preparation/employees`
       : null,
     async (url) => {
-      const res = await fetch(url);
+      const res = await fetchApi(url);
       // 상태 코드가 200-299 범위가 아니더라도,
       // 파싱 시도를 하고 에러를 던집니다.
       if (!res?.ok) {
@@ -245,8 +246,8 @@ export default function OrganizationSubject() {
 
     try {
       if (changedSubjectUseEmployee.length > 0) {
-        const res = await fetch(
-          `/api/adjust/${adjust.adjustId}/preparation/employees`,
+        const res = await fetchApi(
+          `/adjust/${adjust.adjustId}/preparation/employees`,
           {
             method: 'PATCH',
             headers: {
@@ -316,6 +317,30 @@ export default function OrganizationSubject() {
     page.untarget * rowsPerPage.untarget,
   );
 
+  const aRef = useRef(null);
+
+  const handleExcelDownload = async (type) => {
+    try {
+      const res = await fetch(
+        `/api/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
+      );
+      if (!res.ok) throw new Error('엑셀 다운로드 실패');
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      // a 태그 조작
+      if (aRef.current) {
+        aRef.current.href = url;
+        aRef.current.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        aRef.current.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <AdjustEditLayout
       prevStepPath="../criteria/payband"
@@ -345,7 +370,21 @@ export default function OrganizationSubject() {
                 />
               </div>
               <div className={styles.excelWrapper}>
-                <Button size="large" label="엑셀다운로드" variant="secondary" />
+                <Button
+                  size="large"
+                  label="엑셀다운로드"
+                  variant="secondary"
+                  onClick={() => handleExcelDownload('Subject')}
+                />
+                <a
+                  ref={aRef}
+                  href="about:blank"
+                  style={{ display: 'none' }}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
+                  엑셀 다운로드
+                </a>
               </div>
             </div>
             <div className={styles.tables}>
@@ -436,7 +475,21 @@ export default function OrganizationSubject() {
                 />
               </div>
               <div className={styles.excelWrapper}>
-                <Button size="large" label="엑셀다운로드" variant="secondary" />
+                <Button
+                  size="large"
+                  label="엑셀다운로드"
+                  variant="secondary"
+                  onClick={() => handleExcelDownload('NonSubject')}
+                />
+                <a
+                  ref={aRef}
+                  href="about:blank"
+                  style={{ display: 'none' }}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
+                  엑셀 다운로드
+                </a>
               </div>
             </div>
             <div className={styles.tables}>
