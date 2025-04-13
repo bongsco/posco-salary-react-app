@@ -337,7 +337,11 @@ export default function OrganizationSubject() {
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
     } catch (err) {
-      console.error(err);
+      addError(
+        '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+        err.message,
+        'EXCEL_DOWNLOAD_ERROR',
+      );
     }
   };
 
