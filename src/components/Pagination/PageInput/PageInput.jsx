@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './page-input.module.css';
 
 export default function PageInput({ currentPage, onPageChange, totalPage }) {
-  const [inputValue, setInputValue] = useState(currentPage.toString());
+  const [inputValue, setInputValue] = useState(currentPage);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -16,14 +16,18 @@ export default function PageInput({ currentPage, onPageChange, totalPage }) {
       if (!Number.isNaN(parsed) && parsed >= 1 && parsed <= totalPage) {
         onPageChange(parsed);
       } else {
-        setInputValue(currentPage.toString()); // 잘못된 입력은 되돌리기
+        setInputValue(currentPage); // 잘못된 입력은 되돌리기
       }
     }
   };
 
   const handleBlur = () => {
-    setInputValue(currentPage.toString());
+    setInputValue(currentPage);
   };
+
+  useEffect(() => {
+    setInputValue(currentPage);
+  }, [currentPage]);
 
   return (
     <div className={styles.input}>
@@ -32,7 +36,7 @@ export default function PageInput({ currentPage, onPageChange, totalPage }) {
         type="number"
         min={1}
         max={totalPage}
-        value={currentPage}
+        value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
