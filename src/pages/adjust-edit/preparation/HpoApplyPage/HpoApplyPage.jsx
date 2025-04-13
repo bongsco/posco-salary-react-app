@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import FilterSort from './FilterSort';
 import HighOrganizationTable from './HpoApplyTable';
@@ -50,9 +51,9 @@ function HpoApplyPage() {
   const { addError } = useErrorHandlerContext();
 
   const { data: initialHighOrganizationData } = useSWR(
-    '/api/adjust/1/preparation/high-performance',
+    '/adjust/1/preparation/high-performance',
     async (url) => {
-      const res = await fetch(url);
+      const res = await fetchApi(url);
       if (!res?.ok) {
         addError(
           `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
@@ -263,7 +264,7 @@ function HpoApplyPage() {
       changedHighPerformGroupEmployee,
     };
     try {
-      const res = await fetch('/api/adjust/1/preparation/high-performance', {
+      const res = await fetchApi('/adjust/1/preparation/high-performance', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -276,7 +277,7 @@ function HpoApplyPage() {
       }
 
       // ✅ 최신 데이터 다시 불러오기
-      await mutate('/api/adjust/1/preparation/high-performance');
+      await mutate('/adjust/1/preparation/high-performance');
     } catch (error) {
       addError(
         'Failed to Send Data',
