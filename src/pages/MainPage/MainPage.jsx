@@ -17,13 +17,44 @@ const filterOptions = {
     options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     currentSelectedValue: '',
   },
+  조정유형: {
+    optionType: 'dropdown',
+    options: ['Base Up', '승진자연봉조정', '정기연봉조정'],
+    currentSelectedValue: '',
+  },
+  상태: {
+    optionType: 'dropdown',
+    options: ['완료', '진행중'],
+    currentSelectedValue: '',
+  },
+  통합인사반영여부: {
+    optionType: 'dropdown',
+    options: ['반영', '미반영'],
+    currentSelectedValue: '',
+  },
   등록자: { optionType: 'text', initialValue: '' },
 };
 
 /* Sort Option */
 const sortOptions = {
-  keys: ['년도', '등록일'],
+  keys: ['년도', '월구분', '등록일'],
   values: ['오름차순', '내림차순'],
+};
+
+const adjustmentTypeMapping = {
+  'Base Up': 'BASEUP',
+  승진자연봉조정: 'PROMOTED',
+  정기연봉조정: 'ANNUAL',
+};
+
+const filterSortMapping = {
+  년도: 'year',
+  월구분: 'month',
+  조정유형: 'adjType',
+  상태: 'state',
+  통합인사반영여부: 'isSubmitted',
+  등록일: 'baseDate',
+  등록자: 'author',
 };
 
 function MainPage() {
@@ -38,21 +69,56 @@ function MainPage() {
   const [stepperInfo, setStepperInfo] = useState(null);
 
   /* Data 불러오기 */
-  // const serializeFilterOrSort = (arr) => {
-  //   return arr.map(({ key, value }) => `${key}:${value}`).join(';');
-  // };
+  // filter 단일 파라미터로 직렬화 => 코드 수정 예정
+  const serializeFilterOption = (arr) => {
+    return arr
+      .map(({ key, value }) => {
+        const filterKey = filterSortMapping[key];
+        let filterValue = value;
+
+        if (filterKey === 'adjType') {
+          filterValue = adjustmentTypeMapping[value];
+        } else if (filterKey === 'state') {
+          filterValue = value === '완료';
+        } else if (filterKey === 'isSubmitted') {
+          filterValue = value === '반영';
+        }
+
+        return `${filterKey}=${filterValue}`;
+      })
+      .join('&');
+  };
+
+  // 정렬 조건 key값 변환
+  const convertSort = (arr) => {
+    if (!Array.isArray(arr) || arr.length === 0) {
+      return null;
+    }
+
+    const sortArray = arr.map(({ key, order }) => {
+      const sortKey = filterSortMapping[key];
+      return { [sortKey]: order };
+    });
+    return sortArray;
+  };
+
   const { addError } = useErrorHandlerContext();
 
-  const queryParams = new URLSearchParams({
+  // 정렬 조건 변환 및 queryParams 생성
+  const sortParam = convertSort(sorts);
+  const queryParamsObj = {
     page: currentPage,
     size: rowsPerPage,
-  }).toString();
+  };
+  if (sortParam) {
+    queryParamsObj.sort = JSON.stringify(sortParam);
+  }
+  const queryParams = new URLSearchParams(queryParamsObj).toString();
 
   const { data: salaryAdjustmentData } = useSWR(
-    `/adjust/list?${queryParams}`,
+    `/adjust/list?${queryParams}${!filters || filters.length === 0 ? '' : `&${serializeFilterOption(filters)}`}`,
     async (requestUrl) => {
       const res = await fetchApi(requestUrl);
-
       if (!res?.ok) {
         addError(
           `Sent Request to not found API (${process.env.REACT_APP_API_URL}) and the connection refused.`,
@@ -137,11 +203,6 @@ function MainPage() {
     }
 
     /* POST 요청 형식으로 Mapping */
-    const adjustmentTypeMapping = {
-      'Base Up': 'BASEUP',
-      승진자연봉조정: 'PROMOTED',
-      정기연봉조정: 'ANNUAL',
-    };
     const formatDate = (dateInput) => {
       const dateObj = new Date(dateInput);
       const year = dateObj.getFullYear();
@@ -215,6 +276,7 @@ function MainPage() {
       return;
     }
     const stepperResJson = await stepperResponse.json();
+
     /* Step Table의 Url 컬럼에는 adjustId가 반영되지 않았으므로, url앞에 adjustId 추가 */
     const modifiedStepsData = Object.fromEntries(
       Object.entries(stepperResJson.steps).map(([categoryKey, stepsArray]) => {
