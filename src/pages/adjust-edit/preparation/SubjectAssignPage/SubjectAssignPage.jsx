@@ -1,5 +1,5 @@
 import { useReducer, useRef, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
@@ -265,6 +265,7 @@ export default function OrganizationSubject() {
           );
         }
       }
+      await mutate(`/adjust/${adjust.adjustId}/preparation/employees`);
 
       // 💾 성공 시 상태 동기화
       setSavedEmployees([...employees]);
