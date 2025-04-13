@@ -3,6 +3,7 @@ import useSWR, { mutate } from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import fetchApi from '#utils/fetch';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
 import PaymentSelection from './PaymentSelection';
@@ -254,7 +255,7 @@ export default function SubjectCriteriaPage() {
     adjust?.adjustId ? `/api/adjust/${adjust.adjustId}/criteria/subject` : null,
 
     async (url) => {
-      const res = await fetch(url);
+      const res = await fetchApi(url);
       if (!res.ok) {
         const errorData = await res.json();
 
@@ -419,7 +420,7 @@ export default function SubjectCriteriaPage() {
       };
 
       // ✅ PATCH 요청
-      const res = await fetch(
+      const res = await fetchApi(
         `/api/adjust/${adjust.adjustId}/criteria/subject`,
         {
           method: 'PATCH',
