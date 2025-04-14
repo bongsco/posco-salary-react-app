@@ -1,5 +1,6 @@
 import { useReducer, useRef, useState } from 'react';
 import useSWR, { mutate } from 'swr';
+import constant from '#/constant';
 import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
@@ -354,6 +355,7 @@ export default function OrganizationSubject() {
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommitted={isCommitted}
+      stepId={constant.step.annual.preparation.subject}
       canMove
     >
       <div className={styles.contentWrapper}>
