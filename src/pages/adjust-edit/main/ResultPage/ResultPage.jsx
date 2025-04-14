@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
+import Button from '#components/Button';
 import PageNation from '#components/Pagination';
+import Switch from '#components/Switch';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
@@ -229,16 +231,45 @@ export default function ResultPage() {
     >
       <h2>정기 연봉 조정 결과</h2>
       <div className={styles['table-container']}>
-        <FilterSort
-          filterOptions={filterOptions}
-          sortOptions={sortOptions}
-          onSubmit={handleFilterSortModal}
-          filters={filters}
-          sortList={sorts}
-          tableMode={tableMode}
-          setTableMode={setTableMode}
-          onClickExcelDownloadButton={() => handleExcelDownload('adjustResult')}
-        />
+        <div className={styles['filter-sort-area']}>
+          <FilterSort
+            filterOptions={filterOptions}
+            sortOptions={sortOptions}
+            onSubmit={handleFilterSortModal}
+            filters={filters}
+            sortList={sorts}
+          />
+
+          <div className={styles['right-group']}>
+            <div className={styles['switch-container']}>
+              <div className={styles['switch-label']}>카드</div>
+              <Switch
+                isOn={tableMode}
+                onClick={() => setTableMode((prev) => !prev)}
+              />
+              <div className={styles['switch-label']}>테이블</div>
+            </div>
+            <div>
+              <Button
+                variant="secondary"
+                size="large"
+                label="엑셀다운로드"
+                onClick={() => {
+                  handleExcelDownload('adjustResult');
+                }}
+              />
+              <a
+                ref={aRef}
+                href="about:blank"
+                style={{ display: 'none' }}
+                aria-hidden="true"
+                tabIndex={-1}
+              >
+                엑셀 다운로드
+              </a>
+            </div>
+          </div>
+        </div>
         <div className={styles['table-area']}>
           {tableMode && (
             <table className={styles.table}>
