@@ -6,6 +6,7 @@ import Switch from '#components/Switch';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
 import fetchApi from '#utils/fetch';
 import Card from './Card';
 import FilterSort from './FilterSort';
@@ -228,6 +229,7 @@ export default function ResultPage() {
       stepPaths={['본 연봉조정', '조정 결과 미리보기']}
       isCommitted
       canMove
+      stepId={constant.step.annual.criteria.subject}
     >
       <h2>정기 연봉 조정 결과</h2>
       <div className={styles['table-container']}>
