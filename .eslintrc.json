@@ -19,7 +19,7 @@
       "node": true,
       "alias": {
         "map": [
-          ["#/*", "./src"],
+          ["#src/*", "./src"],
           ["#components", "./src/components"],
           ["#pages", "./src/pages"],
           ["#styles", "./src/styles"],
