@@ -4,6 +4,7 @@ import Input from '#components/Input';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
 import fetchApi from '#utils/fetch';
 import CompensationTable from './PaymentRateTable';
 import styles from './payment-rate-criteria-page.module.css';
@@ -325,6 +326,7 @@ export default function PaymentRateCriteriaPage() {
       onCommit={handleCommit}
       onRollback={() => dispatch({ type: 'Rollback' })}
       isCommitted={state.isCommitted}
+      stepId={constant.step.annual.criteria.paymentRate}
     >
       <div className={styles.container}>
         <section className={styles.section}>
