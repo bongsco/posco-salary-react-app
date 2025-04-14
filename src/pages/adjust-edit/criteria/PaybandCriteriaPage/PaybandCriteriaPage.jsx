@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
 import fetchApi from '#utils/fetch';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-criteria-page.module.css';
@@ -123,6 +124,7 @@ export default function PaybandCriteriaPage() {
       prevStepPath="payment-rate"
       nextStepPath="../preparation/subject"
       stepPaths={['기준 설정', 'Payband 설정']}
+      stepId={constant.step.annual.criteria.subject}
       onCommit={async () => {
         if (state.every((pb) => !pb.error.upperBound && !pb.error.lowerBound)) {
           const cleanPayband = state.map((item) => ({
