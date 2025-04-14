@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
 import fetchApi from '#utils/fetch';
 import PaybandApplyArea from './PaybandApplyArea';
 import '#styles/global.css';
@@ -192,6 +193,7 @@ function PaybandApplyPage() {
       onCommit={handleCommit}
       onRollback={() => dispatch({ type: 'rollback' })}
       isCommitted={state.isCommitted}
+      stepId={constant.step.annual.main.payband}
     >
       <h1>상한 초과자 Payband 적용 여부 설정</h1>
       <PaybandApplyArea
