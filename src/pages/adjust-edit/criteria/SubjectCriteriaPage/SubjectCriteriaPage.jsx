@@ -1,9 +1,9 @@
 import { useMemo, useReducer, useState } from 'react';
 import useSWR, { mutate } from 'swr';
-import constant from '#/constant';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
 import fetchApi from '#utils/fetch';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
