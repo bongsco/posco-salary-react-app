@@ -10,9 +10,8 @@ export default function Pagination({
   rowsPerPage,
   onRowsPerPageChange,
   pageOptions = [5, 10, 15, 20],
+  totalPage = 10, // ✅ 전체 페이지 수
 }) {
-  const totalPage = 10; // ✅ 전체 페이지 수
-
   // ✅ 페이지 변경 핸들러 (버튼 클릭 시 실행)
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPage) {
@@ -58,10 +57,12 @@ Pagination.propTypes = {
   rowsPerPage: PropTypes.number, // ✅ 한 페이지에 표시할 행 개수 필수
   onRowsPerPageChange: PropTypes.func.isRequired, // ✅ 행 개수 변경 핸들러 필수
   pageOptions: PropTypes.arrayOf(PropTypes.number),
+  totalPage: PropTypes.number, // ✅ 전체 페이지 수 필수
 };
 
 Pagination.defaultProps = {
   currentPage: 1,
   rowsPerPage: 10, // ✅ 기본값: 10개 행 표시
   pageOptions: [5, 10, 20, 50],
+  totalPage: 10, // ✅ 기본값: 10페이지
 };

@@ -23,6 +23,7 @@ export const Default = {
     currentPage: 1,
     rowsPerPage: 10,
     pageOptions: [5, 100, 200, 300],
+    totalPage: 10,
   },
 };
 
