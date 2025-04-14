@@ -1,6 +1,5 @@
 import { useReducer, useRef, useState } from 'react';
 import useSWR, { mutate } from 'swr';
-import constant from '#/constant';
 import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
@@ -9,6 +8,7 @@ import TableSelectIndicator from '#components/TableSelectIndicator';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
 import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import styles from './subject-assign-page.module.css';
