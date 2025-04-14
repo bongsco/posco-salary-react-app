@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
 import PageNation from '#components/Pagination';
 import { useAdjustContext } from '#contexts/AdjustContext';
@@ -188,6 +188,38 @@ export default function ResultPage() {
       setRowsPerPage(5);
     }
   }, [tableMode]);
+
+  const aRef = useRef(null);
+
+  const handleExcelDownload = async (type) => {
+    try {
+      const params = new URLSearchParams({
+        adjustId: adjust.adjustId,
+        pageType: type,
+      });
+      const res = await fetchApi(`/adjust/excel/download?${params.toString()}`);
+      if (!res.ok) {
+        throw new Error('GET 요청 실패');
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      // a 태그 조작
+      if (aRef.current) {
+        aRef.current.href = url;
+        aRef.current.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        aRef.current.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+    } catch (err) {
+      addError(
+        '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+        err.message,
+        'EXCEL_DOWNLOAD_ERROR',
+      );
+    }
+  };
   return (
     <AdjustEditLayout
       prevStepPath="payband"
@@ -205,22 +237,7 @@ export default function ResultPage() {
           sortList={sorts}
           tableMode={tableMode}
           setTableMode={setTableMode}
-          onClickExcelDownloadButton={async () => {
-            const params = new URLSearchParams({
-              adjustId: adjust.adjustId,
-              pageType: 'adjustResult',
-            });
-            const res = await fetchApi(
-              `/adjust/excel/download?${params.toString()}`,
-            );
-            if (!res.ok) {
-              throw new Error('GET 요청 실패');
-            }
-            // const blob = await res.blob();
-            // const fileName = `bongsco_adjustResult_${new Date().toISOString().slice(0, 10)}.xlsx`;
-
-            // saveAs(blob, fileName);
-          }}
+          onClickExcelDownloadButton={() => handleExcelDownload('adjustResult')}
         />
         <div className={styles['table-area']}>
           {tableMode && (
