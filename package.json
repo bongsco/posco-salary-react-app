@@ -82,7 +82,7 @@
     "webpack": "5.98.0"
   },
   "imports": {
-    "#/*": "./src/*",
+    "#src/*": "./src/*",
     "#components/*": "./src/components/*",
     "#pages/*": "./src/pages/*",
     "#styles/*": "./src/styles/*",
