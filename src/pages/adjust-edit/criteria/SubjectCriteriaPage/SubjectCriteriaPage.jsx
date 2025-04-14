@@ -1,5 +1,6 @@
 import { useMemo, useReducer, useState } from 'react';
 import useSWR, { mutate } from 'swr';
+import constant from '#/constant';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
@@ -460,6 +461,7 @@ export default function SubjectCriteriaPage() {
   return (
     <AdjustEditLayout
       stepPaths={['기준 설정', '대상자 기준 설정']}
+      stepId={constant.step.annual.criteria.subject}
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommitted={!isModified}
