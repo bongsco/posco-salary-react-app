@@ -95,10 +95,15 @@
 .column-grade,
 .column-rank,
 .column-high-organization,
-.column-perform-add-payment {
+.column-perform-add-payment,
+.column-bonus-multiplier {
   white-space: nowrap;
 }
 
 .column-dep {
   min-width: 60px;
+}
+
+.changedCell {
+  background-color: #ecffd4 !important;
 }
