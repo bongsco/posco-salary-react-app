@@ -80,6 +80,9 @@ const initialState = {
   isCommitted: true,
 };
 
+const isSameData = (data1, data2) =>
+  JSON.stringify(data1) === JSON.stringify(data2);
+
 function reducer(state, action) {
   switch (action.type) {
     case 'Init': {
@@ -102,27 +105,38 @@ function reducer(state, action) {
         provideRate: 0,
       };
 
-      return {
-        ...state,
-        rankRate: {
-          ...state.rankRate,
-          [grade]: {
-            ...existingGrade,
-            [rank]: {
-              ...existingRank,
-              [key]: value,
-            },
+      const updatedRankRate = {
+        ...state.rankRate,
+        [grade]: {
+          ...existingGrade,
+          [rank]: {
+            ...existingRank,
+            [key]: value,
           },
         },
-        isCommitted: false,
+      };
+
+      const isCommitted =
+        isSameData(updatedRankRate, state.backup.rankRate) &&
+        isSameData(state.adjInfo, state.backup.adjInfo);
+
+      return {
+        ...state,
+        rankRate: updatedRankRate,
+        isCommitted,
       };
     }
     case 'ChangeAdjInfo': {
       const { key, value } = action.payload;
+      const updatedAdjInfo = { ...state.adjInfo, [key]: value };
+
+      const isCommitted =
+        isSameData(state.rankRate, state.backup.rankRate) &&
+        isSameData(updatedAdjInfo, state.backup.adjInfo);
       return {
         ...state,
         adjInfo: { ...state.adjInfo, [key]: value },
-        isCommitted: false,
+        isCommitted,
       };
     }
     case 'Commit': {
