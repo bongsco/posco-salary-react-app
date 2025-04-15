@@ -9,7 +9,8 @@
       "#assets/*": ["./src/assets/*"],
       "#layouts/*": ["./src/layouts/*/index.js"],
       "#contexts/*": ["./src/contexts/*"],
-      "#hooks/*": ["./src/hooks/*"]
+      "#hooks/*": ["./src/hooks/*"],
+      "#src/*": ["./src/*"]
     },
     "module": "ESNext",
     "target": "es6",

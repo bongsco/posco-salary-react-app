@@ -1,5 +1,10 @@
 import { useMemo, useReducer, useState } from 'react';
+import useSWR, { mutate } from 'swr';
+import { useAdjustContext } from '#contexts/AdjustContext';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
+import fetchApi from '#utils/fetch';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
 import PaymentSelection from './PaymentSelection';
@@ -7,39 +12,8 @@ import styles from './subject-criteria-page.module.css';
 import '#styles/global.css';
 
 export default function SubjectCriteriaPage() {
-  const initialDateValues = {
-    baseDate: null,
-    expStartDate: null,
-    expEndDate: null,
-  };
-  const initialPayments = {
-    전체: false,
-    연봉직: false,
-    '비서직(정규)': false,
-    '비서직(계약)': false,
-    별정직: false,
-    계약직: false,
-    '임시직(시간)': false,
-    '임시직(일)': false,
-    임원: false,
-  };
-  const initialGrades = {
-    all: false,
-    P: {
-      all: false,
-      P1: false,
-      P2: false,
-      P3: false,
-      P4: false,
-      P5: false,
-      P6: false,
-    },
-    R: { all: false, R1: false, R2: false, R3: false },
-    A: { all: false, A1: false, A2: false, A3: false },
-    O: { all: false, O1: false, O2: false, O3: false },
-    D: { all: false, D1: false, D2: false, D3: false },
-    G: { all: false, G1: false, G2: false, G3: false },
-  };
+  const { adjust } = useAdjustContext();
+  const { addError } = useErrorHandlerContext();
 
   const structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
 
@@ -143,6 +117,42 @@ export default function SubjectCriteriaPage() {
     };
   }
 
+  function makeGradeStructureFromData(grades) {
+    const structure = { all: false };
+
+    grades.forEach(({ name, checked }) => {
+      const group = name.charAt(0);
+      if (!structure[group]) {
+        structure[group] = { all: false };
+      }
+      structure[group][name] = checked;
+    });
+
+    // 그룹별 all 계산
+    Object.entries(structure).forEach(([group, grade]) => {
+      if (group === 'all') return;
+      const gradeValues = Object.entries(grade)
+        .filter(([k]) => k !== 'all')
+        .map(([, v]) => v);
+      structure[group].all =
+        gradeValues.length > 0 && gradeValues.every(Boolean);
+    });
+
+    // 전체 all 계산
+    const allChecked = Object.entries(structure)
+      .filter(([k]) => k !== 'all')
+      .flatMap(([, group]) =>
+        Object.entries(group)
+          .filter(([k]) => k !== 'all')
+          .map(([, v]) => v),
+      )
+      .every((v) => v === true);
+
+    structure.all = allChecked;
+
+    return structure;
+  }
+
   function criteriaReducer(state, action) {
     const { type, payload } = action;
 
@@ -226,21 +236,81 @@ export default function SubjectCriteriaPage() {
 
   const [dateState, dispatchDate] = useReducer(
     criteriaReducer,
-    initialDateValues,
+    {},
     createInitialState,
   );
   const [paymentState, dispatchPayment] = useReducer(
     criteriaReducer,
-    initialPayments,
+    {},
     createInitialState,
   );
   const [gradeState, dispatchGrade] = useReducer(
     criteriaReducer,
-    initialGrades,
+    {},
     createInitialState,
   );
 
   const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
+
+  const { data } = useSWR(
+    adjust?.adjustId ? `/adjust/${adjust.adjustId}/criteria/subject` : null,
+
+    async (url) => {
+      const res = await fetchApi(url);
+      if (!res.ok) {
+        const errorData = await res.json();
+
+        // 제목 내용 ID
+        addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
+      }
+      return res.json();
+    },
+    {
+      onSuccess: (response) => {
+        // 날짜 초기화
+        dispatchDate({
+          type: 'SET_PREVIOUS',
+          payload: {
+            baseDate: response.baseDate,
+            expStartDate: response.expStartDate,
+            expEndDate: response.expEndDate,
+          },
+        });
+        dispatchDate({ type: 'RESET_TO_PREVIOUS' });
+
+        // 직급 초기화 (전체 선택 계산 포함)
+        const allChecked = response.payments.every((p) => p.checked);
+        const newPayments = {};
+        response.payments.forEach((p) => {
+          newPayments[p.name] = p.checked;
+        });
+        newPayments['전체'] = allChecked;
+
+        dispatchPayment({ type: 'SET_PREVIOUS', payload: newPayments });
+        dispatchPayment({ type: 'RESET_TO_PREVIOUS' });
+
+        const parsedGrades = makeGradeStructureFromData(response.grades);
+        response.grades.forEach(({ name, checked }) => {
+          const category = name.charAt(0);
+          if (parsedGrades[category]?.[name] !== undefined) {
+            parsedGrades[category][name] = checked;
+          }
+        });
+
+        parsedGrades.all = Object.entries(parsedGrades)
+          .filter(([k]) => k !== 'all')
+          .flatMap(([, group]) =>
+            Object.entries(group)
+              .filter(([k]) => k !== 'all')
+              .map(([, v]) => v),
+          )
+          .every((v) => v === true);
+
+        dispatchGrade({ type: 'SET_PREVIOUS', payload: parsedGrades });
+        dispatchGrade({ type: 'RESET_TO_PREVIOUS' });
+      },
+    },
+  );
 
   const isModified = useMemo(() => {
     const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -316,17 +386,70 @@ export default function SubjectCriteriaPage() {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setHasTriedSubmit(true);
     if (!formValidation.isValid) return;
 
-    dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
-    dispatchPayment({ type: 'SET_PREVIOUS', payload: paymentState.current });
-    dispatchGrade({ type: 'SET_PREVIOUS', payload: gradeState.current });
+    try {
+      // ✅ gradeSelections: name → id 매핑을 위한 gradeDtos 필요 (data.grades 사용)
+      const gradeSelections = {};
+      data.grades.forEach(({ id, name }) => {
+        const category = name.charAt(0);
+        const checked = gradeState.current?.[category]?.[name];
+        if (checked !== undefined) {
+          gradeSelections[id] = checked;
+        }
+      });
 
-    dispatchDate({ type: 'MARK_ALL_COMMITTED' });
-    dispatchPayment({ type: 'MARK_ALL_COMMITTED' });
-    dispatchGrade({ type: 'MARK_ALL_COMMITTED' });
+      // ✅ paymentSelections: name → id 매핑 (data.payments 사용)
+      const paymentSelections = {};
+      data.payments.forEach(({ id, name }) => {
+        if (name === '전체') return; // ❌ 전체는 제외
+        const checked = paymentState.current?.[name];
+        if (typeof checked === 'boolean') {
+          paymentSelections[String(id)] = checked;
+        }
+      });
+
+      // ✅ PATCH payload 구성
+      const patchBody = {
+        baseDate: dateState.current.baseDate,
+        exceptionStartDate: dateState.current.expStartDate,
+        exceptionEndDate: dateState.current.expEndDate,
+        gradeSelections,
+        paymentSelections,
+      };
+
+      // ✅ PATCH 요청
+      const res = await fetchApi(
+        `/adjust/${adjust.adjustId}/criteria/subject`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(patchBody),
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error('PATCH 요청 실패');
+      }
+
+      // ✅ 최신 데이터 다시 받아오기
+      await mutate(`/adjust/${adjust.adjustId}/criteria/subject`);
+
+      // 성공 시 상태 commit
+      dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
+      dispatchPayment({ type: 'SET_PREVIOUS', payload: paymentState.current });
+      dispatchGrade({ type: 'SET_PREVIOUS', payload: gradeState.current });
+
+      dispatchDate({ type: 'MARK_ALL_COMMITTED' });
+      dispatchPayment({ type: 'MARK_ALL_COMMITTED' });
+      dispatchGrade({ type: 'MARK_ALL_COMMITTED' });
+    } catch (error) {
+      addError(error.status, error.message, 'CRITERIA_ERROR');
+    }
   };
 
   const handleCancel = () => {
@@ -338,6 +461,7 @@ export default function SubjectCriteriaPage() {
   return (
     <AdjustEditLayout
       stepPaths={['기준 설정', '대상자 기준 설정']}
+      stepId={constant.step.annual.criteria.subject}
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommitted={!isModified}

@@ -26,7 +26,8 @@
           ["#assets", "./src/assets"],
           ["#layouts", "./src/layouts"],
           ["#contexts", "./src/contexts"],
-          ["#hooks", "./src/hooks"]
+          ["#hooks", "./src/hooks"],
+          ["#src/*", "./src"]
         ],
         "extensions": [".js", ".jsx", ".css"]
       }

@@ -1,189 +1,133 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import useSWR, { mutate } from 'swr';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
+import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import FilterSort from './FilterSort';
 import HighOrganizationTable from './HpoApplyTable';
 import styles from './hpo-apply-page.module.css';
 import '#styles/global.css';
-import '#styles/table.css';
 
-/* Sample Data */
-const initialHighOrganizationData = [
-  {
-    isChecked: false,
-    직번: 'pd09486',
-    직원성명: '김서영',
-    부서명: 'IT사업실 ERP운영섹션',
-    직급명: 'P6',
-    등급코드: 'S',
-    '고성과조직 가산 대상 여부': true,
-  },
-  {
-    isChecked: false,
-    직번: 'pd08455',
-    직원성명: '김종하',
-    부서명: 'IT사업실 스마트팩토리개발팀',
-    직급명: 'P5',
-    등급코드: 'A',
-    '고성과조직 가산 대상 여부': true,
-  },
-  {
-    isChecked: false,
-    직번: 'pd08206',
-    직원성명: '김현아',
-    부서명: 'IT사업실 이차전지운영팀',
-    직급명: 'P4',
-    등급코드: 'B+',
-    '고성과조직 가산 대상 여부': true,
-  },
-  {
-    isChecked: false,
-    직번: 'pd07195',
-    직원성명: '이은재',
-    부서명: 'IT사업실 이차전지개발팀',
-    직급명: 'P3',
-    등급코드: 'B',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd04274',
-    직원성명: '한상진',
-    부서명: 'IT사업실 ERP개발섹션',
-    직급명: 'P2',
-    등급코드: 'C',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00111',
-    직원성명: '홍길동',
-    부서명: '에너지조선마케팅실 산기플랜트팀',
-    직급명: 'P6',
-    등급코드: 'S',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00222',
-    직원성명: '김길호',
-    부서명: '에너지조선마케팅실 산기플랜트팀',
-    직급명: 'P6',
-    등급코드: 'A',
-    '고성과조직 가산 대상 여부': true,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00333',
-    직원성명: '서지현',
-    부서명: '에너지조선마케팅실 산기플랜트팀',
-    직급명: 'P6',
-    등급코드: 'B',
-    '고성과조직 가산 대상 여부': true,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00444',
-    직원성명: '장수민',
-    부서명: '에너지조선마케팅실 산기플랜트팀',
-    직급명: 'P6',
-    등급코드: 'S',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00555',
-    직원성명: '이창진',
-    부서명: 'IT사업실 ERP개발섹션',
-    직급명: 'P6',
-    등급코드: 'B',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00666',
-    직원성명: '손서원',
-    부서명: 'IT사업실 ERP개발섹션',
-    직급명: 'P6',
-    등급코드: 'A',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00777',
-    직원성명: '이장우',
-    부서명: '에너지조선마케팅실 산기플랜트팀',
-    직급명: 'P6',
-    등급코드: 'A',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00888',
-    직원성명: '한다연',
-    부서명: 'IT사업실 ERP개발섹션',
-    직급명: 'P6',
-    등급코드: 'A',
-    '고성과조직 가산 대상 여부': false,
-  },
-  {
-    isChecked: false,
-    직번: 'pd00999',
-    직원성명: '이기문',
-    부서명: '에너지조선마케팅실 산기플랜트팀',
-    직급명: 'P6',
-    등급코드: 'A',
-    '고성과조직 가산 대상 여부': false,
-  },
-];
-
-/* Filter Option에 대한 Sample Data */
+/* Filter Option */
 const filterOptions = {
   직번: { optionType: 'text', initialValue: '' },
-  직원성명: {
+  성명: {
     optionType: 'text',
     initialValue: '',
   },
   부서명: {
-    optionType: 'dropdown',
-    options: [
-      '에너지조선마케팅실 산기플랜트팀',
-      'IT사업실 ERP개발섹션',
-      'IT사업실 ERP운영섹션',
-      'IT사업실 이차전지개발팀',
-      'IT사업실 이차전지운영팀',
-      'IT사업실 스마트팩토리개발팀',
-    ],
+    optionType: 'text',
     initialValue: '',
   },
-  등급코드: {
+  직급명: {
+    optionType: 'text',
+    initialValue: '',
+  },
+  평가등급: {
     optionType: 'dropdown',
     options: ['S', 'A', 'B+', 'B', 'C'],
     initialValue: '',
   },
 };
 
-/* Sort Option에 대한 Sample Data */
+/* Sort Option */
 const sortOptions = {
   keys: [
-    '직원성명',
     '직번',
+    '성명',
     '부서명',
     '직급명',
-    '등급코드',
+    '평가등급',
     '고성과조직 가산 대상 여부',
   ],
   values: ['오름차순', '내림차순'],
 };
 
 function HpoApplyPage() {
-  /* 현재 수정하고 있는 테이블 데이터 */
-  const [highOrganizationData, setHighOrganizationData] = useState(
-    initialHighOrganizationData,
+  /* Backend API 연결 */
+  const [highOrganizationData, setHighOrganizationData] = useState(null);
+
+  const { addError } = useErrorHandlerContext();
+
+  const { data: initialHighOrganizationData } = useSWR(
+    '/adjust/1/preparation/high-performance',
+    async (url) => {
+      const res = await fetchApi(url);
+      if (!res?.ok) {
+        addError(
+          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+          'error message',
+          'CONNECTION_REFUSED',
+        );
+      }
+      const resJson = await res.json();
+
+      const processed = resJson.highPerformanceEmployees.map(
+        ({
+          employeeId,
+          empNum,
+          name,
+          depName,
+          gradeName,
+          rankName,
+          isInHpo,
+        }) => ({
+          isChecked: false,
+          employeeId,
+          직번: empNum,
+          성명: name,
+          부서명: depName,
+          직급명: gradeName,
+          평가등급: rankName,
+          '고성과조직 가산 대상 여부': isInHpo,
+        }),
+      );
+      resJson.highPerformanceEmployees = processed;
+
+      return resJson;
+    },
+    {
+      onSuccess: (response) => {
+        setHighOrganizationData(response.highPerformanceEmployees);
+      },
+    },
   );
-  /* 마지막으로 저장된 데이터 */
-  const [prevHighOrganizationData, setPrevHighOrganizationData] = useState(
-    initialHighOrganizationData,
+
+  const salaryIncrementByRank = useMemo(() => {
+    const salaryIncrementArray =
+      initialHighOrganizationData?.salaryIncrementByRank || [];
+
+    const calculatedSalaryPerRank = salaryIncrementArray.reduce(
+      (accumulator, currentItem) => {
+        const grade = currentItem.gradeName;
+        const rank = currentItem.rankCode;
+        const incrementRate = currentItem.salaryIncrementRate;
+        const bonusValue = currentItem.bonusMultiplier;
+
+        if (!accumulator[grade]) {
+          accumulator[grade] = {};
+        }
+        if (!accumulator[grade][rank]) {
+          accumulator[grade][rank] = {};
+        }
+        accumulator[grade][rank] = {
+          salaryIncrementRate: incrementRate,
+          bonusMultiplier: bonusValue,
+        };
+
+        return accumulator;
+      },
+      {},
+    );
+
+    return calculatedSalaryPerRank;
+  }, [initialHighOrganizationData]);
+
+  const hpoSalaryInfo = useMemo(
+    () => initialHighOrganizationData?.hpoSalaryInfo,
+    [initialHighOrganizationData],
   );
 
   /* 고성과조직 Table 가산대상 여부 Switch 관리 */
@@ -254,8 +198,7 @@ function HpoApplyPage() {
   };
 
   const processTableData = useCallback(() => {
-    /* 일단은 필터, 정렬, 페이지네이션이 돌아가기만 하는 코드로 냅둠 */
-    const filteredData = highOrganizationData.filter((item) =>
+    const filteredData = highOrganizationData?.filter((item) =>
       filters.every(({ key, value }) => {
         const itemValue = String(item[key]);
         return (
@@ -264,9 +207,11 @@ function HpoApplyPage() {
       }),
     );
 
-    const sortedData = sortObject(filteredData, sorts);
+    const sortedData = sortObject(
+      filteredData ?? [],
+      sorts?.length ? sorts : [{ key: 'employeeId', order: '오름차순' }],
+    );
 
-    /* 위에까지가 정렬, 페이징 알고리즘 적용하는 코드들 */
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
     if (currentPage > totalPages && totalPages !== 0) {
       setCurrentPage(totalPages || 1);
@@ -280,19 +225,73 @@ function HpoApplyPage() {
 
   /* 페이지 수정 사항이 있는지 확인하는 함수 -> isCommitted에 사용 */
   const isModified = () => {
-    return highOrganizationData.some(
-      (item, index) =>
+    if (!initialHighOrganizationData) {
+      return false;
+    }
+    return highOrganizationData?.some((item, index) => {
+      return (
         item['고성과조직 가산 대상 여부'] !==
-        prevHighOrganizationData[index]['고성과조직 가산 대상 여부'],
-    );
+        initialHighOrganizationData.highPerformanceEmployees[index][
+          '고성과조직 가산 대상 여부'
+        ]
+      );
+    });
   };
 
-  const handleSave = () => {
-    setPrevHighOrganizationData(highOrganizationData);
+  const handleSave = async () => {
+    /* checkedItems 배열 초기화 */
+    setCheckedItems([]);
+
+    /* 변경된 대상 필터링 */
+    const changedHighPerformGroupEmployee = highOrganizationData.reduce(
+      (acc, item, index) => {
+        const initialItem =
+          initialHighOrganizationData.highPerformanceEmployees?.[index];
+        if (
+          item['고성과조직 가산 대상 여부'] !==
+          initialItem?.['고성과조직 가산 대상 여부']
+        ) {
+          acc.push({
+            employeeId: item.employeeId,
+            isInHpo: item['고성과조직 가산 대상 여부'],
+          });
+        }
+        return acc;
+      },
+      [],
+    );
+
+    const patchBody = {
+      changedHighPerformGroupEmployee,
+    };
+    try {
+      const res = await fetchApi('/adjust/1/preparation/high-performance', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(patchBody),
+      });
+
+      if (!res.ok) {
+        throw new Error('PATCH 요청 실패');
+      }
+
+      // ✅ 최신 데이터 다시 불러오기
+      await mutate('/adjust/1/preparation/high-performance');
+    } catch (error) {
+      addError(
+        'Failed to Send Data',
+        'An error occurred while sending data. Please try again later.',
+        'CONNECTION_REFUSED',
+      );
+    }
   };
 
   const handleCancel = () => {
-    setHighOrganizationData(prevHighOrganizationData);
+    setHighOrganizationData(
+      initialHighOrganizationData.highPerformanceEmployees,
+    );
   };
 
   return (
@@ -303,6 +302,7 @@ function HpoApplyPage() {
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommitted={!isModified()}
+      stepId={constant.step.annual.preparation.highPerformance}
     >
       <section className={styles.section}>
         <h2>대상자 목록</h2>
@@ -330,6 +330,9 @@ function HpoApplyPage() {
             handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
             handleCheckBox={handleCheckBox}
             checkAll={checkAll}
+            salaryIncrementByRank={salaryIncrementByRank}
+            hpoSalaryInfo={hpoSalaryInfo}
+            originalData={initialHighOrganizationData?.highPerformanceEmployees}
           />
         </div>
       </section>
