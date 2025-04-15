@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
 import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import FilterSort from './FilterSort';
@@ -299,6 +300,7 @@ function HpoApplyPage() {
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommitted={!isModified()}
+      stepId={constant.step.annual.preparation.highPerformance}
     >
       <section className={styles.section}>
         <h2>대상자 목록</h2>
