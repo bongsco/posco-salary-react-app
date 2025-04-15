@@ -128,3 +128,7 @@
 :global(.react-datepicker__view-calendar-icon input) {
   padding: 7.25px 8px;
 }
+
+:global(.react-datepicker-popper) {
+  margin-left: -20px; /* 또는 원하는 만큼 조정 */
+}

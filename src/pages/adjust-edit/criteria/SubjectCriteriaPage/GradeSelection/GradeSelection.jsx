@@ -11,7 +11,7 @@ export default function GradeSelection({
   const renderGroupSwitch = (groupKey) => {
     const group = grades[groupKey];
     const isGroupChecked = group.all;
-    const isGroupCommitted = committedStates[groupKey].all;
+    const isGroupCommitted = committedStates[groupKey]?.all ?? false;
 
     return (
       <LabeledSwitch
@@ -35,7 +35,7 @@ export default function GradeSelection({
             key={label}
             label={label}
             isChecked={grades[groupKey][label]}
-            isCommitted={committedStates[groupKey][label]}
+            isCommitted={committedStates[groupKey]?.[label]}
             onClick={(_, isChecked) =>
               onSwitchChange(groupKey, label, isChecked)
             }
@@ -62,9 +62,9 @@ export default function GradeSelection({
           isCheckedInitially={grades.all}
         />
 
-        {['P', 'R', 'A', 'O', 'D', 'G'].map((groupKey) =>
-          renderGroupRow(groupKey),
-        )}
+        {Object.keys(grades)
+          .filter((groupKey) => groupKey !== 'all')
+          .map((groupKey) => renderGroupRow(groupKey))}
       </div>
     </section>
   );

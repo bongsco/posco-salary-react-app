@@ -19,9 +19,31 @@ export default function RegisterModal({
   const [adjustmentType, setAdjustmentType] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [errors, setErrors] = useState({
+    adjustmentType: false,
+    startDate: false,
+    endDate: false,
+  });
+
+  const validate = () => {
+    const newErrors = {
+      adjustmentType: !adjustmentType,
+      startDate: !startDate,
+      endDate: !endDate,
+    };
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(Boolean); // 하나라도 true면 실패
+  };
+
+  const handleSubmit = () => {
+    if (!validate()) return;
+    onSubmit?.({ adjustmentType, startDate, endDate });
+  };
+
   return (
     <Modal
-      onSubmit={() => onSubmit?.({ adjustmentType, startDate, endDate })}
+      onSubmit={() => handleSubmit()}
       onClose={onClose}
       left={left}
       right={right}
@@ -43,7 +65,7 @@ export default function RegisterModal({
           }}
           onClick={() => setIsOpen((prev) => !prev)}
           customWidth="213px"
-          error={false}
+          error={errors.adjustmentType}
         />
       </div>
 
@@ -53,6 +75,7 @@ export default function RegisterModal({
           isSaved="true"
           customWidth="213px"
           date={startDate}
+          hasError={errors.startDate}
           onChange={(date) => setStartDate(date)}
         />
       </div>
@@ -63,6 +86,7 @@ export default function RegisterModal({
           isSaved="true"
           customWidth="213px"
           date={endDate}
+          hasError={errors.endDate}
           onChange={(date) => setEndDate(date)}
         />
       </div>

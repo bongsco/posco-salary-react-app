@@ -1,10 +1,15 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useRef, useState } from 'react';
+import useSWR, { mutate } from 'swr';
 import Button from '#components/Button';
 import CheckBox from '#components/CheckBox';
 import Pagination from '#components/Pagination';
 import TableOption from '#components/TableOption';
 import TableSelectIndicator from '#components/TableSelectIndicator';
+import { useAdjustContext } from '#contexts/AdjustContext';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
+import constant from '#src/constant';
+import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import styles from './subject-assign-page.module.css';
 import '#styles/global.css';
@@ -35,178 +40,6 @@ const sortOption = {
   values: ['오름차순', '내림차순'],
 };
 
-const initialEmployees = [
-  {
-    직번: 'pd09486',
-    성명: '김서영',
-    채용일자: '24.05.26',
-    평가등급: 'S',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd08455',
-    성명: '김종하',
-    채용일자: '24.05.26',
-    평가등급: 'A',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd08206',
-    성명: '김현아',
-    채용일자: '24.05.26',
-    평가등급: 'B+',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd07195',
-    성명: '이은재',
-    채용일자: '24.05.26',
-    평가등급: 'B',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd04274',
-    성명: '한상진',
-    채용일자: '24.05.26',
-    평가등급: 'C',
-    isTarget: true,
-    selected: false,
-  },
-  /// 우리 데이터터
-  {
-    직번: 'pd0a001',
-    성명: '이은서',
-    채용일자: '24.03.04',
-    평가등급: 'A',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a002',
-    성명: '이현우',
-    채용일자: '24.03.05',
-    평가등급: 'B',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a003',
-    성명: '이도윤',
-    채용일자: '24.03.06',
-    평가등급: 'C',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a004',
-    성명: '이채은',
-    채용일자: '24.03.09',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a005',
-    성명: '이주호',
-    채용일자: '24.03.08',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a006',
-    성명: '박이서',
-    채용일자: '24.03.08',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a007',
-    성명: '정은채',
-    채용일자: '24.03.10',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'pd0a008',
-    성명: '윤시하',
-    채용일자: '24.03.10',
-    평가등급: 'D',
-    isTarget: true,
-    selected: false,
-  },
-  {
-    직번: 'gh0a001',
-    성명: '김하윤',
-    채용일자: '22.01.12',
-    평가등급: 'A',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a002',
-    성명: '이준호',
-    채용일자: '23.07.03',
-    평가등급: 'B',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a003',
-    성명: '박서연',
-    채용일자: '24.11.12',
-    평가등급: 'C',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a004',
-    성명: '최민재',
-    채용일자: '24.03.03',
-    평가등급: 'D',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a005',
-    성명: '정예린',
-    채용일자: '24.03.03',
-    평가등급: 'A',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a006',
-    성명: '한도윤',
-    채용일자: '24.03.03',
-    평가등급: 'B',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a007',
-    성명: '윤서진',
-    채용일자: '24.03.03',
-    평가등급: 'C',
-    isTarget: false,
-    selected: false,
-  },
-  {
-    직번: 'gh0a008',
-    성명: '강지후',
-    채용일자: '24.03.03',
-    평가등급: 'D',
-    isTarget: false,
-    selected: false,
-  },
-];
-
 const initialOptionState = {
   filters: { target: [], untarget: [] },
   sortList: { target: [], untarget: [] },
@@ -232,22 +65,73 @@ const optionReducer = (state, action) => {
   }
 };
 
+// "2023-01-30" → "23.01.30" 형식 변환 함수
+function formatHireDate(dateStr) {
+  const date = new Date(dateStr);
+  const yy = String(date.getFullYear()).slice(2);
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yy}.${mm}.${dd}`;
+}
+
+function convertEmployeeDto(dto) {
+  return {
+    id: dto.employeeId, // 🔥 여기에 추가!
+    직번: dto.empNum,
+    성명: dto.name,
+    채용일자: formatHireDate(dto.hireDate),
+    평가등급: dto.rankName,
+    isTarget: dto.subjectUse === true,
+    selected: false,
+  };
+}
+
 const parseHiredDateToDate = (str) => {
   const normalized = `20${str.replace(/\./g, '-')}`;
   return new Date(normalized);
 };
 
 export default function OrganizationSubject() {
+  const { adjust } = useAdjustContext();
+  const { addError } = useErrorHandlerContext();
+
   const [optionState, dispatchOption] = useReducer(
     optionReducer,
     initialOptionState,
   );
   const [page, setPage] = useState({ target: 1, untarget: 1 });
   const [rowsPerPage, setRowsPerPage] = useState({ target: 5, untarget: 5 });
-  const [employees, setEmployees] = useState(initialEmployees);
+  const [employees, setEmployees] = useState([]);
 
-  const [savedEmployees, setSavedEmployees] = useState(initialEmployees);
+  const [savedEmployees, setSavedEmployees] = useState([]);
   const [isCommitted, setIsCommitted] = useState(true);
+
+  useSWR(
+    adjust?.adjustId
+      ? `/adjust/${adjust.adjustId}/preparation/employees`
+      : null,
+    async (url) => {
+      const res = await fetchApi(url);
+      // 상태 코드가 200-299 범위가 아니더라도,
+      // 파싱 시도를 하고 에러를 던집니다.
+      if (!res?.ok) {
+        addError(
+          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+          'error message',
+          'CONNECTION_REFUSED',
+        );
+      }
+
+      const data = await res.json();
+      return data.map(convertEmployeeDto);
+    },
+    {
+      onSuccess: (response) => {
+        setEmployees(response);
+        setSavedEmployees(response);
+      },
+    },
+  );
 
   const handleOptionSubmit = (tableType, { type, payload }) => {
     if (type === 'filter') {
@@ -349,9 +233,47 @@ export default function OrganizationSubject() {
     }
   };
 
-  const handleSave = () => {
-    setSavedEmployees([...employees]); // 불변성 유지
-    setIsCommitted(true);
+  const handleSave = async () => {
+    // 변경된 직원만 추려서 PATCH 요청 보내기
+    const changedSubjectUseEmployee = employees
+      .filter((emp) => {
+        const original = savedEmployees.find((e) => e.직번 === emp.직번);
+        return original && emp.isTarget !== original.isTarget;
+      })
+      .map((emp) => ({
+        employeeId: emp.id, // 이건 convertEmployeeDto에서 추가한 값
+        subjectUse: emp.isTarget,
+      }));
+
+    try {
+      if (changedSubjectUseEmployee.length > 0) {
+        const res = await fetchApi(
+          `/adjust/${adjust.adjustId}/preparation/employees`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ changedSubjectUseEmployee }),
+          },
+        );
+
+        if (!res?.ok) {
+          addError(
+            `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+            'error message',
+            'CONNECTION_REFUSED',
+          );
+        }
+      }
+      await mutate(`/adjust/${adjust.adjustId}/preparation/employees`);
+
+      // 💾 성공 시 상태 동기화
+      setSavedEmployees([...employees]);
+      setIsCommitted(true);
+    } catch (e) {
+      addError('대상자 저장 중 오류가 발생했습니다.', e.message, 'PATCH_ERROR');
+    }
   };
 
   const handleCancel = () => {
@@ -387,6 +309,7 @@ export default function OrganizationSubject() {
 
   const targets = getProcessedEmployees('target');
   const untargets = getProcessedEmployees('untarget');
+
   const paginatedTargets = targets.slice(
     (page.target - 1) * rowsPerPage.target,
     page.target * rowsPerPage.target,
@@ -396,6 +319,34 @@ export default function OrganizationSubject() {
     page.untarget * rowsPerPage.untarget,
   );
 
+  const aRef = useRef(null);
+
+  const handleExcelDownload = async (type) => {
+    try {
+      const res = await fetch(
+        `/api/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
+      );
+      if (!res.ok) throw new Error('엑셀 다운로드 실패');
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      // a 태그 조작
+      if (aRef.current) {
+        aRef.current.href = url;
+        aRef.current.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        aRef.current.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+    } catch (err) {
+      addError(
+        '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+        err.message,
+        'EXCEL_DOWNLOAD_ERROR',
+      );
+    }
+  };
+
   return (
     <AdjustEditLayout
       prevStepPath="../criteria/payband"
@@ -404,6 +355,7 @@ export default function OrganizationSubject() {
       onCommit={handleSave}
       onRollback={handleCancel}
       isCommitted={isCommitted}
+      stepId={constant.step.annual.preparation.subject}
       canMove
     >
       <div className={styles.contentWrapper}>
@@ -425,7 +377,21 @@ export default function OrganizationSubject() {
                 />
               </div>
               <div className={styles.excelWrapper}>
-                <Button size="large" label="엑셀다운로드" variant="secondary" />
+                <Button
+                  size="large"
+                  label="엑셀다운로드"
+                  variant="secondary"
+                  onClick={() => handleExcelDownload('Subject')}
+                />
+                <a
+                  ref={aRef}
+                  href="about:blank"
+                  style={{ display: 'none' }}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
+                  엑셀 다운로드
+                </a>
               </div>
             </div>
             <div className={styles.tables}>
@@ -516,7 +482,21 @@ export default function OrganizationSubject() {
                 />
               </div>
               <div className={styles.excelWrapper}>
-                <Button size="large" label="엑셀다운로드" variant="secondary" />
+                <Button
+                  size="large"
+                  label="엑셀다운로드"
+                  variant="secondary"
+                  onClick={() => handleExcelDownload('NonSubject')}
+                />
+                <a
+                  ref={aRef}
+                  href="about:blank"
+                  style={{ display: 'none' }}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
+                  엑셀 다운로드
+                </a>
               </div>
             </div>
             <div className={styles.tables}>
