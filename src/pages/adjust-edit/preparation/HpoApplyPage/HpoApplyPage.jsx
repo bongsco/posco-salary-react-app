@@ -289,7 +289,9 @@ function HpoApplyPage() {
   };
 
   const handleCancel = () => {
-    setHighOrganizationData(initialHighOrganizationData);
+    setHighOrganizationData(
+      initialHighOrganizationData.highPerformanceEmployees,
+    );
   };
 
   return (
@@ -330,6 +332,7 @@ function HpoApplyPage() {
             checkAll={checkAll}
             salaryIncrementByRank={salaryIncrementByRank}
             hpoSalaryInfo={hpoSalaryInfo}
+            originalData={initialHighOrganizationData?.highPerformanceEmployees}
           />
         </div>
       </section>

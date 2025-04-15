@@ -18,6 +18,7 @@ function HighOrganizationTable({
   checkAll,
   salaryIncrementByRank,
   hpoSalaryInfo,
+  originalData,
 }) {
   /* Table Box의 헤더 체크 상태 관리 */
   const [isHeaderChecked, setIsHeaderChecked] = useState(false);
@@ -70,17 +71,22 @@ function HighOrganizationTable({
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
-            <HighOrganizationTableRow
-              key={row['직번']}
-              item={row}
-              checkedItems={checkedItems}
-              handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
-              handleCheckBox={handleCheckBox}
-              salaryIncrementByRank={salaryIncrementByRank}
-              hpoSalaryInfo={hpoSalaryInfo}
-            />
-          ))}
+          {data.map((row) => {
+            const originalItem = originalData.find((o) => o.직번 === row.직번);
+
+            return (
+              <HighOrganizationTableRow
+                key={row['직번']}
+                originalItem={originalItem}
+                item={row}
+                checkedItems={checkedItems}
+                handleHighPerformGroupSwitch={handleHighPerformGroupSwitch}
+                handleCheckBox={handleCheckBox}
+                salaryIncrementByRank={salaryIncrementByRank}
+                hpoSalaryInfo={hpoSalaryInfo}
+              />
+            );
+          })}
         </tbody>
       </table>
       <div className={styles.tableBottom}>
@@ -132,6 +138,7 @@ HighOrganizationTable.propTypes = {
     hpoSalaryIncrementRate: PropTypes.number.isRequired,
     hpoBonusMultiplier: PropTypes.number.isRequired,
   }).isRequired,
+  originalData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default HighOrganizationTable;

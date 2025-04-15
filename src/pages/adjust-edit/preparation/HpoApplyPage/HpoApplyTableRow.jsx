@@ -6,12 +6,18 @@ import styles from './hpo-apply-page.module.css';
 /* DB에서 가져올 값 : 평가차등 가산율 정보 */
 function HighOrganizationTableRow({
   item,
+  originalItem,
   checkedItems,
   handleHighPerformGroupSwitch,
   handleCheckBox,
   salaryIncrementByRank,
   hpoSalaryInfo,
 }) {
+  const isModifiedRow =
+    originalItem &&
+    item['고성과조직 가산 대상 여부'] !==
+      originalItem['고성과조직 가산 대상 여부'];
+
   return (
     <tr key={item['직번']} className={`${styles['table-row']}`}>
       <td>
@@ -27,7 +33,9 @@ function HighOrganizationTableRow({
       <td className={styles['column-dep']}>{item['부서명']}</td>
       <td className={styles['column-grade']}>{item['직급명']}</td>
       <td className={styles['column-rank']}>{item['평가등급']}</td>
-      <td className={styles['column-high-organization']}>
+      <td
+        className={`${styles['column-high-organization']} ${isModifiedRow ? styles.changedCell : ''}`}
+      >
         <div className={styles['switch-area']}>
           <p
             className={`${styles['switch-text']} ${
@@ -92,6 +100,7 @@ HighOrganizationTableRow.propTypes = {
       '고성과조직 가산 대상 여부': PropTypes.bool.isRequired,
     }),
   ).isRequired,
+  originalItem: PropTypes.arrayOf(PropTypes.object).isRequired,
   checkedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleHighPerformGroupSwitch: PropTypes.func.isRequired,
   handleCheckBox: PropTypes.func.isRequired,
