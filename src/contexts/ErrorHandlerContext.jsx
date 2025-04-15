@@ -3,15 +3,18 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
+import { useLocation } from 'react-router-dom';
 import Notice from '#components/Notice';
 
 const ErrorHandlerContext = createContext();
 
 export function ErrorHandlerProvider({ children }) {
   const [errors, setErrors] = useState({});
+  const location = useLocation();
 
   const addError = (title, message, id = crypto.randomUUID()) => {
     setErrors((prevErrors) => ({ ...prevErrors, [id]: { title, message } }));
@@ -31,6 +34,10 @@ export function ErrorHandlerProvider({ children }) {
   const clearErrors = () => {
     setErrors([]);
   };
+
+  useEffect(() => {
+    clearErrors();
+  }, [location]);
 
   return (
     <ErrorHandlerContext.Provider
