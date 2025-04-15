@@ -169,7 +169,7 @@ function MainPage() {
           '연봉 시작일': startDate,
           '연봉 종료일': endDate,
           등록자: author,
-          url: url || 'annual/main/result',
+          url: url ?? 'annual/main/result',
         }),
       );
 
@@ -290,7 +290,7 @@ function MainPage() {
           if (step && typeof step.url !== 'undefined') {
             return {
               ...step,
-              url: `${adjustId}/${step.url}`,
+              url: `adjust/edit/${adjustId}/${step.url}`,
             };
           }
           return step;
