@@ -33,7 +33,7 @@ function reducer(state, action) {
         ...state,
         data: updated,
         checkedItems,
-        isCommitted: true,
+        isCommitted: state.isCommitted,
       };
     }
     case 'toggleGroup': {
@@ -59,7 +59,7 @@ function reducer(state, action) {
         ...state,
         data: updated,
         checkedItems,
-        isCommitted: true,
+        isCommitted: state.isCommitted,
       };
     }
     case 'commit': {
