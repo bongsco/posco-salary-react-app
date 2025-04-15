@@ -26,7 +26,7 @@ function SalaryAdjustmentTableRow({
         }`}
       >
         <td className={styles['column-year']}>{row['년도']}</td>
-        <td className={styles['column-month']}>{row['월구분']}</td>
+        <td className={styles['column-month']}>{row['월']}</td>
         <td className={styles['column-adj-type']}>{row['조정제목']}</td>
         <td className={styles['column-status']}>
           <State status={row['진행단계'].status} text={row['진행단계'].text} />
@@ -77,7 +77,7 @@ SalaryAdjustmentTableRow.propTypes = {
   row: PropTypes.shape({
     id: PropTypes.number.isRequired,
     년도: PropTypes.number.isRequired,
-    월구분: PropTypes.number.isRequired,
+    월: PropTypes.number.isRequired,
     조정제목: PropTypes.string.isRequired,
     조정종류: PropTypes.string.isRequired,
     차수: PropTypes.number.isRequired,

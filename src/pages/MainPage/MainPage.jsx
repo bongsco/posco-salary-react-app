@@ -12,7 +12,7 @@ import styles from './main-page.module.css';
 /* Filter Option */
 const filterOptions = {
   년도: { optionType: 'text', initialValue: '' },
-  월구분: {
+  월: {
     optionType: 'dropdown',
     options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     currentSelectedValue: '',
@@ -37,7 +37,7 @@ const filterOptions = {
 
 /* Sort Option */
 const sortOptions = {
-  keys: ['년도', '월구분', '등록일'],
+  keys: ['년도', '월', '등록일'],
   values: ['오름차순', '내림차순'],
 };
 
@@ -49,7 +49,7 @@ const adjustmentTypeMapping = {
 
 const filterSortMapping = {
   년도: 'year',
-  월구분: 'month',
+  월: 'month',
   조정유형: 'adjType',
   상태: 'state',
   통합인사반영여부: 'isSubmitted',
@@ -74,17 +74,17 @@ function MainPage() {
     return arr
       .map(({ key, value }) => {
         const filterKey = filterSortMapping[key];
-        let filterValue = value;
+        let filterValueList = value;
 
         if (filterKey === 'adjType') {
-          filterValue = adjustmentTypeMapping[value];
+          filterValueList = value.map((val) => adjustmentTypeMapping[val]);
         } else if (filterKey === 'state') {
-          filterValue = value === '완료';
+          filterValueList = value.map((val) => val === '완료');
         } else if (filterKey === 'isSubmitted') {
-          filterValue = value === '반영';
+          filterValueList = value.map((val) => val === '반영');
         }
 
-        return `${filterKey}=${filterValue}`;
+        return `${filterKey}=${filterValueList}`;
       })
       .join('&');
   };
@@ -115,7 +115,8 @@ function MainPage() {
   }
   const queryParams = new URLSearchParams(queryParamsObj).toString();
 
-  const { data: salaryAdjustmentData } = useSWR(
+  // 실제 API 요청.
+  const { data: salaryAdjustmentData, isLoading } = useSWR(
     `/adjust/list?${queryParams}${!filters || filters.length === 0 ? '' : `&${serializeFilterOption(filters)}`}`,
     async (requestUrl) => {
       const res = await fetchApi(requestUrl);
@@ -146,7 +147,7 @@ function MainPage() {
         }) => ({
           id,
           년도: year,
-          월구분: month,
+          월: month,
           조정제목: `${year}년 ${orderNumber}차 ${adjustType}`,
           조정종류: adjustType,
           차수: orderNumber,
@@ -175,6 +176,9 @@ function MainPage() {
       resJson.adjustItems = preprocessed;
 
       return resJson;
+    },
+    {
+      keepPreviousData: true,
     },
   );
 
@@ -349,14 +353,12 @@ function MainPage() {
   /* 페이지 렌더링 관련 함수들 */
   /* 데이터가 없으면 NoDataTable 호출 */
   if (
-    !salaryAdjustmentData?.adjustItems ||
-    salaryAdjustmentData?.adjustItems.length === 0
+    (!salaryAdjustmentData?.adjustItems ||
+      salaryAdjustmentData?.adjustItems.length === 0) &&
+    !isLoading
   ) {
     /* 데이터가 아예 없는 경우 */
-    if (
-      !salaryAdjustmentData?.adjustItems ||
-      salaryAdjustmentData?.adjustItems.length === 0
-    ) {
+    if (!filters || filters.length === 0) {
       return (
         <AppLayout title="연봉 조정 목록" breadCrumbs={['조정', '조회']}>
           <div className={styles['salary-adjustment-area']}>
@@ -388,11 +390,13 @@ function MainPage() {
   return (
     <AppLayout title="연봉 조정 목록" breadCrumbs={['조정', '조회']}>
       <div className={styles['salary-adjustment-area']}>
-        <TimeLine
-          selectedIndex={selectedIndex}
-          data={transformedData}
-          onChange={handleSelectedIndex}
-        />
+        {!isLoading && (
+          <TimeLine
+            selectedIndex={selectedIndex}
+            data={transformedData}
+            onChange={handleSelectedIndex}
+          />
+        )}
         <div className={styles['salary-adjustment-list']}>
           <FilterSort
             filterOptions={filterOptions}

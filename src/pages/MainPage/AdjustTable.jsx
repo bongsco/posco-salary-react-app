@@ -58,7 +58,7 @@ SalaryAdjustmentTable.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       년도: PropTypes.number.isRequired,
-      월구분: PropTypes.number.isRequired,
+      월: PropTypes.number.isRequired,
       조정제목: PropTypes.string.isRequired,
       조정종류: PropTypes.string.isRequired,
       차수: PropTypes.number.isRequired,
