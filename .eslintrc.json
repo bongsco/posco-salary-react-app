@@ -10,6 +10,12 @@
     "plugin:react-hooks/recommended",
     "plugin:storybook/recommended"
   ],
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "$": "writable"
+  },
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"

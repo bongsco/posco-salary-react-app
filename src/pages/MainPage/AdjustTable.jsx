@@ -12,6 +12,7 @@ function SalaryAdjustmentTable({
   selectedIndex,
   handleRowClick,
   handleDeleteClick,
+  stepperInfo,
 }) {
   return (
     <div className={styles['salary-adjustment-table-area']}>
@@ -31,13 +32,13 @@ function SalaryAdjustmentTable({
         <tbody>
           {data.map((row, index) => (
             <AdjustTableRow
-              /* 나중에 table key로 id 값을 넘길 예정 */
-              key={row['등록일']}
+              key={row.id}
               row={row}
               index={index}
               selectedIndex={selectedIndex}
-              handleRowClick={() => handleRowClick(index)}
+              handleRowClick={handleRowClick}
               handleDeleteClick={handleDeleteClick}
+              stepperInfo={stepperInfo}
             />
           ))}
         </tbody>
@@ -55,8 +56,9 @@ function SalaryAdjustmentTable({
 SalaryAdjustmentTable.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.number.isRequired,
       년도: PropTypes.number.isRequired,
-      월구분: PropTypes.number.isRequired,
+      월: PropTypes.number.isRequired,
       조정제목: PropTypes.string.isRequired,
       조정종류: PropTypes.string.isRequired,
       차수: PropTypes.number.isRequired,
@@ -66,6 +68,7 @@ SalaryAdjustmentTable.propTypes = {
       '연봉 시작일': PropTypes.string.isRequired,
       '연봉 종료일': PropTypes.string.isRequired,
       등록자: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
     }),
   ).isRequired,
   currentPage: PropTypes.number.isRequired,
@@ -75,6 +78,7 @@ SalaryAdjustmentTable.propTypes = {
   selectedIndex: PropTypes.number.isRequired,
   handleRowClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
+  stepperInfo: PropTypes.shape.isRequired,
 };
 
 export default SalaryAdjustmentTable;

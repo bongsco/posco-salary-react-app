@@ -11,19 +11,22 @@ function SalaryAdjustmentTableRow({
   selectedIndex,
   handleRowClick,
   handleDeleteClick,
+  stepperInfo,
 }) {
+  /* Stepper API 요청하기 */
+
   return (
     /* 나중에 key값은 조정차수ID로 변경 예정 */
-    <Fragment key={row['등록일']}>
+    <Fragment key={row.id}>
       <tr
-        onClick={() => handleRowClick(index)}
+        onClick={() => handleRowClick(row.id, index)}
         key={row['등록일']}
         className={`${styles['table-body']} ${
           selectedIndex === index ? styles['selected-row'] : ''
         }`}
       >
         <td className={styles['column-year']}>{row['년도']}</td>
-        <td className={styles['column-month']}>{row['월구분']}</td>
+        <td className={styles['column-month']}>{row['월']}</td>
         <td className={styles['column-adj-type']}>{row['조정제목']}</td>
         <td className={styles['column-status']}>
           <State status={row['진행단계'].status} text={row['진행단계'].text} />
@@ -42,18 +45,16 @@ function SalaryAdjustmentTableRow({
         {selectedIndex === index && (
           <td className={styles['button-cell']}>
             <div className={styles['button-container']}>
-              <Link to="/adjust/edit/0/annual/criteria/subject">
+              <Link to={`/adjust/edit/${row.id}/${row.url}`}>
                 <button
                   type="button"
-                  /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
                   className={styles['edit-button']}
                   aria-label="편집"
                 />
               </Link>
               <button
                 type="button"
-                /* 현재는 table key가 creationTimestamp여서 해당 값을 넘김 */
-                onClick={() => handleDeleteClick(row['등록일'])}
+                onClick={() => handleDeleteClick(row.id)}
                 className={styles['delete-button']}
                 aria-label="삭제"
               />
@@ -64,7 +65,7 @@ function SalaryAdjustmentTableRow({
       {selectedIndex === index && (
         <tr>
           <td colSpan="8" className={styles.stepper}>
-            <Stepper adjId={1} />
+            <Stepper stepperData={stepperInfo} />
           </td>
         </tr>
       )}
@@ -74,8 +75,9 @@ function SalaryAdjustmentTableRow({
 
 SalaryAdjustmentTableRow.propTypes = {
   row: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     년도: PropTypes.number.isRequired,
-    월구분: PropTypes.number.isRequired,
+    월: PropTypes.number.isRequired,
     조정제목: PropTypes.string.isRequired,
     조정종류: PropTypes.string.isRequired,
     차수: PropTypes.number.isRequired,
@@ -85,11 +87,13 @@ SalaryAdjustmentTableRow.propTypes = {
     '연봉 시작일': PropTypes.string.isRequired,
     '연봉 종료일': PropTypes.string.isRequired,
     등록자: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
   }).isRequired,
   index: PropTypes.number.isRequired,
   selectedIndex: PropTypes.string.isRequired,
   handleRowClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
+  stepperInfo: PropTypes.shape.isRequired,
 };
 
 export default SalaryAdjustmentTableRow;
