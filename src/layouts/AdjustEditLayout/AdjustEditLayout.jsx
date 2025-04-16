@@ -15,7 +15,7 @@ export default function AdjustEditLayout({
   prevStepPath = null,
   nextStepPath = null,
   stepPaths = [],
-  onCommit = () => {},
+  onCommit = async () => {},
   onRollback = () => {},
   isCommitted,
   canMove = true,
@@ -58,6 +58,9 @@ export default function AdjustEditLayout({
 
       return fallBackData;
     },
+    {
+      keepPreviousData: true,
+    },
   );
 
   const { renderPrompt } = useBlocker(
@@ -70,7 +73,7 @@ export default function AdjustEditLayout({
     { message: '데이터가 저장되지 않았습니다. 그래도 이동하시겠습니까?' },
   );
 
-  const onNextStepClick = async () => {
+  const setStepDone = async () => {
     try {
       const res = await fetchApi(`/stepper/${adjust.adjustId}/step/${stepId}`, {
         method: 'PATCH',
@@ -88,7 +91,6 @@ export default function AdjustEditLayout({
       }
 
       await mutate(`/stepper/${adjust.adjustId}`);
-      navigate(`../${nextStepPath}`);
     } catch (e) {
       addError(
         `연봉조정 단계 정보 저장 실패`,
@@ -117,7 +119,11 @@ export default function AdjustEditLayout({
               variant="secondary"
               size="small"
               label="저장"
-              onClick={onCommit}
+              onClick={async () => {
+                await onCommit();
+                await setStepDone();
+                await mutate(`/stepper/${adjust.adjustId}`);
+              }}
             />
             <Button
               variant="secondary"
@@ -137,7 +143,10 @@ export default function AdjustEditLayout({
             variant="primary"
             size="small"
             label="다음단계"
-            onClick={onNextStepClick}
+            onClick={async () => {
+              await setStepDone();
+              navigate(`../${nextStepPath}`);
+            }}
           />
         )}
       </div>
