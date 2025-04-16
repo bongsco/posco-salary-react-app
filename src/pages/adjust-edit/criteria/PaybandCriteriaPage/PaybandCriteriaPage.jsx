@@ -124,7 +124,7 @@ export default function PaybandCriteriaPage() {
       prevStepPath="payment-rate"
       nextStepPath="../preparation/subject"
       stepPaths={['기준 설정', 'Payband 설정']}
-      stepId={constant.step.annual.criteria.subject}
+      stepId={constant.step.annual.criteria.payband}
       onCommit={async () => {
         if (state.every((pb) => !pb.error.upperBound && !pb.error.lowerBound)) {
           const cleanPayband = state.map((item) => ({
