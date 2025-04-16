@@ -7,6 +7,7 @@ import {
 import { AdjustProvider } from '#contexts/AdjustContext';
 import AppLayout from '#layouts/AppLayout';
 import RootLayout from '#layouts/RootLayout';
+import LoginPage from '#pages/LoginPage';
 import MainPage from '#pages/MainPage';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
         element={<AppLayout title="메인" breadCrumbs={['메인']} />}
       />
       <Route path="test" element={<TestPage />} />
+      <Route path="login" element={<LoginPage />} />
       <Route
         path="personal"
         element={
