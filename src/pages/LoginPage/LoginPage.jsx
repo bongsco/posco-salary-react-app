@@ -10,7 +10,7 @@ import styles from './login-page.module.css';
 
 const config = { region: 'ap-northeast-2' };
 const cognitoClient = new CognitoIdentityProviderClient(config);
-const clientId = '2d8q06s7nn65u1drrqt6d18bj9';
+const clientId = process.env.REACT_APP_COGNITO_CLIENT_ID;
 
 const errorMap = {
   UserNotFoundException: '해당 이메일의 사용자가 존재하지 않습니다.',
