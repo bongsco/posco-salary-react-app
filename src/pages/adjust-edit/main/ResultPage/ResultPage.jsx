@@ -1,4 +1,18 @@
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  RadialLinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Bar, Line, PolarArea } from 'react-chartjs-2';
 import useSWR from 'swr';
 import Button from '#components/Button';
 import PageNation from '#components/Pagination';
@@ -23,6 +37,42 @@ export default function ResultPage() {
   const [tableData, setTableData] = useState([]);
   const [tableMode, setTableMode] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
+  const gradeNames = [
+    'A1',
+    'A2',
+    'A3',
+    'D1',
+    'D2',
+    'D3',
+    'G1',
+    'G2',
+    'G3',
+    'O1',
+    'O2',
+    'O3',
+    'P1',
+    'P2',
+    'P3',
+    'P4',
+    'P5',
+    'P6',
+    'R1',
+    'R2',
+    'R3',
+  ];
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    PointElement,
+    LineElement,
+    RadialLinearScale,
+    ArcElement,
+  );
 
   /* Filter Option에 대한 Sample Data */
   const filterOptions = {
@@ -30,35 +80,7 @@ export default function ResultPage() {
     성명: { optionType: 'text', initialValue: '' },
     직급: {
       optionType: 'dropdown',
-      options: [
-        'R3',
-        'R2',
-        'R1',
-        'P7',
-        'P6',
-        'P5',
-        'P4',
-        'P3',
-        'P2',
-        'P1',
-        'O3',
-        'O2',
-        'O1',
-        'G3',
-        'G2',
-        'G1',
-        'E6',
-        'E5',
-        'E4',
-        'E3',
-        'E2',
-        'D3',
-        'D2',
-        'D1',
-        'A3',
-        'A2',
-        'A1',
-      ],
+      options: gradeNames,
       initialValue: '',
     },
     부서: { optionType: 'text', initialValue: '' },
@@ -162,17 +184,16 @@ export default function ResultPage() {
             position: item.positionName,
             부서: item.depName,
             평가: item.rankCode,
-            salaryIncrementRate: item.salaryIncrementRate?.toFixed(2),
+            salaryIncrementRate: `${Number(item.salaryIncrementRate || 0).toFixed(2)}`,
             bonusRate: item.bonusMultiplier,
-            stdSalaryIncrementRate: item.stdSalaryIncrementRate?.toFixed(2),
+            stdSalaryIncrementRate: `${Number(item.stdSalaryIncrementRate || 0).toFixed(2)}`,
             payband: item.payband,
             salaryBefore: item.salaryBefore ?? 0,
             기준연봉: item.stdSalary ?? 0,
             totalSalaryBefore: item.totalSalaryBefore ?? 0,
             계약연봉: item.totalSalary ?? 0,
           }))
-          .sort((a, b) => a.id - b.id);
-
+          .sort((a, b) => a.직번.localeCompare(b.직번));
         setTableData(recievedResults);
         const safePage = Math.max(
           1,
@@ -181,6 +202,18 @@ export default function ResultPage() {
         setCurrentPage(safePage);
         setTotalPages(response.totalPages);
       },
+    },
+  );
+
+  const { data: chartData } = useSWR(
+    adjust?.adjustId ? `/adjust/${adjust.adjustId}/main/chart` : null,
+    async (url) => {
+      const res = await fetchApi(url);
+      if (!res?.ok) {
+        const errorData = await res.json();
+        addError(errorData.status, errorData.message, 'MAIN_ERROR');
+      }
+      return res.json();
     },
   );
 
@@ -232,6 +265,167 @@ export default function ResultPage() {
       stepId={constant.step.annual.criteria.subject}
     >
       <h2>정기 연봉 조정 결과</h2>
+      {chartData && (
+        <div className={styles['chart-container']}>
+          <div className={styles['chart-wrapper']}>
+            <div className={styles['chart-header']}>
+              <h3 className={styles['chart-title']}>
+                이전 차수 대비 직급별 인건비
+              </h3>
+              <div className={styles['chart-legend']}>
+                <span className={styles['legend-item-pink']} />
+                <span>{Object.keys(chartData.salaryPerGrade[0])[0]}</span>
+                <span className={styles['legend-item-blue']} />
+                <span>{Object.keys(chartData.salaryPerGrade[1])[0]}</span>
+              </div>
+            </div>
+            <div className={styles['one-chart-container']}>
+              <Bar
+                data={{
+                  labels: gradeNames,
+                  datasets: (() => {
+                    const [beforeAdjustName, currentAdjustName] =
+                      chartData.salaryPerGrade.map(
+                        (obj) => Object.keys(obj)[0],
+                      );
+
+                    return [
+                      {
+                        label: beforeAdjustName,
+                        data: gradeNames.map(
+                          (item) =>
+                            chartData.salaryPerGrade[0][beforeAdjustName][
+                              item
+                            ] ?? 0,
+                        ),
+                        backgroundColor: 'rgba(230, 150, 170, 0.5)',
+                      },
+                      {
+                        label: currentAdjustName,
+                        data: gradeNames.map(
+                          (item) =>
+                            chartData.salaryPerGrade[1][currentAdjustName][
+                              item
+                            ] ?? 0,
+                        ),
+                        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                      },
+                    ];
+                  })(),
+                }}
+                options={{
+                  maintainAspectRatio: false,
+                  responsive: true,
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                  scales: {
+                    y: {
+                      grid: {
+                        display: false, // ✅ 가로 grid 제거
+                      },
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
+          <div className={styles['two-chart-container']}>
+            <div className={styles['single-chart-container']}>
+              <h3 className={styles['chart-title']}>
+                이전 차수 대비 연봉 구성 변화
+              </h3>
+              <div className={styles['one-chart-container']}>
+                <Line
+                  data={{
+                    labels: chartData.annualSalary.map(
+                      (item) => item.adjustName,
+                    ),
+                    datasets: [
+                      {
+                        label: '총액',
+                        data: chartData.annualSalary.map(
+                          (item) => item.totalStdSalary,
+                        ),
+                        backgroundColor: 'rgba(230, 150, 170, 0.5)',
+                        borderColor: 'rgba(230, 150, 170, 0.5)',
+                      },
+                      {
+                        label: '기준연봉',
+                        data: chartData.annualSalary.map(
+                          (item) => item.stdSalary,
+                        ),
+                        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                        borderColor: 'rgba(53, 162, 235, 0.5)',
+                      },
+                      {
+                        label: '성과금',
+                        data: chartData.annualSalary.map(
+                          (item) => item.hpoBonus,
+                        ),
+                        backgroundColor: 'rgba(255, 180, 64, 0.5)',
+                        borderColor: 'rgba(255, 180, 64, 0.5)',
+                      },
+                    ],
+                  }}
+                  options={{
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'right',
+                      },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div className={styles['single-chart-container']}>
+              <h3 className={styles['chart-title']}>
+                부서별 고성과조직 가산 대상 인원
+              </h3>
+              <div className={styles['one-chart-container']}>
+                <PolarArea
+                  data={{
+                    labels: chartData.hpoPerDepartment.map(
+                      (item) => item.departmentName,
+                    ),
+                    datasets: [
+                      {
+                        label: '부서 인원 수',
+                        data: chartData.hpoPerDepartment.map(
+                          (item) => item.count,
+                        ),
+                        backgroundColor: [
+                          'rgba(230, 150, 170, 0.5)',
+                          'rgba(54, 162, 235, 0.5)',
+                          'rgba(255, 180, 64, 0.5)',
+                          'rgba(166, 241, 224, 0.5)', // 연한 민트
+                          'rgba(115, 199, 199, 0.5)', // 부드러운 청록
+                          'rgba(194, 181, 255, 0.5)', // 연한 라벤더
+                          'rgba(255, 199, 148, 0.5)', // 부드러운 오렌지/살구
+                        ],
+                        borderWidth: 1,
+                      },
+                    ],
+                  }}
+                  options={{
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'right', // 👉 라벨을 오른쪽에 표시
+                      },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className={styles['table-container']}>
         <div className={styles['filter-sort-area']}>
           <FilterSort
