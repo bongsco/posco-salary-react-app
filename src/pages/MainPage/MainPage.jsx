@@ -61,6 +61,7 @@ function MainPage() {
   /* 페이지 관련 변수들 */
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPage, setTotalPage] = useState(10);
   /* Filter, Sort 조건 저장 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
@@ -117,67 +118,89 @@ function MainPage() {
 
   // 실제 API 요청.
   const { data: salaryAdjustmentData, isLoading } = useSWR(
-    `/adjust/list?${queryParams}${!filters || filters.length === 0 ? '' : `&${serializeFilterOption(filters)}`}`,
+    `/adjust/list?${queryParams}${
+      !filters || filters.length === 0
+        ? ''
+        : `&${serializeFilterOption(filters)}`
+    }`,
     async (requestUrl) => {
-      const res = await fetchApi(requestUrl);
-      if (!res?.ok) {
-        addError(
-          `Sent Request to not found API (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-          'error message',
-          'CONNECTION_REFUSED',
+      try {
+        const res = await fetchApi(requestUrl);
+
+        if (!res?.ok) {
+          addError(
+            `Sent request to unavailable API (${process.env.REACT_APP_API_URL}) and the connection was refused.`,
+            'error message',
+            'CONNECTION_REFUSED',
+          );
+          return null; // or throw new Error('Bad response')
+        }
+
+        const resJson = await res.json();
+
+        const preprocessed = resJson.adjustItems.map(
+          ({
+            id,
+            year,
+            month,
+            adjustType,
+            orderNumber,
+            stepName,
+            detailStepName,
+            isSubmitted,
+            baseDate,
+            startDate,
+            endDate,
+            author,
+            url,
+          }) => ({
+            id,
+            년도: year,
+            월: month,
+            조정제목: `${year}년 ${orderNumber}차 ${adjustType}`,
+            조정종류: adjustType,
+            차수: orderNumber,
+            통합인사반영여부: isSubmitted
+              ? { status: 'complete', text: '반영' }
+              : { status: 'warning', text: '미반영' },
+            진행단계: !stepName
+              ? {
+                  status: 'complete',
+                  text: '완료',
+                  caption: '완료',
+                }
+              : {
+                  status: 'working',
+                  text: '작업중',
+                  caption: `${stepName} > ${detailStepName}`,
+                },
+            등록일: baseDate,
+            '연봉 시작일': startDate,
+            '연봉 종료일': endDate,
+            등록자: author,
+            url: url ?? 'annual/main/result',
+          }),
         );
+
+        resJson.adjustItems = preprocessed;
+
+        return resJson;
+      } catch (error) {
+        addError(
+          `데이터 로드에 실패했습니다: ${error?.message}`,
+          '에러 메시지',
+          'FETCH_FAILED',
+        );
+        return null;
       }
-
-      const resJson = await res.json();
-      const preprocessed = resJson.adjustItems.map(
-        ({
-          id,
-          year,
-          month,
-          adjustType,
-          orderNumber,
-          stepName,
-          detailStepName, // 변수명이 detailStepName인지 확인하세요 (기존 코드와 일치시킴)
-          isSubmitted,
-          baseDate,
-          startDate, // 변수명이 startDate인지 확인하세요
-          endDate, // 변수명이 endDate인지 확인하세요
-          author,
-          url,
-        }) => ({
-          id,
-          년도: year,
-          월: month,
-          조정제목: `${year}년 ${orderNumber}차 ${adjustType}`,
-          조정종류: adjustType,
-          차수: orderNumber,
-          통합인사반영여부: isSubmitted
-            ? { status: 'complete', text: '반영' }
-            : { status: 'warning', text: '미반영' },
-          진행단계: !stepName
-            ? {
-                status: 'complete',
-                text: '완료',
-                caption: '완료',
-              }
-            : {
-                status: 'working',
-                text: '작업중',
-                caption: `${stepName} > ${detailStepName}`,
-              },
-          등록일: baseDate,
-          '연봉 시작일': startDate,
-          '연봉 종료일': endDate,
-          등록자: author,
-          url: url ?? 'annual/main/result',
-        }),
-      );
-
-      resJson.adjustItems = preprocessed;
-
-      return resJson;
     },
     {
+      onSuccess: (response) => {
+        if (!response) return;
+        const safePage = Math.max(1, Math.min(currentPage, response.totalPage));
+        setCurrentPage(safePage);
+        setTotalPage(response.totalPage);
+      },
       keepPreviousData: true,
     },
   );
@@ -394,7 +417,12 @@ function MainPage() {
           <TimeLine
             selectedIndex={selectedIndex}
             data={transformedData}
-            onChange={handleSelectedIndex}
+            onChange={(idx) => {
+              handleSelectedIndex(
+                salaryAdjustmentData?.adjustItems?.[idx]?.id,
+                idx,
+              );
+            }}
           />
         )}
         <div className={styles['salary-adjustment-list']}>
@@ -412,10 +440,15 @@ function MainPage() {
             rowsPerPage={rowsPerPage}
             selectedIndex={selectedIndex}
             setRowsPerPage={setRowsPerPage}
-            setCurrentPage={setCurrentPage}
+            setCurrentPage={(page) => {
+              if (page >= 1 && page <= totalPage) {
+                setCurrentPage(page);
+              }
+            }}
             handleRowClick={handleSelectedIndex}
             handleDeleteClick={handleDeleteClick}
             stepperInfo={stepperInfo}
+            totalPage={totalPage}
           />
         </div>
       </div>

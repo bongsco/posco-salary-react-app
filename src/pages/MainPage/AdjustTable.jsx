@@ -13,6 +13,7 @@ function SalaryAdjustmentTable({
   handleRowClick,
   handleDeleteClick,
   stepperInfo,
+  totalPage,
 }) {
   return (
     <div className={styles['salary-adjustment-table-area']}>
@@ -48,6 +49,7 @@ function SalaryAdjustmentTable({
         rowsPerPage={rowsPerPage}
         onPageChange={setCurrentPage}
         onRowsPerPageChange={setRowsPerPage}
+        totalPage={totalPage}
       />
     </div>
   );
@@ -79,6 +81,7 @@ SalaryAdjustmentTable.propTypes = {
   handleRowClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
   stepperInfo: PropTypes.shape.isRequired,
+  totalPage: PropTypes.number.isRequired,
 };
 
 export default SalaryAdjustmentTable;
