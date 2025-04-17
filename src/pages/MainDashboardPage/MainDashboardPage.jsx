@@ -1,5 +1,8 @@
 import React from 'react';
-import MainChartPage from '#pages/MainChartPage';
+import EmploymentTypeDistributionChart from './EmploymentTypeDistributionChart';
+import GradeDistributionChart from './GradeDistributionChart';
+import MainChartPage from './MainChartPage';
+import TenureDistributionChart from './TenureDistributionChart';
 // 왼쪽 상단 차트
 import styles from './main-dashboard-page.module.css';
 
@@ -8,15 +11,20 @@ function MainDashboardPage() {
     <div className={styles.dashboard}>
       {/* 왼쪽 컬럼 */}
       <div className={styles.leftColumn}>
-        <MainChartPage />
-
-        <div className={styles.card}>
-          <h3>평균 근속연수</h3>
+        <div className={styles.topCard}>
+          <MainChartPage />
         </div>
 
-        <div className={styles.card}>
-          <h3>인력 구성</h3>
-          {/* 도넛 차트 또는 리스트 넣기 */}
+        <div className={styles.fullHeightCard}>
+          <TenureDistributionChart />
+        </div>
+
+        <div className={styles.halfChartTop}>
+          <GradeDistributionChart />
+        </div>
+
+        <div className={styles.halfChartBottom}>
+          <EmploymentTypeDistributionChart />
         </div>
 
         {/* ... 추가 카드 구성 */}

@@ -140,6 +140,7 @@ function MainChartPage() {
                       label: (ctx) => `증감률: ${ctx.raw}%`,
                     },
                   },
+                  datalabels: false,
                 },
                 scales: {
                   y: {
@@ -165,6 +166,7 @@ function MainChartPage() {
                 maintainAspectRatio: false,
                 plugins: {
                   legend: { display: false },
+                  datalabels: false,
                 },
                 scales: {
                   y: {
