@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import NavItem from '#components/NavBar/NavItem';
@@ -19,8 +19,20 @@ const initialSideBarState = {
   formTest: false,
 };
 
+// Access Token 디코더
+function decodeJWT(token) {
+  try {
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
+  } catch {
+    return null;
+  }
+}
+
 export default function RootLayout() {
   const location = useLocation();
+  const [userRole, setUserRole] = useState(null);
+
   const [sideBarState, dispatchSideBarState] = useReducer(
     (prev, { action, key }) => {
       switch (action) {
@@ -49,6 +61,21 @@ export default function RootLayout() {
   );
 
   useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const decoded = decodeJWT(token);
+      const groups = decoded?.['cognito:groups'] || [];
+      if (groups.includes('bongsco_manager')) {
+        setUserRole('관리자');
+      } else {
+        setUserRole('사용자');
+      }
+    } else {
+      setUserRole(null);
+    }
+  }, [location]);
+
+  useEffect(() => {
     dispatchSideBarState({ action: 'navigate' });
   }, [location]);
 
@@ -59,8 +86,17 @@ export default function RootLayout() {
           dispatchSideBarState({ action: 'toggle', key: 'sideBar' });
         }}
       >
-        <NavItem text="로그인" href="/login" />
-        <NavItem text="계정 등록" href="/register" />
+        {userRole ? (
+          <>
+            <span className={styles.welcome}>{userRole}님 환영합니다</span>
+            <NavItem text="로그아웃" href="/logout" />
+          </>
+        ) : (
+          <>
+            <NavItem text="로그인" href="/login" />
+            <NavItem text="계정 등록" href="/register" />
+          </>
+        )}
       </NavBar>
       <div className={styles.body}>
         <div className={sideBarState.sideBar ? '' : styles.close}>

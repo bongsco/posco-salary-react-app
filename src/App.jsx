@@ -8,6 +8,8 @@ import { AdjustProvider } from '#contexts/AdjustContext';
 import AppLayout from '#layouts/AppLayout';
 import RootLayout from '#layouts/RootLayout';
 import LoginPage from '#pages/LoginPage';
+import RequireGroup from '#pages/LoginPage/RequireGroup';
+import LogoutPage from '#pages/LogoutPage';
 import MainPage from '#pages/MainPage';
 import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
@@ -28,6 +30,7 @@ const router = createBrowserRouter(
       />
       <Route path="test" element={<TestPage />} />
       <Route path="login" element={<LoginPage />} />
+      <Route path="logout" element={<LogoutPage />} />
       <Route
         path="personal"
         element={
@@ -41,31 +44,87 @@ const router = createBrowserRouter(
         }
       />
       <Route path="adjust/list" element={<MainPage />} />
+
       <Route path="adjust/edit">
         <Route
           index
           element={
-            <AppLayout title="연봉조정 등록" breadCrumbs={['조정', '등록']} />
+            <RequireGroup allowedGroups={['bongsco_manager']}>
+              <AppLayout title="연봉조정 등록" breadCrumbs={['조정', '등록']} />
+            </RequireGroup>
           }
         />
         <Route path=":id" element={<AdjustProvider />}>
-          <Route path="test-edit" element={<TestEditPage />} />
+          <Route
+            path="test-edit"
+            element={
+              <RequireGroup allowedGroups={['bongsco_manager']}>
+                <TestEditPage />
+              </RequireGroup>
+            }
+          />
           <Route path="annual">
             <Route path="criteria">
-              <Route path="subject" element={<SubjectCriteriaPage />} />
+              <Route
+                path="subject"
+                element={
+                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                    <SubjectCriteriaPage />
+                  </RequireGroup>
+                }
+              />
               <Route
                 path="payment-rate"
-                element={<PaymentRateCriteriaPage />}
+                element={
+                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                    <PaymentRateCriteriaPage />
+                  </RequireGroup>
+                }
               />
-              <Route path="payband" element={<PaybandCriteriaPage />} />
+              <Route
+                path="payband"
+                element={
+                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                    <PaybandCriteriaPage />
+                  </RequireGroup>
+                }
+              />
             </Route>
             <Route path="preparation">
-              <Route path="subject" element={<SubjectAssignPage />} />
-              <Route path="high-performance" element={<HpoApplyPage />} />
+              <Route
+                path="subject"
+                element={
+                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                    <SubjectAssignPage />
+                  </RequireGroup>
+                }
+              />
+              <Route
+                path="high-performance"
+                element={
+                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                    <HpoApplyPage />
+                  </RequireGroup>
+                }
+              />
             </Route>
             <Route path="main">
-              <Route path="payband" element={<PaybandApplyPage />} />
-              <Route path="result" element={<ResultPage />} />
+              <Route
+                path="payband"
+                element={
+                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                    <PaybandApplyPage />
+                  </RequireGroup>
+                }
+              />
+              <Route
+                path="result"
+                element={
+                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                    <ResultPage />
+                  </RequireGroup>
+                }
+              />
             </Route>
           </Route>
         </Route>
