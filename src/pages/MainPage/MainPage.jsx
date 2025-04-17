@@ -61,6 +61,7 @@ function MainPage() {
   /* 페이지 관련 변수들 */
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPage, setTotalPage] = useState(10);
   /* Filter, Sort 조건 저장 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
@@ -178,6 +179,11 @@ function MainPage() {
       return resJson;
     },
     {
+      onSuccess: (response) => {
+        const safePage = Math.max(1, Math.min(currentPage, response.totalPage));
+        setCurrentPage(safePage);
+        setTotalPage(response.totalPage);
+      },
       keepPreviousData: true,
     },
   );
@@ -394,7 +400,12 @@ function MainPage() {
           <TimeLine
             selectedIndex={selectedIndex}
             data={transformedData}
-            onChange={handleSelectedIndex}
+            onChange={(idx) => {
+              handleSelectedIndex(
+                salaryAdjustmentData?.adjustItems?.[idx]?.id,
+                idx,
+              );
+            }}
           />
         )}
         <div className={styles['salary-adjustment-list']}>
@@ -412,10 +423,15 @@ function MainPage() {
             rowsPerPage={rowsPerPage}
             selectedIndex={selectedIndex}
             setRowsPerPage={setRowsPerPage}
-            setCurrentPage={setCurrentPage}
+            setCurrentPage={(page) => {
+              if (page >= 1 && page <= totalPage) {
+                setCurrentPage(page);
+              }
+            }}
             handleRowClick={handleSelectedIndex}
             handleDeleteClick={handleDeleteClick}
             stepperInfo={stepperInfo}
+            totalPage={totalPage}
           />
         </div>
       </div>
