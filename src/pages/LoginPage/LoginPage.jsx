@@ -1,6 +1,5 @@
 import {
   CognitoIdentityProviderClient,
-  GetUserCommand,
   InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { useState } from 'react';
@@ -20,11 +19,6 @@ const errorMap = {
   UserNotConfirmedException: '이메일 인증이 완료되지 않았습니다.',
   UnknownError: '알 수 없는 오류가 발생했습니다.',
 };
-
-function decodeJWT(token) {
-  const payload = token.split('.')[1];
-  return JSON.parse(atob(payload));
-}
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -50,8 +44,6 @@ function LoginPage() {
       const command = new InitiateAuthCommand(input);
       const response = await cognitoClient.send(command);
 
-      console.log('Cognito Response:', response);
-
       if (response?.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
         setErrorMessage('해당 계정은 새 비밀번호 설정이 필요합니다.');
         return;
@@ -62,19 +54,8 @@ function LoginPage() {
       }
 
       const accessToken = response.AuthenticationResult.AccessToken;
-      const decoded = decodeJWT(accessToken);
-
-      console.log('Decoded Token:', decoded);
-      console.log('User Groups:', decoded['cognito:groups']);
 
       localStorage.setItem('accessToken', accessToken);
-      console.log('Access Token:', accessToken);
-      console.log('Login Successful!');
-
-      // 2. 사용자 정보 요청
-      const getUserCommand = new GetUserCommand({ AccessToken: accessToken });
-      const userResponse = await cognitoClient.send(getUserCommand);
-      console.log('Cognito User Info:', userResponse);
 
       navigate('/');
     } catch (error) {
