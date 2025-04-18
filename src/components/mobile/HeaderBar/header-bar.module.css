@@ -1,0 +1,45 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex-shrink: 0;
+
+  padding: 0 24px;
+  background-color: var(--color-background-general);
+  border-bottom: 1px solid var(--color-background-block);
+
+  width: 100%;
+  min-width: 320px;
+  height: 50px;
+}
+
+.spaceHolder {
+  flex-grow: 1;
+}
+
+.title {
+  color: var(--color-grayscale-black);
+  font: var(--font-subtitle-2b-pc);
+  flex-shrink: 0;
+  justify-self: center;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.button {
+  border: 0;
+  background-color: transparent;
+  text-decoration: none;
+  color: var(--color-grayscale-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

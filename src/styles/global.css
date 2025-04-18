@@ -38,8 +38,11 @@
 
   --font-subtitle-1b-pc: 600 28px var(--font-family);
   --font-subtitle-1r-pc: 400 28px var(--font-family);
+  --font-subtitle-1r-mobile: 400 26px var(--font-family);
   --font-subtitle-2b-pc: 600 22px var(--font-family);
+  --font-subtitle-2b-mobile: 600 20px var(--font-family);
   --font-subtitle-2r-pc: 400 22px var(--font-family);
+  --font-subtitle-2r-mobile: 400 20px var(--font-family);
 
   --font-body-1b-pc: 600 18px var(--font-family);
   --font-body-1r-pc: 400 18px var(--font-family);
@@ -48,7 +51,9 @@
   --font-body-3-pc: 400 14px var(--font-family);
 
   --font-caption-1b-pc: 600 14px var(--font-family);
+  --font-caption-1b-mobile: 600 12px var(--font-family);
   --font-caption-1r-pc: 400 14px var(--font-family);
+  --font-caption-1r-mobile: 400 12px var(--font-family);
   --font-caption-2b-pc: 600 12px var(--font-family);
   --font-caption-2r-pc: 400 12px var(--font-family);
   /* --font-caption-3b-pc를 의미 */
