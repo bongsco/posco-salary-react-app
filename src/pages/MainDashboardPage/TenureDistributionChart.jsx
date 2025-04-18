@@ -12,6 +12,7 @@ import { Bar } from 'react-chartjs-2';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import fetchApi from '#utils/fetch';
+import styles from './main-chart-page.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -130,36 +131,21 @@ function TenureDistributionChart() {
   };
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        maxWidth: 800,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-      }}
-    >
-      <h3 style={{ marginBottom: '1rem' }}>평균 근속연수</h3>
-      <p
-        style={{
-          fontSize: '2.3rem',
-          fontWeight: 'bold',
-          margin: '0 0 0.8rem 0',
-        }}
-      >
-        {averageYears}
-        <span style={{ fontSize: '1.2rem' }}>년</span>
-      </p>
-      <p style={{ fontSize: '0.9rem', color: '#555', marginBottom: '1.2rem' }}>
-        최근 1년간{' '}
-        <span style={{ color: '#4c6ef5', fontWeight: '600' }}>
-          {maxGroup.label}
-        </span>
-        년차의 현직자가 가장 많음
-      </p>
-
-      <Bar data={chartData} options={options} />
+    <div className={styles.chartWrapper}>
+      <div className={styles.leftInfo}>
+        <h3 className={styles.title}>평균 근속연수</h3>
+        <p className={styles.total}>
+          <strong>{averageYears}</strong>
+          <span style={{ fontSize: '1.2rem' }}>년</span>
+        </p>
+        <p className={styles.description}>
+          최근 1년간 <span className={styles.positive}>{maxGroup.label}</span>
+          년차의 현직자가 가장 많음
+        </p>
+      </div>
+      <div className={styles.rightChart}>
+        <Bar data={chartData} options={options} />
+      </div>
     </div>
   );
 }

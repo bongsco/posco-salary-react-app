@@ -15,7 +15,8 @@ import { Chart } from 'react-chartjs-2';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import fetchApi from '#utils/fetch';
-import styles from './main-chart-page.module.css';
+
+// import styles from './main-chart-page.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -84,7 +85,7 @@ function SalaryGradeTrendChart() {
         values.reduce((sum, val) => sum + val, 0) / (values.length || 1);
       return parseFloat(avg.toFixed(1));
     }),
-    borderColor: '#4263eb', // 💡 더 잘 보이는 파란색
+    borderColor: '#4263eb',
     backgroundColor: '#4263eb',
     pointBackgroundColor: '#4263eb',
     pointBorderColor: '#fff',
@@ -176,17 +177,30 @@ function SalaryGradeTrendChart() {
   };
 
   return (
-    <div className={styles.chartWrapper}>
-      <div className={styles.leftInfo}>
-        <h3 className={styles.title}>직군별 총 인건비</h3>
-        <p className={styles.description}>
-          각 직군에 대해 <br />
-          <strong className={styles.positive}>최근 4년간</strong>의 변화
-        </p>
-      </div>
-      <div className={styles.rightChart}>
-        <Chart type="bar" data={chartData} options={options} />
-      </div>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        maxWidth: 800,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
+      <h3 style={{ marginBottom: '1rem' }}>직군별 총 인건비</h3>
+      <p
+        style={{
+          fontSize: '1.1rem',
+          color: '#555',
+          marginBottom: '1.2rem',
+          lineHeight: 1.5,
+        }}
+      >
+        각 직군에 대해{' '}
+        <span style={{ color: '#4263eb', fontWeight: 600 }}>최근 4년간</span>의
+        총 인건비 변화
+      </p>
+      <Chart type="bar" data={chartData} options={options} />
     </div>
   );
 }

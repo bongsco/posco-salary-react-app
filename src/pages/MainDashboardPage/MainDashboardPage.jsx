@@ -15,7 +15,8 @@ function MainDashboardPage() {
       </div>
 
       <div className={styles.cell}>
-        <TenureDistributionChart />
+        {/* <TenureDistributionChart /> */}
+        <SalaryGradeTrendChart />
       </div>
 
       <div className={styles.cell}>
@@ -41,7 +42,8 @@ function MainDashboardPage() {
         <TotalSalaryTrendChart />
       </div> */}
       <div className={styles.cell}>
-        <SalaryGradeTrendChart />
+        {/* <SalaryGradeTrendChart /> */}
+        <TenureDistributionChart />
       </div>
     </div>
   );
