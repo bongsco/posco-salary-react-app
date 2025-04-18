@@ -1,67 +1,29 @@
 .dashboard {
-  display: flex;
-  gap: 2rem;
-  width: 100%;
-}
-
-.leftColumn {
-  width: 50%;
   display: grid;
-  flex-direction: column;
-  gap: 1.5rem;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr 1fr;
-}
-
-.rightColumn {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
+  grid-template-rows: repeat(3, auto); /* 3행 자동 높이 */
   gap: 1.5rem;
+  width: 100%;
+  align-items: stretch; /* 행 높이 맞추기 */
 }
 
-.card {
+.cell {
   background: white;
+  border-radius: 12px;
   padding: 1.5rem;
-  border-radius: 12px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
 }
 
-.fullHeightCard {
-  grid-column: 1;
-  grid-row: 2 / span 2;
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+.flexRow {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+}
+
+.flexHalf {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-.halfChartTop {
-  grid-column: 2;
-  grid-row: 2;
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.04);
-}
-
-.halfChartBottom {
-  grid-column: 2;
-  grid-row: 3;
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.04);
-}
-
-.topCard {
-  grid-column: 1 / span 2;
-  grid-row: 1;
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+  justify-content: space-between;
 }

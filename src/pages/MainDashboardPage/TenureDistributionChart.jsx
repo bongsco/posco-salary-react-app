@@ -72,14 +72,20 @@ function TenureDistributionChart() {
 
   const labels = grouped.map((g) => g.label);
   const values = grouped.map((g) => g.total);
-
+  const pastelColors = [
+    '#FFA69E', // 0~4
+    '#FFCB77', // 5~10
+    '#A0CED9', // 11~15
+    '#B5EAD7', // 16~20
+    '#DABFFF', // 21년 이상
+  ];
   const chartData = {
     labels,
     datasets: [
       {
         label: '인원 수',
         data: values,
-        backgroundColor: '#4c6ef5',
+        backgroundColor: pastelColors.slice(0, values.length),
       },
     ],
   };
@@ -134,7 +140,7 @@ function TenureDistributionChart() {
         justifyContent: 'space-between',
       }}
     >
-      <h3 style={{ marginBottom: '3rem' }}>평균 근속연수</h3>
+      <h3 style={{ marginBottom: '1rem' }}>평균 근속연수</h3>
       <p
         style={{
           fontSize: '2.3rem',

@@ -1,4 +1,3 @@
-// MainChartPage.jsx
 import {
   BarController,
   BarElement,
@@ -33,7 +32,7 @@ ChartJS.register(
 function MainChartPage() {
   const { addError } = useErrorHandlerContext();
 
-  const { data, isLoading } = useSWR('/headcount-trend', async (url) => {
+  const { data, isLoading } = useSWR('/headcountTrend', async (url) => {
     const res = await fetchApi(url);
     if (!res?.ok) {
       addError(
@@ -78,7 +77,18 @@ function MainChartPage() {
       {
         label: '총 인원',
         data: headcounts,
-        backgroundColor: '#4c6ef5',
+        backgroundColor: [
+          '#e3f2fd', // 가장 밝은 파스텔 블루
+          '#bbdefb',
+          '#90caf9',
+          '#64b5f6',
+          '#42a5f5',
+          '#2196f3',
+          '#1e88e5',
+          '#1976d2',
+          '#1565c0',
+          '#0d47a1', //
+        ].slice(0, headcounts.length),
       },
     ],
   };
@@ -92,97 +102,99 @@ function MainChartPage() {
         data: changeRates,
         borderColor: '#fab005',
         backgroundColor: '#fab005',
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        fill: false,
+        pointBackgroundColor: '#fab005',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7,
         tension: 0.4,
-        showLine: false,
+        showLine: true,
+        pointStyle: 'circle',
+        hoverBorderWidth: 3,
       },
     ],
   };
 
   return (
-    <div className={styles.card}>
-      <div className={styles.chartWrapper}>
-        {/* 왼쪽 설명 영역 */}
-        <div className={styles.leftInfo}>
-          <h2 className={styles.title}>총 인력 현황</h2>
-          <p className={styles.total}>
-            <strong>{latestHeadcount.toLocaleString()}</strong>명
-          </p>
-          <p className={styles.description}>
-            평균 인원 변화율{' '}
-            <span className={styles.positive}>{avgChangeRate}%</span> 증가
-            <br />
-            증감률 변화폭 <span className={styles.negative}>
-              {-avgChange}%
-            </span>{' '}
-            감소
-          </p>
-          <div className={styles.legend}>
-            <span className={styles.barLegend}>⬤ 총 인원</span>
-            <span className={styles.lineLegend}>⬤ 증감률 (전년 대비)</span>
-          </div>
+    <div className={styles.chartWrapper}>
+      {/* 왼쪽 설명 영역 */}
+      <div className={styles.leftInfo}>
+        <h2 className={styles.title}>총 인력 현황</h2>
+        <p className={styles.total}>
+          <strong>{latestHeadcount.toLocaleString()}</strong>명
+        </p>
+        <p className={styles.mainDescription}>
+          평균 인원 변화율{' '}
+          <span className={styles.positive}>{avgChangeRate}%</span> 증가
+          <br />
+          증감률 변화폭 <span className={styles.negative}>
+            {-avgChange}%
+          </span>{' '}
+          감소
+        </p>
+        <div className={styles.legend}>
+          <span className={styles.barLegend}>⬤ 총 인원</span>
+          <span className={styles.lineLegend}>⬤ 증감률 (전년 대비)</span>
+        </div>
+      </div>
+
+      {/* 오른쪽 그래프 영역 */}
+      <div className={styles.rightChart}>
+        <div className={styles.lineChart}>
+          <Line
+            data={lineData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: (ctx) => `증감률: ${ctx.raw}%`,
+                  },
+                },
+                datalabels: false,
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: { display: true, text: '증감률 (%)' },
+                },
+                x: {
+                  display: false,
+                  ticks: {
+                    align: 'center',
+                  },
+                },
+              },
+            }}
+          />
         </div>
 
-        {/* 오른쪽 그래프 영역 */}
-        <div className={styles.rightChart}>
-          <div className={styles.lineChart}>
-            <Line
-              data={lineData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: { display: false },
-                  tooltip: {
-                    callbacks: {
-                      label: (ctx) => `증감률: ${ctx.raw}%`,
-                    },
-                  },
-                  datalabels: false,
+        <div className={styles.barChart}>
+          <Bar
+            data={barData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                datalabels: false,
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: { display: true, text: '총 인원' },
                 },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    title: { display: true, text: '증감률 (%)' },
-                  },
-                  x: {
-                    display: false,
-                    ticks: {
-                      align: 'center',
-                    },
+                x: {
+                  title: { display: true, text: '조정 년도' },
+                  ticks: {
+                    align: 'center',
                   },
                 },
-              }}
-            />
-          </div>
-
-          <div className={styles.barChart}>
-            <Bar
-              data={barData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: { display: false },
-                  datalabels: false,
-                },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    title: { display: true, text: '총 인원' },
-                  },
-                  x: {
-                    title: { display: true, text: '조정 년도' },
-                    ticks: {
-                      align: 'center',
-                    },
-                  },
-                },
-              }}
-            />
-          </div>
+              },
+            }}
+          />
         </div>
       </div>
     </div>

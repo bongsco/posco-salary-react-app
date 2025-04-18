@@ -16,7 +16,7 @@
 
 .leftInfo {
   flex: 0.35;
-  min-width: 200px;
+  min-width: 90px;
 }
 
 .rightChart {
@@ -40,9 +40,14 @@
 }
 
 .description {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #333;
   line-height: 1.5;
+}
+
+.mainDescription {
+  font-size: 0.9rem;
+  color: #333;
 }
 
 .positive {

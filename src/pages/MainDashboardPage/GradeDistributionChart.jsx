@@ -4,6 +4,7 @@ import { Doughnut } from 'react-chartjs-2';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import fetchApi from '#utils/fetch';
+import styles from './main-chart-page.module.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -44,22 +45,33 @@ function GradeGroupDistributionChart() {
     grouped[key].percentage.toFixed(1),
   );
 
+  const topIndex = percentages.reduce(
+    (maxIdx, curr, idx, arr) =>
+      parseFloat(curr) > parseFloat(arr[maxIdx]) ? idx : maxIdx,
+    0,
+  );
+  const topType = labels[topIndex]; // 예: '직군 P'
+  const topPercent = percentages[topIndex]; // 예: '34.2'
+
+  const pastelColors = [
+    '#ffd6a5', // 살구 오렌지
+    '#fdffb6', // 밝은 노랑
+    '#caffbf', // 민트 그린
+    '#9bf6ff', // 연하늘
+    '#a0c4ff', // 연파랑
+    '#bdb2ff', // 연보라
+    '#ffc6ff', // 핑크
+  ];
+
   const chartData = {
     labels,
     datasets: [
       {
         label: '직군별 인원 수',
         data: counts,
-        backgroundColor: [
-          '#4c6ef5',
-          '#845ef7',
-          '#20c997',
-          '#fab005',
-          '#e64980',
-          '#228be6',
-          '#12b886',
-        ],
+        backgroundColor: pastelColors.slice(0, counts.length),
         borderWidth: 1,
+        borderColor: '#fff',
       },
     ],
   };
@@ -83,9 +95,18 @@ function GradeGroupDistributionChart() {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: 600 }}>
-      <h3>직군별 인력 분포</h3>
-      <Doughnut data={chartData} options={options} />
+    <div className={styles.chartWrapper}>
+      <div className={styles.leftInfo}>
+        <h3 className={styles.title}>직군별 인력 분포</h3>
+        <p className={styles.description}>
+          <strong>{topType}</strong> 비율이{' '}
+          <strong className={styles.positive}>{topPercent}%</strong>로 가장 높음
+        </p>
+      </div>
+
+      <div className={styles.rightChart}>
+        <Doughnut data={chartData} options={options} />
+      </div>
     </div>
   );
 }

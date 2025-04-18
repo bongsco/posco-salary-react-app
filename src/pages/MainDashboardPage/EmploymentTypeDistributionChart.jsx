@@ -4,6 +4,9 @@ import { Doughnut } from 'react-chartjs-2';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import fetchApi from '#utils/fetch';
+import styles from './main-chart-page.module.css';
+
+// 기존 스타일 재사용
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -29,6 +32,14 @@ function EmploymentTypeDistributionChart() {
   const counts = data.map((d) => d.count);
   const percentages = data.map((d) => d.percentage.toFixed(1));
 
+  const maxIndex = data.reduce(
+    (maxIdx, curr, idx, arr) =>
+      curr.percentage > arr[maxIdx].percentage ? idx : maxIdx,
+    0,
+  );
+  const topType = data[maxIndex].employmentType;
+  const topPercent = data[maxIndex].percentage.toFixed(1);
+
   const chartData = {
     labels,
     datasets: [
@@ -36,16 +47,17 @@ function EmploymentTypeDistributionChart() {
         label: '신분별 인원 수',
         data: counts,
         backgroundColor: [
-          '#4c6ef5',
-          '#845ef7',
-          '#20c997',
-          '#fab005',
-          '#e64980',
-          '#228be6',
-          '#12b886',
-          '#ffa94d',
+          '#FFB5A7',
+          '#FCD5CE',
+          '#D8E2DC',
+          '#A2D2FF',
+          '#B5EAD7',
+          '#C7CEEA',
+          '#E2F0CB',
+          '#FFDAC1',
         ],
         borderWidth: 1,
+        borderColor: '#fff',
       },
     ],
   };
@@ -69,9 +81,18 @@ function EmploymentTypeDistributionChart() {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: 600 }}>
-      <h3>신분별 인력 분포</h3>
-      <Doughnut data={chartData} options={options} />
+    <div className={styles.chartWrapper}>
+      <div className={styles.leftInfo}>
+        <h3 className={styles.title}>신분별 인력 분포</h3>
+        <p className={styles.description}>
+          <strong>{topType}</strong> 점유율{' '}
+          <strong className={styles.positive}>{topPercent}%</strong>로 가장 많음
+        </p>
+      </div>
+
+      <div className={styles.rightChart}>
+        <Doughnut data={chartData} options={options} />
+      </div>
     </div>
   );
 }
