@@ -1,9 +1,11 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import NavItem from '#components/NavBar/NavItem';
 import SideBar, { Category, Item, SubItem } from '#components/SideBar';
 import { ErrorHandlerProvider } from '#contexts/ErrorHandlerContext';
+import useAuth from '#contexts/useAuth';
+import { setAuthContextRef } from '#utils/fetch';
 import styles from './root-layout.module.css';
 
 const initialSideBarState = {
@@ -19,19 +21,14 @@ const initialSideBarState = {
   formTest: false,
 };
 
-// Access Token 디코더
-function decodeJWT(token) {
-  try {
-    const payload = token.split('.')[1];
-    return JSON.parse(atob(payload));
-  } catch {
-    return null;
-  }
-}
-
 export default function RootLayout() {
   const location = useLocation();
-  const [userRole, setUserRole] = useState(null);
+  const auth = useAuth();
+  const userRole = useMemo(() => {
+    if (auth?.auth?.groups?.includes('bongsco_manager')) return '관리자';
+    if (auth?.auth) return '사용자';
+    return null;
+  }, [auth?.auth]);
 
   const [sideBarState, dispatchSideBarState] = useReducer(
     (prev, { action, key }) => {
@@ -61,23 +58,14 @@ export default function RootLayout() {
   );
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      const decoded = decodeJWT(token);
-      const groups = decoded?.['cognito:groups'] || [];
-      if (groups.includes('bongsco_manager')) {
-        setUserRole('관리자');
-      } else {
-        setUserRole('사용자');
-      }
-    } else {
-      setUserRole(null);
-    }
+    dispatchSideBarState({ action: 'navigate' });
   }, [location]);
 
   useEffect(() => {
-    dispatchSideBarState({ action: 'navigate' });
-  }, [location]);
+    if (auth) {
+      setAuthContextRef(auth);
+    }
+  }, [auth]);
 
   return (
     <div className={styles.root}>
@@ -111,12 +99,12 @@ export default function RootLayout() {
               icon="card"
               text="조정"
               isOpen={sideBarState.adjustCategory}
-              onClick={() => {
+              onClick={() =>
                 dispatchSideBarState({
                   action: 'toggle',
                   key: 'adjustCategory',
-                });
-              }}
+                })
+              }
             >
               <SubItem
                 text="등록"

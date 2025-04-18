@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '#components/Button';
 import Input from '#components/Input';
+import useAuth from '#contexts/useAuth';
 import styles from './login-page.module.css';
 
 const config = { region: 'ap-northeast-2' };
@@ -26,6 +27,7 @@ function LoginPage() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
+  const { setTokens } = useAuth();
 
   const handleLogin = async () => {
     setErrorMessage('');
@@ -40,7 +42,6 @@ function LoginPage() {
     };
 
     try {
-      // 1. 로그인 요청
       const command = new InitiateAuthCommand(input);
       const response = await cognitoClient.send(command);
 
@@ -49,14 +50,19 @@ function LoginPage() {
         return;
       }
 
-      if (!response?.AuthenticationResult?.AccessToken) {
-        throw new Error('NoAccessToken');
+      const authResult = response?.AuthenticationResult;
+
+      if (!authResult?.AccessToken || !authResult?.RefreshToken) {
+        throw new Error('MissingToken');
       }
 
-      const accessToken = response.AuthenticationResult.AccessToken;
+      // ✅ AuthContext에 저장
+      setTokens({
+        access: authResult.AccessToken,
+        refresh: authResult.RefreshToken,
+      });
 
-      localStorage.setItem('accessToken', accessToken);
-
+      // ✅ 로그인 성공 → 홈으로 이동
       navigate('/');
     } catch (error) {
       const name = error?.name || error?.message || 'UnknownError';

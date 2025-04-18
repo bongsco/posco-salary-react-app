@@ -1,13 +1,15 @@
-// router.jsx
 import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import { AdjustProvider } from '#contexts/AdjustContext';
+import { AuthProvider } from '#contexts/AuthContext';
 import AppLayout from '#layouts/AppLayout';
 import RootLayout from '#layouts/RootLayout';
 import LoginPage from '#pages/LoginPage';
+import AuthRedirect from '#pages/LoginPage/AuthRedirect';
+import LoginGuard from '#pages/LoginPage/LoginGuard';
 import RequireGroup from '#pages/LoginPage/RequireGroup';
 import LogoutPage from '#pages/LogoutPage';
 import MainPage from '#pages/MainPage';
@@ -23,13 +25,24 @@ import SubjectAssignPage from '#pages/adjust-edit/preparation/SubjectAssignPage'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route
-        index
-        element={<AppLayout title="메인" breadCrumbs={['메인']} />}
-      />
+    <Route
+      path="/"
+      element={
+        <AuthProvider>
+          <RootLayout />
+        </AuthProvider>
+      }
+    >
+      <Route index element={<AuthRedirect />} />
       <Route path="test" element={<TestPage />} />
-      <Route path="login" element={<LoginPage />} />
+      <Route
+        path="login"
+        element={
+          <LoginGuard>
+            <LoginPage />
+          </LoginGuard>
+        }
+      />
       <Route path="logout" element={<LogoutPage />} />
       <Route
         path="personal"
@@ -43,7 +56,14 @@ const router = createBrowserRouter(
           <AppLayout title="계산식 관리" breadCrumbs={['계산식 관리']} />
         }
       />
-      <Route path="adjust/list" element={<MainPage />} />
+      <Route
+        path="adjust/list"
+        element={
+          <RequireGroup allowedGroups={['bongsco_manager']}>
+            <MainPage />
+          </RequireGroup>
+        }
+      />
 
       <Route path="adjust/edit">
         <Route

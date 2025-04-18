@@ -1,20 +1,25 @@
 import PropTypes from 'prop-types';
-
-function decodeJWT(token) {
-  try {
-    const payload = token.split('.')[1];
-    return JSON.parse(atob(payload));
-  } catch {
-    return null;
-  }
-}
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '#contexts/useAuth';
 
 export default function RequireGroup({ allowedGroups = [], children }) {
-  const token = localStorage.getItem('accessToken');
-  const decoded = token ? decodeJWT(token) : null;
-  const groups = decoded?.['cognito:groups'] || [];
+  const { auth } = useAuth();
+  const navigate = useNavigate();
 
-  const hasPermission = groups.some((group) => allowedGroups.includes(group));
+  // ✅ 로그인 안 된 경우 → 로그인 페이지로 이동
+  useEffect(() => {
+    if (!auth) {
+      navigate('/login');
+    }
+  }, [auth, navigate]);
+
+  if (!auth) return null;
+
+  const userGroups = auth?.groups || [];
+  const hasPermission = userGroups.some((group) =>
+    allowedGroups.includes(group),
+  );
 
   if (!hasPermission) {
     return <p style={{ padding: '2rem' }}>⚠️ 접근 권한이 없습니다.</p>;
