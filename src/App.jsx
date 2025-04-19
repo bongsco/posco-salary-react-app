@@ -22,6 +22,7 @@ import PaybandApplyPage from '#pages/adjust-edit/main/PaybandApplyPage';
 import ResultPage from '#pages/adjust-edit/main/ResultPage';
 import HpoApplyPage from '#pages/adjust-edit/preparation/HpoApplyPage';
 import SubjectAssignPage from '#pages/adjust-edit/preparation/SubjectAssignPage';
+import constants from './constant';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -59,7 +60,7 @@ const router = createBrowserRouter(
       <Route
         path="adjust/list"
         element={
-          <RequireGroup allowedGroups={['bongsco_manager']}>
+          <RequireGroup allowedGroups={[constants.group.MANAGER]}>
             <MainPage />
           </RequireGroup>
         }
@@ -69,7 +70,7 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <RequireGroup allowedGroups={['bongsco_manager']}>
+            <RequireGroup allowedGroups={[constants.group.MANAGER]}>
               <AppLayout title="연봉조정 등록" breadCrumbs={['조정', '등록']} />
             </RequireGroup>
           }
@@ -78,7 +79,7 @@ const router = createBrowserRouter(
           <Route
             path="test-edit"
             element={
-              <RequireGroup allowedGroups={['bongsco_manager']}>
+              <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                 <TestEditPage />
               </RequireGroup>
             }
@@ -88,7 +89,7 @@ const router = createBrowserRouter(
               <Route
                 path="subject"
                 element={
-                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                     <SubjectCriteriaPage />
                   </RequireGroup>
                 }
@@ -96,7 +97,7 @@ const router = createBrowserRouter(
               <Route
                 path="payment-rate"
                 element={
-                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                     <PaymentRateCriteriaPage />
                   </RequireGroup>
                 }
@@ -104,7 +105,7 @@ const router = createBrowserRouter(
               <Route
                 path="payband"
                 element={
-                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                     <PaybandCriteriaPage />
                   </RequireGroup>
                 }
@@ -114,7 +115,7 @@ const router = createBrowserRouter(
               <Route
                 path="subject"
                 element={
-                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                     <SubjectAssignPage />
                   </RequireGroup>
                 }
@@ -122,7 +123,7 @@ const router = createBrowserRouter(
               <Route
                 path="high-performance"
                 element={
-                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                     <HpoApplyPage />
                   </RequireGroup>
                 }
@@ -132,7 +133,7 @@ const router = createBrowserRouter(
               <Route
                 path="payband"
                 element={
-                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                     <PaybandApplyPage />
                   </RequireGroup>
                 }
@@ -140,7 +141,7 @@ const router = createBrowserRouter(
               <Route
                 path="result"
                 element={
-                  <RequireGroup allowedGroups={['bongsco_manager']}>
+                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
                     <ResultPage />
                   </RequireGroup>
                 }

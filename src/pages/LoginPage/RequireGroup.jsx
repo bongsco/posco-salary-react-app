@@ -16,7 +16,7 @@ export default function RequireGroup({ allowedGroups = [], children }) {
 
   if (!auth) return null;
 
-  const userGroups = auth?.groups || [];
+  const userGroups = auth.groups;
   const hasPermission = userGroups.some((group) =>
     allowedGroups.includes(group),
   );
