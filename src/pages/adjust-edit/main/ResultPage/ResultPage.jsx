@@ -274,9 +274,9 @@ export default function ResultPage() {
               </h3>
               <div className={styles['chart-legend']}>
                 <span className={styles['legend-item-pink']} />
-                <span>{Object.keys(chartData.salaryPerGrade[0])[0]}</span>
+                <span>{chartData.salaryPerGrades[0].adjustName}</span>
                 <span className={styles['legend-item-blue']} />
-                <span>{Object.keys(chartData.salaryPerGrade[1])[0]}</span>
+                <span>{chartData.salaryPerGrades[1].adjustName}</span>
               </div>
             </div>
             <div className={styles['one-chart-container']}>
@@ -285,18 +285,15 @@ export default function ResultPage() {
                   labels: gradeNames,
                   datasets: (() => {
                     const [beforeAdjustName, currentAdjustName] =
-                      chartData.salaryPerGrade.map(
-                        (obj) => Object.keys(obj)[0],
-                      );
+                      chartData.salaryPerGrades.map((obj) => obj.adjustName);
 
                     return [
                       {
                         label: beforeAdjustName,
                         data: gradeNames.map(
                           (item) =>
-                            chartData.salaryPerGrade[0][beforeAdjustName][
-                              item
-                            ] ?? 0,
+                            chartData.salaryPerGrades[0].gradeSalaryMap[item] ??
+                            0,
                         ),
                         backgroundColor: 'rgba(230, 150, 170, 0.5)',
                       },
@@ -304,9 +301,8 @@ export default function ResultPage() {
                         label: currentAdjustName,
                         data: gradeNames.map(
                           (item) =>
-                            chartData.salaryPerGrade[1][currentAdjustName][
-                              item
-                            ] ?? 0,
+                            chartData.salaryPerGrades[1].gradeSalaryMap[item] ??
+                            0,
                         ),
                         backgroundColor: 'rgba(53, 162, 235, 0.5)',
                       },
@@ -340,21 +336,21 @@ export default function ResultPage() {
               <div className={styles['one-chart-container']}>
                 <Line
                   data={{
-                    labels: chartData.annualSalary.map(
+                    labels: chartData.annualSalaries.map(
                       (item) => item.adjustName,
                     ),
                     datasets: [
                       {
                         label: '총액',
-                        data: chartData.annualSalary.map(
-                          (item) => item.totalStdSalary,
+                        data: chartData.annualSalaries.map(
+                          (item) => item.totalSalary,
                         ),
                         backgroundColor: 'rgba(230, 150, 170, 0.5)',
                         borderColor: 'rgba(230, 150, 170, 0.5)',
                       },
                       {
                         label: '기준연봉',
-                        data: chartData.annualSalary.map(
+                        data: chartData.annualSalaries.map(
                           (item) => item.stdSalary,
                         ),
                         backgroundColor: 'rgba(53, 162, 235, 0.5)',
@@ -362,7 +358,7 @@ export default function ResultPage() {
                       },
                       {
                         label: '성과금',
-                        data: chartData.annualSalary.map(
+                        data: chartData.annualSalaries.map(
                           (item) => item.hpoBonus,
                         ),
                         backgroundColor: 'rgba(255, 180, 64, 0.5)',
@@ -389,13 +385,13 @@ export default function ResultPage() {
               <div className={styles['one-chart-container']}>
                 <PolarArea
                   data={{
-                    labels: chartData.hpoPerDepartment.map(
+                    labels: chartData.hpoPerDepartments.map(
                       (item) => item.departmentName,
                     ),
                     datasets: [
                       {
                         label: '부서 인원 수',
-                        data: chartData.hpoPerDepartment.map(
+                        data: chartData.hpoPerDepartments.map(
                           (item) => item.count,
                         ),
                         backgroundColor: [
