@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styles from './header-bar.module.css';
 import '#styles/global.css';
 
@@ -30,7 +31,9 @@ export default function HeaderBar({ onBackwardButtonClick }) {
   return (
     <nav className={styles.container}>
       <div className={styles.spaceHolder} />
-      <div className={styles.title}>연봉관리시스템</div>
+      <Link to="/personal" className={styles.title}>
+        연봉관리시스템
+      </Link>
       <BackwardButton
         onClick={onBackwardButtonClick}
         className={styles.button}

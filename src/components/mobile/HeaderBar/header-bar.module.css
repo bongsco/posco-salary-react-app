@@ -27,6 +27,7 @@
   flex-shrink: 0;
   justify-self: center;
   width: fit-content;
+  text-decoration: none;
 }
 
 .button {
