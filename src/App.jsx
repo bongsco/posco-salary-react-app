@@ -8,8 +8,6 @@ import { AuthProvider } from '#contexts/AuthContext';
 import AppLayout from '#layouts/AppLayout';
 import RootLayout from '#layouts/RootLayout';
 import LoginPage from '#pages/LoginPage';
-import AuthRedirect from '#pages/LoginPage/AuthRedirect';
-import LoginGuard from '#pages/LoginPage/LoginGuard';
 import RequireGroup from '#pages/LoginPage/RequireGroup';
 import LogoutPage from '#pages/LogoutPage';
 import MainPage from '#pages/MainPage';
@@ -30,20 +28,14 @@ const router = createBrowserRouter(
       path="/"
       element={
         <AuthProvider>
-          <RootLayout />
+          <RequireGroup allowedGroups={[constants.group.MANAGER]}>
+            <RootLayout />
+          </RequireGroup>
         </AuthProvider>
       }
     >
-      <Route index element={<AuthRedirect />} />
       <Route path="test" element={<TestPage />} />
-      <Route
-        path="login"
-        element={
-          <LoginGuard>
-            <LoginPage />
-          </LoginGuard>
-        }
-      />
+      <Route path="login" element={<LoginPage />} />
       <Route path="logout" element={<LogoutPage />} />
       <Route
         path="personal"
@@ -57,95 +49,33 @@ const router = createBrowserRouter(
           <AppLayout title="계산식 관리" breadCrumbs={['계산식 관리']} />
         }
       />
-      <Route
-        path="adjust/list"
-        element={
-          <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-            <MainPage />
-          </RequireGroup>
-        }
-      />
+      <Route path="adjust/list" element={<MainPage />} />
 
       <Route path="adjust/edit">
         <Route
           index
           element={
-            <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-              <AppLayout title="연봉조정 등록" breadCrumbs={['조정', '등록']} />
-            </RequireGroup>
+            <AppLayout title="연봉조정 등록" breadCrumbs={['조정', '등록']} />
           }
         />
         <Route path=":id" element={<AdjustProvider />}>
-          <Route
-            path="test-edit"
-            element={
-              <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                <TestEditPage />
-              </RequireGroup>
-            }
-          />
+          <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
-              <Route
-                path="subject"
-                element={
-                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                    <SubjectCriteriaPage />
-                  </RequireGroup>
-                }
-              />
+              <Route path="subject" element={<SubjectCriteriaPage />} />
               <Route
                 path="payment-rate"
-                element={
-                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                    <PaymentRateCriteriaPage />
-                  </RequireGroup>
-                }
+                element={<PaymentRateCriteriaPage />}
               />
-              <Route
-                path="payband"
-                element={
-                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                    <PaybandCriteriaPage />
-                  </RequireGroup>
-                }
-              />
+              <Route path="payband" element={<PaybandCriteriaPage />} />
             </Route>
             <Route path="preparation">
-              <Route
-                path="subject"
-                element={
-                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                    <SubjectAssignPage />
-                  </RequireGroup>
-                }
-              />
-              <Route
-                path="high-performance"
-                element={
-                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                    <HpoApplyPage />
-                  </RequireGroup>
-                }
-              />
+              <Route path="subject" element={<SubjectAssignPage />} />
+              <Route path="high-performance" element={<HpoApplyPage />} />
             </Route>
             <Route path="main">
-              <Route
-                path="payband"
-                element={
-                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                    <PaybandApplyPage />
-                  </RequireGroup>
-                }
-              />
-              <Route
-                path="result"
-                element={
-                  <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-                    <ResultPage />
-                  </RequireGroup>
-                }
-              />
+              <Route path="payband" element={<PaybandApplyPage />} />
+              <Route path="result" element={<ResultPage />} />
             </Route>
           </Route>
         </Route>

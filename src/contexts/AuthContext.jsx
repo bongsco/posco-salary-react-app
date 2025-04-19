@@ -1,7 +1,12 @@
+import {
+  CognitoIdentityProviderClient,
+  InitiateAuthCommand,
+} from '@aws-sdk/client-cognito-identity-provider';
 import PropTypes from 'prop-types';
 import {
   createContext,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -9,6 +14,14 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext(null);
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
+
+const region = process.env.REACT_APP_COGNITO_REGION;
+const clientId = process.env.REACT_APP_COGNITO_CLIENT_ID;
+const cognitoClient = new CognitoIdentityProviderClient({ region });
 
 function decodeJWT(token) {
   try {
@@ -34,7 +47,6 @@ export function AuthProvider({ children }) {
     navigate('/login');
   }, [navigate]);
 
-  // ✅ 토큰 초기화
   useEffect(() => {
     const storedAccess = localStorage.getItem('accessToken');
     const storedRefresh = localStorage.getItem('refreshToken');
@@ -79,6 +91,27 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  const refreshAccessToken = useCallback(async () => {
+    if (!refreshToken) throw new Error('NoRefreshToken');
+
+    const input = {
+      AuthFlow: 'REFRESH_TOKEN_AUTH',
+      AuthParameters: {
+        REFRESH_TOKEN: refreshToken,
+      },
+      ClientId: clientId,
+    };
+
+    const command = new InitiateAuthCommand(input);
+    const result = await cognitoClient.send(command);
+    const newAccessToken = result?.AuthenticationResult?.AccessToken;
+
+    if (!newAccessToken) throw new Error('NoAccessToken');
+
+    setTokens({ access: newAccessToken, refresh: refreshToken });
+    return newAccessToken;
+  }, [refreshToken, setTokens]);
+
   const contextValue = useMemo(
     () => ({
       auth,
@@ -87,8 +120,17 @@ export function AuthProvider({ children }) {
       setTokens,
       setUserInfo,
       logout,
+      refreshAccessToken,
     }),
-    [auth, accessToken, refreshToken, setTokens, setUserInfo, logout],
+    [
+      auth,
+      accessToken,
+      refreshToken,
+      setTokens,
+      setUserInfo,
+      logout,
+      refreshAccessToken,
+    ],
   );
 
   return (

@@ -1,21 +1,29 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '#contexts/useAuth';
 
 export default function RequireGroup({ allowedGroups = [], children }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // ✅ 로그인 안 된 경우 → 로그인 페이지로 이동
+  const publicPaths = ['/login', '/logout'];
+  const isPublicPath = publicPaths.includes(location.pathname);
+
   useEffect(() => {
-    if (!auth) {
+    if (!auth && !isPublicPath) {
       navigate('/login');
     }
-  }, [auth, navigate]);
+  }, [auth, navigate, isPublicPath]);
 
-  if (!auth) return null;
+  // 아직 인증 정보가 없고 public 경로도 아님 → 일단 렌더링하지 않음
+  if (!auth && !isPublicPath) return null;
 
+  // public path는 권한 검사 없이 통과
+  if (isPublicPath) return children;
+
+  // 권한 검사
   const userGroups = auth.groups;
   const hasPermission = userGroups.some((group) =>
     allowedGroups.includes(group),

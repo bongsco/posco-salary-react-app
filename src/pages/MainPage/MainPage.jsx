@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import TimeLine from '#components/TimeLine';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AppLayout from '#layouts/AppLayout';
-import fetchApi from '#utils/fetch';
 import AdjustTable from './AdjustTable';
 import FilterSort from './FilterSort';
 import NoDataTable from './NoDataTable';
@@ -116,10 +116,11 @@ function MainPage() {
   const queryParams = new URLSearchParams(queryParamsObj).toString();
 
   // 실제 API 요청.
+  const fetchWithAuth = useFetchWithAuth();
   const { data: salaryAdjustmentData, isLoading } = useSWR(
     `/adjust/list?${queryParams}${!filters || filters.length === 0 ? '' : `&${serializeFilterOption(filters)}`}`,
     async (requestUrl) => {
-      const res = await fetchApi(requestUrl);
+      const res = await fetchWithAuth(requestUrl);
       if (!res?.ok) {
         addError(
           `Sent Request to not found API (${process.env.REACT_APP_API_URL}) and the connection refused.`,
@@ -238,7 +239,7 @@ function MainPage() {
     }
 
     try {
-      const res = await fetchApi('/adjust', {
+      const res = await fetchWithAuth('/adjust', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -269,7 +270,7 @@ function MainPage() {
   const handleSelectedIndex = async (adjustId, index) => {
     setSelectedIndex(selectedIndex === index ? null : index);
 
-    const stepperResponse = await fetchApi(`/stepper/${adjustId}`);
+    const stepperResponse = await fetchWithAuth(`/stepper/${adjustId}`);
     if (!stepperResponse || !stepperResponse.ok) {
       // 응답이 없거나 응답 상태가 'ok'가 아닐 경우 에러 처리
       addError(
@@ -305,7 +306,7 @@ function MainPage() {
 
   const handleDeleteClick = async (adjustId) => {
     try {
-      const res = await fetchApi(`/adjust/${adjustId}`, {
+      const res = await fetchWithAuth(`/adjust/${adjustId}`, {
         method: 'DELETE',
       });
 
