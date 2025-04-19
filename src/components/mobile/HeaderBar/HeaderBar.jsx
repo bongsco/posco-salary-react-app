@@ -31,12 +31,10 @@ export default function HeaderBar({ onBackwardButtonClick }) {
     <nav className={styles.container}>
       <div className={styles.spaceHolder} />
       <div className={styles.title}>연봉관리시스템</div>
-      <div className={styles.buttonContainer}>
-        <BackwardButton
-          onClick={onBackwardButtonClick}
-          className={styles.button}
-        />
-      </div>
+      <BackwardButton
+        onClick={onBackwardButtonClick}
+        className={styles.button}
+      />
     </nav>
   );
 }
