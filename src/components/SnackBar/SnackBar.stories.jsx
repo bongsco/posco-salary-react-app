@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '#components/Button';
 import SnackBar from './SnackBar';
 
@@ -11,13 +11,28 @@ export default {
 function Template() {
   const [isSnackBarShowing, setIsSnackBarShowing] = useState(false);
   const [message, setMessage] = useState('');
-  const timer = setTimeout(() => setIsSnackBarShowing(false), 2000);
+  const timerRef = useRef(null);
 
   const handleSnackBar = (msg) => {
     setMessage(msg);
     setIsSnackBarShowing(true);
-    clearTimeout(timer);
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setIsSnackBarShowing(false);
+      timerRef.current = null;
+    }, 2000);
   };
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   return (
     <div>
