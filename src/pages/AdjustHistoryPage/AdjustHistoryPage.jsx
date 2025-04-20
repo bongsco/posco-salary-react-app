@@ -253,7 +253,7 @@ export default function AdjustHistoryPage() {
             {mockData.slice(0, 5).map(({ adjustId, 연도, 차수, 종류 }) => (
               <tr
                 key={adjustId}
-                onClick={() => navigate(`/personal/adjust/${adjustId}`)}
+                onClick={() => navigate(`/personal/${adjustId}`)}
               >
                 <td>{연도}</td>
                 <td>{차수}</td>

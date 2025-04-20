@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  height: 100%;
   gap: 4px;
   overflow-y: scroll;
 }
@@ -18,6 +19,6 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  height: 100%;
-  overflow: visible;
+  height: fit-content;
+  overflow-x: visible;
 }

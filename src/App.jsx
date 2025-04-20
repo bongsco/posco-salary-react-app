@@ -17,6 +17,7 @@ import PaybandApplyPage from '#pages/adjust-edit/main/PaybandApplyPage';
 import ResultPage from '#pages/adjust-edit/main/ResultPage';
 import HpoApplyPage from '#pages/adjust-edit/preparation/HpoApplyPage';
 import SubjectAssignPage from '#pages/adjust-edit/preparation/SubjectAssignPage';
+import AdjustHistoryDetailPage from '#src/pages/AdjustHistoryDetailPage/AdjustHistoryDetailPage';
 import AdjustHistoryPage from '#src/pages/AdjustHistoryPage/AdjustHistoryPage';
 
 const router = createBrowserRouter(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
     <Route path="/">
       <Route path="personal">
         <Route path="history" element={<AdjustHistoryPage />} />
+        <Route path=":id" element={<AdjustHistoryDetailPage />} />
       </Route>
       <Route element={<RootLayout />}>
         <Route
