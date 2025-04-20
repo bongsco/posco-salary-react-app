@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import Button from '#components/Button';
+import SnackBar from '#components/SnackBar';
 import Stepper from '#components/Stepper';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
@@ -20,6 +22,7 @@ export default function AdjustEditLayout({
   isCommitted,
   canMove = true,
   stepId,
+  lastStepPath = false,
 }) {
   const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
@@ -100,6 +103,30 @@ export default function AdjustEditLayout({
     }
   };
 
+  const [isSnackBarShowing, setIsSnackBarShowing] = useState(false);
+  const [message, setMessage] = useState('');
+  const timerRef = useRef(null);
+
+  const handleSnackBar = (msg) => {
+    setMessage(msg);
+    setIsSnackBarShowing(true);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setIsSnackBarShowing(false);
+      timerRef.current = null;
+    }, 2000);
+  };
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
   return (
     <AppLayout
       title={
@@ -123,6 +150,7 @@ export default function AdjustEditLayout({
                 await onCommit();
                 await setStepDone();
                 await mutate(`/stepper/${adjust.adjustId}`);
+                handleSnackBar('저장되었습니다.');
               }}
             />
             <Button
@@ -149,8 +177,31 @@ export default function AdjustEditLayout({
             }}
           />
         )}
+        {lastStepPath && (
+          <Button
+            variant="primary"
+            size="small"
+            label="시스템 반영"
+            onClick={async () => {
+              const res = await fetchApi(
+                `/adjust/${adjust.adjustId}/main/interface`,
+                {
+                  method: 'PATCH',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                },
+              );
+              if (!res.ok) {
+                throw new Error('PATCH 요청 실패');
+              }
+              handleSnackBar('통합 인사 시스템에 반영이 완료되었습니다.');
+            }}
+          />
+        )}
       </div>
       {renderPrompt()}
+      {isSnackBarShowing && <SnackBar message={message} />}
     </AppLayout>
   );
 }
@@ -165,6 +216,7 @@ AdjustEditLayout.propTypes = {
   isCommitted: PropTypes.bool,
   canMove: PropTypes.bool,
   stepId: PropTypes.string.isRequired,
+  lastStepPath: PropTypes.bool,
 };
 
 AdjustEditLayout.defaultProps = {
@@ -174,4 +226,5 @@ AdjustEditLayout.defaultProps = {
   onRollback: () => {},
   isCommitted: true,
   canMove: true,
+  lastStepPath: false,
 };
