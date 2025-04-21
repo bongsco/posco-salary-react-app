@@ -25,7 +25,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
       <Route path="personal">
-        <Route element={<AdjustHistoryPage />} />
+        <Route index element={<AdjustHistoryPage />} />
         <Route path=":id" element={<AdjustHistoryDetailPage />} />
       </Route>
       <Route element={<RootLayout />}>
