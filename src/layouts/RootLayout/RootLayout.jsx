@@ -13,11 +13,9 @@ const initialSideBarState = {
   adjustCategory: false,
   adjustEdit: false,
   adjustList: false,
-  adjustEditTest: false,
   personal: false,
   formula: false,
   test: false,
-  formTest: false,
 };
 
 export default function RootLayout() {
@@ -107,11 +105,6 @@ export default function RootLayout() {
                 text="조회"
                 href="/adjust/list"
                 isActive={sideBarState.adjustList}
-              />
-              <SubItem
-                text="Form 테스트"
-                href="/adjust/edit/0/test-edit"
-                isActive={sideBarState.adjustEditTest}
               />
             </Category>
             <Item
