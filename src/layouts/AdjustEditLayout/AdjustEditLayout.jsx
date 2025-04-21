@@ -6,8 +6,8 @@ import Stepper from '#components/Stepper';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useBlocker from '#hooks/UseBlocker';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AppLayout from '#layouts/AppLayout';
-import fetchApi from '#utils/fetch';
 import styles from './adjust-edit-layout.module.css';
 
 export default function AdjustEditLayout({
@@ -24,6 +24,8 @@ export default function AdjustEditLayout({
   const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
   const navigate = useNavigate();
+  const fetchWithAuth = useFetchWithAuth();
+
   const { data: stepperData, mutate } = useSWR(
     `/stepper/${adjust.adjustId}`,
     async (url) => {
@@ -34,7 +36,7 @@ export default function AdjustEditLayout({
       };
 
       try {
-        const res = await fetchApi(url);
+        const res = await fetchWithAuth(url);
         const json = await res.json();
 
         if (!res?.ok) {
@@ -75,9 +77,12 @@ export default function AdjustEditLayout({
 
   const setStepDone = async () => {
     try {
-      const res = await fetchApi(`/stepper/${adjust.adjustId}/step/${stepId}`, {
-        method: 'PATCH',
-      });
+      const res = await fetchWithAuth(
+        `/stepper/${adjust.adjustId}/step/${stepId}`,
+        {
+          method: 'PATCH',
+        },
+      );
 
       if (!res.ok) {
         const json = await res.json();

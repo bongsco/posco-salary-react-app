@@ -5,7 +5,6 @@ import NavItem from '#components/NavBar/NavItem';
 import SideBar, { Category, Item, SubItem } from '#components/SideBar';
 import { useAuth } from '#contexts/AuthContext';
 import { ErrorHandlerProvider } from '#contexts/ErrorHandlerContext';
-import { setAuthContextRef } from '#utils/fetch';
 import styles from './root-layout.module.css';
 
 const initialSideBarState = {
@@ -24,10 +23,10 @@ const initialSideBarState = {
 export default function RootLayout() {
   const location = useLocation();
   const auth = useAuth();
+
   const displayName = useMemo(() => {
     const user = auth?.auth;
 
-    console.log('user', user);
     if (!user) return null;
 
     const isManager = user.groups?.includes('bongsco_manager');
@@ -64,12 +63,6 @@ export default function RootLayout() {
   useEffect(() => {
     dispatchSideBarState({ action: 'navigate' });
   }, [location]);
-
-  useEffect(() => {
-    if (auth) {
-      setAuthContextRef(auth);
-    }
-  }, [auth]);
 
   return (
     <div className={styles.root}>

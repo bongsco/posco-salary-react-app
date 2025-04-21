@@ -3,9 +3,9 @@ import useSWR from 'swr';
 import Input from '#components/Input';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import constant from '#src/constant';
-import fetchApi from '#utils/fetch';
 import CompensationTable from './PaymentRateTable';
 import styles from './payment-rate-criteria-page.module.css';
 import '#styles/global.css';
@@ -166,6 +166,7 @@ export default function PaymentRateCriteriaPage() {
   const { adjust } = useAdjustContext();
   const adjustId = adjust?.adjustId;
   const { addError } = useErrorHandlerContext();
+  const fetchWithAuth = useFetchWithAuth();
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const [errorState, setErrorState] = useState({
@@ -176,7 +177,7 @@ export default function PaymentRateCriteriaPage() {
   const [hasProvideRateError, setHasProvideRateError] = useState(false);
 
   const fetcher = async (url) => {
-    const res = await fetchApi(url);
+    const res = await fetchWithAuth(url);
     if (!res.ok) {
       addError(
         `연봉지급률 조회 실패 (${res.status} ${res.statusText})`,
@@ -281,11 +282,14 @@ export default function PaymentRateCriteriaPage() {
       paymentRates,
     };
 
-    const res = await fetchApi(`/adjust/${adjustId}/criteria/paymentrate`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    const res = await fetchWithAuth(
+      `/adjust/${adjustId}/criteria/paymentrate`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      },
+    );
 
     if (!res.ok) {
       addError(

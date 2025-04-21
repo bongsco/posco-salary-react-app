@@ -7,9 +7,9 @@ import TableOption from '#components/TableOption';
 import TableSelectIndicator from '#components/TableSelectIndicator';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import constant from '#src/constant';
-import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import styles from './subject-assign-page.module.css';
 import '#styles/global.css';
@@ -94,6 +94,7 @@ const parseHiredDateToDate = (str) => {
 export default function OrganizationSubject() {
   const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
+  const fetchWithAuth = useFetchWithAuth();
 
   const [optionState, dispatchOption] = useReducer(
     optionReducer,
@@ -111,7 +112,7 @@ export default function OrganizationSubject() {
       ? `/adjust/${adjust.adjustId}/preparation/employees`
       : null,
     async (url) => {
-      const res = await fetchApi(url);
+      const res = await fetchWithAuth(url);
       // 상태 코드가 200-299 범위가 아니더라도,
       // 파싱 시도를 하고 에러를 던집니다.
       if (!res?.ok) {
@@ -247,7 +248,7 @@ export default function OrganizationSubject() {
 
     try {
       if (changedSubjectUseEmployee.length > 0) {
-        const res = await fetchApi(
+        const res = await fetchWithAuth(
           `/adjust/${adjust.adjustId}/preparation/employees`,
           {
             method: 'PATCH',
@@ -323,7 +324,7 @@ export default function OrganizationSubject() {
 
   const handleExcelDownload = async (type) => {
     try {
-      const res = await fetch(
+      const res = await fetchWithAuth(
         `/api/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
       );
       if (!res.ok) throw new Error('엑셀 다운로드 실패');
