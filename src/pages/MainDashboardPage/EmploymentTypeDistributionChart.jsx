@@ -3,7 +3,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
-import fetchApi from '#utils/fetch';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import styles from './main-chart-page.module.css';
 
 // 기존 스타일 재사용
@@ -12,9 +12,10 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 function EmploymentTypeDistributionChart() {
   const { addError } = useErrorHandlerContext();
+  const fetchWithAuth = useFetchWithAuth();
 
   const { data, isLoading } = useSWR('/employmentDistribution', async (url) => {
-    const res = await fetchApi(url);
+    const res = await fetchWithAuth(url);
     if (!res?.ok) {
       addError(
         `Sent request to ${url}, but got ${res.status}`,

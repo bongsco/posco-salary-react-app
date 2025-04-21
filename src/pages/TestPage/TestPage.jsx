@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AppLayout from '#layouts/AppLayout';
-import fetchApi from '#utils/fetch';
 
 export default function TestPage() {
+  const fetchWithAuth = useFetchWithAuth();
   const { addError } = useErrorHandlerContext();
   useSWR('/notfound', async (url) => {
-    const res = await fetchApi(url);
+    const res = await fetchWithAuth(url);
     // 상태 코드가 200-299 범위가 아니더라도,
     // 파싱 시도를 하고 에러를 던집니다.
     if (!res?.ok) {

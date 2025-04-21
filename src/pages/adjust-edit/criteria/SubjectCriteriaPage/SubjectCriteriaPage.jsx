@@ -2,9 +2,9 @@ import { useMemo, useReducer, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import constant from '#src/constant';
-import fetchApi from '#utils/fetch';
 import DateSelection from './DateSelection';
 import GradeSelection from './GradeSelection';
 import PaymentSelection from './PaymentSelection';
@@ -14,6 +14,7 @@ import '#styles/global.css';
 export default function SubjectCriteriaPage() {
   const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
+  const fetchWithAuth = useFetchWithAuth();
 
   const structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
 
@@ -256,7 +257,7 @@ export default function SubjectCriteriaPage() {
     adjust?.adjustId ? `/adjust/${adjust.adjustId}/criteria/subject` : null,
 
     async (url) => {
-      const res = await fetchApi(url);
+      const res = await fetchWithAuth(url);
       if (!res.ok) {
         const errorData = await res.json();
 
@@ -421,7 +422,7 @@ export default function SubjectCriteriaPage() {
       };
 
       // ✅ PATCH 요청
-      const res = await fetchApi(
+      const res = await fetchWithAuth(
         `/adjust/${adjust.adjustId}/criteria/subject`,
         {
           method: 'PATCH',

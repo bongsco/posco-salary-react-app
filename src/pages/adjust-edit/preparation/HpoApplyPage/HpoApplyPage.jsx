@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import constant from '#src/constant';
-import fetchApi from '#utils/fetch';
 import sortObject from '#utils/sortObject';
 import FilterSort from './FilterSort';
 import HighOrganizationTable from './HpoApplyTable';
@@ -51,10 +51,12 @@ function HpoApplyPage() {
 
   const { addError } = useErrorHandlerContext();
 
+  const fetchWithAuth = useFetchWithAuth();
+
   const { data: initialHighOrganizationData } = useSWR(
     '/adjust/1/preparation/high-performance',
     async (url) => {
-      const res = await fetchApi(url);
+      const res = await fetchWithAuth(url);
       if (!res?.ok) {
         addError(
           `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
@@ -265,13 +267,16 @@ function HpoApplyPage() {
       changedHighPerformGroupEmployee,
     };
     try {
-      const res = await fetchApi('/adjust/1/preparation/high-performance', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetchWithAuth(
+        '/adjust/1/preparation/high-performance',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(patchBody),
         },
-        body: JSON.stringify(patchBody),
-      });
+      );
 
       if (!res.ok) {
         throw new Error('PATCH 요청 실패');
