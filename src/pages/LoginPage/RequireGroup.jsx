@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '#contexts/AuthContext';
 
 export default function RequireGroup({ allowedGroups = [], children }) {
-  const { auth } = useAuth();
+  const { auth, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -12,10 +12,13 @@ export default function RequireGroup({ allowedGroups = [], children }) {
   const isPublicPath = publicPaths.includes(location.pathname);
 
   useEffect(() => {
-    if (!auth && !isPublicPath) {
+    if (!isLoading && !auth && !isPublicPath) {
       navigate('/login');
     }
-  }, [auth, navigate, isPublicPath]);
+  }, [auth, isLoading, navigate, isPublicPath]);
+
+  // ✅ 아직 로딩 중이면 렌더링 보류
+  if (isLoading) return null;
 
   // 아직 인증 정보가 없고 public 경로도 아님 → 일단 렌더링하지 않음
   if (!auth && !isPublicPath) return null;

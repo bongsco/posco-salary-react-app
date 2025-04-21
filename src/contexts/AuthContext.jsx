@@ -23,11 +23,8 @@ function decodeJWT(token) {
   try {
     const payload = token.split('.')[1];
     const binary = atob(payload);
-
-    // binary → UTF-8 문자열로 디코딩
     const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
     const decoded = new TextDecoder().decode(bytes);
-
     return JSON.parse(decoded);
   } catch (e) {
     return null;
@@ -38,6 +35,7 @@ export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const region = process.env.REACT_APP_COGNITO_REGION;
@@ -89,6 +87,8 @@ export function AuthProvider({ children }) {
         id: storedIdToken,
       });
     }
+
+    setIsLoading(false);
   }, [setTokens]);
 
   const refreshAccessToken = useCallback(async () => {
@@ -120,8 +120,17 @@ export function AuthProvider({ children }) {
       setTokens,
       logout,
       refreshAccessToken,
+      isLoading,
     }),
-    [auth, accessToken, refreshToken, setTokens, logout, refreshAccessToken],
+    [
+      auth,
+      accessToken,
+      refreshToken,
+      setTokens,
+      logout,
+      refreshAccessToken,
+      isLoading,
+    ],
   );
 
   return (
