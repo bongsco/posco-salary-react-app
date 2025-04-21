@@ -7,3 +7,7 @@
   height: fit-content;
   gap: 24px;
 }
+
+.section > div {
+  width: 100%;
+}
