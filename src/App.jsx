@@ -24,14 +24,6 @@ import AdjustHistoryPage from '#src/pages/AdjustHistoryPage/AdjustHistoryPage';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
-      <Route
-        index
-        element={
-          <AppLayout title="메인" breadCrumbs={['메인']}>
-            <MainDashboardPage />
-          </AppLayout>
-        }
-      />
       <Route path="personal">
         <Route path="history" element={<AdjustHistoryPage />} />
         <Route path=":id" element={<AdjustHistoryDetailPage />} />
@@ -39,7 +31,11 @@ const router = createBrowserRouter(
       <Route element={<RootLayout />}>
         <Route
           index
-          element={<AppLayout title="메인" breadCrumbs={['메인']} />}
+          element={
+            <AppLayout title="메인" breadCrumbs={['메인']}>
+              <MainDashboardPage />
+            </AppLayout>
+          }
         />
         <Route path="test" element={<TestPage />} />
         <Route
