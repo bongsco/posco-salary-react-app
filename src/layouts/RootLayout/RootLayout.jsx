@@ -24,10 +24,14 @@ const initialSideBarState = {
 export default function RootLayout() {
   const location = useLocation();
   const auth = useAuth();
-  const userRole = useMemo(() => {
-    if (auth?.auth?.groups?.includes('bongsco_manager')) return '관리자';
-    if (auth?.auth) return '사용자';
-    return null;
+  const displayName = useMemo(() => {
+    const user = auth?.auth;
+
+    console.log('user', user);
+    if (!user) return null;
+
+    const isManager = user.groups?.includes('bongsco_manager');
+    return isManager ? user.name || user.email || '사용자' : '사용자';
   }, [auth?.auth]);
 
   const [sideBarState, dispatchSideBarState] = useReducer(
@@ -74,9 +78,9 @@ export default function RootLayout() {
           dispatchSideBarState({ action: 'toggle', key: 'sideBar' });
         }}
       >
-        {userRole ? (
+        {displayName ? (
           <>
-            <span className={styles.welcome}>{userRole}님 환영합니다</span>
+            <span className={styles.welcome}>{displayName}님 환영합니다</span>
             <NavItem text="로그아웃" href="/logout" />
           </>
         ) : (

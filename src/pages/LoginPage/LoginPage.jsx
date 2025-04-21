@@ -60,6 +60,7 @@ function LoginPage() {
       setTokens({
         access: authResult.AccessToken,
         refresh: authResult.RefreshToken,
+        id: authResult.IdToken,
       });
 
       // ✅ 로그인 성공 → 홈으로 이동

@@ -26,8 +26,14 @@ const cognitoClient = new CognitoIdentityProviderClient({ region });
 function decodeJWT(token) {
   try {
     const payload = token.split('.')[1];
-    return JSON.parse(atob(payload));
-  } catch {
+    const binary = atob(payload);
+
+    // binary → UTF-8 문자열로 디코딩
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    const decoded = new TextDecoder().decode(bytes);
+
+    return JSON.parse(decoded);
+  } catch (e) {
     return null;
   }
 }
@@ -41,55 +47,45 @@ export function AuthProvider({ children }) {
   const logout = useCallback(() => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('idToken');
     setAccessToken(null);
     setRefreshToken(null);
     setAuth(null);
     navigate('/login');
   }, [navigate]);
 
-  useEffect(() => {
-    const storedAccess = localStorage.getItem('accessToken');
-    const storedRefresh = localStorage.getItem('refreshToken');
+  const setTokens = useCallback(({ access, refresh, id }) => {
+    localStorage.setItem('accessToken', access);
+    localStorage.setItem('refreshToken', refresh);
+    setAccessToken(access);
+    setRefreshToken(refresh);
 
-    if (storedAccess && storedRefresh) {
-      const decoded = decodeJWT(storedAccess);
+    if (id) {
+      localStorage.setItem('idToken', id);
+      const decoded = decodeJWT(id);
       if (decoded) {
         setAuth({
           name: decoded.name || '',
           email: decoded.email || '',
           groups: decoded['cognito:groups'] || [],
         });
-        setAccessToken(storedAccess);
-        setRefreshToken(storedRefresh);
-      } else {
-        logout();
       }
     }
-  }, [logout]);
+  }, []);
 
-  const setTokens = useCallback(({ access, refresh }) => {
-    localStorage.setItem('accessToken', access);
-    localStorage.setItem('refreshToken', refresh);
-    setAccessToken(access);
-    setRefreshToken(refresh);
+  useEffect(() => {
+    const storedAccess = localStorage.getItem('accessToken');
+    const storedRefresh = localStorage.getItem('refreshToken');
+    const storedIdToken = localStorage.getItem('idToken');
 
-    const decoded = decodeJWT(access);
-    if (decoded) {
-      setAuth({
-        name: decoded.name || '',
-        email: decoded.email || '',
-        groups: decoded['cognito:groups'] || [],
+    if (storedAccess && storedRefresh && storedIdToken) {
+      setTokens({
+        access: storedAccess,
+        refresh: storedRefresh,
+        id: storedIdToken,
       });
     }
-  }, []);
-
-  const setUserInfo = useCallback((decoded) => {
-    setAuth({
-      name: decoded.name || '',
-      email: decoded.email || '',
-      groups: decoded['cognito:groups'] || [],
-    });
-  }, []);
+  }, [setTokens]);
 
   const refreshAccessToken = useCallback(async () => {
     if (!refreshToken) throw new Error('NoRefreshToken');
@@ -118,19 +114,10 @@ export function AuthProvider({ children }) {
       accessToken,
       refreshToken,
       setTokens,
-      setUserInfo,
       logout,
       refreshAccessToken,
     }),
-    [
-      auth,
-      accessToken,
-      refreshToken,
-      setTokens,
-      setUserInfo,
-      logout,
-      refreshAccessToken,
-    ],
+    [auth, accessToken, refreshToken, setTokens, logout, refreshAccessToken],
   );
 
   return (
