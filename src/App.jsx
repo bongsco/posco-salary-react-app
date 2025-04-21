@@ -10,8 +10,8 @@ import RootLayout from '#layouts/RootLayout';
 import LoginPage from '#pages/LoginPage';
 import RequireGroup from '#pages/LoginPage/RequireGroup';
 import LogoutPage from '#pages/LogoutPage';
+import MainDashboardPage from '#pages/MainDashboardPage';
 import MainPage from '#pages/MainPage';
-import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import PaybandCriteriaPage from '#pages/adjust-edit/criteria/PaybandCriteriaPage';
 import PaymentRateCriteriaPage from '#pages/adjust-edit/criteria/PaymentRateCriteriaPage';
@@ -34,21 +34,17 @@ const router = createBrowserRouter(
         </AuthProvider>
       }
     >
+      <Route
+        index
+        element={
+          <AppLayout title="메인" breadCrumbs={['메인']}>
+            <MainDashboardPage />
+          </AppLayout>
+        }
+      />
       <Route path="test" element={<TestPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="logout" element={<LogoutPage />} />
-      <Route
-        path="personal"
-        element={
-          <AppLayout title="개인 연봉 조회" breadCrumbs={['개인 연봉 조회']} />
-        }
-      />
-      <Route
-        path="formula"
-        element={
-          <AppLayout title="계산식 관리" breadCrumbs={['계산식 관리']} />
-        }
-      />
       <Route path="adjust/list" element={<MainPage />} />
 
       <Route path="adjust/edit">
@@ -59,7 +55,6 @@ const router = createBrowserRouter(
           }
         />
         <Route path=":id" element={<AdjustProvider />}>
-          <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
               <Route path="subject" element={<SubjectCriteriaPage />} />

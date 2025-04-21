@@ -46,11 +46,9 @@ export default function RootLayout() {
             ...prev,
             main: location.pathname === '/',
             adjustCategory: location.pathname.startsWith('/adjust/'),
-            adjustEditTest: location.pathname === '/adjust/edit/0/test-edit',
             adjustEdit: location.pathname.startsWith('/adjust/edit'),
             adjustList: location.pathname.startsWith('/adjust/list'),
             personal: location.pathname.startsWith('/personal'),
-            formula: location.pathname.startsWith('/formula'),
             test: location.pathname === '/test',
           };
         default:
@@ -77,10 +75,7 @@ export default function RootLayout() {
             <NavItem text="로그아웃" href="/logout" />
           </>
         ) : (
-          <>
-            <NavItem text="로그인" href="/login" />
-            <NavItem text="계정 등록" href="/register" />
-          </>
+          <NavItem text="로그인" href="/login" />
         )}
       </NavBar>
       <div className={styles.body}>
@@ -119,18 +114,6 @@ export default function RootLayout() {
                 isActive={sideBarState.adjustEditTest}
               />
             </Category>
-            <Item
-              icon="person"
-              text="개인 연봉 조회"
-              href="/personal"
-              isActive={sideBarState.personal}
-            />
-            <Item
-              icon="gear"
-              text="계산식 관리"
-              href="/formula"
-              isActive={sideBarState.formula}
-            />
             <Item
               icon="gear"
               text="테스트"
