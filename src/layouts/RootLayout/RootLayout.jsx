@@ -3,8 +3,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import NavItem from '#components/NavBar/NavItem';
 import SideBar, { Category, Item, SubItem } from '#components/SideBar';
+import { useAuth } from '#contexts/AuthContext';
 import { ErrorHandlerProvider } from '#contexts/ErrorHandlerContext';
-import useAuth from '#contexts/useAuth';
 import { setAuthContextRef } from '#utils/fetch';
 import styles from './root-layout.module.css';
 

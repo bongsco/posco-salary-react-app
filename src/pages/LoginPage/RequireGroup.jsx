@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '#contexts/useAuth';
+import { useAuth } from '#contexts/AuthContext';
 
 export default function RequireGroup({ allowedGroups = [], children }) {
   const { auth } = useAuth();
