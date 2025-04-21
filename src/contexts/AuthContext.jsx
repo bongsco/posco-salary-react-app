@@ -19,10 +19,6 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-const region = process.env.REACT_APP_COGNITO_REGION;
-const clientId = process.env.REACT_APP_COGNITO_CLIENT_ID;
-const cognitoClient = new CognitoIdentityProviderClient({ region });
-
 function decodeJWT(token) {
   try {
     const payload = token.split('.')[1];
@@ -43,6 +39,14 @@ export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const navigate = useNavigate();
+
+  const region = process.env.REACT_APP_COGNITO_REGION;
+  const clientId = process.env.REACT_APP_COGNITO_CLIENT_ID;
+
+  const cognitoClient = useMemo(
+    () => new CognitoIdentityProviderClient({ region }),
+    [region],
+  );
 
   const logout = useCallback(() => {
     localStorage.removeItem('accessToken');
@@ -106,7 +110,7 @@ export function AuthProvider({ children }) {
 
     setTokens({ access: newAccessToken, refresh: refreshToken });
     return newAccessToken;
-  }, [refreshToken, setTokens]);
+  }, [refreshToken, setTokens, clientId, cognitoClient]);
 
   const contextValue = useMemo(
     () => ({
