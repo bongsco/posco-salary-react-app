@@ -18,22 +18,6 @@
   height: auto;
 }
 
-.flexRow {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  height: 100%;
-}
-
-.flexHalf {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-width: 0;
-}
-
 .flexColumn {
   display: flex;
   flex-direction: column;
