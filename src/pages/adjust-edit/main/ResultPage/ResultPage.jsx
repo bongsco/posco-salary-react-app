@@ -19,9 +19,9 @@ import PageNation from '#components/Pagination';
 import Switch from '#components/Switch';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import constant from '#src/constant';
-import fetchApi from '#utils/fetch';
 import Card from './Card';
 import FilterSort from './FilterSort';
 import ResultTableRow from './ResultTableRow';
@@ -30,6 +30,7 @@ import styles from './result-page.module.css';
 export default function ResultPage() {
   const { addError } = useErrorHandlerContext();
   const { adjust } = useAdjustContext();
+  const fetchWithAuth = useFetchWithAuth();
 
   /* 현재 페이지 수, 현재 테이블에 보여줄 데이터 수 */
   const [currentPage, setCurrentPage] = useState(1);
@@ -166,7 +167,7 @@ export default function ResultPage() {
       ? `/adjust/${adjust.adjustId}/main/annual-adj?${paramString}`
       : null,
     async (url) => {
-      const res = await fetchApi(url);
+      const res = await fetchWithAuth(url);
       if (!res?.ok) {
         const errorData = await res.json();
         addError(errorData.status, errorData.message, 'MAIN_ERROR');
@@ -208,7 +209,7 @@ export default function ResultPage() {
   const { data: chartData } = useSWR(
     adjust?.adjustId ? `/adjust/${adjust.adjustId}/main/chart` : null,
     async (url) => {
-      const res = await fetchApi(url);
+      const res = await fetchWithAuth(url);
       if (!res?.ok) {
         const errorData = await res.json();
         addError(errorData.status, errorData.message, 'MAIN_ERROR');
@@ -233,7 +234,9 @@ export default function ResultPage() {
         adjustId: adjust.adjustId,
         pageType: type,
       });
-      const res = await fetchApi(`/adjust/excel/download?${params.toString()}`);
+      const res = await fetchWithAuth(
+        `/adjust/excel/download?${params.toString()}`,
+      );
       if (!res.ok) {
         throw new Error('GET 요청 실패');
       }

@@ -2,9 +2,9 @@ import { useMemo, useReducer, useState } from 'react';
 import useSWR from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import constant from '#src/constant';
-import fetchApi from '#utils/fetch';
 import PaybandTableRow from './PaybandTableRow';
 import styles from './payband-criteria-page.module.css';
 import '#styles/global.css';
@@ -14,6 +14,8 @@ export default function PaybandCriteriaPage() {
   const { addError } = useErrorHandlerContext();
   const { adjust } = useAdjustContext();
   const [receivedPayband, setReceivedPayband] = useState([]);
+
+  const fetchWithAuth = useFetchWithAuth();
 
   const hasError = (value) => {
     return (
@@ -69,7 +71,7 @@ export default function PaybandCriteriaPage() {
   useSWR(
     adjust?.adjustId ? `/adjust/${adjust.adjustId}/criteria/payband` : null,
     async (url) => {
-      const res = await fetchApi(url);
+      const res = await fetchWithAuth(url);
       if (!res?.ok) {
         const errorData = await res.json();
         addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
@@ -139,7 +141,7 @@ export default function PaybandCriteriaPage() {
             paybandCriteriaModifyDetailList: changedPayband,
           };
 
-          const res = await fetchApi(
+          const res = await fetchWithAuth(
             `/adjust/${adjust.adjustId}/criteria/payband`,
             {
               method: 'PATCH',

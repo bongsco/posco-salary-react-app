@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-primary-light);
+  gap: 15px;
+  width: fit-content;
+  flex-direction: column;
+  padding: 21px 24px;
+  height: fit-content;
+  margin: auto;
+}
+
+.loginBox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  text-align: center;
+  font: var(--font-subtitle-2b-pc);
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+.label {
+  font: var(--font-caption-1r-pc);
+  margin-bottom: 4px;
+  text-align: right;
+}
+
+.loginButton {
+  width: 100%;
+}
+
+.errorMessage {
+  color: var(--color-system-caution);
+  font: var(--font-caption-1r-pc);
+  text-align: center;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 225px;
+  height: 32px;
+}
+
+.passwordMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font: var(--font-caption-1r-pc);
+  color: black;
+  pointer-events: none;
+  z-index: 1;
+}
+
+:global(input#password) {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  caret-color: black;
+}

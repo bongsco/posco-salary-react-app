@@ -2,9 +2,9 @@ import { useMemo, useReducer } from 'react';
 import useSWR from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
 import constant from '#src/constant';
-import fetchApi from '#utils/fetch';
 import PaybandApplyArea from './PaybandApplyArea';
 import '#styles/global.css';
 import '#styles/table.css';
@@ -85,13 +85,14 @@ function reducer(state, action) {
 function PaybandApplyPage() {
   const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
+  const fetchWithAuth = useFetchWithAuth();
 
   const { data: apiData } = useSWR(
     adjust?.adjustId
       ? `/adjust/${adjust.adjustId}/main/payband/subjects`
       : null,
     async (url) => {
-      const res = await fetchApi(url);
+      const res = await fetchWithAuth(url);
       if (!res.ok) {
         addError(
           `Sent Request to ${url} (${process.env.REACT_APP_API_URL}) and the connection refused.`,
@@ -164,13 +165,16 @@ function PaybandApplyPage() {
 
     try {
       if (updatedSubjects.length > 0) {
-        await fetchApi(`/adjust/${adjust.adjustId}/main/payband/subjects`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
+        await fetchWithAuth(
+          `/adjust/${adjust.adjustId}/main/payband/subjects`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ updatedSubjects }),
           },
-          body: JSON.stringify({ updatedSubjects }),
-        });
+        );
       }
       dispatch({ type: 'commit' });
     } catch (err) {
