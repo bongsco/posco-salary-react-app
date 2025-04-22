@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import MobileLayout from '#layouts/MobileLayout';
+import MobileLayout from '#layouts/MobileAppLayout';
 import styles from './adjust-history-detail-page.module.css';
 
 function numberWithCommas(x) {

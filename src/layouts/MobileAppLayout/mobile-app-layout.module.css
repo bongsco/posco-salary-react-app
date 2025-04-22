@@ -1,0 +1,7 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: fit-content;
+  overflow-x: visible;
+}

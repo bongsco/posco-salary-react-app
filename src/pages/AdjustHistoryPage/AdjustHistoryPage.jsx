@@ -12,67 +12,13 @@ import {
 import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 import Pagination from '#components/Pagination';
-import MobileLayout from '#src/layouts/MobileLayout/MobileLayout';
+import { useAuth } from '#contexts/AuthContext';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
+import MobileAppLayout from '#layouts/MobileAppLayout';
 import styles from './adjust-history-page.module.css';
-
-const mockData = [
-  {
-    adjustId: 5,
-    연도: 2024,
-    차수: 5,
-    종류: '정기연봉조정',
-    stdSalary: 29921343,
-    stdSalaryIncrRate: 1.6,
-    hpoStdSalaryIncrRate: 4,
-    bonus: 10000000,
-    stdBonus: 5000000,
-  },
-  {
-    adjustId: 4,
-    연도: 2024,
-    차수: 4,
-    종류: '정기연봉조정',
-    stdSalary: 28912222,
-    stdSalaryIncrRate: 1.4,
-    hpoStdSalaryIncrRate: 5,
-    bonus: 5000000,
-    stdBonus: 4000000,
-  },
-  {
-    adjustId: 3,
-    연도: 2024,
-    차수: 3,
-    종류: '정기연봉조정',
-    stdSalary: 26911111,
-    stdSalaryIncrRate: 1.6,
-    hpoStdSalaryIncrRate: 4.5,
-    bonus: 10000000,
-    stdBonus: 5000000,
-  },
-  {
-    adjustId: 2,
-    연도: 2024,
-    차수: 2,
-    종류: '정기연봉조정',
-    stdSalary: 25812222,
-    stdSalaryIncrRate: 2.0,
-    hpoStdSalaryIncrRate: 2.2,
-    bonus: 10000000,
-    stdBonus: 3000000,
-  },
-  {
-    adjustId: 1,
-    연도: 2024,
-    차수: 1,
-    종류: '정기연봉조정',
-    stdSalary: 24600000,
-    stdSalaryIncrRate: 1.4,
-    hpoStdSalaryIncrRate: 4.4,
-    bonus: 5000000,
-    stdBonus: 2000000,
-  },
-];
 
 const barChartOptions = {
   plugins: {
@@ -134,14 +80,42 @@ function getLabels(data) {
 }
 
 export default function AdjustHistoryPage() {
-  const data = mockData;
+  const fetchWithAuth = useFetchWithAuth();
+  const { addError } = useErrorHandlerContext();
+  const { auth } = useAuth();
   const navigate = useNavigate();
-
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const { data } = useSWR(
+    `/mobile/chartData`,
+    async (url) => {
+      try {
+        const res = await fetchWithAuth(url, {
+          headers: { email: auth.email },
+        });
+
+        if (!res.ok) {
+          throw new Error(`네트워크 상태를 확인해 주시기 바랍니다`);
+        }
+
+        return res.json();
+      } catch (error) {
+        addError(
+          '연봉조정 이력 조회 실패',
+          error.message,
+          'ADJUST_HISTORY_FETCH_ERROR',
+        );
+        return null;
+      }
+    },
+    {
+      keepPreviousData: true,
+    },
+  );
+
   return (
-    <MobileLayout>
+    <MobileAppLayout>
       <section className={styles.section}>
         <h2>연봉 인상 추이</h2>
         {data && (
@@ -250,11 +224,8 @@ export default function AdjustHistoryPage() {
             </tr>
           </thead>
           <tbody>
-            {mockData.slice(0, 5).map(({ adjustId, 연도, 차수, 종류 }) => (
-              <tr
-                key={adjustId}
-                onClick={() => navigate(`/personal/${adjustId}`)}
-              >
+            {data?.slice(0, 5).map(({ adjustId, 연도, 차수, 종류 }) => (
+              <tr key={adjustId} onClick={() => navigate(`/${adjustId}`)}>
                 <td>{연도}</td>
                 <td>{차수}</td>
                 <td>{종류}</td>
@@ -270,9 +241,9 @@ export default function AdjustHistoryPage() {
           onRowsPerPageChange={(newRowsPerPage) => {
             setRowsPerPage(newRowsPerPage);
           }}
-          totalPage={Math.ceil(mockData.length / rowsPerPage)}
+          totalPage={Math.ceil(data?.length ?? 0 / rowsPerPage)}
         />
       </section>
-    </MobileLayout>
+    </MobileAppLayout>
   );
 }

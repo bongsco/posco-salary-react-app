@@ -13,12 +13,5 @@
   height: 100%;
   gap: 4px;
   overflow-y: scroll;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  height: fit-content;
-  overflow-x: visible;
+  min-width: 320px;
 }

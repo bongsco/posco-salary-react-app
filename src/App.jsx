@@ -1,11 +1,15 @@
+import { isMobile } from 'react-device-detect';
 import {
+  Outlet,
   Route,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import { AuthProvider } from '#contexts/AuthContext';
+import { ErrorHandlerProvider } from '#contexts/ErrorHandlerContext';
 import AppLayout from '#layouts/AppLayout';
+import MobileRootLayout from '#layouts/MobileRootLayout';
 import RootLayout from '#layouts/RootLayout';
 import AdjustHistoryPage from '#pages/AdjustHistoryPage';
 import LoginPage from '#pages/LoginPage';
@@ -29,59 +33,82 @@ const router = createBrowserRouter(
     <Route
       path="/"
       element={
-        <AuthProvider>
-          <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-            <RootLayout />
-          </RequireGroup>
-        </AuthProvider>
+        <ErrorHandlerProvider>
+          <AuthProvider>
+            <Outlet />
+          </AuthProvider>
+        </ErrorHandlerProvider>
       }
     >
-      <Route path="personal">
-        <Route index element={<AdjustHistoryPage />} />
-        <Route path=":id" element={<AdjustHistoryDetailPage />} />
-      </Route>
-      <Route
-        index
-        element={
-          <AppLayout title="메인" breadCrumbs={['메인']}>
-            <MainDashboardPage />
-          </AppLayout>
-        }
-      />
+      {isMobile ? (
+        <Route
+          element={
+            <RequireGroup
+              allowedGroups={[
+                constants.group.MANAGER,
+                constants.group.EMPLOYEES,
+              ]}
+            >
+              <MobileRootLayout />
+            </RequireGroup>
+          }
+        >
+          <Route index element={<AdjustHistoryPage />} />
+          <Route path=":id" element={<AdjustHistoryDetailPage />} />
+          <Route path="login" element={<LoginPage />} />
+        </Route>
+      ) : (
+        <Route path="/">
+          <Route
+            element={
+              <RequireGroup allowedGroups={[constants.group.MANAGER]}>
+                <RootLayout />
+              </RequireGroup>
+            }
+          >
+            <Route
+              index
+              element={
+                <AppLayout title="메인" breadCrumbs={['메인']}>
+                  <MainDashboardPage />
+                </AppLayout>
+              }
+            />
 
-      <Route path="login" element={<LoginPage />} />
-      <Route path="logout" element={<LogoutPage />} />
-      <Route path="adjust/list" element={<MainPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="logout" element={<LogoutPage />} />
+            <Route path="adjust/list" element={<MainPage />} />
 
-      <Route path="adjust/edit">
-        <Route path=":id" element={<AdjustProvider />}>
-          <Route path="annual">
-            <Route path="criteria">
-              <Route path="subject" element={<SubjectCriteriaPage />} />
-              <Route
-                path="payment-rate"
-                element={<PaymentRateCriteriaPage />}
-              />
-              <Route path="payband" element={<PaybandCriteriaPage />} />
+            <Route path="adjust/edit/:id" element={<AdjustProvider />}>
+              <Route path="annual">
+                <Route path="criteria">
+                  <Route path="subject" element={<SubjectCriteriaPage />} />
+                  <Route
+                    path="payment-rate"
+                    element={<PaymentRateCriteriaPage />}
+                  />
+                  <Route path="payband" element={<PaybandCriteriaPage />} />
+                </Route>
+                <Route path="preparation">
+                  <Route path="subject" element={<SubjectAssignPage />} />
+                  <Route path="high-performance" element={<HpoApplyPage />} />
+                </Route>
+                <Route path="main">
+                  <Route path="payband" element={<PaybandApplyPage />} />
+                  <Route path="result" element={<ResultPage />} />
+                </Route>
+              </Route>
             </Route>
-            <Route path="preparation">
-              <Route path="subject" element={<SubjectAssignPage />} />
-              <Route path="high-performance" element={<HpoApplyPage />} />
-            </Route>
-            <Route path="main">
-              <Route path="payband" element={<PaybandApplyPage />} />
-              <Route path="result" element={<ResultPage />} />
-            </Route>
+
+            <Route path="test" element={<TestPage />} />
           </Route>
         </Route>
-      </Route>
-
-      <Route path="test" element={<TestPage />} />
+      )}
     </Route>,
-    {
-      basename: process.env.PUBLIC_URL,
-    },
   ),
+  {
+    basename: process.env.PUBLIC_URL,
+  },
 );
 
 export default router;
