@@ -16,4 +16,7 @@ export default {
       },
     },
   },
+  group: {
+    MANAGER: 'bongsco_manager',
+  },
 };

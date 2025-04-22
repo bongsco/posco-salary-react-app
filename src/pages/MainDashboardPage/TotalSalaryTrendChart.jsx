@@ -2,12 +2,13 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import useSWR from 'swr';
-import fetchApi from '#utils/fetch';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import styles from './main-chart-page.module.css';
 
 function TotalSalaryTrendChart() {
+  const fetchWithAuth = useFetchWithAuth();
   const { data, isLoading } = useSWR('/totalSalaryTrend', async (url) => {
-    const res = await fetchApi(url);
+    const res = await fetchWithAuth(url);
     if (!res?.ok) return null;
     return res.json();
   });

@@ -11,7 +11,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
-import fetchApi from '#utils/fetch';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import styles from './main-chart-page.module.css';
 
 ChartJS.register(
@@ -25,9 +25,10 @@ ChartJS.register(
 
 function TenureDistributionChart() {
   const { addError } = useErrorHandlerContext();
+  const fetchWithAuth = useFetchWithAuth();
 
   const { data, isLoading } = useSWR('/tenureDistribution', async (url) => {
-    const res = await fetchApi(url);
+    const res = await fetchWithAuth(url);
     if (!res?.ok) {
       addError(
         `Request to ${url} failed with status ${res.status}`,

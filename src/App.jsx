@@ -1,15 +1,17 @@
-// router.jsx
 import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import { AdjustProvider } from '#contexts/AdjustContext';
+import { AuthProvider } from '#contexts/AuthContext';
 import AppLayout from '#layouts/AppLayout';
 import RootLayout from '#layouts/RootLayout';
+import LoginPage from '#pages/LoginPage';
+import RequireGroup from '#pages/LoginPage/RequireGroup';
+import LogoutPage from '#pages/LogoutPage';
 import MainDashboardPage from '#pages/MainDashboardPage';
 import MainPage from '#pages/MainPage';
-import TestEditPage from '#pages/TestEditPage';
 import TestPage from '#pages/TestPage';
 import PaybandCriteriaPage from '#pages/adjust-edit/criteria/PaybandCriteriaPage';
 import PaymentRateCriteriaPage from '#pages/adjust-edit/criteria/PaymentRateCriteriaPage';
@@ -18,10 +20,20 @@ import PaybandApplyPage from '#pages/adjust-edit/main/PaybandApplyPage';
 import ResultPage from '#pages/adjust-edit/main/ResultPage';
 import HpoApplyPage from '#pages/adjust-edit/preparation/HpoApplyPage';
 import SubjectAssignPage from '#pages/adjust-edit/preparation/SubjectAssignPage';
+import constants from './constant';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
+    <Route
+      path="/"
+      element={
+        <AuthProvider>
+          <RequireGroup allowedGroups={[constants.group.MANAGER]}>
+            <RootLayout />
+          </RequireGroup>
+        </AuthProvider>
+      }
+    >
       <Route
         index
         element={
@@ -31,19 +43,10 @@ const router = createBrowserRouter(
         }
       />
       <Route path="test" element={<TestPage />} />
-      <Route
-        path="personal"
-        element={
-          <AppLayout title="개인 연봉 조회" breadCrumbs={['개인 연봉 조회']} />
-        }
-      />
-      <Route
-        path="formula"
-        element={
-          <AppLayout title="계산식 관리" breadCrumbs={['계산식 관리']} />
-        }
-      />
+      <Route path="login" element={<LoginPage />} />
+      <Route path="logout" element={<LogoutPage />} />
       <Route path="adjust/list" element={<MainPage />} />
+
       <Route path="adjust/edit">
         <Route
           index
@@ -52,7 +55,6 @@ const router = createBrowserRouter(
           }
         />
         <Route path=":id" element={<AdjustProvider />}>
-          <Route path="test-edit" element={<TestEditPage />} />
           <Route path="annual">
             <Route path="criteria">
               <Route path="subject" element={<SubjectCriteriaPage />} />

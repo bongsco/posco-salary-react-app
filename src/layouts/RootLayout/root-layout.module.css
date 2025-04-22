@@ -33,3 +33,7 @@
 .close {
   display: none;
 }
+
+.welcome {
+  font: var(--font-caption-1r-pc);
+}
