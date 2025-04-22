@@ -1,10 +1,11 @@
 .dashboard {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, auto); /* 3행 자동 높이 */
+  grid-template-rows: repeat(3, auto);
   gap: 1.5rem;
   width: 100%;
-  align-items: stretch; /* 행 높이 맞추기 */
+  align-items: stretch;
+  min-width: 800px;
 }
 
 .cell {
@@ -12,6 +13,8 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .flexRow {
@@ -26,4 +29,5 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 0;
 }

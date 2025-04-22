@@ -65,6 +65,7 @@ function EmploymentTypeDistributionChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       tooltip: {
         callbacks: {
