@@ -188,7 +188,7 @@ export default function AdjustEditLayout({
             size="small"
             label="시스템 반영"
             onClick={async () => {
-              const res = await fetchApi(
+              const res = await fetchWithAuth(
                 `/adjust/${adjust.adjustId}/main/interface`,
                 {
                   method: 'PATCH',
