@@ -33,3 +33,16 @@
   align-items: center;
   min-width: 0;
 }
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.smallDonutWrapper {
+  width: 100%;
+  max-width: 300px; /* ✅ 도넛 최대 크기 줄임 */
+  aspect-ratio: 1;
+  margin: 0 auto;
+  position: relative;
+}

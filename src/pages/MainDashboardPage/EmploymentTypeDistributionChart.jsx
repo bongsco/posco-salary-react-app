@@ -27,7 +27,9 @@ function EmploymentTypeDistributionChart() {
 
   if (isLoading || !data) return <p>Loading...</p>;
 
-  const labels = data.map((d) => d.employmentType);
+  const labels = data.map((d) =>
+    d.employmentType === '비서직(정규)' ? '비서직' : d.employmentType,
+  );
   const counts = data.map((d) => d.count);
   const percentages = data.map((d) => d.percentage.toFixed(1));
 
@@ -64,6 +66,7 @@ function EmploymentTypeDistributionChart() {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    cutout: '50%',
     plugins: {
       tooltip: {
         callbacks: {
@@ -90,7 +93,7 @@ function EmploymentTypeDistributionChart() {
         </p>
       </div>
 
-      <div className={styles.rightChart}>
+      <div className={styles.smallDonutWrapper}>
         <Doughnut data={chartData} options={options} />
       </div>
     </div>
