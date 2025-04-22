@@ -22,7 +22,7 @@ export default function AdjustEditLayout({
   isCommitted,
   canMove = true,
   stepId,
-  lastStepPath = false,
+  isLastStep = false,
 }) {
   const { adjust } = useAdjustContext();
   const { addError } = useErrorHandlerContext();
@@ -177,7 +177,7 @@ export default function AdjustEditLayout({
             }}
           />
         )}
-        {lastStepPath && (
+        {isLastStep && (
           <Button
             variant="primary"
             size="small"
@@ -216,15 +216,15 @@ AdjustEditLayout.propTypes = {
   isCommitted: PropTypes.bool,
   canMove: PropTypes.bool,
   stepId: PropTypes.string.isRequired,
-  lastStepPath: PropTypes.bool,
+  isLastStep: PropTypes.bool,
 };
 
 AdjustEditLayout.defaultProps = {
   prevStepPath: null,
   nextStepPath: null,
-  onCommit: () => {},
+  onCommit: async () => {},
   onRollback: () => {},
   isCommitted: true,
   canMove: true,
-  lastStepPath: false,
+  isLastStep: false,
 };
