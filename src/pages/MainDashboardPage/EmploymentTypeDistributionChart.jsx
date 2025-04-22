@@ -6,8 +6,6 @@ import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import styles from './main-chart-page.module.css';
 
-// 기존 스타일 재사용
-
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function EmploymentTypeDistributionChart() {

@@ -10,22 +10,23 @@
 
 .chartWrapper {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .leftInfo {
-  flex: 0.35;
-  min-width: 90px;
+  flex: 1 1 240px;
+  min-width: 200px;
 }
 
 .rightChart {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  min-width: 0;
+  flex: 1 1 300px;
+  min-width: 260px;
+  height: 300px;
+  position: relative;
 }
 
 .title {

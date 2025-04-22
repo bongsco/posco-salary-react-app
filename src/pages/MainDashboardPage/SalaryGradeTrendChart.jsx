@@ -11,12 +11,9 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Chart } from 'react-chartjs-2';
-// ✅ Chart로 변경
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useFetchWithAuth from '#hooks/useFetchWithAuth';
-
-// import styles from './main-chart-page.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -115,6 +112,7 @@ function SalaryGradeTrendChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'bottom',
@@ -182,7 +180,6 @@ function SalaryGradeTrendChart() {
       style={{
         width: '100%',
         height: '100%',
-        maxWidth: 800,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -201,7 +198,9 @@ function SalaryGradeTrendChart() {
         <span style={{ color: '#4263eb', fontWeight: 600 }}>최근 4년간</span>의
         총 인건비 변화
       </p>
-      <Chart type="bar" data={chartData} options={options} />
+      <div style={{ position: 'relative', width: '100%', height: '350px' }}>
+        <Chart type="bar" data={chartData} options={options} />
+      </div>
     </div>
   );
 }
