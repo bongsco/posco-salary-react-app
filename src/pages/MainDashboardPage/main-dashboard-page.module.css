@@ -37,11 +37,12 @@
 .flexColumn {
   display: flex;
   flex-direction: column;
+  gap: 16px;
 }
 
 .smallDonutWrapper {
   width: 100%;
-  max-width: 300px; /* ✅ 도넛 최대 크기 줄임 */
+  max-width: 300px;
   aspect-ratio: 1;
   margin: 0 auto;
   position: relative;
