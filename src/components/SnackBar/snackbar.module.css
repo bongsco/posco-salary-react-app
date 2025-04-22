@@ -1,0 +1,23 @@
+@import url('../../styles/global.css');
+
+.snackbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 22px;
+
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 100;
+
+  border-radius: 10px;
+  width: fit-content;
+  height: fit-content;
+  padding: 16px 24px;
+
+  background-color: var(--color-grayscale-7);
+  color: var(--color-grayscale-white);
+  opacity: 90%;
+  font: var(--font-body-1b-pc);
+}

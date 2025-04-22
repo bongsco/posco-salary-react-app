@@ -266,6 +266,7 @@ export default function ResultPage() {
       isCommitted
       canMove
       stepId={constant.step.annual.criteria.subject}
+      isLastStep
     >
       <h2>정기 연봉 조정 결과</h2>
       {chartData && (
