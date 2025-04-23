@@ -167,13 +167,22 @@ export default function ResultPage() {
       ? `/adjust/${adjust.adjustId}/main/annual-adj?${paramString}`
       : null,
     async (url) => {
-      const res = await fetchWithAuth(url);
-      if (!res?.ok) {
-        const errorData = await res.json();
-        addError(errorData.status, errorData.message, 'MAIN_ERROR');
-      }
+      try {
+        const res = await fetchWithAuth(url);
+        if (!res?.ok) {
+          const errorData = await res.json();
+          addError(errorData.status, errorData.message, 'MAIN_ERROR');
+        }
 
-      return res.json();
+        return res.json();
+      } catch (err) {
+        addError(
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'MAIN_ERROR',
+        );
+        return null;
+      }
     },
     {
       onSuccess: (response) => {

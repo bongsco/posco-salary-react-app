@@ -112,19 +112,28 @@ export default function OrganizationSubject() {
       ? `/adjust/${adjust.adjustId}/preparation/employees`
       : null,
     async (url) => {
-      const res = await fetchWithAuth(url);
-      // 상태 코드가 200-299 범위가 아니더라도,
-      // 파싱 시도를 하고 에러를 던집니다.
-      if (!res?.ok) {
-        addError(
-          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-          'error message',
-          'CONNECTION_REFUSED',
-        );
-      }
+      try {
+        const res = await fetchWithAuth(url);
+        // 상태 코드가 200-299 범위가 아니더라도,
+        // 파싱 시도를 하고 에러를 던집니다.
+        if (!res?.ok) {
+          addError(
+            `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+            'error message',
+            'CONNECTION_REFUSED',
+          );
+        }
 
-      const data = await res.json();
-      return data.map(convertEmployeeDto);
+        const data = await res.json();
+        return data.map(convertEmployeeDto);
+      } catch (err) {
+        addError(
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'PREPARATION_ERROR',
+        );
+        return null;
+      }
     },
     {
       onSuccess: (response) => {

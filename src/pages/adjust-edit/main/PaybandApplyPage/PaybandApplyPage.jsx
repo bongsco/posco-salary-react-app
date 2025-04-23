@@ -92,15 +92,24 @@ function PaybandApplyPage() {
       ? `/adjust/${adjust.adjustId}/main/payband/subjects`
       : null,
     async (url) => {
-      const res = await fetchWithAuth(url);
-      if (!res.ok) {
+      try {
+        const res = await fetchWithAuth(url);
+        if (!res.ok) {
+          addError(
+            `Sent Request to ${url} (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+            `API Connection Error: ${res.status}`,
+            'CONNECTION_REFUSED',
+          );
+        }
+        return res.json();
+      } catch (err) {
         addError(
-          `Sent Request to ${url} (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-          `API Connection Error: ${res.status}`,
-          'CONNECTION_REFUSED',
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'MAIN_ERROR',
         );
+        return null;
       }
-      return res.json();
     },
   );
 

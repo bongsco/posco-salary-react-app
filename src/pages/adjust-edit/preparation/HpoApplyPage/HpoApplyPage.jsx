@@ -58,39 +58,48 @@ function HpoApplyPage() {
   const { data: initialHighOrganizationData } = useSWR(
     `/adjust/${adjust.adjustId}/preparation/high-performance`,
     async (url) => {
-      const res = await fetchWithAuth(url);
-      if (!res?.ok) {
-        addError(
-          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-          'error message',
-          'CONNECTION_REFUSED',
+      try {
+        const res = await fetchWithAuth(url);
+        if (!res?.ok) {
+          addError(
+            `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+            'error message',
+            'CONNECTION_REFUSED',
+          );
+        }
+        const resJson = await res.json();
+
+        const processed = resJson.highPerformanceEmployees.map(
+          ({
+            employeeId,
+            empNum,
+            name,
+            depName,
+            gradeName,
+            rankName,
+            isInHpo,
+          }) => ({
+            isChecked: false,
+            employeeId,
+            직번: empNum,
+            성명: name,
+            부서명: depName,
+            직급명: gradeName,
+            평가등급: rankName,
+            '고성과조직 가산 대상 여부': isInHpo,
+          }),
         );
+        resJson.highPerformanceEmployees = processed;
+
+        return resJson;
+      } catch (err) {
+        addError(
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'PREPARATION_ERROR',
+        );
+        return null;
       }
-      const resJson = await res.json();
-
-      const processed = resJson.highPerformanceEmployees.map(
-        ({
-          employeeId,
-          empNum,
-          name,
-          depName,
-          gradeName,
-          rankName,
-          isInHpo,
-        }) => ({
-          isChecked: false,
-          employeeId,
-          직번: empNum,
-          성명: name,
-          부서명: depName,
-          직급명: gradeName,
-          평가등급: rankName,
-          '고성과조직 가산 대상 여부': isInHpo,
-        }),
-      );
-      resJson.highPerformanceEmployees = processed;
-
-      return resJson;
     },
     {
       onSuccess: (response) => {

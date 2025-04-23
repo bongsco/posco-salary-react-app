@@ -257,14 +257,22 @@ export default function SubjectCriteriaPage() {
     adjust?.adjustId ? `/adjust/${adjust.adjustId}/criteria/subject` : null,
 
     async (url) => {
-      const res = await fetchWithAuth(url);
-      if (!res.ok) {
-        const errorData = await res.json();
-
-        // 제목 내용 ID
-        addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
+      try {
+        const res = await fetchWithAuth(url);
+        if (!res.ok) {
+          const errorData = await res.json();
+          // 제목 내용 ID
+          addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
+        }
+        return res.json();
+      } catch (err) {
+        addError(
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'CRITERIA_ERROR',
+        );
+        return null;
       }
-      return res.json();
     },
     {
       onSuccess: (response) => {
