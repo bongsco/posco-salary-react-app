@@ -79,6 +79,8 @@ function GradeGroupDistributionChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
+    cutout: '50%',
     plugins: {
       tooltip: {
         callbacks: {
@@ -105,7 +107,7 @@ function GradeGroupDistributionChart() {
         </p>
       </div>
 
-      <div className={styles.rightChart}>
+      <div className={styles.smallDonutWrapper}>
         <Doughnut data={chartData} options={options} />
       </div>
     </div>

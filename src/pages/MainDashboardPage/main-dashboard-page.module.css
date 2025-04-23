@@ -1,10 +1,11 @@
 .dashboard {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, auto); /* 3행 자동 높이 */
+  grid-template-rows: repeat(3, auto);
   gap: 1.5rem;
   width: 100%;
-  align-items: stretch; /* 행 높이 맞추기 */
+  align-items: stretch;
+  min-width: 800px;
 }
 
 .cell {
@@ -12,18 +13,21 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+  min-width: 0;
+  overflow: hidden;
+  height: auto;
 }
 
-.flexRow {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  height: 100%;
-}
-
-.flexHalf {
-  flex: 1;
+.flexColumn {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 16px;
+}
+
+.smallDonutWrapper {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  position: relative;
 }

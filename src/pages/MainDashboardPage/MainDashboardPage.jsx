@@ -15,34 +15,17 @@ function MainDashboardPage() {
       </div>
 
       <div className={styles.cell}>
-        {/* <TenureDistributionChart /> */}
         <SalaryGradeTrendChart />
       </div>
 
       <div className={styles.cell}>
-        <div className={styles.flexRow}>
-          <div className={styles.flexHalf}>
-            <EmploymentTypeDistributionChart />
-          </div>
-          <div className={styles.flexHalf}>
-            <GradeDistributionChart />
-          </div>
+        <div className={styles.flexColumn}>
+          <EmploymentTypeDistributionChart />
+          <GradeDistributionChart />
         </div>
       </div>
 
-      {/* <div className={styles.cell}>
-        <EmploymentTypeDistributionChart />
-      </div> */}
-
-      {/* <div className={styles.cell}>
-        <GradeDistributionChart />
-      </div> */}
-
-      {/* <div className={styles.cell}>
-        <TotalSalaryTrendChart />
-      </div> */}
       <div className={styles.cell}>
-        {/* <SalaryGradeTrendChart /> */}
         <TenureDistributionChart />
       </div>
     </div>

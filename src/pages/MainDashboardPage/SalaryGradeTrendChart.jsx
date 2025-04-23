@@ -11,12 +11,9 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Chart } from 'react-chartjs-2';
-// ✅ Chart로 변경
 import useSWR from 'swr';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useFetchWithAuth from '#hooks/useFetchWithAuth';
-
-// import styles from './main-chart-page.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -93,7 +90,7 @@ function SalaryGradeTrendChart() {
     pointRadius: 5,
     pointHoverRadius: 7,
     showLine: true,
-    order: allYears.length + 1,
+    order: 0,
   };
 
   const barDatasets = allYears.map((year, i) => ({
@@ -105,7 +102,7 @@ function SalaryGradeTrendChart() {
     backgroundColor: colorMap[i % colorMap.length],
     barThickness: 13,
     borderRadius: 6,
-    order: i,
+    order: allYears.length + 1,
   }));
 
   const chartData = {
@@ -115,6 +112,7 @@ function SalaryGradeTrendChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'bottom',
@@ -140,8 +138,8 @@ function SalaryGradeTrendChart() {
         display: (ctx) => ctx.dataset.label === '4개년 평균',
         color: '#4263eb',
         anchor: 'end',
-        align: 'start',
-        offset: 4,
+        align: 'end',
+        offset: 7,
         font: {
           weight: 'bold',
           size: 11,
@@ -182,7 +180,6 @@ function SalaryGradeTrendChart() {
       style={{
         width: '100%',
         height: '100%',
-        maxWidth: 800,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -201,7 +198,9 @@ function SalaryGradeTrendChart() {
         <span style={{ color: '#4263eb', fontWeight: 600 }}>최근 4년간</span>의
         총 인건비 변화
       </p>
-      <Chart type="bar" data={chartData} options={options} />
+      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+        <Chart type="bar" data={chartData} options={options} />
+      </div>
     </div>
   );
 }
