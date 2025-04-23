@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import { useAuth } from '#contexts/AuthContext';
@@ -62,10 +61,6 @@ export default function AdjustHistoryDetailPage() {
       },
     },
   );
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <MobileLayout
