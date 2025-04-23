@@ -19,6 +19,7 @@ function HighOrganizationTable({
   salaryIncrementByRank,
   hpoSalaryInfo,
   originalData,
+  totalPage,
 }) {
   /* Table Box의 헤더 체크 상태 관리 */
   const [isHeaderChecked, setIsHeaderChecked] = useState(false);
@@ -96,6 +97,7 @@ function HighOrganizationTable({
           onClear={() => checkAll(false)}
         />
         <PageNation
+          totalPage={totalPage}
           currentPage={currentPage}
           rowsPerPage={rowsPerPage}
           onPageChange={setCurrentPage}
@@ -139,6 +141,7 @@ HighOrganizationTable.propTypes = {
     hpoBonusMultiplier: PropTypes.number.isRequired,
   }).isRequired,
   originalData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  totalPage: PropTypes.number.isRequired,
 };
 
 export default HighOrganizationTable;

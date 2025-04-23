@@ -181,9 +181,10 @@ function HpoApplyPage() {
     });
   };
 
-  /* 현재 페이지 수, 현재 테이블에 보여줄 데이터 수 */
+  /* 총 페이지 수, 현재 페이지 수, 현재 테이블에 보여줄 데이터 수 */
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPage, setTotalPage] = useState(10);
   /* Table에 적용되는 Filter, Sort 조건들을 저장하는 배열 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
@@ -215,6 +216,8 @@ function HpoApplyPage() {
     );
 
     const totalPages = Math.ceil(sortedData.length / rowsPerPage);
+    setTotalPage(totalPages);
+
     if (currentPage > totalPages && totalPages !== 0) {
       setCurrentPage(totalPages || 1);
     }
@@ -338,6 +341,7 @@ function HpoApplyPage() {
             salaryIncrementByRank={salaryIncrementByRank}
             hpoSalaryInfo={hpoSalaryInfo}
             originalData={initialHighOrganizationData?.highPerformanceEmployees}
+            totalPage={totalPage}
           />
         </div>
       </section>
