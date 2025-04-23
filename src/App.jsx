@@ -56,6 +56,7 @@ const router = createBrowserRouter(
           <Route index element={<AdjustHistoryPage />} />
           <Route path=":id" element={<AdjustHistoryDetailPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="logout" element={<LogoutPage />} />
         </Route>
       ) : (
         <Route path="/">

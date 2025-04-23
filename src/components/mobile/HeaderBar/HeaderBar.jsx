@@ -27,9 +27,14 @@ BackwardButton.propTypes = {
   className: PropTypes.string.isRequired,
 };
 
-export default function HeaderBar({ onBackwardButtonClick }) {
+export default function HeaderBar({ onBackwardButtonClick, isSignedIn }) {
   return (
     <nav className={styles.container}>
+      {isSignedIn ? (
+        <Link to="/logout" className={styles.logout}>
+          로그아웃
+        </Link>
+      ) : null}
       <div className={styles.spaceHolder} />
       <Link to="/personal" className={styles.title}>
         연봉관리시스템
@@ -44,4 +49,5 @@ export default function HeaderBar({ onBackwardButtonClick }) {
 
 HeaderBar.propTypes = {
   onBackwardButtonClick: PropTypes.func.isRequired,
+  isSignedIn: PropTypes.bool.isRequired,
 };

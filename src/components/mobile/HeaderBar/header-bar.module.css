@@ -15,6 +15,12 @@
   height: 50px;
 }
 
+.logout {
+  text-decoration: none;
+  font: var(--font-caption-2b-pc);
+  color: var(--color-grayscale-black);
+}
+
 .spaceHolder {
   flex-grow: 1;
   height: 1px;
