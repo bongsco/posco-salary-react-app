@@ -320,6 +320,9 @@ export default function ResultPage() {
                     legend: {
                       display: false,
                     },
+                    datalabels: {
+                      display: false,
+                    },
                   },
                   scales: {
                     y: {
@@ -377,6 +380,9 @@ export default function ResultPage() {
                       legend: {
                         position: 'right',
                       },
+                      datalabels: {
+                        display: false,
+                      },
                     },
                   }}
                 />
@@ -417,6 +423,9 @@ export default function ResultPage() {
                     plugins: {
                       legend: {
                         position: 'right', // 👉 라벨을 오른쪽에 표시
+                      },
+                      datalabels: {
+                        display: false,
                       },
                     },
                   }}

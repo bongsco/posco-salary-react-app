@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Logo from './icons/Logo';
 import MenuTab from './icons/MenuTab';
 import styles from './navbar.module.css';
 
@@ -14,7 +13,6 @@ export default function NavBar({ children, toggleSidebar }) {
 
             <div className={styles.logo}>
               <Link to="/" className={styles.logoLink}>
-                <Logo />
                 <div className={styles.title}>연봉관리시스템</div>
               </Link>
             </div>
