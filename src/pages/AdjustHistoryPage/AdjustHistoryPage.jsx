@@ -30,6 +30,9 @@ const barChartOptions = {
       display: true,
       position: 'top',
     },
+    datalabels: {
+      display: false,
+    },
   },
   responsive: true,
   interaction: {
@@ -57,7 +60,9 @@ const lineChartOptions = {
       display: false,
       text: 'Step',
     },
-    fill: true,
+    datalabels: {
+      display: false,
+    },
   },
 };
 
@@ -76,7 +81,7 @@ function getLabels(data) {
   return data
     .slice()
     .reverse()
-    .map(({ 연도, 차수 }) => `${연도}(${차수})`);
+    .map(({ year, orderNumber }) => `${year}(${orderNumber})`);
 }
 
 export default function AdjustHistoryPage() {
@@ -87,7 +92,7 @@ export default function AdjustHistoryPage() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const { data } = useSWR(
+  const { data: chartData } = useSWR(
     `/mobile/chartData`,
     async (url) => {
       try {
@@ -106,11 +111,40 @@ export default function AdjustHistoryPage() {
           error.message,
           'ADJUST_HISTORY_FETCH_ERROR',
         );
-        return null;
+        return [];
       }
     },
     {
       keepPreviousData: true,
+      fallback: [],
+    },
+  );
+
+  const { data: adjustListData } = useSWR(
+    `/mobile/adjusts?pageNum=${page}&pageSize=${rowsPerPage}`,
+    async (url) => {
+      try {
+        const res = await fetchWithAuth(url, {
+          headers: { email: auth.email },
+        });
+
+        if (!res.ok) {
+          throw new Error(`네트워크 상태를 확인해 주시기 바랍니다`);
+        }
+
+        return res.json();
+      } catch (error) {
+        addError(
+          '연봉조정 이력 조회 실패',
+          error.message,
+          'ADJUST_HISTORY_FETCH_ERROR',
+        );
+        return [];
+      }
+    },
+    {
+      keepPreviousData: true,
+      fallback: [],
     },
   );
 
@@ -118,16 +152,16 @@ export default function AdjustHistoryPage() {
     <MobileAppLayout>
       <section className={styles.section}>
         <h2>연봉 인상 추이</h2>
-        {data && (
+        {chartData && (
           <>
             <div>
               <Bar
-                key={`bar-${data.length}`}
-                data={data
+                key={`bar-${chartData.length}`}
+                data={chartData
                   .slice()
                   .reverse()
                   .reduce(
-                    (prev, { stdSalary, bonus, stdBonus }) => {
+                    (prev, { stdSalary, hpoBonus, bonusPrice }) => {
                       const newObj = { ...prev };
 
                       newObj.datasets[0].data = [
@@ -136,17 +170,17 @@ export default function AdjustHistoryPage() {
                       ];
                       newObj.datasets[1].data = [
                         ...newObj.datasets[1].data,
-                        bonus,
+                        hpoBonus,
                       ];
                       newObj.datasets[2].data = [
                         ...newObj.datasets[2].data,
-                        stdBonus,
+                        bonusPrice,
                       ];
 
                       return newObj;
                     },
                     {
-                      labels: getLabels(data),
+                      labels: getLabels(chartData),
                       datasets: [
                         {
                           label: '기준연봉',
@@ -174,23 +208,23 @@ export default function AdjustHistoryPage() {
             </div>
             <div>
               <Line
-                data={data.reduce(
+                data={chartData.reduce(
                   (prev, curr) => {
                     const newObj = { ...prev };
 
                     newObj.datasets[0].data = [
                       ...newObj.datasets[0].data,
-                      curr.stdSalaryIncrRate,
+                      curr.salaryIncrementRate,
                     ];
                     newObj.datasets[1].data = [
                       ...newObj.datasets[1].data,
-                      curr.hpoStdSalaryIncrRate,
+                      curr.hpoSalaryIncrement,
                     ];
 
                     return newObj;
                   },
                   {
-                    labels: getLabels(data),
+                    labels: getLabels(chartData),
                     datasets: [
                       {
                         label: '기준연봉 인상률',
@@ -224,13 +258,15 @@ export default function AdjustHistoryPage() {
             </tr>
           </thead>
           <tbody>
-            {data?.slice(0, 5).map(({ adjustId, 연도, 차수, 종류 }) => (
-              <tr key={adjustId} onClick={() => navigate(`/${adjustId}`)}>
-                <td>{연도}</td>
-                <td>{차수}</td>
-                <td>{종류}</td>
-              </tr>
-            ))}
+            {adjustListData?.adjustList?.map(
+              ({ id, year, orderNumber, adjustTypeName }) => (
+                <tr key={id} onClick={() => navigate(`/${id}`)}>
+                  <td>{year}</td>
+                  <td>{orderNumber}</td>
+                  <td>{adjustTypeName}</td>
+                </tr>
+              ),
+            )}
           </tbody>
         </table>
         <Pagination
@@ -241,7 +277,7 @@ export default function AdjustHistoryPage() {
           onRowsPerPageChange={(newRowsPerPage) => {
             setRowsPerPage(newRowsPerPage);
           }}
-          totalPage={Math.ceil(data?.length ?? 0 / rowsPerPage)}
+          totalPage={adjustListData?.totalPages ?? 1}
         />
       </section>
     </MobileAppLayout>

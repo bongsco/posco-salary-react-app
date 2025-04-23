@@ -1,44 +1,77 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import useSWR from 'swr';
+import { useAuth } from '#contexts/AuthContext';
+import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import MobileLayout from '#layouts/MobileAppLayout';
 import styles from './adjust-history-detail-page.module.css';
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export default function AdjustHistoryDetailPage() {
   const { id } = useParams();
+  const fetchWithAuth = useFetchWithAuth();
+  const { auth } = useAuth();
 
-  const data = {
-    id,
-    title: '2024년 1차 정기연봉조정',
-    year: 2024,
-    order: 1,
-    type: '정기연봉조정',
-    author: '홍길동',
-    baseDate: '2024-01-01',
-    exceptionStartDate: '2024-01-01',
-    exceptionEndDate: '2024-01-31',
-    name: '홍길동',
-    grade: 'P1',
-    rank: 'B',
-    dept: '대충 뭔가 엄청 긴 부서 이름 예시',
-    positionName: '직책이 뭐 있더라',
-    hireDate: '2020-01-01',
-    employmentType: '연봉직',
-    salaryIncrementByRank: 1.3,
-    hpoSalaryIncrement: 1.2,
-    bonusMultiplierByRank: 400,
-    hpoBonusMultiplier: 150,
-    bonus: 5000000,
-    stdSalaryBefore: 48382000,
-    stdSalaryAfter: 49000000,
-    payband: '미적용',
-    finalSalary: 52500000,
-  };
+  const { data } = useSWR(
+    `/mobile/details/${id}`,
+    async (url) => {
+      const response = await fetchWithAuth(url, {
+        method: 'GET',
+        headers: {
+          email: auth?.email,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      return response.json();
+    },
+    {
+      fallbackData: {
+        year: '...',
+        orderNumber: '...',
+        adjustType: '...',
+        author: 'Loading...',
+        baseDate: 'Loading...',
+        exceptionStartDate: 'Loading...',
+        exceptionEndDate: 'Loading...',
+        name: 'Loading...',
+        gradeName: 'Loading...',
+        departmentName: 'Loading...',
+        positionName: 'Loading...',
+        hireDate: 'Loading...',
+        employmentTypeName: 'Loading...',
+        rankName: 'Loading...',
+        salaryIncrementRate: 'Loading...',
+        bonusMultiplier: 'Loading...',
+        isInHpo: 'Loading...',
+        hpoSalaryIncrementByRank: 'Loading...',
+        hpoBonusMultiplier: 'Loading...',
+        finalSalaryIncrementRate: 'Loading...',
+        finalBonusMultiplier: 'Loading...',
+        beforeStdSalary: 'Loading...',
+        stdSalary: 'Loading...',
+        hpoBonus: 'Loading...',
+        isPaybandApplied: 'Loading...',
+        contractSalary: 'Loading...',
+      },
+    },
+  );
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
-    <MobileLayout path={[data.title]} className={styles.page}>
+    <MobileLayout
+      path={[`${data.year}년 ${data.orderNumber}차 ${data.adjustType}`]}
+      className={styles.page}
+    >
       <h2>{data.title}</h2>
       <section className={styles.section}>
         <h3>개요</h3>
@@ -54,8 +87,8 @@ export default function AdjustHistoryDetailPage() {
           <tbody>
             <tr>
               <td>{data.year}</td>
-              <td>{data.order}</td>
-              <td>{data.type}</td>
+              <td>{data.orderNumber}</td>
+              <td>{data.adjustType}</td>
               <td>{data.author}</td>
             </tr>
           </tbody>
@@ -89,8 +122,8 @@ export default function AdjustHistoryDetailPage() {
             <tbody>
               <tr>
                 <td>{data.name}</td>
-                <td>{data.grade}</td>
-                <td>{data.dept}</td>
+                <td>{data.gradeName}</td>
+                <td>{data.departmentName}</td>
               </tr>
             </tbody>
           </table>
@@ -107,8 +140,8 @@ export default function AdjustHistoryDetailPage() {
               <tr>
                 <td>{data.positionName}</td>
                 <td>{data.hireDate}</td>
-                <td>{data.employmentType}</td>
-                <td>{data.rank}</td>
+                <td>{data.employmentTypeName}</td>
+                <td>{data.rankCode}</td>
               </tr>
             </tbody>
           </table>
@@ -126,24 +159,28 @@ export default function AdjustHistoryDetailPage() {
                   (평차연, 고성과조직 가산률)
                 </td>
                 <td>
-                  평가차등 연봉인상률
+                  평가차등 경영성과금 지급률
                   <br />
-                  (평차연, 고성과조직 가산률)
+                  (평차금 + 고성과조직 가산률)
                 </td>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
-                  {(data.salaryIncrementByRank *
-                    (data.hpoSalaryIncrement + 100)) /
-                    100}
-                  %<br />
+                  {data.salaryIncrementRate}%
+                  <br />
                   <span>
-                    ({data.salaryIncrementByRank}, {data.hpoSalaryIncrement})
+                    ({data.salaryIncrementRate}%,{data.hpoSalaryIncrementByRank}
+                    %)
                   </span>
                 </td>
-                <td>{data.hpoSalaryIncrement}%</td>
+                <td>
+                  <span>
+                    {data.finalBonusMultiplier}%
+                    <br />({data.bonusMultiplier}% + {data.hpoBonusMultiplier}%)
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -157,9 +194,9 @@ export default function AdjustHistoryDetailPage() {
             </thead>
             <tbody>
               <tr>
-                <td>{numberWithCommas(data.stdSalaryBefore)}</td>
-                <td>{numberWithCommas(data.stdSalaryAfter)}</td>
-                <td>{numberWithCommas(data.bonus)}</td>
+                <td>{numberWithCommas(data.beforeStdSalary)}</td>
+                <td>{numberWithCommas(data.stdSalary)}</td>
+                <td>{numberWithCommas(data.hpoBonus)}</td>
               </tr>
             </tbody>
           </table>
@@ -172,8 +209,8 @@ export default function AdjustHistoryDetailPage() {
             </thead>
             <tbody>
               <tr>
-                <td>{data.payband}</td>
-                <td>{data.finalSalary}</td>
+                <td>{data.isPaybandApplied}</td>
+                <td>{data.contractSalary}</td>
               </tr>
             </tbody>
           </table>
