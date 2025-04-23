@@ -35,6 +35,19 @@ export function ErrorHandlerProvider({ children }) {
     setErrors([]);
   };
 
+  const renderErrors = useCallback(
+    () =>
+      Object.keys(errors).map((errorId) => (
+        <Notice
+          key={errorId}
+          title={errors[errorId].title}
+          message={errors[errorId].message}
+          onClose={() => removeError(errorId)}
+        />
+      )),
+    [errors, removeError],
+  );
+
   useEffect(() => {
     clearErrors();
   }, [location]);
@@ -42,18 +55,10 @@ export function ErrorHandlerProvider({ children }) {
   return (
     <ErrorHandlerContext.Provider
       value={useMemo(
-        () => ({ errors, addError, clearErrors, removeError }),
-        [errors, removeError],
+        () => ({ errors, addError, clearErrors, removeError, renderErrors }),
+        [errors, removeError, renderErrors],
       )}
     >
-      {Object.keys(errors).map((errorId) => (
-        <Notice
-          key={errorId}
-          title={errors[errorId].title}
-          message={errors[errorId].message}
-          onClose={() => removeError(errorId)}
-        />
-      ))}
       {children}
     </ErrorHandlerContext.Provider>
   );

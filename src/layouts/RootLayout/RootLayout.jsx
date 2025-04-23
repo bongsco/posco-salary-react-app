@@ -4,7 +4,7 @@ import NavBar from '#components/NavBar';
 import NavItem from '#components/NavBar/NavItem';
 import SideBar, { Category, Item, SubItem } from '#components/SideBar';
 import { useAuth } from '#contexts/AuthContext';
-import { ErrorHandlerProvider } from '#contexts/ErrorHandlerContext';
+import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import styles from './root-layout.module.css';
 
 const initialSideBarState = {
@@ -21,6 +21,7 @@ const initialSideBarState = {
 export default function RootLayout() {
   const location = useLocation();
   const auth = useAuth();
+  const { renderErrors } = useErrorHandlerContext();
 
   const displayName = useMemo(() => {
     const user = auth?.auth;
@@ -116,9 +117,8 @@ export default function RootLayout() {
           </SideBar>
         </div>
         <div className={styles.content}>
-          <ErrorHandlerProvider>
-            <Outlet />
-          </ErrorHandlerProvider>
+          {renderErrors()}
+          <Outlet />
         </div>
       </div>
     </div>

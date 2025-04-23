@@ -1,0 +1,47 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  padding: 0 24px;
+  background-color: var(--color-background-general);
+  border-bottom: 1px solid var(--color-background-block);
+
+  width: 100%;
+  min-width: 320px;
+  height: 50px;
+}
+
+.logout {
+  text-decoration: none;
+  font: var(--font-caption-2b-pc);
+  color: var(--color-grayscale-black);
+}
+
+.spaceHolder {
+  flex-grow: 1;
+  height: 1px;
+}
+
+.title {
+  position: absolute;
+  color: var(--color-grayscale-black);
+  font: var(--font-subtitle-2b-pc);
+  flex-shrink: 0;
+  justify-self: center;
+  width: fit-content;
+  text-decoration: none;
+}
+
+.button {
+  border: 0;
+  background-color: transparent;
+  text-decoration: none;
+  color: var(--color-grayscale-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

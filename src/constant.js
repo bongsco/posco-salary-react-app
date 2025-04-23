@@ -18,5 +18,6 @@ export default {
   },
   group: {
     MANAGER: 'bongsco_manager',
+    EMPLOYEES: 'bongsco_employees',
   },
 };

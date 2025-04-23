@@ -1,12 +1,17 @@
+import { isMobile } from 'react-device-detect';
 import {
+  Outlet,
   Route,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 import { AdjustProvider } from '#contexts/AdjustContext';
 import { AuthProvider } from '#contexts/AuthContext';
+import { ErrorHandlerProvider } from '#contexts/ErrorHandlerContext';
 import AppLayout from '#layouts/AppLayout';
+import MobileRootLayout from '#layouts/MobileRootLayout';
 import RootLayout from '#layouts/RootLayout';
+import AdjustHistoryPage from '#pages/AdjustHistoryPage';
 import LoginPage from '#pages/LoginPage';
 import RequireGroup from '#pages/LoginPage/RequireGroup';
 import LogoutPage from '#pages/LogoutPage';
@@ -20,6 +25,7 @@ import PaybandApplyPage from '#pages/adjust-edit/main/PaybandApplyPage';
 import ResultPage from '#pages/adjust-edit/main/ResultPage';
 import HpoApplyPage from '#pages/adjust-edit/preparation/HpoApplyPage';
 import SubjectAssignPage from '#pages/adjust-edit/preparation/SubjectAssignPage';
+import AdjustHistoryDetailPage from '#src/pages/AdjustHistoryDetailPage/AdjustHistoryDetailPage';
 import constants from './constant';
 
 const router = createBrowserRouter(
@@ -27,54 +33,78 @@ const router = createBrowserRouter(
     <Route
       path="/"
       element={
-        <AuthProvider>
-          <RequireGroup allowedGroups={[constants.group.MANAGER]}>
-            <RootLayout />
-          </RequireGroup>
-        </AuthProvider>
+        <ErrorHandlerProvider>
+          <AuthProvider>
+            <Outlet />
+          </AuthProvider>
+        </ErrorHandlerProvider>
       }
     >
-      <Route
-        index
-        element={
-          <AppLayout title="메인" breadCrumbs={['메인']}>
-            <MainDashboardPage />
-          </AppLayout>
-        }
-      />
-      <Route path="test" element={<TestPage />} />
-      <Route path="login" element={<LoginPage />} />
-      <Route path="logout" element={<LogoutPage />} />
-      <Route path="adjust/list" element={<MainPage />} />
-
-      <Route path="adjust/edit">
+      {isMobile ? (
         <Route
-          index
           element={
-            <AppLayout title="연봉조정 등록" breadCrumbs={['조정', '등록']} />
+            <RequireGroup
+              allowedGroups={[
+                constants.group.MANAGER,
+                constants.group.EMPLOYEES,
+              ]}
+            >
+              <MobileRootLayout />
+            </RequireGroup>
           }
-        />
-        <Route path=":id" element={<AdjustProvider />}>
-          <Route path="annual">
-            <Route path="criteria">
-              <Route path="subject" element={<SubjectCriteriaPage />} />
-              <Route
-                path="payment-rate"
-                element={<PaymentRateCriteriaPage />}
-              />
-              <Route path="payband" element={<PaybandCriteriaPage />} />
+        >
+          <Route index element={<AdjustHistoryPage />} />
+          <Route path=":id" element={<AdjustHistoryDetailPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="logout" element={<LogoutPage />} />
+        </Route>
+      ) : (
+        <Route path="/">
+          <Route
+            element={
+              <RequireGroup allowedGroups={[constants.group.MANAGER]}>
+                <RootLayout />
+              </RequireGroup>
+            }
+          >
+            <Route
+              index
+              element={
+                <AppLayout title="메인" breadCrumbs={['메인']}>
+                  <MainDashboardPage />
+                </AppLayout>
+              }
+            />
+
+            <Route path="login" element={<LoginPage />} />
+            <Route path="logout" element={<LogoutPage />} />
+            <Route path="adjust/list" element={<MainPage />} />
+
+            <Route path="adjust/edit/:id" element={<AdjustProvider />}>
+              <Route path="annual">
+                <Route path="criteria">
+                  <Route path="subject" element={<SubjectCriteriaPage />} />
+                  <Route
+                    path="payment-rate"
+                    element={<PaymentRateCriteriaPage />}
+                  />
+                  <Route path="payband" element={<PaybandCriteriaPage />} />
+                </Route>
+                <Route path="preparation">
+                  <Route path="subject" element={<SubjectAssignPage />} />
+                  <Route path="high-performance" element={<HpoApplyPage />} />
+                </Route>
+                <Route path="main">
+                  <Route path="payband" element={<PaybandApplyPage />} />
+                  <Route path="result" element={<ResultPage />} />
+                </Route>
+              </Route>
             </Route>
-            <Route path="preparation">
-              <Route path="subject" element={<SubjectAssignPage />} />
-              <Route path="high-performance" element={<HpoApplyPage />} />
-            </Route>
-            <Route path="main">
-              <Route path="payband" element={<PaybandApplyPage />} />
-              <Route path="result" element={<ResultPage />} />
-            </Route>
+
+            <Route path="test" element={<TestPage />} />
           </Route>
         </Route>
-      </Route>
+      )}
     </Route>,
   ),
   {
