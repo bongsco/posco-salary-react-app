@@ -153,7 +153,8 @@ export default function PaybandCriteriaPage() {
           );
 
           if (!res.ok) {
-            throw new Error('PATCH 요청 실패');
+            const errorData = await res.json();
+            addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
           } else {
             setReceivedPayband(structuredClone(cleanPayband));
             dispatch({ type: 'updatePayband', payload: cleanPayband });

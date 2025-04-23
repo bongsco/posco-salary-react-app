@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import useSWR, { mutate } from 'swr';
+import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AdjustEditLayout from '#layouts/AdjustEditLayout';
@@ -50,11 +51,12 @@ function HpoApplyPage() {
   const [highOrganizationData, setHighOrganizationData] = useState(null);
 
   const { addError } = useErrorHandlerContext();
+  const { adjust } = useAdjustContext();
 
   const fetchWithAuth = useFetchWithAuth();
 
   const { data: initialHighOrganizationData } = useSWR(
-    '/adjust/1/preparation/high-performance',
+    `/adjust/${adjust.adjustId}/preparation/high-performance`,
     async (url) => {
       const res = await fetchWithAuth(url);
       if (!res?.ok) {
@@ -266,31 +268,25 @@ function HpoApplyPage() {
     const patchBody = {
       changedHighPerformGroupEmployee,
     };
-    try {
-      const res = await fetchWithAuth(
-        '/adjust/1/preparation/high-performance',
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(patchBody),
+
+    const res = await fetchWithAuth(
+      `/adjust/${adjust.adjustId}/preparation/high-performance`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify(patchBody),
+      },
+    );
 
-      if (!res.ok) {
-        throw new Error('PATCH 요청 실패');
-      }
-
-      // ✅ 최신 데이터 다시 불러오기
-      await mutate('/adjust/1/preparation/high-performance');
-    } catch (error) {
-      addError(
-        'Failed to Send Data',
-        'An error occurred while sending data. Please try again later.',
-        'CONNECTION_REFUSED',
-      );
+    if (!res.ok) {
+      const errorData = await res.json();
+      addError(errorData.status, errorData.message, 'PREPARATION_ERROR');
     }
+
+    // ✅ 최신 데이터 다시 불러오기
+    await mutate(`/adjust/${adjust.adjustId}/preparation/high-performance`);
   };
 
   const handleCancel = () => {

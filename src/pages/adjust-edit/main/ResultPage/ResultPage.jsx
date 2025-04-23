@@ -11,7 +11,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Bar, Line, PolarArea } from 'react-chartjs-2';
 import useSWR from 'swr';
 import Button from '#components/Button';
@@ -217,14 +217,6 @@ export default function ResultPage() {
       return res.json();
     },
   );
-
-  useEffect(() => {
-    if (!tableMode) {
-      setRowsPerPage(12);
-    } else {
-      setRowsPerPage(5);
-    }
-  }, [tableMode]);
 
   const aRef = useRef(null);
 
@@ -450,7 +442,16 @@ export default function ResultPage() {
               <div className={styles['switch-label']}>카드</div>
               <Switch
                 isOn={tableMode}
-                onClick={() => setTableMode((prev) => !prev)}
+                onClick={() => {
+                  setTableMode((prev) => {
+                    if (prev) {
+                      setRowsPerPage(12);
+                    } else {
+                      setRowsPerPage(10);
+                    }
+                    return !prev;
+                  });
+                }}
               />
               <div className={styles['switch-label']}>테이블</div>
             </div>

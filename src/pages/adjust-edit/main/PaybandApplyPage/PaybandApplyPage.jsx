@@ -163,27 +163,23 @@ function PaybandApplyPage() {
         };
       });
 
-    try {
-      if (updatedSubjects.length > 0) {
-        await fetchWithAuth(
-          `/adjust/${adjust.adjustId}/main/payband/subjects`,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ updatedSubjects }),
+    if (updatedSubjects.length > 0) {
+      const res = await fetchWithAuth(
+        `/adjust/${adjust.adjustId}/main/payband/subjects`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
-      }
-      dispatch({ type: 'commit' });
-    } catch (err) {
-      addError(
-        'Failed to update Payband status.',
-        'Update Error',
-        'UPDATE_FAIL',
+          body: JSON.stringify({ updatedSubjects }),
+        },
       );
+      if (!res.ok) {
+        const errorData = await res.json();
+        addError(errorData.status, errorData.message, 'MAIN_ERROR');
+      }
     }
+    dispatch({ type: 'commit' });
   };
 
   const filteredUpperData = state.data.filter((item) => item.type === 'upper');

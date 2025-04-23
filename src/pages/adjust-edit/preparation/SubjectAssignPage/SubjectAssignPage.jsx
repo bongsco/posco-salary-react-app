@@ -246,35 +246,31 @@ export default function OrganizationSubject() {
         subjectUse: emp.isTarget,
       }));
 
-    try {
-      if (changedSubjectUseEmployee.length > 0) {
-        const res = await fetchWithAuth(
-          `/adjust/${adjust.adjustId}/preparation/employees`,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ changedSubjectUseEmployee }),
+    if (changedSubjectUseEmployee.length > 0) {
+      const res = await fetchWithAuth(
+        `/adjust/${adjust.adjustId}/preparation/employees`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ changedSubjectUseEmployee }),
+        },
+      );
+
+      if (!res?.ok) {
+        addError(
+          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+          'error message',
+          'CONNECTION_REFUSED',
         );
-
-        if (!res?.ok) {
-          addError(
-            `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-            'error message',
-            'CONNECTION_REFUSED',
-          );
-        }
       }
-      await mutate(`/adjust/${adjust.adjustId}/preparation/employees`);
-
-      // 💾 성공 시 상태 동기화
-      setSavedEmployees([...employees]);
-      setIsCommitted(true);
-    } catch (e) {
-      addError('대상자 저장 중 오류가 발생했습니다.', e.message, 'PATCH_ERROR');
     }
+    await mutate(`/adjust/${adjust.adjustId}/preparation/employees`);
+
+    // 💾 성공 시 상태 동기화
+    setSavedEmployees([...employees]);
+    setIsCommitted(true);
   };
 
   const handleCancel = () => {
