@@ -152,10 +152,19 @@ export default function AdjustEditLayout({
               size="small"
               label="저장"
               onClick={async () => {
-                await onCommit();
-                await setStepDone();
-                await mutate(`/stepper/${adjust.adjustId}`);
-                handleSnackBar('저장되었습니다.');
+                try {
+                  await onCommit(); // 실패 시 아래 로직 실행 안 됨
+                  await setStepDone();
+                  await mutate(`/stepper/${adjust.adjustId}`);
+                  handleSnackBar('저장되었습니다.');
+                } catch (error) {
+                  handleSnackBar('저장에 실패했습니다.');
+                  addError(
+                    `저장 실패`,
+                    `${error.message}`,
+                    'ADJUST_SAVE_ERROR',
+                  );
+                }
               }}
             />
             <Button

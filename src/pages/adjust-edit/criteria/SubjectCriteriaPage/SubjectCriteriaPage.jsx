@@ -257,14 +257,22 @@ export default function SubjectCriteriaPage() {
     adjust?.adjustId ? `/adjust/${adjust.adjustId}/criteria/subject` : null,
 
     async (url) => {
-      const res = await fetchWithAuth(url);
-      if (!res.ok) {
-        const errorData = await res.json();
-
-        // 제목 내용 ID
-        addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
+      try {
+        const res = await fetchWithAuth(url);
+        if (!res.ok) {
+          const errorData = await res.json();
+          // 제목 내용 ID
+          addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
+        }
+        return res.json();
+      } catch (err) {
+        addError(
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'CRITERIA_ERROR',
+        );
+        return null;
       }
-      return res.json();
     },
     {
       onSuccess: (response) => {
@@ -391,66 +399,63 @@ export default function SubjectCriteriaPage() {
     setHasTriedSubmit(true);
     if (!formValidation.isValid) return;
 
-    try {
-      // ✅ gradeSelections: name → id 매핑을 위한 gradeDtos 필요 (data.grades 사용)
-      const gradeSelections = {};
-      data.grades.forEach(({ id, name }) => {
-        const category = name.charAt(0);
-        const checked = gradeState.current?.[category]?.[name];
-        if (checked !== undefined) {
-          gradeSelections[id] = checked;
-        }
-      });
-
-      // ✅ paymentSelections: name → id 매핑 (data.payments 사용)
-      const paymentSelections = {};
-      data.payments.forEach(({ id, name }) => {
-        if (name === '전체') return; // ❌ 전체는 제외
-        const checked = paymentState.current?.[name];
-        if (typeof checked === 'boolean') {
-          paymentSelections[String(id)] = checked;
-        }
-      });
-
-      // ✅ PATCH payload 구성
-      const patchBody = {
-        baseDate: dateState.current.baseDate,
-        exceptionStartDate: dateState.current.expStartDate,
-        exceptionEndDate: dateState.current.expEndDate,
-        gradeSelections,
-        paymentSelections,
-      };
-
-      // ✅ PATCH 요청
-      const res = await fetchWithAuth(
-        `/adjust/${adjust.adjustId}/criteria/subject`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(patchBody),
-        },
-      );
-
-      if (!res.ok) {
-        throw new Error('PATCH 요청 실패');
+    // ✅ gradeSelections: name → id 매핑을 위한 gradeDtos 필요 (data.grades 사용)
+    const gradeSelections = {};
+    data.grades.forEach(({ id, name }) => {
+      const category = name.charAt(0);
+      const checked = gradeState.current?.[category]?.[name];
+      if (checked !== undefined) {
+        gradeSelections[id] = checked;
       }
+    });
 
-      // ✅ 최신 데이터 다시 받아오기
-      await mutate(`/adjust/${adjust.adjustId}/criteria/subject`);
+    // ✅ paymentSelections: name → id 매핑 (data.payments 사용)
+    const paymentSelections = {};
+    data.payments.forEach(({ id, name }) => {
+      if (name === '전체') return; // ❌ 전체는 제외
+      const checked = paymentState.current?.[name];
+      if (typeof checked === 'boolean') {
+        paymentSelections[String(id)] = checked;
+      }
+    });
 
-      // 성공 시 상태 commit
-      dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
-      dispatchPayment({ type: 'SET_PREVIOUS', payload: paymentState.current });
-      dispatchGrade({ type: 'SET_PREVIOUS', payload: gradeState.current });
+    // ✅ PATCH payload 구성
+    const patchBody = {
+      baseDate: dateState.current.baseDate,
+      exceptionStartDate: dateState.current.expStartDate,
+      exceptionEndDate: dateState.current.expEndDate,
+      gradeSelections,
+      paymentSelections,
+    };
 
-      dispatchDate({ type: 'MARK_ALL_COMMITTED' });
-      dispatchPayment({ type: 'MARK_ALL_COMMITTED' });
-      dispatchGrade({ type: 'MARK_ALL_COMMITTED' });
-    } catch (error) {
-      addError(error.status, error.message, 'CRITERIA_ERROR');
+    // ✅ PATCH 요청
+    const res = await fetchWithAuth(
+      `/adjust/${adjust.adjustId}/criteria/subject`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(patchBody),
+      },
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      addError(errorData.status, errorData.message, 'CRITERIA_ERROR');
     }
+
+    // ✅ 최신 데이터 다시 받아오기
+    await mutate(`/adjust/${adjust.adjustId}/criteria/subject`);
+
+    // 성공 시 상태 commit
+    dispatchDate({ type: 'SET_PREVIOUS', payload: dateState.current });
+    dispatchPayment({ type: 'SET_PREVIOUS', payload: paymentState.current });
+    dispatchGrade({ type: 'SET_PREVIOUS', payload: gradeState.current });
+
+    dispatchDate({ type: 'MARK_ALL_COMMITTED' });
+    dispatchPayment({ type: 'MARK_ALL_COMMITTED' });
+    dispatchGrade({ type: 'MARK_ALL_COMMITTED' });
   };
 
   const handleCancel = () => {

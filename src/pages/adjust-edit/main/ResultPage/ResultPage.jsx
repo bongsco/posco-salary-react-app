@@ -11,7 +11,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Bar, Line, PolarArea } from 'react-chartjs-2';
 import useSWR from 'swr';
 import Button from '#components/Button';
@@ -167,13 +167,22 @@ export default function ResultPage() {
       ? `/adjust/${adjust.adjustId}/main/annual-adj?${paramString}`
       : null,
     async (url) => {
-      const res = await fetchWithAuth(url);
-      if (!res?.ok) {
-        const errorData = await res.json();
-        addError(errorData.status, errorData.message, 'MAIN_ERROR');
-      }
+      try {
+        const res = await fetchWithAuth(url);
+        if (!res?.ok) {
+          const errorData = await res.json();
+          addError(errorData.status, errorData.message, 'MAIN_ERROR');
+        }
 
-      return res.json();
+        return res.json();
+      } catch (err) {
+        addError(
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'MAIN_ERROR',
+        );
+        return null;
+      }
     },
     {
       onSuccess: (response) => {
@@ -217,14 +226,6 @@ export default function ResultPage() {
       return res.json();
     },
   );
-
-  useEffect(() => {
-    if (!tableMode) {
-      setRowsPerPage(12);
-    } else {
-      setRowsPerPage(5);
-    }
-  }, [tableMode]);
 
   const aRef = useRef(null);
 
@@ -450,7 +451,16 @@ export default function ResultPage() {
               <div className={styles['switch-label']}>카드</div>
               <Switch
                 isOn={tableMode}
-                onClick={() => setTableMode((prev) => !prev)}
+                onClick={() => {
+                  setTableMode((prev) => {
+                    if (prev) {
+                      setRowsPerPage(12);
+                    } else {
+                      setRowsPerPage(10);
+                    }
+                    return !prev;
+                  });
+                }}
               />
               <div className={styles['switch-label']}>테이블</div>
             </div>

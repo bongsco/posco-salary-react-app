@@ -177,17 +177,25 @@ export default function PaymentRateCriteriaPage() {
   const [hasProvideRateError, setHasProvideRateError] = useState(false);
 
   const fetcher = async (url) => {
-    const res = await fetchWithAuth(url);
-    if (!res.ok) {
+    try {
+      const res = await fetchWithAuth(url);
+      if (!res.ok) {
+        addError(
+          `연봉지급률 조회 실패 (${res.status} ${res.statusText})`,
+          '조정 ID 또는 서버 응답을 확인해주세요.',
+          'PAYMENT_RATE_FETCH_ERROR',
+        );
+      }
+      const json = await res.json();
+      return json.data;
+    } catch (err) {
       addError(
-        `연봉지급률 조회 실패 (${res.status} ${res.statusText})`,
-        '조정 ID 또는 서버 응답을 확인해주세요.',
-        'PAYMENT_RATE_FETCH_ERROR',
+        '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+        err.message,
+        'CRITERIA_ERROR',
       );
-      throw new Error('Fetch failed');
+      return null;
     }
-    const json = await res.json();
-    return json.data;
   };
 
   const { data } = useSWR(

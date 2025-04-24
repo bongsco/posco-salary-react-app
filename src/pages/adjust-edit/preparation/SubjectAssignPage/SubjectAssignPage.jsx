@@ -112,19 +112,28 @@ export default function OrganizationSubject() {
       ? `/adjust/${adjust.adjustId}/preparation/employees`
       : null,
     async (url) => {
-      const res = await fetchWithAuth(url);
-      // 상태 코드가 200-299 범위가 아니더라도,
-      // 파싱 시도를 하고 에러를 던집니다.
-      if (!res?.ok) {
-        addError(
-          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-          'error message',
-          'CONNECTION_REFUSED',
-        );
-      }
+      try {
+        const res = await fetchWithAuth(url);
+        // 상태 코드가 200-299 범위가 아니더라도,
+        // 파싱 시도를 하고 에러를 던집니다.
+        if (!res?.ok) {
+          addError(
+            `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+            'error message',
+            'CONNECTION_REFUSED',
+          );
+        }
 
-      const data = await res.json();
-      return data.map(convertEmployeeDto);
+        const data = await res.json();
+        return data.map(convertEmployeeDto);
+      } catch (err) {
+        addError(
+          '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          err.message,
+          'PREPARATION_ERROR',
+        );
+        return null;
+      }
     },
     {
       onSuccess: (response) => {
@@ -246,35 +255,31 @@ export default function OrganizationSubject() {
         subjectUse: emp.isTarget,
       }));
 
-    try {
-      if (changedSubjectUseEmployee.length > 0) {
-        const res = await fetchWithAuth(
-          `/adjust/${adjust.adjustId}/preparation/employees`,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ changedSubjectUseEmployee }),
+    if (changedSubjectUseEmployee.length > 0) {
+      const res = await fetchWithAuth(
+        `/adjust/${adjust.adjustId}/preparation/employees`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ changedSubjectUseEmployee }),
+        },
+      );
+
+      if (!res?.ok) {
+        addError(
+          `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
+          'error message',
+          'CONNECTION_REFUSED',
         );
-
-        if (!res?.ok) {
-          addError(
-            `Sent Request to /api/notfound (${process.env.REACT_APP_API_URL}) and the connection refused.`,
-            'error message',
-            'CONNECTION_REFUSED',
-          );
-        }
       }
-      await mutate(`/adjust/${adjust.adjustId}/preparation/employees`);
-
-      // 💾 성공 시 상태 동기화
-      setSavedEmployees([...employees]);
-      setIsCommitted(true);
-    } catch (e) {
-      addError('대상자 저장 중 오류가 발생했습니다.', e.message, 'PATCH_ERROR');
     }
+    await mutate(`/adjust/${adjust.adjustId}/preparation/employees`);
+
+    // 💾 성공 시 상태 동기화
+    setSavedEmployees([...employees]);
+    setIsCommitted(true);
   };
 
   const handleCancel = () => {
