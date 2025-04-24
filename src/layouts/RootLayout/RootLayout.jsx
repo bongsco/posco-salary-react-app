@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from '#components/NavBar';
 import NavItem from '#components/NavBar/NavItem';
-import SideBar, { Category, Item, SubItem } from '#components/SideBar';
+import SideBar, { Item } from '#components/SideBar';
 import { useAuth } from '#contexts/AuthContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import styles from './root-layout.module.css';
@@ -86,28 +86,12 @@ export default function RootLayout() {
               href="/"
               isActive={sideBarState.main}
             />
-            <Category
-              icon="card"
-              text="조정"
-              isOpen={sideBarState.adjustCategory}
-              onClick={() =>
-                dispatchSideBarState({
-                  action: 'toggle',
-                  key: 'adjustCategory',
-                })
-              }
-            >
-              <SubItem
-                text="등록"
-                href="/adjust/edit"
-                isActive={sideBarState.adjustEdit}
-              />
-              <SubItem
-                text="조회"
-                href="/adjust/list"
-                isActive={sideBarState.adjustList}
-              />
-            </Category>
+
+            <Item
+              text="조회"
+              href="/adjust/list"
+              isActive={sideBarState.adjustList}
+            />
             <Item
               icon="gear"
               text="테스트"
