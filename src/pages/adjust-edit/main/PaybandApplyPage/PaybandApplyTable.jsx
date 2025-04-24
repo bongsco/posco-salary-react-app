@@ -20,6 +20,7 @@ function PaybandApplyTable({
   handleSelectAll,
   handleClearSelection,
   dispatch,
+  totalPage,
 }) {
   const [isHeaderChecked, setIsHeaderChecked] = useState(false);
 
@@ -96,6 +97,7 @@ function PaybandApplyTable({
             rowsPerPage={rowsPerPage}
             onPageChange={setCurrentPage}
             onRowsPerPageChange={setRowsPerPage}
+            totalPage={totalPage}
           />
         </div>
       </div>
@@ -117,6 +119,7 @@ PaybandApplyTable.propTypes = {
   handleSelectAll: PropTypes.func.isRequired,
   handleClearSelection: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
+  totalPage: PropTypes.number.isRequired,
 };
 
 export default PaybandApplyTable;

@@ -32,7 +32,7 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
     .map((item) => item.직번);
 
   const handleSelectAll = () => {
-    const empNums = data.map((item) => item.직번); // 현재 테이블의 데이터만 선택
+    const empNums = data.map((item) => item.직번);
     dispatch({
       type: 'setAllChecked',
       payload: { value: true, empNums },
@@ -40,7 +40,7 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
   };
 
   const handleClearSelection = () => {
-    const empNums = data.map((item) => item.직번); // 현재 테이블의 데이터만 선택 취소
+    const empNums = data.map((item) => item.직번);
     dispatch({
       type: 'setAllChecked',
       payload: { value: false, empNums },
@@ -91,6 +91,33 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
     }),
     [originalData],
   );
+
+  const totalFilteredItems = useMemo(() => {
+    let filtered = [...data];
+
+    filters.forEach(({ key, value }) => {
+      if (!value || value.length === 0) return;
+
+      filtered = filtered.filter((item) => {
+        let itemValue;
+        if (key === 'Payband적용') {
+          itemValue = item[key] ? '적용' : '미적용';
+        } else {
+          itemValue = item[key];
+        }
+
+        return value.includes(itemValue);
+      });
+    });
+
+    if (sortList.length > 0) {
+      filtered = sortObject([...filtered], sortList);
+    }
+
+    return filtered.length;
+  }, [data, filters, sortList]);
+
+  const totalPage = Math.ceil(totalFilteredItems / rowsPerPage);
 
   useEffect(() => {
     let filtered = [...data];
@@ -157,6 +184,7 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
         handleSelectAll={handleSelectAll}
         handleClearSelection={handleClearSelection}
         dispatch={dispatch}
+        totalPage={totalPage}
       />
     </div>
   );
