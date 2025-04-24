@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
@@ -192,9 +192,10 @@ function HpoApplyPage() {
     });
   };
 
-  /* 현재 페이지 수, 현재 테이블에 보여줄 데이터 수 */
+  /* 총 페이지 수, 현재 페이지 수, 현재 테이블에 보여줄 데이터 수 */
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPage, setTotalPage] = useState(10);
   /* Table에 적용되는 Filter, Sort 조건들을 저장하는 배열 */
   const [filters, setFilters] = useState([]);
   const [sorts, setSorts] = useState([]);
@@ -210,10 +211,20 @@ function HpoApplyPage() {
     }
   };
 
-  const processTableData = useCallback(() => {
-    const filteredData = highOrganizationData?.filter((item) =>
+  const fullProcessedData = useMemo(() => {
+    if (!highOrganizationData) return [];
+
+    const filteredData = highOrganizationData.filter((item) =>
       filters.every(({ key, value }) => {
         const itemValue = String(item[key]);
+        // 개선된 텍스트 필터링 (예: 대소문자 무시, 부분 일치)
+        if (
+          filterOptions[key]?.optionType === 'text' &&
+          typeof value === 'string'
+        ) {
+          return itemValue.toLowerCase().includes(value.toLowerCase());
+        }
+        // 드롭다운 필터
         return (
           (value?.length ?? 0) === 0 || value?.map(String).includes(itemValue)
         );
@@ -221,20 +232,30 @@ function HpoApplyPage() {
     );
 
     const sortedData = sortObject(
-      filteredData ?? [],
-      sorts?.length ? sorts : [{ key: 'employeeId', order: '오름차순' }],
+      filteredData,
+      sorts?.length ? sorts : [{ key: 'employeeId', order: '오름차순' }], // 기본 정렬 확인
     );
 
-    const totalPages = Math.ceil(sortedData.length / rowsPerPage);
-    if (currentPage > totalPages && totalPages !== 0) {
-      setCurrentPage(totalPages || 1);
+    return sortedData;
+  }, [highOrganizationData, filters, sorts]);
+
+  useEffect(() => {
+    const newTotalPages =
+      Math.ceil(fullProcessedData.length / rowsPerPage) || 1;
+    setTotalPage(newTotalPages);
+
+    if (currentPage > newTotalPages && newTotalPages > 0) {
+      setCurrentPage(newTotalPages);
+    } else if (fullProcessedData.length === 0 && currentPage !== 1) {
+      setCurrentPage(1);
     }
+  }, [fullProcessedData, rowsPerPage, currentPage]);
 
-    return sortedData.slice(
-      (currentPage - 1) * rowsPerPage,
-      currentPage * rowsPerPage,
-    );
-  }, [highOrganizationData, currentPage, rowsPerPage, filters, sorts]);
+  const currentTableData = useMemo(() => {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    return fullProcessedData.slice(startIndex, endIndex);
+  }, [fullProcessedData, currentPage, rowsPerPage]);
 
   /* 페이지 수정 사항이 있는지 확인하는 함수 -> isCommitted에 사용 */
   const isModified = () => {
@@ -331,7 +352,7 @@ function HpoApplyPage() {
             sortList={sorts}
           />
           <HighOrganizationTable
-            data={processTableData()}
+            data={currentTableData}
             checkedItems={checkedItems}
             currentPage={currentPage}
             rowsPerPage={rowsPerPage}
@@ -343,6 +364,7 @@ function HpoApplyPage() {
             salaryIncrementByRank={salaryIncrementByRank}
             hpoSalaryInfo={hpoSalaryInfo}
             originalData={initialHighOrganizationData?.highPerformanceEmployees}
+            totalPage={totalPage}
           />
         </div>
       </section>
