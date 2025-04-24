@@ -88,6 +88,7 @@ export default function RootLayout() {
             />
 
             <Item
+              icon="card"
               text="조회"
               href="/adjust/list"
               isActive={sideBarState.adjustList}
