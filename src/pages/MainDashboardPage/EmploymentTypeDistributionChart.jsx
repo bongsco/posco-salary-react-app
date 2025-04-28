@@ -25,7 +25,7 @@ function EmploymentTypeDistributionChart() {
     return res.json();
   });
 
-  if (isLoading || !data) return <p>Loading...</p>;
+  if (isLoading || !data || data.length === 0) return <p>Loading...</p>;
 
   const labels = data.map((d) =>
     d.employmentType === '비서직(정규)' ? '비서직' : d.employmentType,
