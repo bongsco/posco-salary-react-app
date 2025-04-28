@@ -25,20 +25,6 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
 
   const minDate = new Date(Math.min(...startDates));
   const maxDate = new Date(Math.max(...endDates));
-  const generateYearLabels = (start, end) => {
-    const years = [];
-    let current = start;
-    while (current <= end) {
-      years.push(current);
-      current += 1;
-    }
-    return years;
-  };
-
-  const years = generateYearLabels(
-    minDate.getFullYear(),
-    maxDate.getFullYear(),
-  );
 
   return (
     <div className={`${styles['timeline-container']}`}>
@@ -55,7 +41,7 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
           hAxis: {
             minValue: minDate,
             maxValue: maxDate,
-            format: 'M월',
+            format: `\`YY.M`,
           },
           colors,
           alternatingRowStyle: false,
@@ -124,7 +110,6 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
                 }
               });
 
-              let count = 0;
               // ✅ "1월" 텍스트에만 년도 붙이기 & 폰트 바꾸기
               texts.forEach((textElOrigin, i) => {
                 const textEl = textElOrigin;
@@ -136,16 +121,11 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
                 textEl.setAttribute('font-weight', 'normal');
 
                 // 년도 붙이기
-                const rawText = textEl.textContent?.trim();
-                if (!rawText) return;
+                const monthText = textEl.textContent?.trim().split('.')[1];
+                if (!monthText) return;
 
-                if (
-                  (rawText === '1월' || (i === 0 && rawText !== '12월')) &&
-                  years[count]
-                ) {
-                  const year = String(years[count]).slice(-2);
-                  textEl.textContent = `\`${year}.${rawText.replace('월', '')}`;
-                  count += 1;
+                if (monthText !== '1' && !(i === 0 && monthText !== '12')) {
+                  textEl.textContent = `${monthText}월`;
                 }
               });
 
