@@ -449,6 +449,7 @@ export default function OrganizationSubject() {
                 setRowsPerPage((prev) => ({ ...prev, target: val }));
                 setPage((prev) => ({ ...prev, target: 1 }));
               }}
+              totalPage={Math.ceil(targets.length / rowsPerPage.target)}
             />
           </div>
         </section>
@@ -556,6 +557,7 @@ export default function OrganizationSubject() {
                 setRowsPerPage((prev) => ({ ...prev, untarget: val }));
                 setPage((prev) => ({ ...prev, untarget: 1 }));
               }}
+              totalPage={Math.ceil(untargets.length / rowsPerPage.untarget)}
             />
           </div>
         </section>
