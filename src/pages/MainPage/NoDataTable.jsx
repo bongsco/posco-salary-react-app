@@ -39,7 +39,7 @@ function NoDataTable({ type, onRegisterSubmit = () => {} }) {
                     조건에 부합하는 연봉 조정 내역이 없습니다.
                   </div>
                 ) : (
-                  <>
+                  <div className={styles['button-modal']}>
                     <div className={styles['no-data-message']}>
                       연봉 조정 내역이 없습니다.
                     </div>
@@ -58,7 +58,7 @@ function NoDataTable({ type, onRegisterSubmit = () => {} }) {
                         right={0}
                       />
                     )}
-                  </>
+                  </div>
                 )}
               </div>
             </td>
