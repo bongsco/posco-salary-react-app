@@ -36,7 +36,6 @@ function FilterSort({
       </div>
 
       <div className={styles['right-group']}>
-        {/* <Button variant="secondary" size="large" label="엑셀다운로드" />  */}
         <div className={styles['button-modal']}>
           <Button
             variant="primary"
