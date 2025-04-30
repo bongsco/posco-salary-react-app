@@ -393,7 +393,7 @@ export default function PaymentRateCriteriaPage() {
             평가차등 경영성과금 지급률 설정
           </h2>
           <p className={styles.description}>
-            직급 및 평가등급별 경영성과금 지급 비율을 설정합니다. 고성과조직ㅑ
+            직급 및 평가등급별 경영성과금 지급 비율을 설정합니다. 고성과조직
             가산 대상은 지급률에 고성과조직 가산률 입력값이 더해집니다.
           </p>
           <div className={styles.inputContainer}>
