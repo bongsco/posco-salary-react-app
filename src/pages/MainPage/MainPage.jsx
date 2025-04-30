@@ -259,7 +259,6 @@ function MainPage() {
       );
       return;
     }
-
     try {
       const res = await fetchWithAuth('/adjust', {
         method: 'POST',
@@ -385,7 +384,10 @@ function MainPage() {
       return (
         <AppLayout title="연봉 조정 목록" breadCrumbs={['조정', '조회']}>
           <div className={styles['salary-adjustment-area']}>
-            <NoDataTable type="complete" onSubmit={handleRegisterModal} />
+            <NoDataTable
+              type="complete"
+              onRegisterSubmit={handleRegisterModal}
+            />
           </div>
         </AppLayout>
       );

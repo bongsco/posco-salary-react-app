@@ -285,8 +285,8 @@ export default function PaymentRateCriteriaPage() {
     );
 
     const payload = {
-      hpoSalaryIncrementRate: state.adjInfo.eval_annual_salary_increment,
-      hpoExtraBonusMultiplier: state.adjInfo.eval_perform_provide_rate,
+      hpoSalaryIncrementRate: state.adjInfo.eval_annual_salary_increment ?? 0,
+      hpoExtraBonusMultiplier: state.adjInfo.eval_perform_provide_rate ?? 0,
       paymentRates,
     };
 
@@ -364,7 +364,7 @@ export default function PaymentRateCriteriaPage() {
           <div className={styles.inputContainer}>
             <span className={styles.inputLabel}>고성과조직 가산률</span>
             <Input
-              value={String(state.adjInfo.eval_annual_salary_increment)}
+              value={String(state.adjInfo.eval_annual_salary_increment ?? 0)}
               onChange={(e) =>
                 handleAdjustmentChange('eval_annual_salary_increment', e)
               }
@@ -399,7 +399,7 @@ export default function PaymentRateCriteriaPage() {
           <div className={styles.inputContainer}>
             <span className={styles.inputLabel}>고성과조직 가산률</span>
             <Input
-              value={String(state.adjInfo.eval_perform_provide_rate)}
+              value={String(state.adjInfo.eval_perform_provide_rate ?? 0)}
               onChange={(e) =>
                 handleAdjustmentChange('eval_perform_provide_rate', e)
               }

@@ -4,7 +4,7 @@ import Button from '#components/Button';
 import RegisterModal from '#components/Modal/Register';
 import styles from './main-page.module.css';
 
-function NoDataTable({ type, onRegisterSubmit = () => {} }) {
+function NoDataTable({ type, onRegisterSubmit }) {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   const handleRegisterClick = () => {
@@ -52,7 +52,10 @@ function NoDataTable({ type, onRegisterSubmit = () => {} }) {
                     {isRegisterModalOpen && (
                       <RegisterModal
                         option={['정기연봉조정', '승진자연봉조정', 'Base Up']}
-                        onSubmit={onRegisterSubmit}
+                        onSubmit={(data) => {
+                          onRegisterSubmit(data);
+                          handleCloseRegisterModal();
+                        }}
                         onClose={handleCloseRegisterModal}
                         top="130%"
                         right={0}
