@@ -108,6 +108,36 @@ export default function AdjustEditLayout({
     }
   };
 
+  const calculateResult = async () => {
+    try {
+      const res = await fetchWithAuth(
+        `/adjust/${adjust.adjustId}/main/calculate`,
+        {
+          method: 'PATCH',
+        },
+      );
+
+      if (!res.ok) {
+        const json = await res.json();
+
+        addError(
+          `연봉 결과 계산 실패 (${res.status} ${res.statusText})`,
+          `네트워크 상태 및 접근 경로의 연봉조정 ID(${adjust.adjustId}) 등이 유효한지 확인해 주시기 바랍니다.\n${json.message}`,
+          'ADJUST_CALCULATE_ERROR',
+        );
+        return;
+      }
+
+      await mutate(`/stepper/${adjust.adjustId}`);
+    } catch (e) {
+      addError(
+        `연봉조정 단계 정보 저장 실패`,
+        `네트워크 상태 및 접근 경로의 연봉조정 ID(${adjust.adjustId}) 등이 유효한지 확인해 주시기 바랍니다. (${e.message})`,
+        'ADJUST_STEP_SAVE_ERROR',
+      );
+    }
+  };
+
   const [isSnackBarShowing, setIsSnackBarShowing] = useState(false);
   const [message, setMessage] = useState('');
   const timerRef = useRef(null);
@@ -186,6 +216,10 @@ export default function AdjustEditLayout({
             size="small"
             label="다음단계"
             onClick={async () => {
+              if (nextStepPath === '../main/payband') {
+                handleSnackBar('연봉이 계산됩니다. 잠시만 기다려 주세요.');
+                await calculateResult();
+              }
               await setStepDone();
               navigate(`../${nextStepPath}`);
             }}
