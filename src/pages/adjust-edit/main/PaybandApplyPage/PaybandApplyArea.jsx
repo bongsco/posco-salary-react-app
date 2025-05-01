@@ -6,7 +6,13 @@ import sortObject from '#utils/sortObject';
 import PaybandApplyTable from './PaybandApplyTable';
 import styles from './payband-apply-page.module.css';
 
-function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
+function PaybandApplyArea({
+  type: boundType,
+  data,
+  dispatch,
+  originalData,
+  handleExcelDownload,
+}) {
   const [filters, setFilters] = useState([]);
   const [sortList, setSortList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -168,7 +174,16 @@ function PaybandApplyArea({ type: boundType, data, dispatch, originalData }) {
           sortList={sortList}
         />
 
-        <Button variant="secondary" size="large" label="엑셀다운로드" />
+        <Button
+          variant="secondary"
+          size="large"
+          label="엑셀다운로드"
+          onClick={() =>
+            handleExcelDownload(
+              boundType === 'upper' ? 'upperPayband' : 'lowerPayband',
+            )
+          }
+        />
       </div>
       <PaybandApplyTable
         type={boundType}
@@ -195,6 +210,7 @@ PaybandApplyArea.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired,
   originalData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleExcelDownload: PropTypes.func.isRequired,
 };
 
 export default PaybandApplyArea;

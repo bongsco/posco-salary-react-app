@@ -1,4 +1,4 @@
-import { useMemo, useReducer } from 'react';
+import { useMemo, useReducer, useRef } from 'react';
 import useSWR from 'swr';
 import { useAdjustContext } from '#contexts/AdjustContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
@@ -194,6 +194,34 @@ function PaybandApplyPage() {
   const filteredUpperData = state.data.filter((item) => item.type === 'upper');
   const filteredLowerData = state.data.filter((item) => item.type === 'lower');
 
+  const aRef = useRef(null);
+
+  const handleExcelDownload = async (type) => {
+    try {
+      const res = await fetchWithAuth(
+        `/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
+      );
+      if (!res.ok) throw new Error('엑셀 다운로드 실패');
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      // a 태그 조작
+      if (aRef.current) {
+        aRef.current.href = url;
+        aRef.current.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        aRef.current.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+    } catch (err) {
+      addError(
+        '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+        err.message,
+        'EXCEL_DOWNLOAD_ERROR',
+      );
+    }
+  };
+
   return (
     <AdjustEditLayout
       prevStepPath="../preparation/high-performance"
@@ -210,6 +238,7 @@ function PaybandApplyPage() {
         data={filteredUpperData}
         dispatch={dispatch}
         originalData={state.backup}
+        handleExcelDownload={handleExcelDownload}
       />
 
       <h1>하한 초과자 Payband 적용 여부 설정</h1>
@@ -218,6 +247,7 @@ function PaybandApplyPage() {
         data={filteredLowerData}
         dispatch={dispatch}
         originalData={state.backup}
+        handleExcelDownload={handleExcelDownload}
       />
     </AdjustEditLayout>
   );
