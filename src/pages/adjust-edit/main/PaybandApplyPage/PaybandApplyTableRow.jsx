@@ -32,8 +32,8 @@ function PaybandApplyTableRow({
       <td className={styles['no-wrap']}>{item.기준연봉.toLocaleString()}</td>
       <td className={styles['no-wrap']}>
         {type === 'upper'
-          ? item.상한금액.toLocaleString()
-          : item.하한금액.toLocaleString()}
+          ? Math.round(Number(item.상한금액)).toLocaleString()
+          : Math.round(Number(item.하한금액)).toLocaleString()}
       </td>
       <td
         className={`${styles['no-wrap']} ${isModified ? styles.changedCell : ''}`}

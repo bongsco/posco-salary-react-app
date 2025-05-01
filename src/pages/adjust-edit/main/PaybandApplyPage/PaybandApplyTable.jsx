@@ -58,7 +58,7 @@ function PaybandApplyTable({
             <td className={styles['no-wrap']}>부서</td>
             <td className={styles['no-wrap']}>직급</td>
             <td className={styles['no-wrap']}>평가등급</td>
-            <td className={styles['no-wrap']}>기준연봉 월할액</td>
+            <td className={styles['no-wrap']}>기준연봉</td>
             <td className={styles['no-wrap']}>
               {type === 'upper' ? '상한금액' : '하한금액'}
             </td>
