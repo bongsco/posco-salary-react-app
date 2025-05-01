@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import TimeLine from '#components/TimeLine';
+import { useAuth } from '#contexts/AuthContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
 import useFetchWithAuth from '#hooks/useFetchWithAuth';
 import AppLayout from '#layouts/AppLayout';
@@ -216,6 +217,17 @@ function MainPage() {
     }
   };
 
+  const auth = useAuth();
+
+  const displayName = useMemo(() => {
+    const user = auth?.auth;
+
+    if (!user) return null;
+
+    const isManager = user.groups?.includes('bongsco_manager');
+    return isManager ? user.name || user.email || '사용자' : '사용자';
+  }, [auth?.auth]);
+
   /* 조정 유형 등록 추가시 호출 */
   const handleRegisterModal = async (data) => {
     /* 입력 값에 대해 null 검사 */
@@ -243,7 +255,7 @@ function MainPage() {
       type: adjustmentTypeMapping[data.adjustmentType],
       startDate: formatDate(data.startDate),
       endDate: formatDate(data.endDate),
-      author: '한상진',
+      author: displayName,
     };
 
     /* 변환된 값중에 NULL이나 Undefined가 있으면 요청 취소 */
