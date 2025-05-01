@@ -330,7 +330,7 @@ export default function OrganizationSubject() {
   const handleExcelDownload = async (type) => {
     try {
       const res = await fetchWithAuth(
-        `/api/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
+        `/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
       );
       if (!res.ok) throw new Error('엑셀 다운로드 실패');
 
