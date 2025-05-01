@@ -140,6 +140,19 @@ export default function CustomTimeLine({ selectedIndex = 0, data, onChange }) {
                   svg.setAttribute('height', `${newHeight}`);
                   // svg 부모 div 스타일 높이도 맞춰줌
                   container.parentElement.style.height = `${newHeight}px`;
+                  // 2. dir="ltr" div 높이 변경
+                  const dirDiv = container.querySelector('div[dir="ltr"]');
+                  if (dirDiv) {
+                    dirDiv.style.height = `${newHeight}px`;
+
+                    // ⬇️ 그 자식 chartDiv도 height: 100%라 조정이 필요
+                    const relativeDiv = dirDiv.querySelector(
+                      'div[aria-label="A chart."]',
+                    );
+                    if (relativeDiv) {
+                      relativeDiv.style.height = `${newHeight}px`;
+                    }
+                  }
                   texts.forEach((textElOrigin) => {
                     const textEl = textElOrigin;
                     textEl.setAttribute('y', gBox.height + 20);
