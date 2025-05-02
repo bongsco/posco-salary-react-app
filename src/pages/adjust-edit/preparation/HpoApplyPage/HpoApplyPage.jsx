@@ -226,7 +226,8 @@ function HpoApplyPage() {
         }
         // 드롭다운 필터
         return (
-          (value?.length ?? 0) === 0 || value?.map(String).includes(itemValue)
+          (value?.length ?? 0) === 0 ||
+          value?.some((v) => itemValue.includes(String(v)))
         );
       }),
     );
