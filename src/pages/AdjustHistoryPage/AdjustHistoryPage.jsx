@@ -208,39 +208,42 @@ export default function AdjustHistoryPage() {
             </div>
             <div>
               <Line
-                data={chartData.reduce(
-                  (prev, curr) => {
-                    const newObj = { ...prev };
+                data={chartData
+                  .slice()
+                  .reverse()
+                  .reduce(
+                    (prev, curr) => {
+                      const newObj = { ...prev };
 
-                    newObj.datasets[0].data = [
-                      ...newObj.datasets[0].data,
-                      curr.salaryIncrementRate,
-                    ];
-                    newObj.datasets[1].data = [
-                      ...newObj.datasets[1].data,
-                      curr.hpoSalaryIncrement,
-                    ];
+                      newObj.datasets[0].data = [
+                        ...newObj.datasets[0].data,
+                        curr.salaryIncrementRate,
+                      ];
+                      newObj.datasets[1].data = [
+                        ...newObj.datasets[1].data,
+                        curr.hpoSalaryIncrement,
+                      ];
 
-                    return newObj;
-                  },
-                  {
-                    labels: getLabels(chartData),
-                    datasets: [
-                      {
-                        label: '기준연봉 인상률',
-                        data: [],
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                      },
-                      {
-                        label: '고성과조직 가산률',
-                        data: [],
-                        borderColor: 'rgb(53, 162, 235)',
-                        backgroundColor: 'rgb(53, 162, 235)',
-                      },
-                    ],
-                  },
-                )}
+                      return newObj;
+                    },
+                    {
+                      labels: getLabels(chartData),
+                      datasets: [
+                        {
+                          label: '평가차등 인상률',
+                          data: [],
+                          borderColor: 'rgb(255, 99, 132)',
+                          backgroundColor: 'rgb(255, 99, 132)',
+                        },
+                        {
+                          label: '성과금 지급률(/100)',
+                          data: [],
+                          borderColor: 'rgb(53, 162, 235)',
+                          backgroundColor: 'rgb(53, 162, 235)',
+                        },
+                      ],
+                    },
+                  )}
                 options={lineChartOptions}
               />
             </div>
