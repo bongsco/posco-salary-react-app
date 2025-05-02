@@ -110,10 +110,7 @@ export default function RootLayout() {
           <ChatBotButton
             className={styles.chatbotButton}
             onClick={() => {
-              window.open(
-                'https://dss-d6ce03f7-5df236e4-dku.ap-northeast-1.app.dataiku.io/webapps/BONGSCOCHATBOT/MjNzldf/new',
-                '_blank',
-              );
+              window.open(process.env.REACT_APP_DATAIKU_CHATBOT_URL, '_blank');
             }}
           />
         ) : null}
