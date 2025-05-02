@@ -318,7 +318,9 @@ export default function PaymentRateCriteriaPage() {
       errorState.eval_annual_salary_increment ||
       errorState.eval_perform_provide_rate;
 
-    if (hasAnyError) return;
+    if (hasAnyError) {
+      throw new Error('저장불가');
+    }
 
     await saveToServer();
   };
