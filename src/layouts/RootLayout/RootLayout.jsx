@@ -69,7 +69,7 @@ export default function RootLayout() {
           dispatchSideBarState({ action: 'toggle', key: 'sideBar' });
         }}
       >
-        {displayName ? (
+        {auth.auth ? (
           <>
             <span className={styles.welcome}>{displayName}님 환영합니다</span>
             <NavItem text="로그아웃" href="/logout" />
@@ -106,15 +106,17 @@ export default function RootLayout() {
           {renderErrors()}
           <Outlet />
         </div>
-        <ChatBotButton
-          className={styles.chatbotButton}
-          onClick={() => {
-            window.open(
-              'https://dss-d6ce03f7-5df236e4-dku.ap-northeast-1.app.dataiku.io/webapps/BONGSCOCHATBOT/MjNzldf/new',
-              '_blank',
-            );
-          }}
-        />
+        {auth.auth ? (
+          <ChatBotButton
+            className={styles.chatbotButton}
+            onClick={() => {
+              window.open(
+                'https://dss-d6ce03f7-5df236e4-dku.ap-northeast-1.app.dataiku.io/webapps/BONGSCOCHATBOT/MjNzldf/new',
+                '_blank',
+              );
+            }}
+          />
+        ) : null}
       </div>
     </div>
   );
