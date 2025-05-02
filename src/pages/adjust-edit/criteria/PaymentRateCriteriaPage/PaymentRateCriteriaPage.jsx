@@ -237,8 +237,18 @@ export default function PaymentRateCriteriaPage() {
 
     Object.values(state.rankRate).forEach((ranks) => {
       Object.values(ranks).forEach(({ incrementRate, provideRate }) => {
-        if (Number.isNaN(Number(incrementRate))) hasIncrementError = true;
-        if (Number.isNaN(Number(provideRate))) hasProvideError = true;
+        if (
+          incrementRate == null ||
+          incrementRate === '' ||
+          Number.isNaN(Number(incrementRate))
+        )
+          hasIncrementError = true;
+        if (
+          provideRate == null ||
+          provideRate === '' ||
+          Number.isNaN(Number(provideRate))
+        )
+          hasProvideError = true;
       });
     });
 
