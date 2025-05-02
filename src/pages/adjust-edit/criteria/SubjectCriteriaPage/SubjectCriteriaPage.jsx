@@ -397,7 +397,9 @@ export default function SubjectCriteriaPage() {
 
   const handleSave = async () => {
     setHasTriedSubmit(true);
-    if (!formValidation.isValid) return;
+    if (!formValidation.isValid) {
+      throw new Error('저장불가');
+    }
 
     // ✅ gradeSelections: name → id 매핑을 위한 gradeDtos 필요 (data.grades 사용)
     const gradeSelections = {};

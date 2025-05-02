@@ -159,11 +159,13 @@ export default function AdjustEditLayout({
                   handleSnackBar('저장되었습니다.');
                 } catch (error) {
                   handleSnackBar('저장에 실패했습니다.');
-                  addError(
-                    `저장 실패`,
-                    `${error.message}`,
-                    'ADJUST_SAVE_ERROR',
-                  );
+                  if (error.message !== '저장불가') {
+                    addError(
+                      `저장 실패`,
+                      `${error.message}`,
+                      'ADJUST_SAVE_ERROR',
+                    );
+                  }
                 }
               }}
             />

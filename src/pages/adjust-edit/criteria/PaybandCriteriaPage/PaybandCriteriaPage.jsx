@@ -168,6 +168,8 @@ export default function PaybandCriteriaPage() {
             setReceivedPayband(structuredClone(cleanPayband));
             dispatch({ type: 'updatePayband', payload: cleanPayband });
           }
+        } else {
+          throw new Error('저장불가');
         }
       }}
       onRollback={() => {
