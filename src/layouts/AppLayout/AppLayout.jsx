@@ -15,7 +15,7 @@ export default function AppLayout({ title, children, breadCrumbs }) {
               label="Dataiku 바로가기"
               onClick={() => {
                 window.open(
-                  'https://dss-66429905-e85a59eb-dku.ap-northeast-1.app.dataiku.io/webapps/TUT_LLM_QAWITHRAGAPPROACH/ZUcRRvh/',
+                  'https://dss-d6ce03f7-5df236e4-dku.ap-northeast-1.app.dataiku.io/workspaces/BONGSCO',
                   '_blank',
                 );
               }}
