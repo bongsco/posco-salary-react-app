@@ -212,6 +212,7 @@ export default function AdjustEditLayout({
                 throw new Error('PATCH 요청 실패');
               }
               handleSnackBar('통합 인사 시스템에 반영이 완료되었습니다.');
+              await mutate(`/stepper/${adjust.adjustId}`);
             }}
           />
         )}
