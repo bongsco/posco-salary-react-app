@@ -133,10 +133,10 @@ function PaybandApplyPage() {
 
   const initialData = useMemo(() => {
     if (!apiData) return [];
-    const upper = apiData.upperAdjustSubjects.map((item) =>
+    const upper = (apiData.upperAdjustSubjects ?? []).map((item) =>
       transformItem(item, 'upper'),
     );
-    const lower = apiData.lowerAdjustSubjects.map((item) =>
+    const lower = (apiData.lowerAdjustSubjects ?? []).map((item) =>
       transformItem(item, 'lower'),
     );
     return [...upper, ...lower];
@@ -238,18 +238,18 @@ function PaybandApplyPage() {
       <h1>상한 초과자 Payband 적용 여부 설정</h1>
       <PaybandApplyArea
         type="upper"
-        data={filteredUpperData}
+        data={filteredUpperData ?? []}
         dispatch={dispatch}
-        originalData={state.backup}
+        originalData={state.backup ?? []}
         handleExcelDownload={handleExcelDownload}
       />
 
       <h1>하한 초과자 Payband 적용 여부 설정</h1>
       <PaybandApplyArea
         type="lower"
-        data={filteredLowerData}
+        data={filteredLowerData ?? []}
         dispatch={dispatch}
-        originalData={state.backup}
+        originalData={state.backup ?? []}
         handleExcelDownload={handleExcelDownload}
       />
     </AdjustEditLayout>
