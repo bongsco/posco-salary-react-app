@@ -32,6 +32,8 @@ jobs:
           echo "REACT_APP_API_URL=${{ vars.API_URL_DEV }}" >> .env
           echo "REACT_APP_COGNITO_CLIENT_ID=${{ secrets.AWS_COGNITO_CLIENT_ID }}" >> .env
           echo "REACT_APP_COGNITO_REGION=${{ vars.AWS_REGION }}" >> .env
+          echo "REACT_APP_DATAIKU_CHATBOT_URL=${{ vars.DATAIKU_CHATBOT_URL }}" >> .env
+          echo "REACT_APP_DATAIKU_DASHBOARD_URL=${{ vars.DATAIKU_DASHBOARD_URL }}" >> .env
           echo "NODE_ENV=production" >> .env
 
       - name: Build React App
