@@ -244,7 +244,7 @@ function PaybandApplyPage() {
         handleExcelDownload={handleExcelDownload}
       />
 
-      <h1>하한 초과자 Payband 적용 여부 설정</h1>
+      <h1>하한 미달자 Payband 적용 여부 설정</h1>
       <PaybandApplyArea
         type="lower"
         data={filteredLowerData ?? []}
