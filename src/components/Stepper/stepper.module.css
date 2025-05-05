@@ -1,0 +1,37 @@
+@import '../../styles/global.css';
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 0px;
+}
+
+.stepWrapper {
+  display: flex;
+  gap: 0px;
+  width: 100%;
+}
+
+.stepContainer {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.between {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 16px 16px;
+  position: relative;
+  min-width: 48px;
+  flex-grow: 1;
+}
+
+.hr {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+}

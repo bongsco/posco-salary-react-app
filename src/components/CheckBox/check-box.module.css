@@ -1,0 +1,19 @@
+@import url('../../styles/global.css');
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-primary-lighter);
+  width: 16px;
+  height: 16px;
+  padding: 4px 3px;
+  background-color: var(--color-grayscale-white);
+}
+
+.checkbox.checked {
+  background-image: url('./checkbox.svg');
+  background-size: 10px 8px;
+  background-repeat: no-repeat;
+  background-position: center;
+}

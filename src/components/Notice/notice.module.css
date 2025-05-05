@@ -1,0 +1,46 @@
+@import '/src/styles/global.css';
+
+.noticeContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-shrink: 0;
+  background-color: var(--color-system-caution);
+  color: var(--color-background-general);
+  padding: 20px 28px;
+  border-radius: 10px;
+  width: 100%;
+  min-height: 82px;
+  height: fit-content;
+  gap: 10px;
+}
+
+.noticeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: var(--font-caption-1b-pc);
+}
+
+.noticeHeader .title {
+  font: var(--font-caption-1b-pc);
+}
+
+.noticeHeader .closeButton {
+  background-color: transparent;
+  border: none;
+  color: var(--color-grayscale-white);
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.message {
+  font: var(--font-caption-2r-pc);
+  white-space: pre-wrap;
+  margin: 0;
+  padding: 0;
+}
+
+.closeButton:hover {
+  opacity: 0.7;
+}

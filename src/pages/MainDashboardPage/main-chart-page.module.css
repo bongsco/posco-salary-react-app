@@ -1,0 +1,91 @@
+.card {
+  background: white;
+  box-sizing: border-box;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  overflow: hidden;
+}
+
+.chartWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftInfo {
+  flex: 1 1 100px;
+  min-width: 0;
+}
+
+.rightChart {
+  flex: 1 1 300px;
+  min-width: 190px;
+  height: 300px;
+  position: relative;
+}
+
+.title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.total {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+}
+
+.mainDescription {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.positive {
+  color: #4c6ef5;
+  font-weight: bold;
+}
+
+.negative {
+  color: #fa5252;
+  font-weight: bold;
+}
+
+.legend {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.barLegend {
+  color: #4c6ef5;
+}
+
+.lineLegend {
+  color: #fab005;
+}
+
+.lineChart {
+  height: 30%;
+  width: 100%;
+}
+
+.barChart {
+  height: 70%;
+  width: 100%;
+}

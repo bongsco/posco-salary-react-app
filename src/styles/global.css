@@ -1,0 +1,69 @@
+:root {
+  --color-primary-lightest: #e9f6ff;
+  --color-primary-lighter: #c2e6ff;
+  --color-primary-light: #85ccff;
+  --color-primary-main: #40afff;
+  --color-primary-dark: #237dbe;
+  --color-primary-darker: #054471;
+  --color-primary-darkest: #011c30;
+
+  --color-grayscale-white: #ffffff;
+  --color-grayscale-1: #f5f5f5;
+  --color-grayscale-2: #eeeeee;
+  --color-grayscale-3: #e0e0e0;
+  --color-grayscale-4: #bdbdbd;
+  --color-grayscale-5: #9e9e9e;
+  --color-grayscale-6: #757575;
+  --color-grayscale-7: #616161;
+  --color-grayscale-8: #424242;
+  --color-grayscale-9: #212121;
+  --color-grayscale-black: #000000;
+
+  --color-background-general: #ffffff;
+  --color-background-block: #eeedec;
+
+  --color-data-incline: rgba(161, 253, 40, 0.2);
+  --color-data-decline: rgba(255, 50, 95, 0.2);
+
+  --color-system-caution: #ff325f;
+  --color-system-warning: #ffbd2f;
+  --color-system-ok: #a1fd28;
+  --color-system-dark: #99f322;
+
+  --font-family:
+    'SUIT', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans,
+    Ubuntu, Cantarell, 'Helvetica Neue', normal;
+
+  --font-title-pc: 700 36px var(--font-family);
+
+  --font-subtitle-1b-pc: 600 28px var(--font-family);
+  --font-subtitle-1r-pc: 400 28px var(--font-family);
+  --font-subtitle-1r-mobile: 400 26px var(--font-family);
+  --font-subtitle-2b-pc: 600 22px var(--font-family);
+  --font-subtitle-2b-mobile: 600 20px var(--font-family);
+  --font-subtitle-2r-pc: 400 22px var(--font-family);
+  --font-subtitle-2r-mobile: 400 20px var(--font-family);
+
+  --font-body-1b-pc: 600 18px var(--font-family);
+  --font-body-1r-pc: 400 18px var(--font-family);
+  --font-body-2b-pc: 600 16px var(--font-family);
+  --font-body-2r-pc: 400 16px var(--font-family);
+  --font-body-3-pc: 400 14px var(--font-family);
+
+  --font-caption-1b-pc: 600 14px var(--font-family);
+  --font-caption-1b-mobile: 600 12px var(--font-family);
+  --font-caption-1r-pc: 400 14px var(--font-family);
+  --font-caption-1r-mobile: 400 12px var(--font-family);
+  --font-caption-2b-pc: 600 12px var(--font-family);
+  --font-caption-2r-pc: 400 12px var(--font-family);
+  /* --font-caption-3b-pc를 의미 */
+  --font-caption-3r-pc: 600 10px var(--font-family);
+  /* --font-caption-3r-pc를 의미 */
+  --font-caption-3l-pc: 400 10px var(--font-family);
+
+  --shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}

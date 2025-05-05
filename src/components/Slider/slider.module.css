@@ -1,0 +1,53 @@
+@import url('../../styles/global.css');
+
+.slider_container {
+  display: flex;
+  flex-direction: row;
+  padding: 0 8px;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 300px;
+  gap: 8px;
+}
+
+.slider_value {
+  width: 10%;
+  font: var(--font-caption-2b-pc);
+  color: var(--color-primary-darker);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+:global(.range-slider__thumb[data-lower]) {
+  background-color: var(--color-primary-light);
+  border-radius: 3px;
+  width: 8px;
+}
+
+:global(.range-slider__thumb[data-upper]) {
+  background-color: var(--color-primary-light);
+  border-radius: 3px;
+  width: 8px;
+}
+
+:global(.range-slider) {
+  background-color: var(--color-primary-darkest);
+}
+
+:global(.range-slider .range-slider__range) {
+  background: var(--color-primary-dark);
+}
+
+:global(.range-slider::after) {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background: var(--color-primary-darker);
+}

@@ -6,10 +6,55 @@
     "airbnb/hooks",
     "plugin:prettier/recommended",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:import/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:storybook/recommended"
   ],
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "$": "writable"
+  },
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": true,
+      "alias": {
+        "map": [
+          ["#components", "./src/components"],
+          ["#pages", "./src/pages"],
+          ["#styles", "./src/styles"],
+          ["#utils", "./src/utils"],
+          ["#assets", "./src/assets"],
+          ["#layouts", "./src/layouts"],
+          ["#contexts", "./src/contexts"],
+          ["#hooks", "./src/hooks"],
+          ["#src/*", "./src"]
+        ],
+        "extensions": [".js", ".jsx", ".css"]
+      }
+    }
+  },
+  "rules": {
+    "no-restricted-exports": "off",
+    "react/require-default-props": "warn",
+    "prettier/prettier": [
+      "warn",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/*.stories.*", "**/.storybook/**/*.*"],
+        "peerDependencies": true
+      }
+    ],
+    "react/react-in-jsx-scope": "off"
   }
 }

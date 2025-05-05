@@ -1,0 +1,36 @@
+@import url('../../../styles/global.css');
+
+.button {
+  align-items: center;
+  border-radius: 2px;
+  display: inline-flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 5px;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  width: 44px;
+  height: 32px;
+}
+
+/* ✅ Primary 버튼 스타일 */
+.button.primary {
+  background-color: var(--color-primary-main);
+  color: white;
+}
+
+/* ✅ Sub 버튼 스타일 */
+.button.sub {
+  background-color: var(--color-grayscale-white);
+  color: var(--color-primary-main);
+  border: 1px solid var(--color-primary-main);
+}
+
+.text {
+  font: var(--font-caption-1b-pc);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}

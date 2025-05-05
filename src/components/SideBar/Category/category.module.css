@@ -1,0 +1,58 @@
+@import url('../../../styles/global.css');
+
+.category-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: fit-content;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.category {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 202px;
+  width: fit-content;
+  height: 32px;
+  padding: 0 12px;
+
+  border-radius: 8px;
+  border: 0;
+
+  font: var(--font-caption-1r-pc);
+  background-color: var(--color-background-general);
+
+  cursor: pointer;
+}
+
+.category:hover {
+  background-color: var(--color-primary-lightest);
+}
+
+.caption {
+  font: var(--font-caption-2r-pc);
+  flex-grow: 1;
+  text-align: left;
+}
+
+.chevron {
+  aspect-ratio: 1;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subMenuContainer {
+  display: flex;
+}
+
+.close {
+  display: none;
+}

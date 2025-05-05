@@ -1,0 +1,16 @@
+.icon {
+  max-width: 16px;
+  max-height: 16px;
+  width: auto;
+  height: auto;
+  stroke-width: 0px;
+}
+
+.icon path {
+  stroke: currentColor;
+  color: inherit;
+}
+
+.gear path {
+  fill: currentColor;
+}
