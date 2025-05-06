@@ -205,7 +205,7 @@ export default function AdjustHistoryDetailPage() {
             <tbody>
               <tr>
                 <td>{data.isPaybandApplied}</td>
-                <td>{data.contractSalary}</td>
+                <td>{numberWithCommas(data.contractSalary)}</td>
               </tr>
             </tbody>
           </table>
