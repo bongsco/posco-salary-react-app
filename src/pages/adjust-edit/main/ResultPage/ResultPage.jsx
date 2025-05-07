@@ -14,7 +14,7 @@ import {
 import { useMemo, useRef, useState } from 'react';
 import { Bar, Line, PolarArea } from 'react-chartjs-2';
 import useSWR from 'swr';
-import Button from '#components/Button';
+// import Button from '#components/Button';
 import PageNation from '#components/Pagination';
 import Switch from '#components/Switch';
 import { useAdjustContext } from '#contexts/AdjustContext';
@@ -229,37 +229,37 @@ export default function ResultPage() {
 
   const aRef = useRef(null);
 
-  const handleExcelDownload = async (type) => {
-    try {
-      const params = new URLSearchParams({
-        adjustId: adjust.adjustId,
-        pageType: type,
-      });
-      const res = await fetchWithAuth(
-        `/adjust/excel/download?${params.toString()}`,
-      );
-      if (!res.ok) {
-        throw new Error('GET 요청 실패');
-      }
+  // const handleExcelDownload = async (type) => {
+  //   try {
+  //     const params = new URLSearchParams({
+  //       adjustId: adjust.adjustId,
+  //       pageType: type,
+  //     });
+  //     const res = await fetchWithAuth(
+  //       `/adjust/excel/download?${params.toString()}`,
+  //     );
+  //     if (!res.ok) {
+  //       throw new Error('GET 요청 실패');
+  //     }
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+  //     const blob = await res.blob();
+  //     const url = URL.createObjectURL(blob);
 
-      // a 태그 조작
-      if (aRef.current) {
-        aRef.current.href = url;
-        aRef.current.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
-        aRef.current.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      }
-    } catch (err) {
-      addError(
-        '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
-        err.message,
-        'EXCEL_DOWNLOAD_ERROR',
-      );
-    }
-  };
+  //     // a 태그 조작
+  //     if (aRef.current) {
+  //       aRef.current.href = url;
+  //       aRef.current.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+  //       aRef.current.click();
+  //       setTimeout(() => URL.revokeObjectURL(url), 1000);
+  //     }
+  //   } catch (err) {
+  //     addError(
+  //       '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+  //       err.message,
+  //       'EXCEL_DOWNLOAD_ERROR',
+  //     );
+  //   }
+  // };
   return (
     <AdjustEditLayout
       prevStepPath="payband"
@@ -465,14 +465,14 @@ export default function ResultPage() {
               <div className={styles['switch-label']}>테이블</div>
             </div>
             <div>
-              <Button
+              {/* <Button
                 variant="secondary"
                 size="large"
                 label="엑셀다운로드"
                 onClick={() => {
                   handleExcelDownload('adjustResult');
                 }}
-              />
+              /> */}
               <a
                 ref={aRef}
                 href="about:blank"

@@ -194,36 +194,36 @@ function PaybandApplyPage() {
   const filteredUpperData = state.data.filter((item) => item.type === 'upper');
   const filteredLowerData = state.data.filter((item) => item.type === 'lower');
 
-  const handleExcelDownload = async (type) => {
-    try {
-      const res = await fetchWithAuth(
-        `/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
-        {
-          headers: {
-            Accept:
-              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          },
-        },
-      );
-      if (!res.ok) throw new Error('엑셀 다운로드 실패');
+  // const handleExcelDownload = async (type) => {
+  //   try {
+  //     const res = await fetchWithAuth(
+  //       `/adjust/excel/download?adjustId=${adjust.adjustId}&pageType=${type}`,
+  //       {
+  //         headers: {
+  //           Accept:
+  //             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  //         },
+  //       },
+  //     );
+  //     if (!res.ok) throw new Error('엑셀 다운로드 실패');
 
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      addError(
-        '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
-        err.message,
-        'EXCEL_DOWNLOAD_ERROR',
-      );
-    }
-  };
+  //     const blob = await res.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = `bongsco_${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
+  //     window.URL.revokeObjectURL(url);
+  //   } catch (err) {
+  //     addError(
+  //       '엑셀 다운로드 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+  //       err.message,
+  //       'EXCEL_DOWNLOAD_ERROR',
+  //     );
+  //   }
+  // };
 
   return (
     <AdjustEditLayout
@@ -241,7 +241,7 @@ function PaybandApplyPage() {
         data={filteredUpperData ?? []}
         dispatch={dispatch}
         originalData={state.backup ?? []}
-        handleExcelDownload={handleExcelDownload}
+        // handleExcelDownload={handleExcelDownload}
       />
 
       <h1>하한 미달자 Payband 적용 여부 설정</h1>
@@ -250,7 +250,7 @@ function PaybandApplyPage() {
         data={filteredLowerData ?? []}
         dispatch={dispatch}
         originalData={state.backup ?? []}
-        handleExcelDownload={handleExcelDownload}
+        // handleExcelDownload={handleExcelDownload}
       />
     </AdjustEditLayout>
   );

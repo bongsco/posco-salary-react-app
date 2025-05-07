@@ -5,7 +5,7 @@ import NavItem from '#components/NavBar/NavItem';
 import SideBar, { Item } from '#components/SideBar';
 import { useAuth } from '#contexts/AuthContext';
 import { useErrorHandlerContext } from '#contexts/ErrorHandlerContext';
-import ChatBotButton from '#src/layouts/RootLayout/ChatBotButton';
+// import ChatBotButton from '#src/layouts/RootLayout/ChatBotButton';
 import styles from './root-layout.module.css';
 
 const initialSideBarState = {
@@ -106,14 +106,14 @@ export default function RootLayout() {
           {renderErrors()}
           <Outlet />
         </div>
-        {auth.auth ? (
+        {/* {auth.auth ? (
           <ChatBotButton
             className={styles.chatbotButton}
             onClick={() => {
               window.open(process.env.REACT_APP_DATAIKU_CHATBOT_URL, '_blank');
             }}
           />
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );
