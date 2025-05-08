@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-// import Button from '#components/Button';
+import Button from '#components/Button';
 import TableOption from '#components/TableOption';
 import styles from './hpo-apply-page.module.css';
 
@@ -21,7 +21,7 @@ function FilterSort({
           sortList={sortList}
         />
       </div>
-      {/* 
+
       <div className={styles['right-group']}>
         <Button
           variant="secondary"
@@ -29,7 +29,7 @@ function FilterSort({
           label="엑셀다운로드"
           onClick={() => {}}
         />
-      </div> */}
+      </div>
     </div>
   );
 }
